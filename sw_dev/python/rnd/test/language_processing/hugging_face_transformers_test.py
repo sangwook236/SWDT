@@ -2344,7 +2344,6 @@ def main():
 	# T5.
 	#	T5 is an encoder-decoder model pre-trained on a multi-task mixture of unsupervised and supervised tasks and for which each task is converted into a text-to-text format.
 	#	T5 works well on a variety of tasks out-of-the-box by prepending a different prefix to the input corresponding to each task, e.g., for translation: translate English to German: ..., for summarization: summarize: ....
-	#	t5-small, t5-base, t5-large, t5-3b, t5-11b.
 
 	#t5_example()
 	#flan_t5_example()

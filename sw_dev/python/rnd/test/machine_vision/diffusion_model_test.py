@@ -260,13 +260,55 @@ def diffusers_intro():
 def diffusers_training_example():
 	raise NotImplementedError
 
+# REF [site] >> https://huggingface.co/CompVis/stable-diffusion-v1-4
+def compvis_example():
+	import torch
+	import diffusers
+
+	# Install.
+	#	pip install diffusers transformers scipy
+
+	model_id = "CompVis/stable-diffusion-v1-4"
+	device = "cuda"
+
+	pipe = diffusers.StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+	pipe = pipe.to(device)
+
+	prompt = "a photo of an astronaut riding a horse on mars"
+	image = pipe(prompt).images[0]
+		
+	image.save("./astronaut_rides_horse.png")
+
+# REF [site] >> https://huggingface.co/stabilityai/stable-diffusion-2-1
+def stabilityai_example():
+	import torch
+	import diffusers
+
+	# Install.
+	#	pip install diffusers transformers accelerate scipy safetensors
+
+	model_id = "stabilityai/stable-diffusion-2-1"
+
+	# Use the DPMSolverMultistepScheduler (DPM-Solver++) scheduler here instead.
+	pipe = diffusers.StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+	pipe.scheduler = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
+	pipe = pipe.to("cuda")
+
+	prompt = "a photo of an astronaut riding a horse on mars"
+	image = pipe(prompt).images[0]
+
+	image.save("./astronaut_rides_horse.png")
+
 def main():
 	# Hugging Face Diffusers.
 	#	REF [site] >> https://github.com/huggingface/diffusers
 
-	diffusers_quickstart()
+	#diffusers_quickstart()
 	#diffusers_intro()
 	#diffusers_training_example()  # Not yet implemented.
+
+	#compvis_example()
+	stabilityai_example()
 
 #--------------------------------------------------------------------
 
