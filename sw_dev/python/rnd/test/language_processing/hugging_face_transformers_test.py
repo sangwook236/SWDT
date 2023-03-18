@@ -511,12 +511,15 @@ def eleuther_ai_gpt_test():
 #	https://github.com/SKT-AI/KoGPT2
 #	https://huggingface.co/skt/kogpt2-base-v2
 def skt_gpt_test():
+	# Models:
+	#	skt/kogpt2-base-v2: ~490MB.
+
 	from transformers import PreTrainedTokenizerFast, GPT2LMHeadModel
 
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
 
-	pretrained_model_name = 'skt/kogpt2-base-v2'  # ~490MB.
+	pretrained_model_name = 'skt/kogpt2-base-v2'
 
 	tokenizer = PreTrainedTokenizerFast.from_pretrained(
 		pretrained_model_name,
@@ -556,12 +559,17 @@ def skt_gpt_test():
 #	https://huggingface.co/kakaobrain/kogpt
 #	https://github.com/kakaobrain/kogpt
 def kakao_brain_gpt_test():
+	# Models:
+	#	kakaobrain/kogpt:
+	#		KoGPT6B-ryan1.5b: ~24.7GB.
+	#		KoGPT6B-ryan1.5b-float16: ~12.3GB.
+
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
 
 	pretrained_model_name = 'kakaobrain/kogpt'
 	#revision = 'KoGPT6B-ryan1.5b'
-	revision = 'KoGPT6B-ryan1.5b-float16'  # ~11.5GB.
+	revision = 'KoGPT6B-ryan1.5b-float16'
 
 	# Text generation.
 	if False:
@@ -1070,12 +1078,15 @@ def skt_bert_test():
 
 # REF [site] >> https://huggingface.co/klue/bert-base
 def klue_bert_test():
+	# Models:
+	#	klue/bert-base: ~430MB.
+
 	from transformers import AutoModel, AutoTokenizer
 
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
 
-	tokenizer = AutoTokenizer.from_pretrained('klue/bert-base')  # ~430MB.
+	tokenizer = AutoTokenizer.from_pretrained('klue/bert-base')
 	model = AutoModel.from_pretrained('klue/bert-base')
 
 	if True:
@@ -1220,7 +1231,9 @@ The unification of SR with quantum mechanics is relativistic quantum mechanics, 
 		print('Summary:')
 		print(tokenizer.decode(outputs[0], skip_special_tokens=True))  # Output: "studies have shown that owning a dog is good for you.".
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/flan-t5
+# REF [site] >>
+#	https://huggingface.co/google
+#	https://huggingface.co/docs/transformers/model_doc/flan-t5
 def flan_t5_example():
 	# Models:
 	#	google/flan-t5-small: ~308MB.
@@ -1229,18 +1242,98 @@ def flan_t5_example():
 	#	google/flan-t5-xl: ~9.45GB.
 	#	google/flan-t5-xxl: ~9.45GB.
 
-	from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+	if True:
+		from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-	tokenizer = AutoTokenizer.from_pretrained('google/flan-t5-small')
-	model = AutoModelForSeq2SeqLM.from_pretrained('google/flan-t5-small')
+		tokenizer = AutoTokenizer.from_pretrained('google/flan-t5-small')
+		model = AutoModelForSeq2SeqLM.from_pretrained('google/flan-t5-small')
 
-	inputs = tokenizer('A step by step recipe to make bolognese pasta:', return_tensors='pt')
-	outputs = model.generate(**inputs)
+		inputs = tokenizer('A step by step recipe to make bolognese pasta:', return_tensors='pt')
+		outputs = model.generate(**inputs)
 
-	print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
+		print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/bloom
+	if False:
+		# Running the model on a CPU.
+
+		from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+		tokenizer = T5Tokenizer.from_pretrained('google/flan-t5-base')
+		model = T5ForConditionalGeneration.from_pretrained('google/flan-t5-base')
+
+		input_text = 'translate English to German: How old are you?'
+		input_ids = tokenizer(input_text, return_tensors='pt').input_ids
+
+		outputs = model.generate(input_ids)
+		print(tokenizer.decode(outputs[0]))
+
+	if False:
+		# Running the model on a GPU.
+
+		# Install.
+		#pip install accelerate
+
+		from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+		tokenizer = T5Tokenizer.from_pretrained('google/flan-t5-base')
+		model = T5ForConditionalGeneration.from_pretrained('google/flan-t5-base', device_map='auto')
+
+		input_text = 'translate English to German: How old are you?'
+		input_ids = tokenizer(input_text, return_tensors='pt').input_ids.to('cuda')
+
+		outputs = model.generate(input_ids)
+		print(tokenizer.decode(outputs[0]))
+
+	if False:
+		# Running the model on a GPU using different precisions (FP16).
+
+		# Install.
+		#pip install accelerate
+
+		from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+		tokenizer = T5Tokenizer.from_pretrained('google/flan-t5-base')
+		model = T5ForConditionalGeneration.from_pretrained('google/flan-t5-base', device_map='auto', torch_dtype=torch.float16)
+
+		input_text = 'translate English to German: How old are you?'
+		input_ids = tokenizer(input_text, return_tensors='pt').input_ids.to('cuda')
+
+		outputs = model.generate(input_ids)
+		print(tokenizer.decode(outputs[0]))
+
+	if False:
+		# Running the model on a GPU using different precisions (INT8).
+
+		# Install.
+		#pip install bitsandbytes accelerate
+
+		from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+		tokenizer = T5Tokenizer.from_pretrained('google/flan-t5-base')
+		model = T5ForConditionalGeneration.from_pretrained('google/flan-t5-base', device_map='auto', load_in_8bit=True)
+
+		input_text = 'translate English to German: How old are you?'
+		input_ids = tokenizer(input_text, return_tensors='pt').input_ids.to('cuda')
+
+		outputs = model.generate(input_ids)
+		print(tokenizer.decode(outputs[0]))
+
+# REF [site] >>
+#	https://huggingface.co/bigscience/bloom
+#	https://huggingface.co/docs/transformers/model_doc/bloom
 def bloom_example():
+	# BigScience Language Open-science Open-access Multilingual (BLOOM) language model.
+	#	Modified from Megatron-LM GPT2 (see paper, BLOOM Megatron code).
+	#	Decoder-only architecture
+	#	Layer normalization applied to word embeddings layer (StableEmbedding; see code, paper).
+	#	ALiBi positional encodings (see paper), with GeLU activation functions.
+	#	176, 247, 271, 424 parameters:
+	#		3, 596, 615, 680 embedding parameters.
+	#		70 layers, 112 attention heads.
+	#		Hidden layers are 14336-dimensional.
+	#		Sequence length of 2048 tokens used (see BLOOM tokenizer, tokenizer description).
+	#	Objective Function: Cross Entropy with mean reduction.
+
 	# Models:
 	#	bigscience/bloom: ~520GB.
 	#	bigscience/bloomz: ~520GB.
