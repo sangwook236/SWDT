@@ -81,6 +81,49 @@ def quick_tour():
 
 		print('{} processed.'.format(model_class.__name__))
 
+def tokenizer_test():
+	import transformers
+
+	pretrained_model_name = 'bert-base-uncased'
+	#pretrained_model_name = 'openai-gpt'
+	#pretrained_model_name = 'gpt2'
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(pretrained_model_name)
+
+	print(f'Type: {type(tokenizer)}.')
+	print(f'Dir: {dir(tokenizer)}.')
+	print(f'Vocab size = {tokenizer.vocab_size}.')
+	print(f'Special tokens map: {tokenizer.special_tokens_map}.')
+	print(f'SEP ID: {tokenizer.sep_token_id}, CLS ID: {tokenizer.cls_token_id}, MASK ID: {tokenizer.mask_token_id}.')
+	print(f'BOS ID: {tokenizer.bos_token_id}, EOS ID: {tokenizer.eos_token_id}, PAD ID: {tokenizer.pad_token_id}, UNK ID: {tokenizer.unk_token_id}.')
+	print(f'BOS: {tokenizer.bos_token}, EOS: {tokenizer.eos_token}, PAD: {tokenizer.pad_token}, UNK: {tokenizer.unk_token}.')
+
+	text = "Let's go to the movies tonight"
+	encoding = tokenizer(text)
+	#encoding = tokenizer(text, return_tensors='pt')  # {'tf', 'pt', 'np'}.
+	print(f'Encoding keys = {encoding.keys()}.')  # {'input_ids', 'token_type_ids', 'attention_mask'}.
+	print(f'Encoding: {encoding}.')
+
+	print(f"Decoding: {tokenizer.decode(encoding['input_ids'])}.")
+	print(f"Decoding: {tokenizer.decode(encoding['input_ids'], skip_special_tokens=True)}.")
+	print(f"Decoding (each token): {[tokenizer.decode([token]) for token in encoding['input_ids']]}.")
+
+	# Batch mode.
+	texts = ["Let's go to the movies tonight", "Let's go to the movies today"]
+	encoding = tokenizer(texts)
+	print(f"Encoding #0: {encoding['input_ids'][0]}.")
+	print(f"Encoding #1: {encoding['input_ids'][1]}.")
+	print(f"Decoding (batch): {tokenizer.batch_decode(encoding['input_ids'])}.")
+	print(f"Decoding (batch): {tokenizer.batch_decode(encoding['input_ids'], skip_special_tokens=True)}.")
+
+	# Padding.
+	#tokenizer = transformers.AutoTokenizer.from_pretrained(pretrained_model_name, padding_side='left')
+	tokenizer.padding_side = 'left'  # {'right', 'left'}.
+
+	encoding = tokenizer(texts, padding='longest', return_tensors='pt')
+	print(f"Input IDs: {encoding['input_ids']}.")
+	print(f"Decoding (batch): {tokenizer.batch_decode(encoding['input_ids'])}.")
+
 # REF [site] >> https://huggingface.co/docs/transformers/main_classes/pipelines
 def pipeline_example():
 	from transformers import pipeline, AutoModelForTokenClassification, AutoTokenizer
@@ -310,45 +353,45 @@ def gpt2_example():
 	input_ids = torch.tensor(tokenizer.encode('Hello, my dog is cute', add_special_tokens=True)).unsqueeze(0)  # Batch size 1.
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# The bare GPT2 Model transformer outputting raw hidden-states without any specific head on top.
 		model = GPT2Model.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		last_hidden_states = outputs[0]  # The last hidden-state is the first element of the output tuple.
 		print('{} processed.'.format(GPT2Model.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# The GPT2 Model transformer with a language modeling head on top (linear layer with weights tied to the input embeddings).
 		model = GPT2LMHeadModel.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids, labels=input_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		loss, logits = outputs[:2]
 		print('{} processed.'.format(GPT2LMHeadModel.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# The GPT2 Model transformer with a language modeling and a multiple-choice classification head on top e.g. for RocStories/SWAG tasks.
 		model = GPT2DoubleHeadsModel.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
 		# Add a [CLS] to the vocabulary (we should train it also!).
 		tokenizer.add_special_tokens({'cls_token': '[CLS]'})
@@ -361,12 +404,12 @@ def gpt2_example():
 		input_ids0 = torch.tensor(encoded_choices).unsqueeze(0)  # Batch size: 1, number of choices: 2.
 		mc_token_ids = torch.tensor([cls_token_location])  # Batch size: 1.
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids0, mc_token_ids=mc_token_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		lm_prediction_scores, mc_prediction_scores = outputs[:2]
 		print('{} processed.'.format(GPT2DoubleHeadsModel.__name__))
@@ -753,149 +796,149 @@ def bert_example():
 	input_ids = torch.tensor(tokenizer.encode('Hello, my dog is cute', add_special_tokens=True)).unsqueeze(0)  # Batch size 1.
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# The bare Bert Model transformer outputting raw hidden-states without any specific head on top.
 		model = BertModel.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		last_hidden_states = outputs[0]  # The last hidden-state is the first element of the output tuple.
 		print('{} processed.'.format(BertModel.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model with two heads on top as done during the pre-training: a 'masked language modeling' head and a 'next sentence prediction (classification)' head.
 		model = BertForPreTraining.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		prediction_scores, seq_relationship_scores = outputs[:2]
 		print('{} processed.'.format(BertForPreTraining.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model with a 'language modeling' head on top.
 		model = BertForMaskedLM.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids, masked_lm_labels=input_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		loss, prediction_scores = outputs[:2]
 		print('{} processed.'.format(BertForMaskedLM.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model with a 'next sentence prediction (classification)' head on top.
 		model = BertForNextSentencePrediction.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		seq_relationship_scores = outputs[0]
 		print('{} processed.'.format(BertForNextSentencePrediction.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model transformer with a sequence classification/regression head on top (a linear layer on top of the pooled output) e.g. for GLUE tasks.
 		model = BertForSequenceClassification.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
 		labels = torch.tensor([1]).unsqueeze(0)  # Batch size 1.
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids, labels=labels)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		loss, logits = outputs[:2]
 		print('{} processed.'.format(BertForSequenceClassification.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model with a multiple choice classification head on top (a linear layer on top of the pooled output and a softmax) e.g. for RocStories/SWAG tasks.
 		model = BertForMultipleChoice.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
 		choices = ['Hello, my dog is cute', 'Hello, my cat is amazing']
 		input_ids0 = torch.tensor([tokenizer.encode(s, add_special_tokens=True) for s in choices]).unsqueeze(0)  # Batch size 1, 2 choices.
 		labels = torch.tensor(1).unsqueeze(0)  # Batch size 1.
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids0, labels=labels)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		loss, classification_scores = outputs[:2]
 		print('{} processed.'.format(BertForMultipleChoice.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model with a token classification head on top (a linear layer on top of the hidden-states output) e.g. for Named-Entity-Recognition (NER) tasks.
 		model = BertForTokenClassification.from_pretrained(pretrained_model_name)
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
 		labels = torch.tensor([1] * input_ids.size(1)).unsqueeze(0)  # Batch size 1.
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			outputs = model(input_ids, labels=labels)
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		loss, scores = outputs[:2]
 		print('{} processed.'.format(BertForTokenClassification.__name__))
 
 	if True:
-		print('Start loading a model...')
+		print('Loading a model...')
 		start_time = time.time()
 		# Bert Model with a span classification head on top for extractive question-answering tasks like SQuAD (a linear layers on top of the hidden-states output to compute 'span start logits' and 'span end logits').
 		model = BertForQuestionAnswering.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
-		print('End loading a model: {} secs.'.format(time.time() - start_time))
+		print('A model loaded: {} secs.'.format(time.time() - start_time))
 
 		question, text = 'Who was Jim Henson?', 'Jim Henson was a nice puppet'
 		encoding = tokenizer.encode_plus(question, text)
 		input_ids0, token_type_ids = encoding['input_ids'], encoding['token_type_ids']
 
-		print('Start inferring...')
+		print('Inferring...')
 		start_time = time.time()
 		model.eval()
 		with torch.no_grad():
 			start_scores, end_scores = model(torch.tensor([input_ids0]), token_type_ids=torch.tensor([token_type_ids]))
-		print('End inferring: {} secs.'.format(time.time() - start_time))
+		print('Inferred: {} secs.'.format(time.time() - start_time))
 
 		all_tokens = tokenizer.convert_ids_to_tokens(input_ids0)
 		answer = ' '.join(all_tokens[torch.argmax(start_scores) : torch.argmax(end_scores)+1])
@@ -1271,7 +1314,7 @@ def flan_t5_example():
 		# Running the model on a GPU.
 
 		# Install.
-		#pip install accelerate
+		#	pip install accelerate
 
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
@@ -1288,7 +1331,7 @@ def flan_t5_example():
 		# Running the model on a GPU using different precisions (FP16).
 
 		# Install.
-		#pip install accelerate
+		#	pip install accelerate
 
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
@@ -1305,7 +1348,7 @@ def flan_t5_example():
 		# Running the model on a GPU using different precisions (INT8).
 
 		# Install.
-		#pip install bitsandbytes accelerate
+		#	pip install bitsandbytes accelerate
 
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
@@ -2306,6 +2349,7 @@ def main():
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
 	#quick_tour()
+	#tokenizer_test()
 
 	#--------------------
 	# Pipeline.

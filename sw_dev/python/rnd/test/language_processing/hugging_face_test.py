@@ -1275,6 +1275,25 @@ def accelerate_quicktour():
 	#-----
 	# DeepSpeed.
 
+	raise NotImplementedError
+
+# REF [site] >> https://github.com/huggingface/peft
+def peft_get_started():
+	import transformers
+	import peft
+
+	model_name_or_path = "bigscience/mt0-large"
+	tokenizer_name_or_path = "bigscience/mt0-large"
+
+	peft_config = peft.LoraConfig(task_type=peft.TaskType.SEQ_2_SEQ_LM, inference_mode=False, r=8, lora_alpha=32, lora_dropout=0.1)
+	#peft_config = peft.get_peft_config(config_dict=...)
+
+	model = transformers.AutoModelForSeq2SeqLM.from_pretrained(model_name_or_path)
+	model = peft.get_peft_model(model, peft_config)
+
+	print("Trainable parameters:")
+	model.print_trainable_parameters()  # Output: trainable params: 2359296 || all params: 1231940608 || trainable%: 0.19151053100118282
+
 def main():
 	# Hugging Face Hub.
 
@@ -1310,7 +1329,7 @@ def main():
 	# Accelerate.
 	#	A library that enables the same PyTorch code to be run across any distributed configuration by adding just four lines of code!
 
-	accelerate_simple_example()
+	#accelerate_simple_example()
 	#accelerate_quicktour()  # Not yet completed.
 
 	# NLP:
@@ -1320,6 +1339,17 @@ def main():
 	# CV:
 	#	https://github.com/huggingface/accelerate/blob/main/examples/cv_example.py
 	#	https://github.com/huggingface/accelerate/blob/main/examples/complete_cv_example.py
+
+	#--------------------
+	# Parameter-Efficient Fine-Tuning (PEFT).
+	#	LoRA.
+	#	Prompt engineering: Prefix-Tuning, P-Tuning, Prompt Tuning.
+
+	peft_get_started()
+
+	# REF [file] >>
+	#	${competition_HOME}/ai_connect_competiton_nipa/2023/korean_text_summarization/kogpt_fine_tuning_lora.py
+	#	${competition_HOME}/ai_connect_competiton_nipa/2023/korean_text_summarization/kogpt_fine_tuning_prompt_tuning.py
 
 	#--------------------
 	# Hugging Face Transformers.
