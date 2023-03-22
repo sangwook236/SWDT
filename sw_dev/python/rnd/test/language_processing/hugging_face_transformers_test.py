@@ -1397,6 +1397,8 @@ def bloom_example():
 
 		# Accessing the model configuration.
 		configuration = model.config
+		print("Configuration:")
+		print(configuration)
 
 	if False:
 		from transformers import AutoTokenizer, BloomModel
@@ -1468,9 +1470,7 @@ def bloom_example():
 		num_labels = len(model.config.id2label)
 		model = BloomForSequenceClassification.from_pretrained('bigscience/bloom-560m', num_labels=num_labels, problem_type='multi_label_classification')
 
-		labels = torch.sum(
-			torch.nn.functional.one_hot(predicted_class_ids[None, :].clone(), num_classes=num_labels), dim=1
-		).to(torch.float)
+		labels = torch.sum(torch.nn.functional.one_hot(predicted_class_ids[None, :].clone(), num_classes=num_labels), dim=1).to(torch.float)
 		loss = model(**inputs, labels=labels).loss
 
 	if True:
@@ -1547,7 +1547,7 @@ def encoder_decoder_example():
 		# Save the model, including its configuration.
 		model.save_pretrained('my-model')
 
-		#--------------------
+		#-----
 		# Load model and config from pretrained folder.
 		encoder_decoder_config = EncoderDecoderConfig.from_pretrained('my-model')
 		model = EncoderDecoderModel.from_pretrained('my-model', config=encoder_decoder_config)
@@ -1950,9 +1950,37 @@ def vilt_image_and_text_retrieval_example():
 
 	print(scores)
 
+# REF [site] >> https://huggingface.co/openai
+def clip_vit_example():
+	# Models:
+	#	openai/clip-vit-base-patch16.
+	#	openai/clip-vit-base-patch32: ~605MB.
+	#	openai/clip-vit-large-patch14.
+	#	openai/clip-vit-large-patch14-336.
+
+	import requests
+	from PIL import Image
+	import transformers
+
+	pretrained_model_name = "openai/clip-vit-base-patch32"
+
+	model = transformers.CLIPModel.from_pretrained(pretrained_model_name)
+	processor = transformers.CLIPProcessor.from_pretrained(pretrained_model_name)
+
+	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+	image = Image.open(requests.get(url, stream=True).raw)
+	inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
+	print(f"Input: {inputs}.")
+
+	outputs = model(**inputs)
+
+	logits_per_image = outputs.logits_per_image  # This is the image-text similarity score.
+	probs = logits_per_image.softmax(dim=1)  # We can take the softmax to get the label probabilities.
+	print(f"Probability: {probs}.")
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
-	import torch
+	#import torch
 	from PIL import Image
 	from transformers import LayoutLMv2Processor, LayoutLMv2Model, set_seed
 	from datasets import load_dataset
@@ -1986,9 +2014,7 @@ def layoutlmv2_sequence_classification_example():
 	image = data["image"].convert("RGB")
 
 	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
-	model = LayoutLMv2ForSequenceClassification.from_pretrained(
-		"microsoft/layoutlmv2-base-uncased", num_labels=dataset.info.features["label"].num_classes
-	)
+	model = LayoutLMv2ForSequenceClassification.from_pretrained("microsoft/layoutlmv2-base-uncased", num_labels=dataset.info.features["label"].num_classes)
 
 	encoding = processor(image, return_tensors="pt")
 	sequence_label = torch.tensor([data["label"]])
@@ -2013,9 +2039,7 @@ def layoutlmv2_token_classification_example():
 	id2label = {v: k for v, k in enumerate(labels)}
 
 	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased", revision="no_ocr")
-	model = LayoutLMv2ForTokenClassification.from_pretrained(
-		"microsoft/layoutlmv2-base-uncased", num_labels=len(labels)
-	)
+	model = LayoutLMv2ForTokenClassification.from_pretrained("microsoft/layoutlmv2-base-uncased", num_labels=len(labels))
 
 	data = datasets[0]
 	image = Image.open(data["image_path"]).convert("RGB")
@@ -2345,6 +2369,143 @@ def donut_invoice_test():
 
 	print(prediction)
 
+def whisper_example():
+	# Models:
+	#	openai/whisper-tiny.
+	#	openai/whisper-base.
+	#	openai/whisper-small.
+	#	openai/whisper-medium.
+	#	openai/whisper-large: ~6.17GB.
+	#	openai/whisper-large-v2.
+
+	import transformers
+	import datasets
+
+	pretrained_model_name = "openai/whisper-large"
+
+	if True:
+		# Transcription (English to English).
+
+		# Load model and processor.
+		processor = transformers.WhisperProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.WhisperForConditionalGeneration.from_pretrained(pretrained_model_name)
+		model.config.forced_decoder_ids = None
+
+		# Load dummy dataset and read audio files.
+		ds = datasets.load_dataset("hf-internal-testing/librispeech_asr_dummy", "clean", split="validation")
+		sample = ds[0]["audio"]
+		input_features = processor(sample["array"], sampling_rate=sample["sampling_rate"], return_tensors="pt").input_features 
+
+		# Generate token ids.
+		predicted_ids = model.generate(input_features)
+
+		# Decode token ids to text.
+		transcription = processor.batch_decode(predicted_ids, skip_special_tokens=False)
+		print(f"Transcription (w/ special tokens): {transcription}.")
+		transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
+		print(f"Transcription (w/o special tokens): {transcription}.")
+
+	if False:
+		# Transcription (French to French).
+
+		# Load model and processor.
+		processor = transformers.WhisperProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.WhisperForConditionalGeneration.from_pretrained(pretrained_model_name)
+		forced_decoder_ids = processor.get_decoder_prompt_ids(language="french", task="transcribe")
+
+		# Load streaming dataset and read first audio sample.
+		ds = datasets.load_dataset("common_voice", "fr", split="test", streaming=True)
+		ds = ds.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+		input_speech = next(iter(ds))["audio"]
+		input_features = processor(input_speech["array"], sampling_rate=input_speech["sampling_rate"], return_tensors="pt").input_features
+
+		# Generate token ids.
+		predicted_ids = model.generate(input_features, forced_decoder_ids=forced_decoder_ids)
+
+		# Decode token ids to text.
+		transcription = processor.batch_decode(predicted_ids)
+		print(f"Transcription (w/ special tokens): {transcription}.")
+		transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
+		print(f"Transcription (w/o special tokens): {transcription}.")
+
+	if True:
+		# Translation (French to English).
+
+		# Load model and processor.
+		processor = transformers.WhisperProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.WhisperForConditionalGeneration.from_pretrained(pretrained_model_name)
+		forced_decoder_ids = processor.get_decoder_prompt_ids(language="french", task="translate")
+
+		# Load streaming dataset and read first audio sample.
+		ds = datasets.load_dataset("common_voice", "fr", split="test", streaming=True)
+		ds = ds.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+		input_speech = next(iter(ds))["audio"]
+		input_features = processor(input_speech["array"], sampling_rate=input_speech["sampling_rate"], return_tensors="pt").input_features
+
+		# Generate token ids.
+		predicted_ids = model.generate(input_features, forced_decoder_ids=forced_decoder_ids)
+
+		# Decode token ids to text.
+		transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
+		print(f"Transcription: {transcription}.")
+
+	if False:
+		# Evaluation.
+
+		import torch
+		import evaluate
+
+		device = "cuda" if torch.cuda.is_available() else "cpu"
+
+		processor = transformers.WhisperProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.WhisperForConditionalGeneration.from_pretrained(pretrained_model_name).to(device)
+
+		def map_to_pred(batch):
+			audio = batch["audio"]
+			input_features = processor(audio["array"], sampling_rate=audio["sampling_rate"], return_tensors="pt").input_features
+			batch["reference"] = processor.tokenizer._normalize(batch["text"])
+
+			with torch.no_grad():
+				predicted_ids = model.generate(input_features.to(device))[0]
+			transcription = processor.decode(predicted_ids)
+			batch["prediction"] = processor.tokenizer._normalize(transcription)
+			return batch
+
+		librispeech_test_clean = datasets.load_dataset("librispeech_asr", "clean", split="test")
+		result = librispeech_test_clean.map(map_to_pred)
+
+		wer = evaluate.load("wer")
+		print(f'WER = {100 * wer.compute(references=result["reference"], predictions=result["prediction"])}.')
+
+	if False:
+		# Long-form transcription.
+		#	The Whisper model is intrinsically designed to work on audio samples of up to 30s in duration.
+		#	However, by using a chunking algorithm, it can be used to transcribe audio samples of up to arbitrary length.
+		#	This is possible through Transformers pipeline method.
+		#	Chunking is enabled by setting chunk_length_s=30 when instantiating the pipeline.
+		#	It can also be extended to predict utterance level timestamps by passing return_timestamps=True.
+
+		import torch
+
+		device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
+		pipe = transformers.pipeline(
+			"automatic-speech-recognition",
+			model=pretrained_model_name,
+			chunk_length_s=30,
+			device=device,
+		)
+
+		ds = datasets.load_dataset("hf-internal-testing/librispeech_asr_dummy", "clean", split="validation")
+		sample = ds[0]["audio"]
+
+		prediction = pipe(sample.copy())["text"]
+		print(f"Prediction: {prediction}.")
+
+		# We can also return timestamps for the predictions.
+		prediction = pipe(sample, return_timestamps=True)["chunks"]
+		print(f"Prediction: {prediction}.")
+
 def main():
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
@@ -2426,6 +2587,8 @@ def main():
 	#vilt_images_and_text_classification_example()
 	#vilt_image_and_text_retrieval_example()
 
+	#clip_vit_example()
+
 	#--------------------
 	# Document processing.
 
@@ -2446,6 +2609,11 @@ def main():
 	#donut_document_visual_question_answering_example()
 
 	#donut_invoice_test()  # Not yet completed.
+
+	#--------------------
+	# Speech recognition.
+
+	#whisper_example()
 
 #--------------------------------------------------------------------
 

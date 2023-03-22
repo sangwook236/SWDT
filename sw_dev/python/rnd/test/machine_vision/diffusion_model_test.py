@@ -260,8 +260,14 @@ def diffusers_intro():
 def diffusers_training_example():
 	raise NotImplementedError
 
-# REF [site] >> https://huggingface.co/CompVis/stable-diffusion-v1-4
+# REF [site] >> https://huggingface.co/CompVis
 def compvis_example():
+	# Models:
+	#	CompVis/stable-diffusion-v1-1.
+	#	CompVis/stable-diffusion-v1-2.
+	#	CompVis/stable-diffusion-v1-3.
+	#	CompVis/stable-diffusion-v1-4.
+
 	import torch
 	import diffusers
 
@@ -279,8 +285,14 @@ def compvis_example():
 		
 	image.save("./astronaut_rides_horse.png")
 
-# REF [site] >> https://huggingface.co/stabilityai/stable-diffusion-2-1
+# REF [site] >> https://huggingface.co/stabilityai
 def stabilityai_example():
+	# Models:
+	#	stabilityai/stable-diffusion-2.
+	#	stabilityai/stable-diffusion-2-base.
+	#	stabilityai/stable-diffusion-2-1.
+	#	stabilityai/stable-diffusion-2-1-base.
+
 	import torch
 	import diffusers
 

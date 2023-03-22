@@ -1,0 +1,28 @@
+[-] General.
+	- Site.
+		https://huggingface.co/
+		https://github.com/huggingface
+
+		https://huggingface.co/models
+		https://huggingface.co/datasets
+		https://huggingface.co/spaces
+
+	- Document.
+		https://huggingface.co/docs
+
+	- Directory.
+		~/.cache/huggingface
+
+[-] Installation.
+	- Install.
+		pip install transformers
+		pip install diffusers[torch]
+		pip install datasets
+		pip install accelerate
+		pip install evaluate
+		pip install evaluate[template]
+		pip install huggingface_hub
+
+		conda install -c huggingface transformers
+		conda install -c huggingface -c conda-forge datasets
+		conda install -c conda-forge diffusers
