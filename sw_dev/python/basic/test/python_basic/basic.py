@@ -119,6 +119,53 @@ def collections_test():
 	for k, v in od.items():
 		print(k, v)
 
+def dataclass_test():
+	from dataclasses import dataclass
+	import dataclasses
+
+	@dataclass
+	class InventoryItem:
+		"""Class for keeping track of an item in inventory."""
+		name: str
+		unit_price: float
+		quantity_on_hand: int = 0
+
+		def total_cost(self) -> float:
+			return self.unit_price * self.quantity_on_hand
+
+	item = InventoryItem("apple", 2, 3)
+	print(f"{item=}.")
+	print(f"{dataclasses.asdict(item)=}.")
+	print(f"{dataclasses.astuple(item)=}.")
+	print(f"{dataclasses.is_dataclass(item)=}.")
+
+	#-----
+	@dataclass
+	class C:
+		mylist: list[int] = dataclasses.field(default_factory=list)
+
+	c = C()
+	c.mylist += [1, 2, 3]
+
+	#-----
+	@dataclass
+	class Point:
+		x: int
+		y: int
+
+	@dataclass
+	class C:
+		mylist: list[Point]
+
+	p = Point(10, 20)
+	assert dataclasses.asdict(p) == {"x": 10, "y": 20}
+
+	c = C([Point(0, 0), Point(10, 4)])
+	assert dataclasses.asdict(c) == {"mylist": [{"x": 0, "y": 0}, {"x": 10, "y": 4}]}
+
+	assert dataclasses.astuple(p) == (10, 20)
+	assert dataclasses.astuple(c) == ([(0, 0), (10, 4)],)
+
 def iterable_and_iterator_test():
 	# Iterable: an object which one can iterate over.
 	#	Sequence: list, string, and tuple.
@@ -903,6 +950,7 @@ def main():
 	#control_test()
 	#container_test()
 	#collections_test()
+	dataclass_test()
 
 	#iterable_and_iterator_test()
 
@@ -925,7 +973,7 @@ def main():
 	#inheritance_test()
 
 	#--------------------
-	bytes_test()
+	#bytes_test()
 	#struct_test()
 
 	#number_system()  # Binary, octal, decimal, hexadecimal number system.

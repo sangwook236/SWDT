@@ -455,11 +455,11 @@ def conditional_text_generation_using_gpt2_example():
 # REF [site] >> https://huggingface.co/EleutherAI
 def eleuther_ai_gpt_test():
 	# Models:
-	#	EleutherAI/gpt-neox-20B: ~42.6GB. Too big to load.
-	#	EleutherAI/gpt-neo-2.7B: ~10.7GB.
-	#	EleutherAI/gpt-neo-1.3B: ~5.31GB.
-	#	EleutherAI/gpt-neo-125M: ~526MB.
 	#	EleutherAI/gpt-j-6B: ~24.2GB. Too big to load.
+	#	EleutherAI/gpt-neo-125M: ~526MB.
+	#	EleutherAI/gpt-neo-1.3B: ~5.31GB.
+	#	EleutherAI/gpt-neo-2.7B: ~10.7GB.
+	#	EleutherAI/gpt-neox-20B: ~42.6GB. Too big to load.
 
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
@@ -1362,7 +1362,7 @@ def flan_t5_example():
 		print(tokenizer.decode(outputs[0]))
 
 # REF [site] >>
-#	https://huggingface.co/bigscience/bloom
+#	https://huggingface.co/bigscience
 #	https://huggingface.co/docs/transformers/model_doc/bloom
 def bloom_example():
 	# BigScience Language Open-science Open-access Multilingual (BLOOM) language model.
@@ -1378,13 +1378,18 @@ def bloom_example():
 	#	Objective Function: Cross Entropy with mean reduction.
 
 	# Models:
-	#	bigscience/bloom: ~520GB.
-	#	bigscience/bloomz: ~520GB.
-	#	bigscience/bloom-3b: ~6GB.
-	#	bigscience/bloom-1b7: ~3.44GB.
-	#	bigscience/bloom-1b1: ~2.13GB.
-	#	bigscience/bloom-7b1: ~20GB.
 	#	bigscience/bloom-560m: ~1.1GB.
+	#	bigscience/bloom-1b1: ~2.13GB.
+	#	bigscience/bloom-1b7: ~3.44GB.
+	#	bigscience/bloom-3b: ~6GB.
+	#	bigscience/bloom-7b1: ~20GB.
+	#	bigscience/bloom: ~520GB.
+	#	bigscience/bloomz-560m.
+	#	bigscience/bloomz-1b1.
+	#	bigscience/bloomz-1b7.
+	#	bigscience/bloomz-7b1.
+	#	bigscience/bloomz-3b.
+	#	bigscience/bloomz: ~520GB.
 
 	if False:
 		from transformers import BloomConfig, BloomModel
@@ -2529,7 +2534,7 @@ def main():
 	#sentence_completion_model_using_gpt2_example()
 	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
 
-	eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
+	eleuther_ai_gpt_test()  # gpt-j, gpt-neo, & gpt-neox.
 	#skt_gpt_test()  # KoGPT2.
 	#kakao_brain_gpt_test()  # KoGPT.
 
