@@ -15,14 +15,31 @@ def harvard_nlp_transformer_test():
 	raise NotImplementedError
 
 def main():
+	# Standard transformer model.
+	#	Encoder-decoder transformer model = transformer model architecture in an encoder-decoder setup.
+	# Encoder-only or decoder-only transformer model.
+	#	Encoder-only transformer model = transformer model architecture in an encoder-only setup.
+	#	Decoder-only transformer model = transformer model architecture in a decoder-only setup.
+
+	# NOTE [info] >> The difference between encoder-only transformer and decoder-only transformer models.
+	#	Both models use only the left part of the standard transformer model.
+	#	Encoder-only transformer model uses the multi-head self-attention layers.
+	#	But decoder-only transformer model uses the "masked" multi-head self-attention layers.
+
+	#--------------------
 	# Positional encoding.
 	detr_positional_encoding_test()  # Not yet implemented.
 
 	#--------------------
 	harvard_nlp_transformer_test()  # Not yet implemented.
 
+	# PyTorch.
+	#	REF [file] >> ../machine_learning/pytorch/pytorch_transformer.py
+	# PyTorch Lightning.
+	#	REF [file] >> ../machine_learning/pytorch_lightning/pl_transformer.py
+
 	#--------------------
-	# Hugging Face transformers.
+	# Hugging Face Transformers.
 	#	REF [file] >> ./hugging_face_transformers_test.py
 
 	#--------------------

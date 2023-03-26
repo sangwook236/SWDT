@@ -816,11 +816,6 @@ def main():
 	#	Encoder-only transformer model = transformer model architecture in an encoder-only setup.
 	#	Decoder-only transformer model = transformer model architecture in a decoder-only setup.
 
-	# NOTE [info] >> The difference between encoder-only transformer and decoder-only transformer models.
-	#	Both models use only the left part of the standard transformer model.
-	#	Encoder-only transformer model uses the multi-head self-attention layers.
-	#	But decoder-only transformer model uses the "masked" multi-head self-attention layers.
-
 	transformer_tutorial()
 	#decoder_based_transformer_test()
 

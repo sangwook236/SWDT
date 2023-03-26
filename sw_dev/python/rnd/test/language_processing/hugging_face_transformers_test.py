@@ -1955,8 +1955,10 @@ def vilt_image_and_text_retrieval_example():
 
 	print(scores)
 
-# REF [site] >> https://huggingface.co/openai
-def clip_vit_example():
+# REF [site] >>
+#	https://huggingface.co/openai
+#	https://huggingface.co/docs/transformers/main/model_doc/clip
+def clip_example():
 	# Models:
 	#	openai/clip-vit-base-patch16.
 	#	openai/clip-vit-base-patch32: ~605MB.
@@ -1965,23 +1967,169 @@ def clip_vit_example():
 
 	import requests
 	from PIL import Image
+	import torch
 	import transformers
 
 	pretrained_model_name = "openai/clip-vit-base-patch32"
 
-	model = transformers.CLIPModel.from_pretrained(pretrained_model_name)
-	processor = transformers.CLIPProcessor.from_pretrained(pretrained_model_name)
+	if True:
+		model = transformers.CLIPModel.from_pretrained(pretrained_model_name)
+		processor = transformers.CLIPProcessor.from_pretrained(pretrained_model_name)
 
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-	inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
-	print(f"Input: {inputs}.")
+		# model.text_model
+		# model.text_projection
+		# model.vision_model
+		# model.visual_projection
 
-	outputs = model(**inputs)
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		texts = ["a photo of a cat", "a photo of a dog"]
+		inputs = processor(text=texts, images=image, return_tensors="pt", padding=True)
+		print(f"Input: {inputs}.")  # {"input_ids", "attention_mask", "pixel_values"}.
 
-	logits_per_image = outputs.logits_per_image  # This is the image-text similarity score.
-	probs = logits_per_image.softmax(dim=1)  # We can take the softmax to get the label probabilities.
-	print(f"Probability: {probs}.")
+		with torch.no_grad():
+			outputs = model(**inputs)  # {loss, logits_per_image, logits_per_text, text_embeds, image_embeds, text_model_output, vision_model_output}.
+
+		# outputs.text_model_output.last_hidden_state
+		# outputs.text_model_output.pooler_output
+		# outputs.vision_model_output.last_hidden_state
+		# outputs.vision_model_output.pooler_output
+
+		logits_per_image = outputs.logits_per_image  # This is the image-text similarity score.
+		probs = logits_per_image.softmax(dim=1)  # We can take the softmax to get the label probabilities.
+		print(f"Probability: {probs}.")
+
+	if True:
+		# Text embedding.
+		model = transformers.CLIPTextModelWithProjection.from_pretrained(pretrained_model_name)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(pretrained_model_name)
+
+		inputs = tokenizer(["a photo of a cat", "a photo of a dog"], padding=True, return_tensors="pt")
+
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		text_embeds = outputs.text_embeds
+		print(f"{text_embeds=}")
+
+		# Image embedding.
+		model = transformers.CLIPVisionModelWithProjection.from_pretrained(pretrained_model_name)
+		processor = transformers.AutoProcessor.from_pretrained(pretrained_model_name)
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		inputs = processor(images=image, return_tensors="pt")
+
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		image_embeds = outputs.image_embeds
+		print(f"{image_embeds=}")
+
+	if True:
+		model = transformers.CLIPModel.from_pretrained(pretrained_model_name)
+
+		# Image embedding.
+		processor = transformers.AutoProcessor.from_pretrained(pretrained_model_name)
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		inputs = processor(images=image, return_tensors="pt")
+
+		image_features = model.get_image_features(**inputs)
+		#image_features = model.get_image_features(pixel_values=inputs["pixel_values"])
+		print(f"{image_features=}")
+
+		# Text embedding.
+		tokenizer = transformers.AutoTokenizer.from_pretrained(pretrained_model_name)
+
+		inputs = tokenizer(["a photo of a cat", "a photo of a dog"], padding=True, return_tensors="pt")
+
+		text_features = model.get_text_features(**inputs)
+		print(f"{text_features=}")
+
+# REF [site] >>
+#	https://huggingface.co/kakaobrain
+#	https://huggingface.co/docs/transformers/main/model_doc/align
+def align_example():
+	# Models:
+	#	kakaobrain/coyo-align-b7-base.
+	#	kakaobrain/align-base.
+
+	import requests
+	from PIL import Image
+	import torch
+	import transformers
+
+	pretrained_model_name = "kakaobrain/align-base"
+
+	if True:
+		# Zero-shot image classification.
+
+		processor = transformers.AlignProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.AlignModel.from_pretrained(pretrained_model_name)
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		texts = ["an image of a cat", "an image of a dog"]
+		inputs = processor(text=texts, images=image, return_tensors="pt")
+		print(f"Input: {inputs}.")
+
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		logits_per_image = outputs.logits_per_image  # This is the image-text similarity score.
+		probs = logits_per_image.softmax(dim=1)  # We can take the softmax to get the label probabilities.
+		print(f"Probability: {probs}.")
+
+	if True:
+		# Multi-modal embedding retrieval.
+
+		processor = transformers.AlignProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.AlignModel.from_pretrained(pretrained_model_name)
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		text = "an image of a cat"
+		inputs = processor(text=text, images=image, return_tensors="pt")
+
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		# Multi-modal text embedding.
+		text_embeds = outputs.text_embeds  # torch.Tensor.
+		print(f"{text_embeds=}")
+
+		# Multi-modal image embedding.
+		image_embeds = outputs.image_embeds  # torch.Tensor.
+		print(f"{image_embeds=}")
+
+	if True:
+		# Multi-modal embedding retrieval.
+
+		processor = transformers.AlignProcessor.from_pretrained(pretrained_model_name)
+		model = transformers.AlignModel.from_pretrained(pretrained_model_name)
+
+		# Image embeddings.
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		inputs = processor(images=image, return_tensors="pt")
+
+		image_embeds = model.get_image_features(
+			pixel_values=inputs["pixel_values"],
+		)
+		print(f"{image_embeds=}")
+
+		# Text embeddings.
+		text = "an image of a cat"
+		inputs = processor(text=text, return_tensors="pt")
+
+		text_embeds = model.get_text_features(
+			input_ids=inputs["input_ids"],
+			attention_mask=inputs["attention_mask"],
+			token_type_ids=inputs["token_type_ids"],
+		)
+		print(f"{text_embeds=}")
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
@@ -2592,7 +2740,8 @@ def main():
 	#vilt_images_and_text_classification_example()
 	#vilt_image_and_text_retrieval_example()
 
-	#clip_vit_example()
+	#clip_example()
+	#align_example()
 
 	#--------------------
 	# Document processing.
