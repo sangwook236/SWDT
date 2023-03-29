@@ -1365,18 +1365,6 @@ def flan_t5_example():
 #	https://huggingface.co/bigscience
 #	https://huggingface.co/docs/transformers/model_doc/bloom
 def bloom_example():
-	# BigScience Language Open-science Open-access Multilingual (BLOOM) language model.
-	#	Modified from Megatron-LM GPT2 (see paper, BLOOM Megatron code).
-	#	Decoder-only architecture
-	#	Layer normalization applied to word embeddings layer (StableEmbedding; see code, paper).
-	#	ALiBi positional encodings (see paper), with GeLU activation functions.
-	#	176, 247, 271, 424 parameters:
-	#		3, 596, 615, 680 embedding parameters.
-	#		70 layers, 112 attention heads.
-	#		Hidden layers are 14336-dimensional.
-	#		Sequence length of 2048 tokens used (see BLOOM tokenizer, tokenizer description).
-	#	Objective Function: Cross Entropy with mean reduction.
-
 	# Models:
 	#	bigscience/bloom-560m: ~1.1GB.
 	#	bigscience/bloom-1b1: ~2.13GB.
@@ -1390,6 +1378,18 @@ def bloom_example():
 	#	bigscience/bloomz-7b1.
 	#	bigscience/bloomz-3b.
 	#	bigscience/bloomz: ~520GB.
+
+	# BigScience Language Open-science Open-access Multilingual (BLOOM) language model.
+	#	Modified from Megatron-LM GPT2 (see paper, BLOOM Megatron code).
+	#	Decoder-only architecture.
+	#	Layer normalization applied to word embeddings layer (StableEmbedding; see code, paper).
+	#	ALiBi positional encodings (see paper), with GeLU activation functions.
+	#	176, 247, 271, 424 parameters:
+	#		3, 596, 615, 680 embedding parameters.
+	#		70 layers, 112 attention heads.
+	#		Hidden layers are 14336-dimensional.
+	#		Sequence length of 2048 tokens used (see BLOOM tokenizer, tokenizer description).
+	#	Objective Function: Cross Entropy with mean reduction.
 
 	if False:
 		from transformers import BloomConfig, BloomModel
@@ -1738,89 +1738,6 @@ def deit_image_classification_with_teacher_example():
 	predicted_label = logits.argmax(-1).item()
 	print(model.config.id2label[predicted_label])
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_example():
-	import torch
-	from transformers import BeitImageProcessor, BeitModel
-	from datasets import load_dataset
-
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
-
-	feature_extractor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-	model = BeitModel.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-
-	inputs = feature_extractor(image, return_tensors="pt")
-
-	with torch.no_grad():
-		outputs = model(**inputs)
-
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_masked_image_modeling_example():
-	import requests
-	import torch
-	from PIL import Image
-	from transformers import BeitImageProcessor, BeitForMaskedImageModeling
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-
-	image_processor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-	model = BeitForMaskedImageModeling.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-
-	num_patches = (model.config.image_size // model.config.patch_size)**2
-	pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
-	# Create random boolean mask of shape (batch_size, num_patches).
-	bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
-
-	outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
-
-	loss, logits = outputs.loss, outputs.logits
-	print(logits.shape)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_image_classification_example():
-	import torch
-	from transformers import BeitImageProcessor, BeitForImageClassification
-	from datasets import load_dataset
-
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
-
-	feature_extractor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224")
-	model = BeitForImageClassification.from_pretrained("microsoft/beit-base-patch16-224")
-
-	inputs = feature_extractor(image, return_tensors="pt")
-
-	with torch.no_grad():
-		logits = model(**inputs).logits
-
-	# Model predicts one of the 1000 ImageNet classes.
-	predicted_label = logits.argmax(-1).item()
-	print(model.config.id2label[predicted_label])
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_semantic_segmentation_example():
-	import requests
-	from PIL import Image
-	from transformers import AutoImageProcessor, BeitForSemanticSegmentation
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-
-	image_processor = AutoImageProcessor.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
-	model = BeitForSemanticSegmentation.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
-
-	inputs = image_processor(images=image, return_tensors="pt")
-	outputs = model(**inputs)
-
-	# Logits are of shape (batch_size, num_labels, height, width).
-	logits = outputs.logits
-	print(logits.shape)
-
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
 	import requests
@@ -1954,6 +1871,89 @@ def vilt_image_and_text_retrieval_example():
 		scores[text] = outputs.logits[0, :].item()
 
 	print(scores)
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
+def beit_example():
+	import torch
+	from transformers import BeitImageProcessor, BeitModel
+	from datasets import load_dataset
+
+	dataset = load_dataset("huggingface/cats-image")
+	image = dataset["test"]["image"][0]
+
+	feature_extractor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+	model = BeitModel.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+
+	inputs = feature_extractor(image, return_tensors="pt")
+
+	with torch.no_grad():
+		outputs = model(**inputs)
+
+	last_hidden_states = outputs.last_hidden_state
+	print(last_hidden_states.shape)
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
+def beit_masked_image_modeling_example():
+	import requests
+	import torch
+	from PIL import Image
+	from transformers import BeitImageProcessor, BeitForMaskedImageModeling
+
+	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+	image = Image.open(requests.get(url, stream=True).raw)
+
+	image_processor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+	model = BeitForMaskedImageModeling.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+
+	num_patches = (model.config.image_size // model.config.patch_size)**2
+	pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
+	# Create random boolean mask of shape (batch_size, num_patches).
+	bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
+
+	outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
+
+	loss, logits = outputs.loss, outputs.logits
+	print(logits.shape)
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
+def beit_image_classification_example():
+	import torch
+	from transformers import BeitImageProcessor, BeitForImageClassification
+	from datasets import load_dataset
+
+	dataset = load_dataset("huggingface/cats-image")
+	image = dataset["test"]["image"][0]
+
+	feature_extractor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224")
+	model = BeitForImageClassification.from_pretrained("microsoft/beit-base-patch16-224")
+
+	inputs = feature_extractor(image, return_tensors="pt")
+
+	with torch.no_grad():
+		logits = model(**inputs).logits
+
+	# Model predicts one of the 1000 ImageNet classes.
+	predicted_label = logits.argmax(-1).item()
+	print(model.config.id2label[predicted_label])
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
+def beit_semantic_segmentation_example():
+	import requests
+	from PIL import Image
+	from transformers import AutoImageProcessor, BeitForSemanticSegmentation
+
+	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+	image = Image.open(requests.get(url, stream=True).raw)
+
+	image_processor = AutoImageProcessor.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
+	model = BeitForSemanticSegmentation.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
+
+	inputs = image_processor(images=image, return_tensors="pt")
+	outputs = model(**inputs)
+
+	# Logits are of shape (batch_size, num_labels, height, width).
+	logits = outputs.logits
+	print(logits.shape)
 
 # REF [site] >>
 #	https://huggingface.co/openai
@@ -2522,7 +2522,7 @@ def donut_invoice_test():
 
 	print(prediction)
 
-def whisper_example():
+def openai_whisper_example():
 	# Models:
 	#	openai/whisper-tiny.
 	#	openai/whisper-base.
@@ -2659,6 +2659,158 @@ def whisper_example():
 		prediction = pipe(sample, return_timestamps=True)["chunks"]
 		print(f"Prediction: {prediction}.")
 
+# REF [site] >> https://huggingface.co/speechbrain
+def speech_brain_asr_example():
+	import speechbrain
+
+	asr_model = speechbrain.pretrained.WhisperASR.from_hparams(source="speechbrain/asr-whisper-large-v2-commonvoice-fr", savedir="pretrained_models/asr-whisper-large-v2-commonvoice-fr")
+	#asr_model = speechbrain.pretrained.WhisperASR.from_hparams(source="speechbrain/asr-whisper-large-v2-commonvoice-fr", savedir="pretrained_models/asr-whisper-large-v2-commonvoice-fr", run_opts={"device": "cuda"})
+
+	# https://huggingface.co/speechbrain/asr-whisper-large-v2-commonvoice-fr/tree/main
+	asr_model.transcribe_file("./example-fr.mp3")
+
+# REF [site] >> https://huggingface.co/speechbrain
+def speech_brain_tts_example():
+	import speechbrain
+	import torchaudio
+
+	if True:
+		# Intialize TTS (tacotron2) and Vocoder (HiFiGAN).
+		tacotron2 = speechbrain.pretrained.Tacotron2.from_hparams(source="speechbrain/tts-tacotron2-ljspeech", savedir="tmpdir_tts")
+		hifi_gan = speechbrain.pretrained.HIFIGAN.from_hparams(source="speechbrain/tts-hifigan-ljspeech", savedir="tmpdir_vocoder")
+		#tacotron2 = speechbrain.pretrained.Tacotron2.from_hparams(source="speechbrain/tts-tacotron2-ljspeech", savedir="tmpdir_tts", run_opts={"device": "cuda"})
+		#hifi_gan = speechbrain.pretrained.HIFIGAN.from_hparams(source="speechbrain/tts-hifigan-ljspeech", savedir="tmpdir_vocoder", run_opts={"device": "cuda"})
+
+		# Running the TTS.
+		if True:
+			input_text = "Mary had a little lamb"
+		else:
+			input_text = [
+				"A quick brown fox jumped over the lazy dog",
+				"How much wood would a woodchuck chuck?",
+				"Never odd or even"
+			]
+		mel_output, mel_length, alignment = tacotron2.encode_batch(input_text)  # torch.Tensor.
+
+		# Running Vocoder (spectrogram-to-waveform).
+		waveforms = hifi_gan.decode_batch(mel_output)  # torch.Tensor.
+
+		# Save the waverform.
+		torchaudio.save('./speechbrain_tts_tacotron2.wav', waveforms.squeeze(dim=1).cpu(), 22050)
+
+	if True:
+		# Intialize TTS (fastspeech2) and Vocoder (HiFiGAN).
+		fastspeech2 = speechbrain.pretrained.FastSpeech2.from_hparams(source="speechbrain/tts-fastspeech2-ljspeech", savedir="tmpdir_tts")
+		hifi_gan = speechbrain.pretrained.HIFIGAN.from_hparams(source="speechbrain/tts-hifigan-libritts-16kHz", savedir="tmpdir_vocoder")
+		#fastspeech2 = speechbrain.pretrained.FastSpeech2.from_hparams(source="speechbrain/tts-fastspeech2-ljspeech", savedir="tmpdir_tts", run_opts={"device": "cuda"})
+		#hifi_gan = speechbrain.pretrained.HIFIGAN.from_hparams(source="speechbrain/tts-hifigan-libritts-16kHz", savedir="tmpdir_vocoder", run_opts={"device": "cuda"})
+
+		# Running the TTS.
+		if True:
+			input_text = "Mary had a little lamb"
+		else:
+			input_text = [
+				"A quick brown fox jumped over the lazy dog",
+				"How much wood would a woodchuck chuck?",
+				"Never odd or even"
+			]
+		mel_output, durations, pitch, energy = fastspeech2.encode_text(input_text)  # torch.Tensor.
+
+		# Running Vocoder (spectrogram-to-waveform).
+		waveforms = hifi_gan.decode_batch(mel_output)  # torch.Tensor.
+
+		# Save the waverform.
+		torchaudio.save('./speechbrain_tts_fastspeech2.wav', waveforms.squeeze(dim=1).cpu(), 16000)
+
+# REF [site] >> https://huggingface.co/tensorspeech
+def tensor_speech_tts_example():
+	# Models:
+	#	tensorspeech/tts-tacotron2-ljspeech-en.
+	#	tensorspeech/tts-tacotron2-kss-ko.
+	#	tensorspeech/tts-tacotron2-baker-ch.
+	#	tensorspeech/tts-tacotron2-thorsten-ger.
+	#	tensorspeech/tts-tacotron2-synpaflex-fr.
+	#
+	#	tensorspeech/tts-fastspeech-ljspeech-en.
+	#	tensorspeech/tts-fastspeech2-ljspeech-en.
+	#	tensorspeech/tts-fastspeech2-kss-ko.
+	#	tensorspeech/tts-fastspeech2-baker-ch.
+	#
+	#	tensorspeech/tts-mb_melgan-ljspeech-en.
+	#	tensorspeech/tts-melgan-ljspeech-en.
+	#	tensorspeech/tts-mb_melgan-kss-ko.
+	#	tensorspeech/tts-mb_melgan-baker-ch.
+	#	tensorspeech/tts-mb_melgan-thorsten-ger.
+	#	tensorspeech/tts-mb_melgan-synpaflex-fr.
+
+	import tensorflow as tf
+	import tensorflow_tts
+	import soundfile as sf
+
+	# Install.
+	#	pip install TensorFlowTTS
+
+	if True:
+		if True:
+			# English.
+
+			processor = tensorflow_tts.inference.AutoProcessor.from_pretrained("tensorspeech/tts-tacotron2-ljspeech-en")
+			tacotron2 = tensorflow_tts.inference.TFAutoModel.from_pretrained("tensorspeech/tts-tacotron2-ljspeech-en")
+			mb_melgan = tensorflow_tts.inference.TFAutoModel.from_pretrained("tensorspeech/tts-mb_melgan-ljspeech-en")
+
+			text = "This is a demo to show how to use our model to generate mel spectrogram from raw text."
+		else:
+			# Korean.
+
+			processor = tensorflow_tts.inference.AutoProcessor.from_pretrained("tensorspeech/tts-tacotron2-kss-ko")
+			tacotron2 = tensorflow_tts.inference.TFAutoModel.from_pretrained("tensorspeech/tts-tacotron2-kss-ko")
+			mb_melgan = tensorflow_tts.inference.TFAutoModel.from_pretrained("tensorspeech/tts-mb_melgan-kss-ko")
+
+			text = "신은 우리의 수학 문제에는 관심이 없다. 신은 다만 경험적으로 통합할 뿐이다."
+
+		input_ids = processor.text_to_sequence(text)
+
+		# Tacotron2 inference (text-to-mel).
+		decoder_output, mel_outputs, stop_token_prediction, alignment_history = tacotron2.inference(
+			input_ids=tf.expand_dims(tf.convert_to_tensor(input_ids, dtype=tf.int32), 0),
+			input_lengths=tf.convert_to_tensor([len(input_ids)], tf.int32),
+			speaker_ids=tf.convert_to_tensor([0], dtype=tf.int32),
+		)
+
+		#-----
+		# MelGAN inference (mel-to-wav).
+		audio = mb_melgan.inference(mel_outputs)[0, :, 0]
+
+		# Save to file.
+		sf.write('./tensorspeech_tts_tacotron2.wav', audio, 22050, "PCM_16")
+
+	if True:
+		if True:
+			# English.
+
+			processor = tensorflow_tts.inference.AutoProcessor.from_pretrained("tensorspeech/tts-fastspeech2-ljspeech-en")
+			fastspeech2 = tensorflow_tts.inference.TFAutoModel.from_pretrained("tensorspeech/tts-fastspeech2-ljspeech-en")
+
+			text = "How are you?"
+		else:
+			# Korean.
+
+			processor = tensorflow_tts.inference.AutoProcessor.from_pretrained("tensorspeech/tts-fastspeech2-kss-ko")
+			fastspeech2 = tensorflow_tts.inference.TFAutoModel.from_pretrained("tensorspeech/tts-fastspeech2-kss-ko")
+
+			text = "신은 우리의 수학 문제에는 관심이 없다. 신은 다만 경험적으로 통합할 뿐이다."
+
+		input_ids = processor.text_to_sequence(text)
+
+		# FastSpeech2 inference.
+		mel_before, mel_after, duration_outputs, _, _ = fastspeech2.inference(
+			input_ids=tf.expand_dims(tf.convert_to_tensor(input_ids, dtype=tf.int32), 0),
+			speaker_ids=tf.convert_to_tensor([0], dtype=tf.int32),
+			speed_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
+			f0_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
+			energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
+		)
+
 def main():
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
@@ -2726,11 +2878,6 @@ def main():
 	#deit_image_classification_example()
 	#deit_image_classification_with_teacher_example()
 
-	#beit_example()
-	#beit_masked_image_modeling_example()
-	#beit_image_classification_example()
-	#beit_semantic_segmentation_example()
-
 	#--------------------
 	# Vision and language.
 
@@ -2739,6 +2886,11 @@ def main():
 	#vilt_question_answering_example()
 	#vilt_images_and_text_classification_example()
 	#vilt_image_and_text_retrieval_example()
+
+	#beit_example()
+	#beit_masked_image_modeling_example()
+	#beit_image_classification_example()
+	#beit_semantic_segmentation_example()
 
 	#clip_example()
 	#align_example()
@@ -2767,7 +2919,14 @@ def main():
 	#--------------------
 	# Speech recognition.
 
-	#whisper_example()
+	#openai_whisper_example()
+	#speech_brain_asr_example()  # Error.
+
+	#--------------------
+	# Speech synthesis.
+
+	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
+	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN.
 
 #--------------------------------------------------------------------
 
