@@ -2522,6 +2522,208 @@ def donut_invoice_test():
 
 	print(prediction)
 
+# REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/table-transformer
+def table_transformer_example():
+	import torch
+	import transformers
+	import huggingface_hub
+	from PIL import Image, ImageDraw
+
+	if False:
+		# Initializing a Table Transformer microsoft/table-transformer-detection style configuration.
+		configuration = transformers.TableTransformerConfig()
+
+		# Initializing a model from the microsoft/table-transformer-detection style configuration.
+		model = transformers.TableTransformerModel(configuration)
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if False:
+		file_path = huggingface_hub.hf_hub_download(repo_id="nielsr/example-pdf", repo_type="dataset", filename="example_pdf.png")
+		image = Image.open(file_path).convert("RGB")
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("microsoft/table-transformer-detection")
+		model = transformers.TableTransformerModel.from_pretrained("microsoft/table-transformer-detection")
+
+		# Prepare image for the model.
+		inputs = image_processor(images=image, return_tensors="pt")
+
+		# Forward pass.
+		outputs = model(**inputs)
+
+		# The last hidden states are the final query embeddings of the Transformer decoder.
+		last_hidden_states = outputs.last_hidden_state
+		list(last_hidden_states.shape)  # (batch_size, num_queries, hidden_size).
+
+	if True:
+		file_path = huggingface_hub.hf_hub_download(repo_id="nielsr/example-pdf", repo_type="dataset", filename="example_pdf.png")
+		image = Image.open(file_path).convert("RGB")
+
+		# Table detection.
+		#	Labels: {'table', 'table rotated'}.
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("microsoft/table-transformer-detection")
+		model = transformers.TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-detection")  # ~115MB.
+
+		inputs = image_processor(images=image, return_tensors="pt")
+		outputs = model(**inputs)  # ['logits', 'pred_boxes', 'last_hidden_state', 'encoder_last_hidden_state'].
+
+		# Convert outputs (bounding boxes and class logits) to COCO API.
+		target_sizes = torch.tensor([image.size[::-1]])
+		results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)  # ['scores', 'labels', 'boxes']*.
+
+		image_draw = image.copy()
+		draw = ImageDraw.Draw(image_draw)
+		for result in results:
+			for score, label, box in zip(result["scores"], result["labels"], result["boxes"]):
+				box = [round(i, 2) for i in box.tolist()]
+				print(f"Detected '{model.config.id2label[label.item()]}' with confidence {round(score.item(), 3)} at location {box}")
+				draw.rectangle(box, outline=(255, 0, 0, 128), width=2)
+		image_draw.show()
+		#image_draw.save("./table_detection.png")
+
+		#-----
+		# Table structure recognition.
+		#	Labels: {'table', 'table column', 'table row', 'table column header', 'table projected row header', 'table spanning cell'}.
+
+		image = image.crop(results[0]["boxes"].detach().numpy().squeeze())  # One of detected tables.
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("microsoft/table-transformer-structure-recognition")
+		model = transformers.TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-structure-recognition")  # ~116MB.
+
+		inputs = image_processor(images=image, return_tensors="pt")
+		outputs = model(**inputs)  # ['logits', 'pred_boxes', 'last_hidden_state', 'encoder_last_hidden_state'].
+
+		# Convert outputs (bounding boxes and class logits) to COCO API.
+		target_sizes = torch.tensor([image.size[::-1]])
+		results = image_processor.post_process_object_detection(outputs, threshold=0.9, target_sizes=target_sizes)  # ['scores', 'labels', 'boxes']*.
+
+		image_draw = image.copy()
+		draw = ImageDraw.Draw(image_draw)
+		for result in results:
+			for score, label, box in zip(result["scores"], result["labels"], result["boxes"]):
+				box = [round(i, 2) for i in box.tolist()]
+				print(f"Detected '{model.config.id2label[label.item()]}' with confidence {round(score.item(), 3)} at location {box}")
+				#if model.config.id2label[label.item()] == "table":
+				if model.config.id2label[label.item()] == "table column":
+				#if model.config.id2label[label.item()] == "table row":
+					draw.rectangle(box, outline=(255, 0, , 128), width=2)
+		image_draw.show()
+		#image_draw.save("./table_structure_recognition.png")
+
+# REF [site] >>
+def trocr_example():
+	# Models:
+	#	microsoft/trocr-base-handwritten.
+	#	microsoft/trocr-base-printed.
+	#	microsoft/trocr-base-stage1: ~1.54GB.
+	#	microsoft/trocr-small-handwritten.
+	#	microsoft/trocr-small-printed.
+	#	microsoft/trocr-small-stage1.
+	#	microsoft/trocr-large-handwritten.
+	#	microsoft/trocr-large-printed.
+	#	microsoft/trocr-large-stage1.
+	#	microsoft/trocr-base-str: ~1.34GB.
+	#	microsoft/trocr-large-str.
+
+	import transformers
+	from PIL import Image
+	import requests
+
+	if True:
+		# Load image from the IIIT-5k dataset.
+		url = "https://i.postimg.cc/ZKwLg2Gw/367-14.png"
+		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
+
+		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-str")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-str")
+		pixel_values = processor(images=image, return_tensors="pt").pixel_values
+
+		generated_ids = model.generate(pixel_values)
+
+		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(f"Generated text: {generated_text}.")
+
+	if True:
+		# Load image from the IAM database.
+		url = "https://fki.tic.heia-fr.ch/static/img/a01-122-02-00.jpg"
+		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
+
+		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
+		pixel_values = processor(images=image, return_tensors="pt").pixel_values
+
+		generated_ids = model.generate(pixel_values)
+
+		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(f"Generated text: {generated_text}.")
+
+	if True:
+		# Load image from the IAM database (actually this model is meant to be used on printed text).
+		url = "https://fki.tic.heia-fr.ch/static/img/a01-122-02-00.jpg"
+		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
+
+		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
+		pixel_values = processor(images=image, return_tensors="pt").pixel_values
+
+		generated_ids = model.generate(pixel_values)
+
+		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(f"Generated text: {generated_text}.")
+
+	if True:
+		# Load image from the IAM database.
+		url = "https://fki.tic.heia-fr.ch/static/img/a01-122-02-00.jpg"
+		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
+
+		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-stage1")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-stage1")
+
+		# Training.
+		pixel_values = processor(images=image, return_tensors="pt").pixel_values  # Batch size 1.
+		decoder_input_ids = torch.tensor([[model.config.decoder.decoder_start_token_id]])
+		outputs = model(pixel_values=pixel_values, decoder_input_ids=decoder_input_ids)  # ['loss', 'logits', 'past_key_values', 'decoder_hidden_states', 'decoder_attentions', 'cross_attentions', 'encoder_last_hidden_state', 'encoder_hidden_states', 'encoder_attentions'].
+
+# REF [site] >> https://huggingface.co/microsoft
+def speecht5_example():
+	import torch
+	import transformers
+	import datasets
+	import soundfile as sf
+
+	if True:
+		dataset = datasets.load_dataset("hf-internal-testing/librispeech_asr_demo", "clean", split="validation")
+		dataset = dataset.sort("id")
+		sampling_rate = dataset.features["audio"].sampling_rate
+		example_speech = dataset[0]["audio"]["array"]
+
+		processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_asr")
+		model = transformers.SpeechT5ForSpeechToText.from_pretrained("microsoft/speecht5_asr")
+
+		inputs = processor(audio=example_speech, sampling_rate=sampling_rate, return_tensors="pt")
+
+		predicted_ids = model.generate(**inputs, max_length=100)
+
+		transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
+		print(transcription[0])
+
+	if True:
+		processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
+		model = transformers.SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
+		vocoder = transformers.SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+
+		inputs = processor(text="Hello, my dog is cute", return_tensors="pt")
+
+		# Load xvector containing speaker's voice characteristics from a dataset.
+		embeddings_dataset = datasets.load_dataset("Matthijs/cmu-arctic-xvectors", split="validation")
+		speaker_embeddings = torch.tensor(embeddings_dataset[7306]["xvector"]).unsqueeze(0)
+
+		speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
+
+		sf.write("./speecht5_tts.wav", speech.numpy(), samplerate=16000)
+
 def openai_whisper_example():
 	# Models:
 	#	openai/whisper-tiny.
@@ -2916,13 +3118,28 @@ def main():
 
 	#donut_invoice_test()  # Not yet completed.
 
+	#-----
+	# Table processing.
+
+	#table_transformer_example()  # Table Transformer (TATR).
+
 	#--------------------
+	# Text processing.
+
+	#trocr_example()
+
+	#--------------------
+	# Speech.
+
+	#speecht5_example()
+
+	#-----
 	# Speech recognition.
 
 	#openai_whisper_example()
 	#speech_brain_asr_example()  # Error.
 
-	#--------------------
+	#-----
 	# Speech synthesis.
 
 	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
