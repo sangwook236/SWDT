@@ -14,6 +14,38 @@ def detr_positional_encoding_test():
 def harvard_nlp_transformer_test():
 	raise NotImplementedError
 
+# REF [site] >> https://github.com/microsoft/torchscale
+def torchscale_test():
+	# Install.
+	#	pip install torchscale
+
+	from torchscale.architecture.config import EncoderConfig, DecoderConfig, EncoderDecoderConfig
+	from torchscale.architecture.encoder import Encoder
+	from torchscale.architecture.decoder import Decoder
+	from torchscale.architecture.encoder_decoder import EncoderDecoder
+
+	# Creating an encoder model.
+	config = EncoderConfig(vocab_size=64000)
+	#config = EncoderConfig(vocab_size=64000, deepnorm=True, subln=True, use_xmoe=Tru, multiway=True, xpos_rel_pos=True)
+	encoder = Encoder(config)
+
+	print("Encoder:")
+	print(encoder)
+
+	# Creating a decoder model.
+	config = DecoderConfig(vocab_size=64000)
+	decoder = Decoder(config)
+
+	print("Decoder:")
+	print(decoder)
+
+	# Creating an encoder-decoder model.
+	config = EncoderDecoderConfig(vocab_size=64000)
+	encdec = EncoderDecoder(config)
+
+	print("EncoderDecoder:")
+	print(encdec)
+
 def main():
 	# Standard transformer model.
 	#	Encoder-decoder transformer model = transformer model architecture in an encoder-decoder setup.
@@ -31,7 +63,8 @@ def main():
 	detr_positional_encoding_test()  # Not yet implemented.
 
 	#--------------------
-	harvard_nlp_transformer_test()  # Not yet implemented.
+	#harvard_nlp_transformer_test()  # Not yet implemented.
+	torchscale_test()
 
 	# PyTorch.
 	#	REF [file] >> ../machine_learning/pytorch/pytorch_transformer.py
