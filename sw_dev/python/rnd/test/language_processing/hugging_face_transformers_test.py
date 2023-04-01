@@ -344,6 +344,74 @@ def korean_table_question_answering_example():
 	#answer = table_pipeline(data_df, query)
 	print('Answer: {}.'.format(answer))
 
+# REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
+def encoder_decoder_example():
+	from transformers import EncoderDecoderConfig, EncoderDecoderModel
+	from transformers import BertConfig, GPT2Config
+
+	pretrained_model_name = 'bert-base-uncased'
+	#pretrained_model_name = 'gpt2'
+
+	if 'bert' in pretrained_model_name:
+		# Initialize a BERT bert-base-uncased style configuration.
+		config_encoder, config_decoder = BertConfig(), BertConfig()
+	elif 'gpt2' in pretrained_model_name:
+		config_encoder, config_decoder = GPT2Config(), GPT2Config()
+	else:
+		print('Invalid model, {}.'.format(pretrained_model_name))
+		return
+
+	config = EncoderDecoderConfig.from_encoder_decoder_configs(config_encoder, config_decoder)
+
+	if 'bert' in pretrained_model_name:
+		# Initialize a Bert2Bert model from the bert-base-uncased style configurations.
+		model = EncoderDecoderModel(config=config)
+		#model = EncoderDecoderModel.from_encoder_decoder_pretrained(pretrained_model_name, pretrained_model_name)  # Initialize Bert2Bert from pre-trained checkpoints.
+		tokenizer = BertTokenizer.from_pretrained(pretrained_model_name)
+	elif 'gpt2' in pretrained_model_name:
+		model = EncoderDecoderModel(config=config)
+		tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model_name)
+
+	#print('Configuration of the encoder & decoder:\n{}.\n{}.'.format(model.config.encoder, model.config.decoder))
+	#print('Encoder type = {}, decoder type = {}.'.format(type(model.encoder), type(model.decoder)))
+
+	if False:
+		# Access the model configuration.
+		config_encoder = model.config.encoder
+		config_decoder  = model.config.decoder
+
+		# Set decoder config to causal LM.
+		config_decoder.is_decoder = True
+		config_decoder.add_cross_attention = True
+
+	#--------------------
+	input_ids = torch.tensor(tokenizer.encode('Hello, my dog is cute', add_special_tokens=True)).unsqueeze(0)  # Batch size 1.
+
+	if False:
+		# Forward.
+		outputs = model(input_ids=input_ids, decoder_input_ids=input_ids)
+
+		# Train.
+		outputs = model(input_ids=input_ids, decoder_input_ids=input_ids, labels=input_ids)
+		loss, logits = outputs.loss, outputs.logits
+
+		# Save the model, including its configuration.
+		model.save_pretrained('my-model')
+
+		#-----
+		# Load model and config from pretrained folder.
+		encoder_decoder_config = EncoderDecoderConfig.from_pretrained('my-model')
+		model = EncoderDecoderModel.from_pretrained('my-model', config=encoder_decoder_config)
+
+	#--------------------
+	# Generate.
+	#	REF [site] >>
+	#		https://huggingface.co/transformers/internal/generation_utils.html
+	#		https://huggingface.co/blog/how-to-generate
+	generated = model.generate(input_ids, decoder_start_token_id=model.config.decoder.pad_token_id)
+	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
+	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
+
 def gpt2_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_gpt2.py
 
@@ -1498,73 +1566,130 @@ def bloom_example():
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
-# REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
-def encoder_decoder_example():
-	from transformers import EncoderDecoderConfig, EncoderDecoderModel
-	from transformers import BertConfig, GPT2Config
-
-	pretrained_model_name = 'bert-base-uncased'
-	#pretrained_model_name = 'gpt2'
-
-	if 'bert' in pretrained_model_name:
-		# Initialize a BERT bert-base-uncased style configuration.
-		config_encoder, config_decoder = BertConfig(), BertConfig()
-	elif 'gpt2' in pretrained_model_name:
-		config_encoder, config_decoder = GPT2Config(), GPT2Config()
-	else:
-		print('Invalid model, {}.'.format(pretrained_model_name))
-		return
-
-	config = EncoderDecoderConfig.from_encoder_decoder_configs(config_encoder, config_decoder)
-
-	if 'bert' in pretrained_model_name:
-		# Initialize a Bert2Bert model from the bert-base-uncased style configurations.
-		model = EncoderDecoderModel(config=config)
-		#model = EncoderDecoderModel.from_encoder_decoder_pretrained(pretrained_model_name, pretrained_model_name)  # Initialize Bert2Bert from pre-trained checkpoints.
-		tokenizer = BertTokenizer.from_pretrained(pretrained_model_name)
-	elif 'gpt2' in pretrained_model_name:
-		model = EncoderDecoderModel(config=config)
-		tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model_name)
-
-	#print('Configuration of the encoder & decoder:\n{}.\n{}.'.format(model.config.encoder, model.config.decoder))
-	#print('Encoder type = {}, decoder type = {}.'.format(type(model.encoder), type(model.decoder)))
-
+def palm_example():
 	if False:
-		# Access the model configuration.
-		config_encoder = model.config.encoder
-		config_decoder  = model.config.decoder
+		# https://github.com/lucidrains/PaLM-pytorch
 
-		# Set decoder config to causal LM.
-		config_decoder.is_decoder = True
-		config_decoder.add_cross_attention = True
+		import palm_pytorch
 
-	#--------------------
-	input_ids = torch.tensor(tokenizer.encode('Hello, my dog is cute', add_special_tokens=True)).unsqueeze(0)  # Batch size 1.
+		# Install.
+		#	pip install PaLM-pytorch
 
-	if False:
-		# Forward.
-		outputs = model(input_ids=input_ids, decoder_input_ids=input_ids)
+		if True:
+			palm = palm_pytorch.PaLM(
+				num_tokens=20000,
+				dim=512,
+				depth=12,
+				heads=8,
+				dim_head=64,
+			)
+		else:
+			# The PaLM 540B in the paper would be.
+			palm = palm_pytorch.PaLM(
+				num_tokens=256000,
+				dim=18432,
+				depth=118,
+				heads=48,
+				dim_head=256,
+			)
 
-		# Train.
-		outputs = model(input_ids=input_ids, decoder_input_ids=input_ids, labels=input_ids)
-		loss, logits = outputs.loss, outputs.logits
+		tokens = torch.randint(0, 20000, (1, 2048))
+		logits = palm(tokens)  # (1, 2048, 20000).
 
-		# Save the model, including its configuration.
-		model.save_pretrained('my-model')
+		print(f"{logits.shape=}")
+
+	if True:
+		# https://github.com/lucidrains/PaLM-rlhf-pytorch
+
+		# Install.
+		#	pip install palm-rlhf-pytorch
+
+		import palm_rlhf_pytorch
+
+		# 1. train PaLM, like any other autoregressive transformer.
+
+		palm = palm_rlhf_pytorch.PaLM(
+			num_tokens=20000,
+			dim=512,
+			depth=12,
+			flash_attn=False,  # https://arxiv.org/abs/2205.14135
+		).cuda()
+
+		seq = torch.randint(0, 20000, (1, 2048)).cuda()
+
+		loss = palm(seq, return_loss=True)
+		loss.backward()
+
+		#torch.save(palm.state_dict(), "/path/to/pretrained/palm.pt")
+
+		# After much training, you can now generate sequences.
+		generated = palm.generate(2048)  # (1, 2048).
 
 		#-----
-		# Load model and config from pretrained folder.
-		encoder_decoder_config = EncoderDecoderConfig.from_pretrained('my-model')
-		model = EncoderDecoderModel.from_pretrained('my-model', config=encoder_decoder_config)
+		# 2.train your reward model, with the curated human feedback.
 
-	#--------------------
-	# Generate.
-	#	REF [site] >>
-	#		https://huggingface.co/transformers/internal/generation_utils.html
-	#		https://huggingface.co/blog/how-to-generate
-	generated = model.generate(input_ids, decoder_start_token_id=model.config.decoder.pad_token_id)
-	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
-	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
+		palm = palm_rlhf_pytorch.PaLM(
+			num_tokens=20000, 
+			dim=512,
+			depth=12,
+			causal=False,
+		)
+
+		#palm.load("/path/to/pretrained/palm.pt")
+
+		reward_model = palm_rlhf_pytorch.RewardModel(
+			palm,
+			num_binned_output=5,  # Say rating from 1 to 5.
+		).cuda()
+
+		#torch.save(reward_model.state_dict(), "/path/to/pretrained/reward_model.pt")
+
+		# Mock data.
+		seq = torch.randint(0, 20000, (1, 1024)).cuda()
+		prompt_mask = torch.zeros(1, 1024).bool().cuda()  # Which part of the sequence is prompt, which part is response.
+		labels = torch.randint(0, 5, (1,)).cuda()
+
+		# Train.
+		loss = reward_model(seq, prompt_mask=prompt_mask, labels=labels)
+		loss.backward()
+
+		# After much training.
+		reward = reward_model(seq, prompt_mask=prompt_mask)
+
+		#-----
+		# 3. pass your transformer and the rewards model to the RLHFTrainer.
+
+		# Load your pretrained palm.
+		palm = palm_rlhf_pytorch.PaLM(
+			num_tokens=20000,
+			dim=512,
+			depth=12,
+		).cuda()
+
+		#palm.load("/path/to/pretrained/palm.pt")
+
+		# Load your pretrained reward model.
+		reward_model = palm_rlhf_pytorch.RewardModel(
+			palm,
+			num_binned_output=5,
+		).cuda()
+
+		#reward_model.load("/path/to/pretrained/reward_model.pt")
+
+		# Ready your list of prompts for reinforcement learning.
+		prompts = torch.randint(0, 256, (50000, 512)).cuda()  # 50k prompts.
+
+		# Pass it all to the trainer and train.
+		trainer = palm_rlhf_pytorch.RLHFTrainer(
+			palm=palm,
+			reward_model=reward_model,
+			prompt_token_ids=prompts,
+		)
+
+		trainer.train(num_episodes=50000)
+
+		# Generate say 10 samples and use the reward model to return the best one.
+		answer = trainer.generate(2048, prompt=prompts[0], num_samples=10)  # (<= 2048,).
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -2608,7 +2733,7 @@ def table_transformer_example():
 				#if model.config.id2label[label.item()] == "table":
 				if model.config.id2label[label.item()] == "table column":
 				#if model.config.id2label[label.item()] == "table row":
-					draw.rectangle(box, outline=(255, 0, , 128), width=2)
+					draw.rectangle(box, outline=(255, 0, 0, 128), width=2)
 		image_draw.show()
 		#image_draw.save("./table_structure_recognition.png")
 
@@ -3030,17 +3155,22 @@ def main():
 	#korean_table_question_answering_example()  # Not correctly working.
 
 	#--------------------
+	# Language model.
+
+	#encoder_decoder_example()
+
+	#-----
 	# GPT.
 
 	#gpt2_example()
 	#sentence_completion_model_using_gpt2_example()
 	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
 
-	eleuther_ai_gpt_test()  # gpt-j, gpt-neo, & gpt-neox.
+	#eleuther_ai_gpt_test()  # gpt-j, gpt-neo, & gpt-neox.
 	#skt_gpt_test()  # KoGPT2.
 	#kakao_brain_gpt_test()  # KoGPT.
 
-	#--------------------
+	#-----
 	# BERT.
 
 	#bert_example()
@@ -3052,7 +3182,7 @@ def main():
 	#skt_bert_test()  # KoBERT. Not yet tested.
 	#klue_bert_test()  # Not yet completed.
 
-	#--------------------
+	#-----
 	# T5.
 	#	T5 is an encoder-decoder model pre-trained on a multi-task mixture of unsupervised and supervised tasks and for which each task is converted into a text-to-text format.
 	#	T5 works well on a variety of tasks out-of-the-box by prepending a different prefix to the input corresponding to each task, e.g., for translation: translate English to German: ..., for summarization: summarize: ....
@@ -3060,13 +3190,15 @@ def main():
 	#t5_example()
 	#flan_t5_example()
 
-	#--------------------
+	#-----
 	# BLOOM.
 
 	#bloom_example()
 
-	#--------------------
-	#encoder_decoder_example()
+	#-----
+	# PaLM.
+
+	palm_example()  # PaLM + RLHF.
 
 	#--------------------
 	# Vision.
