@@ -855,6 +855,64 @@ KoGPT API는 사람처럼 맥락을 이해하고 문제를 해결합니다.
 		print('Summary:')
 		print(summary[0]['summary_text'])
 
+# REF [site] >>
+#	https://github.com/nomic-ai/gpt4all
+#	https://github.com/nomic-ai/nomic
+def gpt4all_example():
+	# Install.
+	#	pip install nomic
+
+	import nomic.gpt4all
+
+	if False:
+		# CPU.
+
+		m = nomic.gpt4all.GPT4All()
+		m.open()
+
+		response = m.prompt("write me a story about a lonely computer")
+		print(f"{response=}.")
+	elif False:
+		# GPU.
+
+		LLAMA_PATH = ...
+
+		m = nomic.gpt4all.GPT4AllGPU(LLAMA_PATH)
+		config = {
+			"num_beams": 2,
+			"min_new_tokens": 10,
+			"max_length": 100,
+			"repetition_penalty": 2.0,
+		}
+
+		response = m.generate("write me a story about a lonely computer", config)
+		print(f"{response=}.")
+	elif False:
+		# REF [site] >> https://github.com/nomic-ai/nomic/blob/main/examples/GPT4All.ipynb
+
+		response = nomic.gpt4all.gpt4all.prompt("Tell me a story about a bear who becomes friends with a bunny.")
+		print(f"{response=}.")
+	elif False:
+		# REF [site] >> https://github.com/nomic-ai/nomic/blob/main/examples/GPT4All.ipynb
+
+		with nomic.gpt4all.GPT4All() as session:
+			prompts = ["Hello, there. I have a couple requests.", "First: tell me a joke.", "What's the largest city in the United States"]
+			for prompt in prompts:
+				print("------PROMPT-------\n" + prompt)
+				response = session.prompt(prompt)
+				print("-----RESPONSE------\n" + response)
+	else:
+		# REF [site] >> https://github.com/nomic-ai/nomic/blob/main/examples/GPT4All.ipynb
+
+		session = nomic.gpt4all.GPT4All()
+
+		session.open()
+		response = session.prompt("How are you doing today?")
+		print(response)
+		response = session.prompt("Oh really? Why is that?")
+		print(response)
+		session.close()
+
 def bert_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_bert.py
 
@@ -1570,10 +1628,10 @@ def palm_example():
 	if False:
 		# https://github.com/lucidrains/PaLM-pytorch
 
-		import palm_pytorch
-
 		# Install.
 		#	pip install PaLM-pytorch
+
+		import palm_pytorch
 
 		if True:
 			palm = palm_pytorch.PaLM(
@@ -3070,12 +3128,12 @@ def tensor_speech_tts_example():
 	#	tensorspeech/tts-mb_melgan-thorsten-ger.
 	#	tensorspeech/tts-mb_melgan-synpaflex-fr.
 
+	# Install.
+	#	pip install TensorFlowTTS
+
 	import tensorflow as tf
 	import tensorflow_tts
 	import soundfile as sf
-
-	# Install.
-	#	pip install TensorFlowTTS
 
 	if True:
 		if True:
@@ -3170,6 +3228,8 @@ def main():
 	#skt_gpt_test()  # KoGPT2.
 	#kakao_brain_gpt_test()  # KoGPT.
 
+	gpt4all_example()  # Not correctly working.
+
 	#-----
 	# BERT.
 
@@ -3198,7 +3258,7 @@ def main():
 	#-----
 	# PaLM.
 
-	palm_example()  # PaLM + RLHF.
+	#palm_example()  # PaLM + RLHF.
 
 	#--------------------
 	# Vision.

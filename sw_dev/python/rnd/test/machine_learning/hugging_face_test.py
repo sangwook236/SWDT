@@ -490,6 +490,13 @@ def datasets_tutorials():
 
 	# Upload with Python.
 
+# REF [site] >> https://huggingface.co/datasets/wikipedia
+def datasets_wikipedia_test():
+	import datasets
+
+	#dataset = datasets.load_dataset("wikipedia", language="sw", date="20220120", beam_runner=...)
+	dataset = datasets.load_dataset("wikipedia", "20220301.en")
+
 # REF [site] >> https://huggingface.co/docs/datasets/how_to
 def datasets_how_to_guides__general_use():
 	import torch
@@ -1293,6 +1300,8 @@ def main():
 	#datasets_quick_example()
 	#datasets_quicktour()
 	#datasets_tutorials()
+
+	datasets_wikipedia_test()
 
 	# How-to guides.
 	#	https://huggingface.co/docs/datasets/how_to
