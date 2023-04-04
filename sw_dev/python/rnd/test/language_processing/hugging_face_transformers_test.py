@@ -6,8 +6,10 @@
 #	https://huggingface.co/transformers/
 #	https://medium.com/analytics-vidhya/a-comprehensive-guide-to-build-your-own-language-model-in-python-5141b3917d6d
 
-import time
+import requests, time
 import torch
+from PIL import Image
+import transformers
 from transformers import GPT2Tokenizer, GPT2LMHeadModel, GPT2DoubleHeadsModel
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 from transformers import BertPreTrainedModel
@@ -82,8 +84,6 @@ def quick_tour():
 		print('{} processed.'.format(model_class.__name__))
 
 def tokenizer_test():
-	import transformers
-
 	pretrained_model_name = 'bert-base-uncased'
 	#pretrained_model_name = 'openai-gpt'
 	#pretrained_model_name = 'gpt2'
@@ -1749,11 +1749,94 @@ def palm_example():
 		# Generate say 10 samples and use the reward model to return the best one.
 		answer = trainer.generate(2048, prompt=prompts[0], num_samples=10)  # (<= 2048,).
 
+# REF [site] >> https://huggingface.co/Salesforce
+def codet5_example():
+	# Models:
+	#	Salesforce/codet5-small.
+	#	Salesforce/codet5-base: ~892MB.
+	#	Salesforce/codet5-large.
+	#
+	#	Salesforce/codet5-base-multi-sum: ~892MB.
+	#
+	#	Salesforce/codet5-large-ntp-py: ~1.48GB.
+
+	if True:
+		tokenizer = transformers.RobertaTokenizer.from_pretrained("Salesforce/codet5-base")
+		model = transformers.T5ForConditionalGeneration.from_pretrained("Salesforce/codet5-base")
+
+		text = "def greet(user): print(f'hello <extra_id_0>!')"
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		# Simply generate a single sequence.
+		generated_ids = model.generate(input_ids, max_length=8)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))  # Outputs: "{user.username}".
+
+	if True:
+		tokenizer = transformers.RobertaTokenizer.from_pretrained("Salesforce/codet5-base-multi-sum")
+		model = transformers.T5ForConditionalGeneration.from_pretrained("Salesforce/codet5-base-multi-sum")
+
+		text = """def svg_to_image(string, size=None):
+	if isinstance(string, unicode):
+		string = string.encode("utf-8")
+		renderer = QtSvg.QSvgRenderer(QtCore.QByteArray(string))
+	if not renderer.isValid():
+		raise ValueError("Invalid SVG data.")
+	if size is None:
+		size = renderer.defaultSize()
+		image = QtGui.QImage(size, QtGui.QImage.Format_ARGB32)
+		painter = QtGui.QPainter(image)
+		renderer.render(painter)
+	return image"""
+
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		generated_ids = model.generate(input_ids, max_length=20)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))  # Output: "Convert a SVG string to a QImage.".
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Salesforce/codet5-large-ntp-py")
+		model = transformers.T5ForConditionalGeneration.from_pretrained("Salesforce/codet5-large-ntp-py")
+
+		text = "def hello_world():"
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		# Simply generate a single sequence.
+		generated_ids = model.generate(input_ids, max_length=128)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))  # Output: "print("Hello World!")".
+
+# REF [site] >> https://huggingface.co/Salesforce
+def codegen_example():
+	# Models:
+	#	Salesforce/codegen-350M-nl.
+	#	Salesforce/codegen-350M-multi.
+	#	Salesforce/codegen-350M-mono.
+	#	Salesforce/codegen-2B-nl.
+	#	Salesforce/codegen-2B-multi.
+	#	Salesforce/codegen-2B-mono: ~5.69GB.
+	#	Salesforce/codegen-6B-nl.
+	#	Salesforce/codegen-6B-multi.
+	#	Salesforce/codegen-6B-mono.
+	#	Salesforce/codegen-16B-nl.
+	#	Salesforce/codegen-16B-multi.
+	#	Salesforce/codegen-16B-mono.
+
+	pretrained_model_name = "Salesforce/codegen-2B-mono"
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(pretrained_model_name)
+	model = transformers.AutoModelForCausalLM.from_pretrained(pretrained_model_name)
+
+	text = "def hello_world():"
+	input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+	generated_ids = model.generate(input_ids, max_length=128)
+
+	print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
-	import requests
-	import torch
-	from PIL import Image
 	from transformers import ViTImageProcessor, ViTModel, ViTForMaskedImageModeling
 	from datasets import load_dataset
 
@@ -1790,9 +1873,6 @@ def vit_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_masked_image_modeling_example():
-	import requests
-	import torch
-	from PIL import Image
 	from transformers import ViTImageProcessor, ViTForMaskedImageModeling
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -1813,7 +1893,6 @@ def vit_masked_image_modeling_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_image_classification_example():
-	import torch
 	from transformers import ViTImageProcessor, ViTForImageClassification
 	from datasets import load_dataset
 
@@ -1834,7 +1913,6 @@ def vit_image_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
 def deit_example():
-	import torch
 	from transformers import DeiTImageProcessor, DeiTModel
 	from datasets import load_dataset
 
@@ -1854,9 +1932,6 @@ def deit_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
 def deit_masked_image_modeling_example():
-	import requests
-	import torch
-	from PIL import Image
 	from transformers import DeiTImageProcessor, DeiTForMaskedImageModeling
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -1877,9 +1952,6 @@ def deit_masked_image_modeling_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
 def deit_image_classification_example():
-	import requests
-	import torch
-	from PIL import Image
 	from transformers import DeiTImageProcessor, DeiTForImageClassification
 
 	torch.manual_seed(3)
@@ -1902,7 +1974,6 @@ def deit_image_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
 def deit_image_classification_with_teacher_example():
-	import torch
 	from transformers import DeiTImageProcessor, DeiTForImageClassificationWithTeacher
 	from datasets import load_dataset
 
@@ -1923,8 +1994,6 @@ def deit_image_classification_with_teacher_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
-	import requests
-	from PIL import Image
 	from transformers import ViltProcessor, ViltModel
 
 	# Prepare image and text.
@@ -1943,9 +2012,7 @@ def vilt_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_masked_lm_example():
-	import re, requests
-	from PIL import Image
-	import torch
+	import re
 	from transformers import ViltProcessor, ViltForMaskedLM
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -1988,8 +2055,6 @@ def vilt_masked_lm_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_question_answering_example():
-	import requests
-	from PIL import Image
 	from transformers import ViltProcessor, ViltForQuestionAnswering
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -2011,8 +2076,6 @@ def vilt_question_answering_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_images_and_text_classification_example():
-	import requests
-	from PIL import Image
 	from transformers import ViltProcessor, ViltForImagesAndTextClassification
 
 	image1 = Image.open(requests.get("https://lil.nlp.cornell.edu/nlvr/exs/ex0_0.jpg", stream=True).raw)
@@ -2034,8 +2097,6 @@ def vilt_images_and_text_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_image_and_text_retrieval_example():
-	import requests
-	from PIL import Image
 	from transformers import ViltProcessor, ViltForImageAndTextRetrieval
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -2057,7 +2118,6 @@ def vilt_image_and_text_retrieval_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
 def beit_example():
-	import torch
 	from transformers import BeitImageProcessor, BeitModel
 	from datasets import load_dataset
 
@@ -2077,9 +2137,6 @@ def beit_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
 def beit_masked_image_modeling_example():
-	import requests
-	import torch
-	from PIL import Image
 	from transformers import BeitImageProcessor, BeitForMaskedImageModeling
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -2100,7 +2157,6 @@ def beit_masked_image_modeling_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
 def beit_image_classification_example():
-	import torch
 	from transformers import BeitImageProcessor, BeitForImageClassification
 	from datasets import load_dataset
 
@@ -2121,8 +2177,6 @@ def beit_image_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
 def beit_semantic_segmentation_example():
-	import requests
-	from PIL import Image
 	from transformers import AutoImageProcessor, BeitForSemanticSegmentation
 
 	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
@@ -2147,11 +2201,6 @@ def clip_example():
 	#	openai/clip-vit-base-patch32: ~605MB.
 	#	openai/clip-vit-large-patch14.
 	#	openai/clip-vit-large-patch14-336.
-
-	import requests
-	from PIL import Image
-	import torch
-	import transformers
 
 	pretrained_model_name = "openai/clip-vit-base-patch32"
 
@@ -2239,11 +2288,6 @@ def align_example():
 	#	kakaobrain/coyo-align-b7-base.
 	#	kakaobrain/align-base.
 
-	import requests
-	from PIL import Image
-	import torch
-	import transformers
-
 	pretrained_model_name = "kakaobrain/align-base"
 
 	if True:
@@ -2314,10 +2358,278 @@ def align_example():
 		)
 		print(f"{text_embeds=}")
 
+# REF [site] >>
+#	https://huggingface.co/microsoft
+#	https://huggingface.co/docs/transformers/main/en/model_doc/git
+def git_example():
+	# Models:
+	#	microsoft/git-base.
+	#	microsoft/git-base-coco: ~707MB.
+	#	microsoft/git-base-vqav2.
+	#	microsoft/git-base-textvqa: ~709MB.
+	#	microsoft/git-base-textcaps.
+	#	microsoft/git-base-vatex: ~707MB.
+	#	microsoft/git-base-msrvtt-qa.
+	#	microsoft/git-large.
+	#	microsoft/git-large-coco.
+	#	microsoft/git-large-vqav2.
+	#	microsoft/git-large-textvqa.
+	#	microsoft/git-large-textcaps.
+	#	microsoft/git-large-vatex.
+	#	microsoft/git-large-msrvtt-qa.
+	#	microsoft/git-large-r.
+	#	microsoft/git-large-r-coco.
+	#	microsoft/git-large-r-textcaps.
+
+	if False:
+		# Initializing a GitVisionConfig with microsoft/git-base style configuration.
+		configuration = transformers.GitVisionConfig()
+
+		# Initializing a GitVisionModel (with random weights) from the microsoft/git-base style configuration.
+		model = transformers.GitVisionModel(configuration)
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if False:
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/git-base")
+		model = transformers.GitVisionModel.from_pretrained("microsoft/git-base")
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		inputs = processor(images=image, return_tensors="pt")
+
+		outputs = model(**inputs)
+		last_hidden_state = outputs.last_hidden_state
+
+	if False:
+		# Initializing a GIT microsoft/git-base style configuration.
+		configuration = transformers.GitConfig()
+
+		# Initializing a model (with random weights) from the microsoft/git-base style configuration.
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if False:
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/git-base")
+		model = transformers.AutoModel.from_pretrained("microsoft/git-base")
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		text = "this is an image of two cats"
+
+		inputs = processor(text, images=image, return_tensors="pt")
+
+		outputs = model(**inputs)
+		last_hidden_state = outputs.last_hidden_state
+
+	if True:
+		# Image captioning example.
+
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/git-base-coco")
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/git-base-coco")
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		pixel_values = processor(images=image, return_tensors="pt").pixel_values
+
+		generated_ids = model.generate(pixel_values=pixel_values, max_length=50)
+
+		generated_caption = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(generated_caption)  # Output: "two cats sleeping on a pink blanket next to remotes.".
+
+	if True:
+		# Visual question answering (VQA) example.
+
+		import huggingface_hub
+
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/git-base-textvqa")
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/git-base-textvqa")
+
+		file_path = huggingface_hub.hf_hub_download(repo_id="nielsr/textvqa-sample", filename="bus.png", repo_type="dataset")
+		image = Image.open(file_path).convert("RGB")
+		pixel_values = processor(images=image, return_tensors="pt").pixel_values
+
+		question = "what does the front of the bus say at the top?"
+		input_ids = processor(text=question, add_special_tokens=False).input_ids
+		input_ids = [processor.tokenizer.cls_token_id] + input_ids
+		input_ids = torch.tensor(input_ids).unsqueeze(0)
+
+		generated_ids = model.generate(pixel_values=pixel_values, input_ids=input_ids, max_length=50)
+
+		print(processor.batch_decode(generated_ids, skip_special_tokens=True))  # Output: "['what does the front of the bus say at the top? special']".
+
+	if True:
+		# Video captioning example.
+
+		import numpy as np
+		import huggingface_hub
+		import av
+
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/git-base-vatex")
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/git-base-vatex")
+
+		# Set seed for reproducability.
+		np.random.seed(45)
+
+		def read_video_pyav(container, indices):
+			'''
+			Decode the video with PyAV decoder.
+			Args:
+				container (`av.container.input.InputContainer`): PyAV container.
+				indices (`List[int]`): List of frame indices to decode.
+			Returns:
+				result (np.ndarray): np array of decoded frames of shape (num_frames, height, width, 3).
+			'''
+			frames = []
+			container.seek(0)
+			start_index = indices[0]
+			end_index = indices[-1]
+			for i, frame in enumerate(container.decode(video=0)):
+				if i > end_index:
+					break
+				if i >= start_index and i in indices:
+					frames.append(frame)
+			return np.stack([x.to_ndarray(format="rgb24") for x in frames])
+
+		def sample_frame_indices(clip_len, frame_sample_rate, seg_len):
+			converted_len = int(clip_len * frame_sample_rate)
+			end_idx = np.random.randint(converted_len, seg_len)
+			start_idx = end_idx - converted_len
+			indices = np.linspace(start_idx, end_idx, num=clip_len)
+			indices = np.clip(indices, start_idx, end_idx - 1).astype(np.int64)
+			return indices
+
+		# Load video.
+		file_path = huggingface_hub.hf_hub_download(repo_id="nielsr/video-demo", filename="eating_spaghetti.mp4", repo_type="dataset")
+		container = av.open(file_path)
+
+		# Sample frames.
+		num_frames = model.config.num_image_with_embedding
+		indices = sample_frame_indices(clip_len=num_frames, frame_sample_rate=4, seg_len=container.streams.video[0].frames)
+		frames = read_video_pyav(container, indices)
+		pixel_values = processor(images=list(frames), return_tensors="pt").pixel_values
+
+		generated_ids = model.generate(pixel_values=pixel_values, max_length=50)
+
+		print("Generated caption:", processor.batch_decode(generated_ids, skip_special_tokens=True))  # Output: "Generated caption: ['a woman is sitting at a table and she is talking about the food she is holding.']".
+
+# REF [site] >> https://huggingface.co/Salesforce
+def blip_example():
+	# Models:
+	#	Salesforce/blip-itm-base-coco.
+	#	Salesforce/blip-itm-base-flickr: ~895MB.
+	#	Salesforce/blip-itm-large-coco.
+	#	Salesforce/blip-itm-large-flickr.
+	#
+	#	Salesforce/blip-vqa-base: ~1.54GB.
+	#	Salesforce/blip-vqa-capfilt-large.
+	#
+	#	Salesforce/blip-image-captioning-base: ~990MB.
+	#	Salesforce/blip-image-captioning-large.
+	#
+	#	Salesforce/blip2-flan-t5-xl: ~15.77GB.
+	#	Salesforce/blip2-flan-t5-xl-coco.
+	#	Salesforce/blip2-flan-t5-xxl.
+	#	Salesforce/blip2-opt-2.7b.
+	#	Salesforce/blip2-opt-2.7b-coco.
+	#	Salesforce/blip2-opt-6.7b.
+	#	Salesforce/blip2-opt-6.7b-coco.
+
+	if True:
+		processor = transformers.BlipProcessor.from_pretrained("Salesforce/blip-itm-base-flickr")
+		model = transformers.BlipForImageTextRetrieval.from_pretrained("Salesforce/blip-itm-base-flickr")
+		#model = transformers.BlipForImageTextRetrieval.from_pretrained("Salesforce/blip-itm-base-flickr").to("cuda")
+		#model = transformers.BlipForImageTextRetrieval.from_pretrained("Salesforce/blip-itm-base-flickr", torch_dtype=torch.float16).to("cuda")
+
+		img_url = "https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg"
+		raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
+
+		question = "A woman and a dog sitting together in a beach."
+		inputs = processor(raw_image, question, return_tensors="pt")
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda")
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda", torch.float16)
+
+		itm_scores = model(**inputs)[0]  # {'itm_score', 'last_hidden_state', 'question_embeds'}.
+		cosine_score = model(**inputs, use_itm_head=False)[0]
+
+	if True:
+		# Visual question answering (VQA).
+
+		processor = transformers.BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
+		model = transformers.BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base")
+		#model = transformers.BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base").to("cuda")
+		#model = transformers.BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base", torch_dtype=torch.float16).to("cuda")
+
+		img_url = "https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg"
+		raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
+
+		question = "how many dogs are in the picture?"
+		inputs = processor(raw_image, question, return_tensors="pt")
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda")
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda", torch.float16)
+
+		out = model.generate(**inputs)
+
+		print(processor.decode(out[0], skip_special_tokens=True))  # Output: "1".
+
+	if True:
+		# Image captioning.
+
+		processor = transformers.BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+		model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
+		#model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base").to("cuda")
+		#model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base", torch_dtype=torch.float16).to("cuda")
+
+		img_url = "https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg"
+		raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
+
+		# Conditional image captioning.
+		text = "a photography of"
+		inputs = processor(raw_image, text, return_tensors="pt")
+		#inputs = processor(raw_image, text, return_tensors="pt").to("cuda")
+		#inputs = processor(raw_image, text, return_tensors="pt").to("cuda", torch.float16)
+
+		out = model.generate(**inputs)
+
+		print(processor.decode(out[0], skip_special_tokens=True))  # Output: "a photography of a woman and her dog".
+
+		# Unconditional image captioning.
+		inputs = processor(raw_image, return_tensors="pt")
+		#inputs = processor(raw_image, return_tensors="pt").to("cuda")
+		#inputs = processor(raw_image, return_tensors="pt").to("cuda", torch.float16)
+
+		out = model.generate(**inputs)
+
+		print(processor.decode(out[0], skip_special_tokens=True))  # Output: "a woman sitting on the beach with her dog".
+
+	if True:
+		processor = transformers.BlipProcessor.from_pretrained("Salesforce/blip2-flan-t5-xl")
+		#processor = transformers.Blip2Processor.from_pretrained("Salesforce/blip2-flan-t5-xl")  # Error.
+		model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl")
+		#model = transformers.Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl")  # Error.
+		#model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl", device_map="auto")
+		#model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl", torch_dtype=torch.float16, device_map="auto")
+		#model = transformers.BlipForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl", load_in_8bit=True, device_map="auto")
+
+		img_url = "https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg"
+		raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
+
+		question = "how many dogs are in the picture?"
+		inputs = processor(raw_image, question, return_tensors="pt")
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda")
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda", torch.float16)
+		#inputs = processor(raw_image, question, return_tensors="pt").to("cuda", torch.float16)
+
+		out = model.generate(**inputs)
+
+		print(processor.decode(out[0], skip_special_tokens=True))
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
-	#import torch
-	from PIL import Image
 	from transformers import LayoutLMv2Processor, LayoutLMv2Model, set_seed
 	from datasets import load_dataset
 
@@ -2338,8 +2650,6 @@ def layoutlmv2_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_sequence_classification_example():
-	import torch
-	from PIL import Image
 	from transformers import LayoutLMv2Processor, LayoutLMv2ForSequenceClassification, set_seed
 	from datasets import load_dataset
 
@@ -2364,7 +2674,6 @@ def layoutlmv2_sequence_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_token_classification_example():
-	from PIL import Image
 	from transformers import LayoutLMv2Processor, LayoutLMv2ForTokenClassification, set_seed
 	from datasets import load_dataset
 
@@ -2401,8 +2710,6 @@ def layoutlmv2_token_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_question_answering_example():
-	import torch
-	from PIL import Image
 	from transformers import LayoutLMv2Processor, LayoutLMv2ForQuestionAnswering, set_seed
 	from datasets import load_dataset
 
@@ -2459,7 +2766,6 @@ def layoutlmv3_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
 def layoutlmv3_sequence_classification_example():
-	import torch
 	from transformers import AutoProcessor, AutoModelForSequenceClassification
 	from datasets import load_dataset
 
@@ -2508,7 +2814,6 @@ def layoutlmv3_token_classification_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
 def layoutlmv3_question_answering_example():
-	import torch
 	from transformers import AutoProcessor, AutoModelForQuestionAnswering
 	from datasets import load_dataset
 
@@ -2542,7 +2847,6 @@ def layoutlmv3_question_answering_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
 def donut_example():
-	import torch
 	from transformers import AutoFeatureExtractor, DonutSwinModel
 	from datasets import load_dataset
 
@@ -2563,7 +2867,6 @@ def donut_example():
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
 def donut_document_image_classification_example():
 	import re
-	import torch
 	from transformers import DonutProcessor, VisionEncoderDecoderModel
 	from datasets import load_dataset
 
@@ -2604,7 +2907,6 @@ def donut_document_image_classification_example():
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
 def donut_document_document_parsing_example():
 	import re
-	import torch
 	from transformers import DonutProcessor, VisionEncoderDecoderModel
 	from datasets import load_dataset
 
@@ -2645,7 +2947,6 @@ def donut_document_document_parsing_example():
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
 def donut_document_visual_question_answering_example():
 	import re
-	import torch
 	from transformers import DonutProcessor, VisionEncoderDecoderModel
 	from datasets import load_dataset
 
@@ -2696,7 +2997,7 @@ def donut_invoice_test():
 
 	#-----
 	from donut.model import DonutModel
-	from PIL import Image
+
 	model = DonutModel.from_pretrained("./custom-fine-tuned-model")
 
 	prediction = model.inference(
@@ -2707,10 +3008,8 @@ def donut_invoice_test():
 
 # REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/table-transformer
 def table_transformer_example():
-	import torch
-	import transformers
 	import huggingface_hub
-	from PIL import Image, ImageDraw
+	from PIL import ImageDraw
 
 	if False:
 		# Initializing a Table Transformer microsoft/table-transformer-detection style configuration.
@@ -2795,7 +3094,79 @@ def table_transformer_example():
 		image_draw.show()
 		#image_draw.save("./table_structure_recognition.png")
 
-# REF [site] >>
+# REF [site] >> https://huggingface.co/microsoft
+def tapex_example():
+	# Models:
+	#	microsoft/tapex-base: ~558MB.
+	#	microsoft/tapex-large.
+	#	microsoft/tapex-large-sql-execution.
+	#
+	#	microsoft/tapex-base-finetuned-wikisql.
+	#	microsoft/tapex-base-finetuned-wtq: ~558MB.
+	#	microsoft/tapex-large-finetuned-wikisql.
+	#	microsoft/tapex-large-finetuned-wtq.
+	#
+	#	microsoft/tapex-base-finetuned-tabfact: ~560MB.
+	#	microsoft/tapex-large-finetuned-tabfact.
+
+	import pandas as pd
+
+	if True:
+		tokenizer = transformers.TapexTokenizer.from_pretrained("microsoft/tapex-base")
+		model = transformers.BartForConditionalGeneration.from_pretrained("microsoft/tapex-base")
+
+		data = {
+			"year": [1896, 1900, 1904, 2004, 2008, 2012],
+			"city": ["athens", "paris", "st. louis", "athens", "beijing", "london"],
+		}
+		table = pd.DataFrame.from_dict(data)
+
+		# TaPEx accepts uncased input since it is pre-trained on the uncased corpus.
+		query = "select year where city = beijing"
+		encoding = tokenizer(table=table, query=query, return_tensors="pt")
+
+		outputs = model.generate(**encoding)
+
+		print(tokenizer.batch_decode(outputs, skip_special_tokens=True))  # Output: "['2008']".
+
+	if True:
+		tokenizer = transformers.TapexTokenizer.from_pretrained("microsoft/tapex-base-finetuned-wtq")
+		model = transformers.BartForConditionalGeneration.from_pretrained("microsoft/tapex-base-finetuned-wtq")
+
+		data = {
+			"year": [1896, 1900, 1904, 2004, 2008, 2012],
+			"city": ["athens", "paris", "st. louis", "athens", "beijing", "london"],
+		}
+		table = pd.DataFrame.from_dict(data)
+
+		# TaPEx accepts uncased input since it is pre-trained on the uncased corpus.
+		query = "In which year did beijing host the Olympic Games?"
+		encoding = tokenizer(table=table, query=query, return_tensors="pt")
+
+		outputs = model.generate(**encoding)
+
+		print(tokenizer.batch_decode(outputs, skip_special_tokens=True))  # Output: "[' 2008.0']".
+
+	if True:
+		tokenizer = transformers.TapexTokenizer.from_pretrained("microsoft/tapex-base-finetuned-tabfact")
+		model = transformers.BartForSequenceClassification.from_pretrained("microsoft/tapex-base-finetuned-tabfact")
+
+		data = {
+			"year": [1896, 1900, 1904, 2004, 2008, 2012],
+			"city": ["athens", "paris", "st. louis", "athens", "beijing", "london"],
+		}
+		table = pd.DataFrame.from_dict(data)
+
+		# TaPEx accepts uncased input since it is pre-trained on the uncased corpus.
+		query = "beijing hosts the olympic games in 2012"
+		encoding = tokenizer(table=table, query=query, return_tensors="pt")
+
+		outputs = model(**encoding)
+
+		output_id = int(outputs.logits[0].argmax(dim=0))
+		print(model.config.id2label[output_id])  # Outut: "Refused".
+
+# REF [site] >> https://huggingface.co/microsoft
 def trocr_example():
 	# Models:
 	#	microsoft/trocr-base-handwritten.
@@ -2809,10 +3180,6 @@ def trocr_example():
 	#	microsoft/trocr-large-stage1.
 	#	microsoft/trocr-base-str: ~1.34GB.
 	#	microsoft/trocr-large-str.
-
-	import transformers
-	from PIL import Image
-	import requests
 
 	if True:
 		# Load image from the IIIT-5k dataset.
@@ -2871,8 +3238,6 @@ def trocr_example():
 
 # REF [site] >> https://huggingface.co/microsoft
 def speecht5_example():
-	import torch
-	import transformers
 	import datasets
 	import soundfile as sf
 
@@ -2916,7 +3281,6 @@ def openai_whisper_example():
 	#	openai/whisper-large: ~6.17GB.
 	#	openai/whisper-large-v2.
 
-	import transformers
 	import datasets
 
 	pretrained_model_name = "openai/whisper-large"
@@ -2990,7 +3354,6 @@ def openai_whisper_example():
 	if False:
 		# Evaluation.
 
-		import torch
 		import evaluate
 
 		device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -3022,8 +3385,6 @@ def openai_whisper_example():
 		#	This is possible through Transformers pipeline method.
 		#	Chunking is enabled by setting chunk_length_s=30 when instantiating the pipeline.
 		#	It can also be extended to predict utterance level timestamps by passing return_timestamps=True.
-
-		import torch
 
 		device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
@@ -3228,7 +3589,7 @@ def main():
 	#skt_gpt_test()  # KoGPT2.
 	#kakao_brain_gpt_test()  # KoGPT.
 
-	gpt4all_example()  # Not correctly working.
+	#gpt4all_example()  # Not correctly working.
 
 	#-----
 	# BERT.
@@ -3260,6 +3621,12 @@ def main():
 
 	#palm_example()  # PaLM + RLHF.
 
+	#-----
+	# Code.
+
+	#codet5_example()
+	#codegen_example()
+
 	#--------------------
 	# Vision.
 
@@ -3288,9 +3655,11 @@ def main():
 
 	#clip_example()
 	#align_example()
+	#git_example()
+	blip_example()
 
 	#--------------------
-	# Document processing.
+	# Document.
 
 	# LayoutLM requires libraries: tesseract, detectron2.
 	#layoutlmv2_example()
@@ -3311,12 +3680,13 @@ def main():
 	#donut_invoice_test()  # Not yet completed.
 
 	#-----
-	# Table processing.
+	# Table.
 
 	#table_transformer_example()  # Table Transformer (TATR).
+	#tapex_example()
 
 	#--------------------
-	# Text processing.
+	# Text.
 
 	#trocr_example()
 
