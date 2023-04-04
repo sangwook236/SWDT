@@ -797,6 +797,169 @@ def standard_transformer_test():
 	print(f"| End of training | test loss {test_loss:5.2f} | test ppl {test_ppl:8.2f}")
 	print("=" * 89)
 
+# REF [site] >> https://pytorch.org/hub/huggingface_pytorch-transformers/
+def huggingface_pytorch_transformers_test():
+	# Tokenizer.
+	tokenizer = torch.hub.load("huggingface/pytorch-transformers", "tokenizer", "bert-base-uncased")  # Download vocabulary from S3 and cache.
+	tokenizer = torch.hub.load("huggingface/pytorch-transformers", "tokenizer", "./test/bert_saved_model/")  # E.g. tokenizer was saved using "save_pretrained('./test/saved_model/')".
+
+	#-----
+	# Models.
+	model = torch.hub.load("huggingface/pytorch-transformers", "model", "bert-base-uncased")  # Download model and configuration from S3 and cache.
+	model = torch.hub.load("huggingface/pytorch-transformers", "model", "./test/bert_model/")  # E.g. model was saved using "save_pretrained('./test/saved_model/')".
+	model = torch.hub.load("huggingface/pytorch-transformers", "model", "bert-base-uncased", output_attentions=True)  # Update configuration during loading.
+	assert model.config.output_attentions == True
+
+	# Loading from a TF checkpoint file instead of a PyTorch model (slower).
+	config = AutoConfig.from_json_file("./tf_model/bert_tf_model_config.json")
+	model = torch.hub.load("huggingface/pytorch-transformers", "model", "./tf_model/bert_tf_checkpoint.ckpt.index", from_tf=True, config=config)
+
+	#-----
+	# Models with a language modeling head.
+	model = torch.hub.load("huggingface/transformers", "modelForCausalLM", "gpt2")  # Download model and configuration from huggingface.co and cache.
+	model = torch.hub.load("huggingface/transformers", "modelForCausalLM", "./test/saved_model/")  # E.g. model was saved using "save_pretrained('./test/saved_model/')".
+	model = torch.hub.load("huggingface/transformers", "modelForCausalLM", "gpt2", output_attentions=True)  # Update configuration during loading.
+	assert model.config.output_attentions == True
+
+	# Loading from a TF checkpoint file instead of a PyTorch model (slower).
+	config = AutoConfig.from_pretrained("./tf_model/gpt_tf_model_config.json")
+	model = torch.hub.load("huggingface/transformers", "modelForCausalLM", "./tf_model/gpt_tf_checkpoint.ckpt.index", from_tf=True, config=config)
+
+	#-----
+	# Models with a sequence classification head.
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForSequenceClassification", "bert-base-uncased")  # Download model and configuration from S3 and cache.
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForSequenceClassification", "./test/bert_model/")  # E.g. model was saved using "save_pretrained('./test/saved_model/')".
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForSequenceClassification", "bert-base-uncased", output_attention=True)  # Update configuration during loading.
+	assert model.config.output_attention == True
+
+	# Loading from a TF checkpoint file instead of a PyTorch model (slower).
+	config = AutoConfig.from_json_file("./tf_model/bert_tf_model_config.json")
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForSequenceClassification", "./tf_model/bert_tf_checkpoint.ckpt.index", from_tf=True, config=config)
+
+	#-----
+	# Models with a question answering head.
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForQuestionAnswering", "bert-base-uncased")  # Download model and configuration from S3 and cache.
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForQuestionAnswering", "./test/bert_model/")  # E.g. model was saved using "save_pretrained('./test/saved_model/')".
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForQuestionAnswering", "bert-base-uncased", output_attention=True)  # Update configuration during loading.
+	assert model.config.output_attention == True
+
+	# Loading from a TF checkpoint file instead of a PyTorch model (slower).
+	config = AutoConfig.from_json_file("./tf_model/bert_tf_model_config.json")
+	model = torch.hub.load("huggingface/pytorch-transformers", "modelForQuestionAnswering", "./tf_model/bert_tf_checkpoint.ckpt.index", from_tf=True, config=config)
+
+	#-----
+	# Configuaration.
+	config = torch.hub.load("huggingface/pytorch-transformers", "config", "bert-base-uncased")  # Download configuration from S3 and cache.
+	config = torch.hub.load("huggingface/pytorch-transformers", "config", "./test/bert_saved_model/")  # E.g. config (or model) was saved using "save_pretrained('./test/saved_model/')".
+	config = torch.hub.load("huggingface/pytorch-transformers", "config", "./test/bert_saved_model/my_configuration.json")
+	config = torch.hub.load("huggingface/pytorch-transformers", "config", "bert-base-uncased", output_attention=True, foo=False)
+	assert config.output_attention == True
+	config, unused_kwargs = torch.hub.load("huggingface/pytorch-transformers", "config", "bert-base-uncased", output_attention=True, foo=False, return_unused_kwargs=True)
+	assert config.output_attention == True
+	assert unused_kwargs == {"foo": False}
+
+	# Using the configuration with a model.
+	config = torch.hub.load("huggingface/pytorch-transformers", "config", "bert-base-uncased")
+	config.output_attentions = True
+	config.output_hidden_states = True
+	model = torch.hub.load("huggingface/pytorch-transformers", "model", "bert-base-uncased", config=config)
+	# Model will now output attentions and hidden states as well.
+
+	#--------------------
+	# Example usage.
+
+	# Tokenize the input.
+	tokenizer = torch.hub.load("huggingface/pytorch-transformers", "tokenizer", "bert-base-cased")
+
+	text_1 = "Who was Jim Henson ?"
+	text_2 = "Jim Henson was a puppeteer"
+
+	# Tokenized input with special tokens around it (for BERT: [CLS] at the beginning and [SEP] at the end).
+	indexed_tokens = tokenizer.encode(text_1, text_2, add_special_tokens=True)
+
+	#-----
+	# Using BertModel to encode the input sentence in a sequence of last layer hidden-states.
+
+	# Define sentence A and B indices associated to 1st and 2nd sentences (see paper).
+	segments_ids = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+
+	# Convert inputs to PyTorch tensors.
+	segments_tensors = torch.tensor([segments_ids])
+	tokens_tensor = torch.tensor([indexed_tokens])
+
+	model = torch.hub.load("huggingface/pytorch-transformers", "model", "bert-base-cased")
+
+	with torch.no_grad():
+		encoded_layers, _ = model(tokens_tensor, token_type_ids=segments_tensors)
+
+	#-----
+	# Using ModelForMaskedLM to predict a masked token with BERT.
+
+	# Mask a token that we will try to predict back with 'BertForMaskedLM'.
+	masked_index = 8
+	indexed_tokens[masked_index] = tokenizer.mask_token_id
+	tokens_tensor = torch.tensor([indexed_tokens])
+
+	masked_lm_model = torch.hub.load("huggingface/pytorch-transformers", "modelForMaskedLM", "bert-base-cased")
+
+	with torch.no_grad():
+		predictions = masked_lm_model(tokens_tensor, token_type_ids=segments_tensors)
+
+	# Get the predicted token.
+	predicted_index = torch.argmax(predictions[0][0], dim=1)[masked_index].item()
+	predicted_token = tokenizer.convert_ids_to_tokens([predicted_index])[0]
+	assert predicted_token == "Jim"
+
+	#-----
+	# Using ModelForQuestionAnswering to do question answering with BERT.
+
+	question_answering_model = torch.hub.load("huggingface/pytorch-transformers", "modelForQuestionAnswering", "bert-large-uncased-whole-word-masking-finetuned-squad")
+	question_answering_tokenizer = torch.hub.load("huggingface/pytorch-transformers", "tokenizer", "bert-large-uncased-whole-word-masking-finetuned-squad")
+
+	# The format is paragraph first and then question.
+	text_1 = "Jim Henson was a puppeteer"
+	text_2 = "Who was Jim Henson ?"
+	indexed_tokens = question_answering_tokenizer.encode(text_1, text_2, add_special_tokens=True)
+	segments_ids = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+	segments_tensors = torch.tensor([segments_ids])
+	tokens_tensor = torch.tensor([indexed_tokens])
+
+	# Predict the start and end positions logits.
+	with torch.no_grad():
+		out = question_answering_model(tokens_tensor, token_type_ids=segments_tensors)
+
+	# Get the highest prediction.
+	answer = question_answering_tokenizer.decode(indexed_tokens[torch.argmax(out.start_logits):torch.argmax(out.end_logits)+1])
+	assert answer == "puppeteer"
+
+	# Or get the total loss which is the sum of the CrossEntropy loss for the start and end token positions (set model to train mode before if used for training).
+	start_positions, end_positions = torch.tensor([12]), torch.tensor([14])
+	multiple_choice_loss = question_answering_model(tokens_tensor, token_type_ids=segments_tensors, start_positions=start_positions, end_positions=end_positions)
+
+	#-----
+	# Using modelforsequenceclassification to do paraphrase classification with BERT.
+
+	sequence_classification_model = torch.hub.load("huggingface/pytorch-transformers", "modelForSequenceClassification", "bert-base-cased-finetuned-mrpc")
+	sequence_classification_tokenizer = torch.hub.load("huggingface/pytorch-transformers", "tokenizer", "bert-base-cased-finetuned-mrpc")
+
+	text_1 = "Jim Henson was a puppeteer"
+	text_2 = "Who was Jim Henson ?"
+	indexed_tokens = sequence_classification_tokenizer.encode(text_1, text_2, add_special_tokens=True)
+	segments_ids = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+	segments_tensors = torch.tensor([segments_ids])
+	tokens_tensor = torch.tensor([indexed_tokens])
+
+	# Predict the sequence classification logits.
+	with torch.no_grad():
+		seq_classif_logits = sequence_classification_model(tokens_tensor, token_type_ids=segments_tensors)
+
+	predicted_labels = torch.argmax(seq_classif_logits[0]).item()
+	assert predicted_labels == 0  # In MRPC dataset this means the two sentences are not paraphrasing each other.
+
+	# Or get the sequence classification loss (set model to train mode before if used for training).
+	labels = torch.tensor([1])
+	seq_classif_loss = sequence_classification_model(tokens_tensor, token_type_ids=segments_tensors, labels=labels)
+
 # REF [site] >> https://pytorch.org/tutorials/beginner/vt_tutorial.html
 def vision_transformer_tutorial():
 	raise NotImplementedError
@@ -825,9 +988,15 @@ def main():
 
 	#standard_transformer_test()  # Not yet completed.
 
+	#-----
+	# PyTorch-Transformers.
+
+	#huggingface_pytorch_transformers_test()
+
 	#--------------------
 	# Data-efficient Image Transformers (DeiT).
-	vision_transformer_tutorial()  # Not yet implemented.
+
+	#vision_transformer_tutorial()  # Not yet implemented.
 
 #--------------------------------------------------------------------
 
