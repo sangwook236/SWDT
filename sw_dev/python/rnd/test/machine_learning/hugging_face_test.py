@@ -490,12 +490,397 @@ def datasets_tutorials():
 
 	# Upload with Python.
 
-# REF [site] >> https://huggingface.co/datasets/wikipedia
-def datasets_wikipedia_test():
+def datasets_test():
 	import datasets
 
-	#dataset = datasets.load_dataset("wikipedia", language="sw", date="20220120", beam_runner=...)
-	dataset = datasets.load_dataset("wikipedia", "20220301.en")
+	if False:
+		# Wikipedia.
+		#	REF [site] >> https://huggingface.co/datasets/wikipedia
+		
+		#ds = datasets.load_dataset("wikipedia", language="sw", date="20220120", beam_runner=...)
+		ds = datasets.load_dataset("wikipedia", "20220301.en")  # ~20.3GB.
+
+	if True:
+		# TextVQA.
+		#	REF [site] >> https://huggingface.co/datasets/textvqa
+
+		dataset_name = "textvqa"  # ~8.04GB.
+		split = "test"  # {None, "train", "validation", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["image_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["question_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["question"]=}.')  # datasets.Value.
+		print(f'{ds.features["question_tokens"]=}.')  # datasets.Sequence.
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+		print(f'{ds.features["image_width"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_height"]=}.')  # datasets.Value.
+		print(f'{ds.features["flickr_original_url"]=}.')  # datasets.Value.
+		print(f'{ds.features["flickr_300k_url"]=}.')  # datasets.Value.
+		print(f'{ds.features["answers"]=}.')  # datasets.Sequence.
+		print(f'{ds.features["image_classes"]=}.')  # datasets.Sequence.
+		print(f'{ds.features["set_name"]=}.')  # datasets.Value.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["image_id"]=}.')  # str.
+		print(f'{example["question_id"]=}.')  # int32.
+		print(f'{example["question"]=}.')  # str.
+		print(f'{example["question_tokens"]=}.')  # list of strs.
+		print(f'{example["image"]=}.')  # PIL.Image.
+		print(f'{example["image_width"]=}.')  # int32.
+		print(f'{example["image_height"]=}.')  # int32.
+		print(f'{example["flickr_original_url"]=}.')  # str.
+		print(f'{example["flickr_300k_url"]=}.')  # str.
+		print(f'{example["answers"]=}.')  # list of strs.
+		print(f'{example["image_classes"]=}.')  # list of strs.
+		print(f'{example["set_name"]=}.')  # str.
+
+	if True:
+		# WikiSQL.
+		#	REF [site] >> https://huggingface.co/datasets/wikisql
+
+		dataset_name = "wikisql"  # ~26.2MB.
+		split = "test"  # {None, "train", "validation", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["phase"]=}.')  # datasets.Value.
+		print(f'{ds.features["question"]=}.')  # datasets.Value.
+		print(f'{ds.features["table"]=}.')  # dict. {'header', 'page_title', 'page_id', 'types', 'id', 'section_title', 'caption', 'rows', 'name'}.
+		print(f'{ds.features["sql"]=}.')  # dict. {'human_readable', 'sel', 'agg', 'conds'}.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["phase"]=}.')  # int32.
+		print(f'{example["question"]=}.')  # str.
+		print(f'{example["table"]["header"]=}.')  # list of strs.
+		print(f'{example["table"]["page_title"]=}.')  # str.
+		print(f'{example["table"]["page_id"]=}.')  # str.
+		print(f'{example["table"]["types"]=}.')  # list of strs.
+		print(f'{example["table"]["id"]=}.')  # str.
+		print(f'{example["table"]["section_title"]=}.')  # str.
+		print(f'{example["table"]["caption"]=}.')  # str.
+		print(f'{example["table"]["rows"]=}.')  # list of lists of strs.
+		print(f'{example["table"]["name"]=}.')  # str.
+		print(f'{example["sql"]["human_readable"]=}.')  # str.
+		print(f'{example["sql"]["sel"]=}.')  # int.
+		print(f'{example["sql"]["agg"]=}.')  # int.
+		print(f'{example["sql"]["conds"]=}.')  # dict. {'column_index', 'operator_index', 'condition'}.
+
+	if True:
+		# WikiTQ.
+		#	REF [site] >> https://huggingface.co/datasets/wikitablequestions
+
+		dataset_name = "wikitablequestions"  # ~29.3MB.
+		split = "test"  # {None, "train", "validation", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["id"]=}.')  # datasets.Value.
+		print(f'{ds.features["question"]=}.')  # datasets.Value.
+		print(f'{ds.features["answers"]=}.')  # datasets.Sequence.
+		print(f'{ds.features["table"]=}.')  # dict. {'header', 'rows', 'name'}.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["id"]=}.')  # str.
+		print(f'{example["question"]=}.')  # str.
+		print(f'{example["answers"]=}.')  # list of strs.
+		print(f'{example["table"]["header"]=}.')  # list of strs.
+		print(f'{example["table"]["rows"]=}.')  # list of lists of strs.
+		print(f'{example["table"]["name"]=}.')  # str.
+
+# REF [site] >> https://huggingface.co/HuggingFaceM4
+def datasets_hugging_face_m4_test():
+	import datasets
+
+	if True:
+		# VQAv2.
+
+		dataset_name = "HuggingFaceM4/VQAv2"  # ~20.2GB.
+		split = "test"  # {None, "train", "validation", "testdev", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["question_type"]=}.')  # datasets.Value.
+		print(f'{ds.features["multiple_choice_answer"]=}.')  # datasets.Value.
+		print(f'{ds.features["answers"]=}.')  # list of dicts.
+		print(f'{ds.features["image_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["answer_type"]=}.')  # datasets.Value.
+		print(f'{ds.features["question_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["question"]=}.')  # datasets.Value.
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["question_type"]=}.')  # str.
+		print(f'{example["multiple_choice_answer"]=}.')  # str.
+		print(f'{example["answers"]=}.')  # list of dicts. {'answer', 'answer_confidence', 'answer_id'}.
+		#print(f'{example["answers"][0]["answer"]=}.')
+		#print(f'{example["answers"][0]["answer_confidence"]=}.')
+		#print(f'{example["answers"][0]["answer_id"]=}.')
+		print(f'{example["image_id"]=}.')  # int64.
+		print(f'{example["answer_type"]=}.')  # str.
+		print(f'{example["question_id"]=}.')  # int64.
+		print(f'{example["question"]=}.')  # str.
+		print(f'{example["image"]=}.')  # PIL.Image.
+
+	if True:
+		# VaTeX.
+
+		dataset_name = "HuggingFaceM4/vatex"
+		if False:
+			subset = "v1.0"
+			split = "public_test"  # {None, "train", "validation", "public_test"}.
+		else:
+			subset = "v1.1"
+			split = "public_test"  # {None, "train", "validation", "public_test", "private_test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name, subset)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, subset, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["videoID"]=}.')  # datasets.Value.
+		print(f'{ds.features["path"]=}.')  # datasets.Value.
+		print(f'{ds.features["start"]=}.')  # datasets.Value.
+		print(f'{ds.features["end"]=}.')  # datasets.Value.
+		print(f'{ds.features["enCap"]=}.')  # datasets.Sequence.
+		print(f'{ds.features["chCap"]=}.')  # datasets.Sequence.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["videoID"]=}.')  # str.
+		print(f'{example["path"]=}.')  # str.
+		print(f'{example["start"]=}.')  # int32.
+		print(f'{example["end"]=}.')  # int32.
+		print(f'{example["enCap"]=}.')  # list of strs.
+		print(f'{example["chCap"]=}.')  # list of strs.
+
+	if True:
+		# TextCaps.
+
+		dataset_name = "HuggingFaceM4/TextCaps"  # ~181MB.
+		split = "test"  # {None, "train", "validation", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["ocr_tokens"]=}.')  # list of datasets.Value's.
+		print(f'{ds.features["ocr_info"]=}.')  # list of dicts.
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+		print(f'{ds.features["image_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_classes"]=}.')  # datasets.Value.
+		print(f'{ds.features["flickr_original_url"]=}.')  # datasets.Value.
+		print(f'{ds.features["flickr_300k_url"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_width"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_height"]=}.')  # datasets.Value.
+		print(f'{ds.features["set_name"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_name"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_path"]=}.')  # datasets.Value.
+		print(f'{ds.features["reference_strs"]=}.')  # datasets.Value.
+		print(f'{ds.features["reference_tokens"]=}.')  # datasets.Value.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["ocr_tokens"]=}.')  # list of strs.
+		print(f'{example["ocr_info"]=}.')  # list of dicts. {'word', 'bounding_box'}.
+		print(f'{example["ocr_info"][0]["word"]=}.')  # str.
+		print(f'{example["ocr_info"][0]["bounding_box"]=}.')  # dict. {'width', 'height', 'rotation', 'roll', 'pitch', 'yaw', 'top_left_x', 'top_left_y'}.
+		print(f'{example["image"]=}.')  # PIL.Image.
+		print(f'{example["image_id"]=}.')  # str.
+		print(f'{example["image_classes"]=}.')  # list of strs.
+		print(f'{example["flickr_original_url"]=}.')  # str.
+		print(f'{example["flickr_300k_url"]=}.')  # str.
+		print(f'{example["image_width"]=}.')  # int32.
+		print(f'{example["image_height"]=}.')  # int32.
+		print(f'{example["set_name"]=}.')  # str.
+		print(f'{example["image_name"]=}.')  # str.
+		print(f'{example["image_path"]=}.')  # str.
+		print(f'{example["reference_strs"]=}.')  # str.
+		print(f'{example["reference_tokens"]=}.')  # str.
+
+	if True:
+		# NoCaps.
+
+		dataset_name = "HuggingFaceM4/NoCaps"
+		split = "test"  # {None, "validation", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+		print(f'{ds.features["image_coco_url"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_date_captured"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_file_name"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_height"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_width"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_license"]=}.')  # datasets.Value.
+		print(f'{ds.features["image_open_images_id"]=}.')  # datasets.Value.
+		print(f'{ds.features["annotations_ids"]=}.')  # datasets.=Sequence.
+		print(f'{ds.features["annotations_captions"]=}.')  # datasets.=Sequence.
+
+		example = ds[example_idx]
+		print(f'{example["image"]=}.')  # PIL.Image.
+		print(f'{example["image_coco_url"]=}.')  # str.
+		print(f'{example["image_date_captured"]=}.')  # str.
+		print(f'{example["image_file_name"]=}.')  # str.
+		print(f'{example["image_height"]=}.')  # int32.
+		print(f'{example["image_width"]=}.')  # int32.
+		print(f'{example["image_id"]=}.')  # int32.
+		print(f'{example["image_license"]=}.')  # int8.
+		print(f'{example["image_open_images_id"]=}.')  # str.
+		print(f'{example["annotations_ids"]=}.')  # list of int32's.
+		print(f'{example["annotations_captions"]=}.')  # list of strs.
+
+# REF [site] >> https://huggingface.co/nielsr
+def datasets_nielsr_test():
+	from PIL import Image
+	import matplotlib.pyplot as plt
+	import datasets
+
+	# FUNSD.
+	dataset_name = "nielsr/funsd"  # ~16.8MB.
+	split = "test"  # {None, "train", "test"}.
+	example_idx = 0
+
+	#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+	#ds = ds_dict[split]
+	ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+	print(f"{ds=}.")
+	print(f'{ds.features["id"]=}.')  # datasets.Value.
+	print(f'{ds.features["words"]=}.')  # datasets.Sequence.
+	print(f'{ds.features["bboxes"]=}.')  # datasets.Sequence.
+	print(f'{ds.features["ner_tags"]=}.')  # datasets.Sequence.
+	print(f'{ds.features["image_path"]=}.')  # datasets.Value.
+	print(f"#examples = {ds.num_rows}.")
+	assert example_idx < ds.num_rows
+
+	example = ds[example_idx]
+	print(f'{example["id"]=}.')  # str.
+	print(f'{example["words"]=}.')  # list of strs.
+	print(f'{example["bboxes"]=}.')  # list of [x1, y1, x2, y2].
+	print(f'{example["ner_tags"]=}.')  # list of ints.
+	print(f'{example["image_path"]=}.')  # str.
+	assert len(example["words"]) == len(example["bboxes"]) == len(example["ner_tags"])
+
+	image_path = example["image_path"]
+	try:
+		img = Image.open(image_path)
+
+		#img.show()
+		#plt.show()
+	except IOError as ex:
+		print('Failed to load an image, {}: {}.'.format(image_path, ex))
+
+# REF [site] >> https://huggingface.co/naver-clova-ix
+def datasets_naver_clova_test():
+	import json
+	import matplotlib.pyplot as plt
+	import datasets
+
+	if True:
+		# CORD.
+
+		#dataset_name = "naver-clova-ix/cord-v1"
+		dataset_name = "naver-clova-ix/cord-v2"
+		split = "test"  # {None, "train", "validation", "test"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+		print(f'{ds.features["ground_truth"]=}.')  # datasets.Value.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["image"]=}.')  # PIL.Image.
+		print(f'{example["ground_truth"]=}.')  # str. JSON format.
+
+		if False:
+			# Visualize.
+			img = example["image"]
+			gt = json.loads(example["ground_truth"])
+
+			print("G/T:")
+			print(gt)
+			img.show()
+			plt.show()
+
+		ds_cast = ds.cast_column("image", datasets.Image(decode=False))
+		print(f'{ds_cast.features["image"]=}.')  # datasets.Image.
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+
+	if True:
+		# SynthDoG.
+
+		dataset_name = "naver-clova-ix/synthdog-en"  # ~42GB.
+		#dataset_name = "naver-clova-ix/synthdog-ko"
+		#dataset_name = "naver-clova-ix/synthdog-zh"
+		#dataset_name = "naver-clova-ix/synthdog-ja"
+		split = "validation"  # {None, "train", "validation"}.
+		example_idx = 0
+
+		#ds_dict = datasets.load_dataset(dataset_name)  # datasets.DatasetDict.
+		#ds = ds_dict[split]
+		ds = datasets.load_dataset(dataset_name, split=split)  # datasets.Dataset.
+
+		print(f"{ds=}.")
+		print(f'{ds.features["image"]=}.')  # datasets.Image.
+		print(f'{ds.features["ground_truth"]=}.')  # datasets.Value.
+		print(f"#examples = {ds.num_rows}.")
+		assert example_idx < ds.num_rows
+
+		example = ds[example_idx]
+		print(f'{example["image"]=}.')  # PIL.Image.
+		print(f'{example["ground_truth"]=}.')  # str. JSON format.
+
+		if False:
+			# Visualize.
+			img = example["image"]
+			gt = json.loads(example["ground_truth"])
+
+			print("G/T:")
+			print(gt)
+			img.show()
+			plt.show()
 
 # REF [site] >> https://huggingface.co/docs/datasets/how_to
 def datasets_how_to_guides__general_use():
@@ -1301,7 +1686,10 @@ def main():
 	#datasets_quicktour()
 	#datasets_tutorials()
 
-	datasets_wikipedia_test()
+	#datasets_test()  # Wikipedia, TextVQA, WikiSQL, WikiTQ.
+	#datasets_hugging_face_m4_test()  # VQAv2, VaTeX, TextCaps, NoCaps.
+	#datasets_nielsr_test()  # FUNSD.
+	datasets_naver_clova_test()  # CORD, SynthDoG.
 
 	# How-to guides.
 	#	https://huggingface.co/docs/datasets/how_to
