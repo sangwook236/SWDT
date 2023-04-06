@@ -804,7 +804,7 @@ def datasets_nielsr_test():
 		#img.show()
 		#plt.show()
 	except IOError as ex:
-		print('Failed to load an image, {}: {}.'.format(image_path, ex))
+		print(f"Failed to load an image, {image_path}: {ex}.")
 
 # REF [site] >> https://huggingface.co/naver-clova-ix
 def datasets_naver_clova_test():

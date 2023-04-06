@@ -1749,6 +1749,45 @@ def palm_example():
 		# Generate say 10 samples and use the reward model to return the best one.
 		answer = trainer.generate(2048, prompt=prompts[0], num_samples=10)  # (<= 2048,).
 
+# REF [site] >>
+#	https://huggingface.co/decapoda-research
+#	https://huggingface.co/docs/transformers/main/en/model_doc/llama
+def llama_example():
+	# Models:
+	#	decapoda-research/llama-smallint-pt.
+	#	decapoda-research/llama-7b-hf.
+	#	decapoda-research/llama-13b-hf.
+	#	decapoda-research/llama-30b-hf.
+	#	decapoda-research/llama-65b-hf.
+	#	decapoda-research/llama-7b-hf-int4.
+	#	decapoda-research/llama-13b-hf-int4.
+	#	decapoda-research/llama-30b-hf-int4.
+	#	decapoda-research/llama-65b-hf-int4.
+	#	decapoda-research/llama-7b-hf-int8.
+
+	if False:
+		# Initializing a LLaMA llama-7b style configuration.
+		configuration = transformers.LlamaConfig()
+
+		# Initializing a model from the llama-7b style configuration.
+		model = transformers.LlamaModel(configuration)
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if True:
+		model = transformers.LlamaForCausalLM.from_pretrained("decapoda-research/llama-7b-hf")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("decapoda-research/llama-7b-hf")
+
+		prompt = "Hey, are you conscious? Can you talk to me?"
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate.
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+
+		generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(generated)
+
 # REF [site] >> https://huggingface.co/Salesforce
 def codet5_example():
 	# Models:
@@ -3620,6 +3659,11 @@ def main():
 	# PaLM.
 
 	#palm_example()  # PaLM + RLHF.
+
+	#-----
+	# LLaMa.
+
+	#llama_example()  # Not yet tested.
 
 	#-----
 	# Code.
