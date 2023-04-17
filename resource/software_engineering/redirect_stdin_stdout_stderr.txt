@@ -2,19 +2,26 @@ REF [site] >> http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-3.html
 REF [site] >> http://www.tuxfiles.org/linuxhelp/iodirection.html
 
 
-- stdin to file.
-	cat < listing.txt
+- stdin from file.
+	command < stdin.txt
 
 - stdout to file (truncate).
-	ls > listing.txt
+	command > stdout.txt
+	command 1> stdout.txt
 - stdout to file (append).
-	ls >> listing.txt
+	command >> stdout.txt
 - stderr to file.
-	ls 2> listing.txt
-- stdout & stderr to file.
-	ls &> listing.txt
-
-- stdout to stderr.
-	ls 1>&2
+	command 2> stderr.txt
+- stdout & stderr to two separate files.
+	command 1> stdout.txt 2> stderr.txt
 - stderr to stdout.
-	ls 2>&1
+	command 2>&1
+	command > stdout.txt 2>&1
+		The order of redirection is important.
+	command 2>&1 > stdout.txt (X)
+		stderr is redirected to stdout before stdout was redirected to stdout.txt.
+- stdout to stderr.
+	command 1>&2
+	command 2> stderr.txt 1>&2
+- stdout & stderr to file.
+	command &> stdout_stderr.txt

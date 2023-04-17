@@ -250,6 +250,7 @@ def rcnn_torchvision_tutorial(is_instance_segmentation=True):
 	num_epochs = 10
 
 	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+	print(f'Device: {device}.')
 
 	#--------------------
 	data_dir_path = './PennFudanPed'
@@ -321,11 +322,11 @@ def rcnn_torchvision_tutorial(is_instance_segmentation=True):
 
 	# Define training and validation data loaders.
 	train_dataloader = torch.utils.data.DataLoader(
-		train_dataset, batch_size=2, shuffle=True, num_workers=4,
+		train_dataset, batch_size=2, shuffle=True, num_workers=4, persistent_workers=False,
 		collate_fn=collate_fn
 	)
 	test_dataloader = torch.utils.data.DataLoader(
-		test_dataset, batch_size=1, shuffle=False, num_workers=4,
+		test_dataset, batch_size=1, shuffle=False, num_workers=4, persistent_workers=False,
 		collate_fn=collate_fn
 	)
 
@@ -356,6 +357,23 @@ def rcnn_torchvision_tutorial(is_instance_segmentation=True):
 
 			# Evaluate on the test dataset.
 			torchvision_detection.engine.evaluate(model, test_dataloader, device=device)  # Person keypoints are evaluated by default when the IoU type is 'keypoints'.
+
+		# Save the model.
+		if is_instance_segmentation:
+			model_filepath = './PennFudanPed_segm.pth'
+		else:
+			model_filepath = './PennFudanPed_objdet.pth'
+		torch.save({'state_dict': model.state_dict()}, model_filepath)
+		print('The trained model saved to {}.'.format(model_filepath))
+	else:
+		# Load a model.
+		if is_instance_segmentation:
+			model_filepath = './PennFudanPed_segm.pth'
+		else:
+			model_filepath = './PennFudanPed_objdet.pth'
+		loaded_data = torch.load(model_filepath, map_location=device)
+		model.load_state_dict(loaded_data['state_dict'])
+		print('A model loaded from {}.'.format(model_filepath))
 
 	#--------------------
 	# Infer.
