@@ -223,12 +223,19 @@ void principal_curvature_estimation_example()
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Principal curvatures computed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
-		std::cout << "#principal curvatures = " << principal_curvatures->size() << std::endl;
+		std::cout << "#principal curvatures = " << principal_curvatures->size() << std::endl;  // #principal curvatures = #input points.
 	}
 
 	// Display and retrieve the shape context descriptor vector for the 0th point.
-	const pcl::PrincipalCurvatures &descriptor = principal_curvatures->points[0];
-	std::cout << descriptor << std::endl;
+	const auto point_id = 0;
+	const auto &pt = (*cloud)[point_id];
+	//const auto &pt = cloud->at(point_id);
+	std::cout << "Principal curvatures at point #" << point_id << " (" << pt.x << ", " << pt.y << ", " << pt.z << ")." << std::endl;
+	const pcl::PrincipalCurvatures &descriptor = principal_curvatures->points[point_id];
+	//const pcl::PrincipalCurvatures &descriptor = principal_curvatures->at(point_id);
+	std::cout << "\tDescriptor: " << descriptor << std::endl;
+	std::cout << "\tThe max and min eigenvalues of curvature: pc1 = " << descriptor.pc1 << ", pc2 = " << descriptor.pc2 << std::endl;
+	std::cout << "\tPrincipal direction (eigenvector of the max eigenvalue): (" << descriptor.principal_curvature_x << ", " << descriptor.principal_curvature_y << ", " << descriptor.principal_curvature_z << ")." << std::endl;
 
 #if 1
 	// Filter the valid principal curvatures.

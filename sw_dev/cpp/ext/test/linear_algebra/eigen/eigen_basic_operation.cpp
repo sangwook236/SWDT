@@ -1,10 +1,9 @@
 //#include "stdafx.h"
 #include <cmath>
-//#define EIGEN2_SUPPORT 1
-#include <unsupported/Eigen/MatrixFunctions>
-#include <Eigen/Core>
-#include <Eigen/Geometry>
 #include <iostream>
+//#define EIGEN2_SUPPORT 1
+#include <Eigen/Core>
+#include <unsupported/Eigen/MatrixFunctions>
 
 
 // Import most common Eigen types.
@@ -46,9 +45,9 @@ void initialization()
 		std::cout << mat3 << std::endl;
 
 		//
-	    std::cout << Eigen::Matrix3d::Constant(-3.7) << std::endl;
-	    std::cout << Eigen::MatrixXd::Constant(3, 3, 1.2) << std::endl;
-	    std::cout << Eigen::Matrix3d::Random() << std::endl;
+		std::cout << Eigen::Matrix3d::Constant(-3.7) << std::endl;
+		std::cout << Eigen::MatrixXd::Constant(3, 3, 1.2) << std::endl;
+		std::cout << Eigen::Matrix3d::Random() << std::endl;
 		std::cout << Eigen::MatrixXd::Random(3, 4) << std::endl;
 		std::cout << Eigen::ArrayXd::LinSpaced(10, 0, 90).transpose() << std::endl;
 		//std::cout << Eigen::ArrayXXd::LinSpaced(10, 0, 90) << std::endl;
@@ -298,33 +297,33 @@ void matrix_arithmetic_1()
 		m.bottomRightCorner(2, 2).setZero();
 		std::cout << "Now the matrix m is:" << std::endl << m << std::endl;
 	}
-    //
-    {
-        Eigen::Matrix3f A;
-        A << 1, 2, 1,  2, 1, 0,  -1, 1, 2;
-        std::cout << "Here is the matrix A:\n" << A << std::endl;
-        std::cout << "The transpose of A is:\n" << A.transpose() << std::endl;
+	//
+	{
+		Eigen::Matrix3f A;
+		A << 1, 2, 1,  2, 1, 0,  -1, 1, 2;
+		std::cout << "Here is the matrix A:\n" << A << std::endl;
+		std::cout << "The transpose of A is:\n" << A.transpose() << std::endl;
 		std::cout << "The conjugate of A is:\n" << A.conjugate() << std::endl;
 		std::cout << "The adjoint (conjugate transpose) of A is:\n" << A.adjoint() << std::endl;
-        std::cout << "The determinant of A is " << A.determinant() << std::endl;
-        std::cout << "The inverse of A is:\n" << A.inverse() << std::endl;
-    }
-    //
-    {
-        Eigen::VectorXf v(2);
-        Eigen::MatrixXf m(2, 2), n(2, 2);
-        v << -1,  2;
-        m << 1, -2,  -3, 4;
-        std::cout << "v.squaredNorm() = " << v.squaredNorm() << std::endl;
-        std::cout << "v.norm() = " << v.norm() << std::endl;
-        std::cout << "v.lpNorm<1>() = " << v.lpNorm<1>() << std::endl;
-        std::cout << "v.lpNorm<Eigen::Infinity>() = " << v.lpNorm<Eigen::Infinity>() << std::endl;
-        std::cout << std::endl;
-        std::cout << "m.squaredNorm() = " << m.squaredNorm() << std::endl;
-        std::cout << "m.norm() = " << m.norm() << std::endl;
-        std::cout << "m.lpNorm<1>() = " << m.lpNorm<1>() << std::endl;
-        std::cout << "m.lpNorm<Eigen::Infinity>() = " << m.lpNorm<Eigen::Infinity>() << std::endl;
-    }
+		std::cout << "The determinant of A is " << A.determinant() << std::endl;
+		std::cout << "The inverse of A is:\n" << A.inverse() << std::endl;
+	}
+	//
+	{
+		Eigen::VectorXf v(2);
+		Eigen::MatrixXf m(2, 2), n(2, 2);
+		v << -1,  2;
+		m << 1, -2,  -3, 4;
+		std::cout << "v.squaredNorm() = " << v.squaredNorm() << std::endl;
+		std::cout << "v.norm() = " << v.norm() << std::endl;
+		std::cout << "v.lpNorm<1>() = " << v.lpNorm<1>() << std::endl;
+		std::cout << "v.lpNorm<Eigen::Infinity>() = " << v.lpNorm<Eigen::Infinity>() << std::endl;
+		std::cout << std::endl;
+		std::cout << "m.squaredNorm() = " << m.squaredNorm() << std::endl;
+		std::cout << "m.norm() = " << m.norm() << std::endl;
+		std::cout << "m.lpNorm<1>() = " << m.lpNorm<1>() << std::endl;
+		std::cout << "m.lpNorm<Eigen::Infinity>() = " << m.lpNorm<Eigen::Infinity>() << std::endl;
+	}
 }
 void matrix_arithmetic_2()
 {
@@ -333,8 +332,8 @@ void matrix_arithmetic_2()
 		Eigen::Matrix3f mat;
 		Eigen::Vector4f v1, v2;
 		mat << 1, 2, 6,
-			   -9, 3, -1,
-			   7, 2, -2;
+			-9, 3, -1,
+			7, 2, -2;
 		v1 << 5, 2, 1, 7;
 		v2 << 3, 1, 2, 4;
 		std::cout << "mat.cwiseAbs()     =\n" << mat.cwiseAbs() << std::endl;
@@ -363,62 +362,62 @@ void matrix_arithmetic_2()
 		std::cout << "cross(v1, v2) = " << v1.cross(v2) << std::endl;
 		std::cout << "outer(v1, v2) = " << v1 * v2.transpose() << std::endl;
 	}
-    //
-    {
-        Eigen::Matrix2d mat;
-        mat << 1, 2,  3, 4;
-        std::cout << "Here is mat.sum():       " << mat.sum() << std::endl;
-        std::cout << "Here is mat.prod():      " << mat.prod() << std::endl;
-        std::cout << "Here is mat.mean():      " << mat.mean() << std::endl;
-        std::cout << "Here is mat.minCoeff():  " << mat.minCoeff() << std::endl;
-        std::cout << "Here is mat.maxCoeff():  " << mat.maxCoeff() << std::endl;
-        std::cout << "Here is mat.trace():     " << mat.trace() << std::endl;
-    }
-    //
-    {
-        Eigen::ArrayXXf a(2, 2);
-        a << 1, 2,  3, 4;
-        std::cout << "(a > 0).all()   = " << (a > 0).all() << std::endl;
-        std::cout << "(a > 0).any()   = " << (a > 0).any() << std::endl;
-        std::cout << "(a > 0).count() = " << (a > 0).count() << std::endl;
-        std::cout << std::endl;
-        std::cout << "(a > 2).all()   = " << (a > 2).all() << std::endl;
-        std::cout << "(a > 2).any()   = " << (a > 2).any() << std::endl;
-        std::cout << "(a > 2).count() = " << (a > 2).count() << std::endl;
-    }
-    //
-    {
-        Eigen::MatrixXf m(2, 2);
-        m << 1, 2,  3, 4;
-        // Get location of maximum.
-        Eigen::MatrixXf::Index maxRow, maxCol;
-        const float max = m.maxCoeff(&maxRow, &maxCol);
-        // Get location of minimum.
-        Eigen::MatrixXf::Index minRow, minCol;
-        const float min = m.minCoeff(&minRow, &minCol);
-        std::cout << "Max: " << max << ", at: " << maxRow << "," << maxCol << std::endl;
-        std::cout << "Min: " << min << ", at: " << minRow << "," << minCol << std::endl;
+	//
+	{
+		Eigen::Matrix2d mat;
+		mat << 1, 2,  3, 4;
+		std::cout << "Here is mat.sum():       " << mat.sum() << std::endl;
+		std::cout << "Here is mat.prod():      " << mat.prod() << std::endl;
+		std::cout << "Here is mat.mean():      " << mat.mean() << std::endl;
+		std::cout << "Here is mat.minCoeff():  " << mat.minCoeff() << std::endl;
+		std::cout << "Here is mat.maxCoeff():  " << mat.maxCoeff() << std::endl;
+		std::cout << "Here is mat.trace():     " << mat.trace() << std::endl;
+	}
+	//
+	{
+		Eigen::ArrayXXf a(2, 2);
+		a << 1, 2,  3, 4;
+		std::cout << "(a > 0).all()   = " << (a > 0).all() << std::endl;
+		std::cout << "(a > 0).any()   = " << (a > 0).any() << std::endl;
+		std::cout << "(a > 0).count() = " << (a > 0).count() << std::endl;
+		std::cout << std::endl;
+		std::cout << "(a > 2).all()   = " << (a > 2).all() << std::endl;
+		std::cout << "(a > 2).any()   = " << (a > 2).any() << std::endl;
+		std::cout << "(a > 2).count() = " << (a > 2).count() << std::endl;
+	}
+	//
+	{
+		Eigen::MatrixXf m(2, 2);
+		m << 1, 2,  3, 4;
+		// Get location of maximum.
+		Eigen::MatrixXf::Index maxRow, maxCol;
+		const float max = m.maxCoeff(&maxRow, &maxCol);
+		// Get location of minimum.
+		Eigen::MatrixXf::Index minRow, minCol;
+		const float min = m.minCoeff(&minRow, &minCol);
+		std::cout << "Max: " << max << ", at: " << maxRow << "," << maxCol << std::endl;
+		std::cout << "Min: " << min << ", at: " << minRow << "," << minCol << std::endl;
 	}
 	// Column-wise, row-wise.
-    {
+	{
 		//
-        Eigen::MatrixXf mat1(2, 4);
-        mat1 << 1, 2, 6, 9,
-                3, 1, 7, 2;
-        std::cout << "Column's maximum: " << std::endl << mat1.colwise().maxCoeff() << std::endl;
-        std::cout << "Row's maximum: " << std::endl << mat1.rowwise().maxCoeff() << std::endl;
-        Eigen::MatrixXf::Index maxIndex;
-        const float maxNorm = mat1.colwise().sum().maxCoeff(&maxIndex);
-        std::cout << "Maximum sum at position " << maxIndex << std::endl;
-        std::cout << "The corresponding vector is: " << std::endl;
-        std::cout << mat1.col(maxIndex) << std::endl;
-        std::cout << "And its sum is: " << maxNorm << std::endl;
+		Eigen::MatrixXf mat1(2, 4);
+		mat1 << 1, 2, 6, 9,
+				3, 1, 7, 2;
+		std::cout << "Column's maximum: " << std::endl << mat1.colwise().maxCoeff() << std::endl;
+		std::cout << "Row's maximum: " << std::endl << mat1.rowwise().maxCoeff() << std::endl;
+		Eigen::MatrixXf::Index maxIndex;
+		const float maxNorm = mat1.colwise().sum().maxCoeff(&maxIndex);
+		std::cout << "Maximum sum at position " << maxIndex << std::endl;
+		std::cout << "The corresponding vector is: " << std::endl;
+		std::cout << mat1.col(maxIndex) << std::endl;
+		std::cout << "And its sum is: " << maxNorm << std::endl;
 		//
 		Eigen::MatrixXf mat2(2, 4);
 		Eigen::VectorXf v1(2);
 		Eigen::VectorXf v2(4);
 		mat2 << 1, 2, 6, 9,
-			    3, 1, 7, 2;
+				3, 1, 7, 2;
 		v1 << 2, 3;
 		v2 << 5, 4, 3, 2;
 		// Add v to each column of m.
@@ -431,7 +430,7 @@ void matrix_arithmetic_2()
 		//
 		Eigen::MatrixXf mat3(2, 4);
 		mat3 << 1, 2, 6, 9,
-			    3, 1, 7, 2;
+				3, 1, 7, 2;
 		//std::cout << "mat3.colwise() / v1 = \n" << mat3.colwise() / v1 << std::endl;  // Compile-time error.
 		//std::cout << "mat3.rowwise() / v2 = \n" << mat3.rowwise() / v2.transpose() << std::endl;  // Compile-time error.
 		const Eigen::VectorXf normvec = mat3.colwise().norm();
@@ -444,9 +443,9 @@ void matrix_arithmetic_2()
 		Eigen::MatrixXf m(2, 4);
 		Eigen::VectorXf v(2);
 		m << 1, 23, 6, 9,
-			 3, 11, 7, 2;
+			3, 11, 7, 2;
 		v << 2,
-			 3;
+			3;
 		Eigen::MatrixXf::Index index;
 		// Find nearest neighbour.
 		(m.colwise() - v).colwise().squaredNorm().minCoeff(&index);
@@ -462,8 +461,8 @@ void matrix_function_operation()
 		Eigen::MatrixXd m(3, 3);
 
 		m << 101, 13, 4,
-			 13, 11, 5,
-			 4, 5, 37;
+			13, 11, 5,
+			4, 5, 37;
 		std::cout << m << std::endl;
 
 		//
@@ -492,211 +491,6 @@ void matrix_function_operation()
 	}
 }
 
-// REF [site] >> https://eigen.tuxfamily.org/dox/group__TutorialGeometry.html
-void transformation()
-{
-	// Rotation.
-
-	{
-		const double angle = M_PI / 3.0;
-		//Eigen::Rotation2D<double> R(angle);
-		Eigen::Rotation2Dd R(angle);
-
-		std::cout << "R.angle() = " << R.angle() << std::endl;
-		std::cout << "R.smallestPositiveAngle() = " << R.smallestPositiveAngle() << std::endl;
-		std::cout << "R.smallestAngle() = " << R.smallestAngle() << std::endl;
-
-		std::cout << "R.inverse():\n" << R.inverse().toRotationMatrix() << std::endl;
-
-		//R = Eigen::Rotation2Dd::Identity();
-		R.fromRotationMatrix(Eigen::Rotation2Dd::Matrix2::Identity());
-		std::cout << R.toRotationMatrix() << std::endl;
-
-		// Spherical interpolation.
-		//R.slerp();
-	}
-
-	{
-		const double angle = M_PI / 3.0;
-		const Eigen::Vector3d axis(0, 0, 1);
-
-		//Eigen::Quaternion<double> q(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5));
-		Eigen::Quaterniond q(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5));
-		//Eigen::Quaterniond q(Eigen::Quaterniond::AngleAxisType(angle, axis));
-
-		std::cout << "q.x() = " << q.x() << std::endl;
-		std::cout << "q.y() = " << q.y() << std::endl;
-		std::cout << "q.z() = " << q.z() << std::endl;
-		std::cout << "q.w() = " << q.w() << std::endl;
-		std::cout << "q.vec() = " << q.vec().transpose() << std::endl;
-		std::cout << "q.coeffs() = " << q.coeffs().transpose() << std::endl;
-
-		std::cout << "q.norm() = " << q.norm() << std::endl;
-		std::cout << "q.squaredNorm() = " << q.squaredNorm() << std::endl;
-
-		std::cout << "q.inverse() = " << q.inverse() << std::endl;
-		std::cout << "q.conjugate() = " << q.conjugate() << std::endl;
-
-		std::cout << "q.toRotationMatrix():\n" << q.toRotationMatrix() << std::endl;
-
-		q = Eigen::Quaterniond::Identity();
-		std::cout << q << std::endl;
-
-		// Spherical interpolation.
-		//q.slerp();
-	}
-
-	{
-		const double angle = M_PI / 3.0;
-		const Eigen::Vector3d axis(0, 0, 1);
-
-		//Eigen::AngleAxis<double> R(angle, axis);
-		Eigen::AngleAxisd R(angle, axis);
-		//Eigen::AngleAxisd R(Eigen::Quaterniond(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5)));
-
-		std::cout << "R.angle() = " << R.angle() << std::endl;
-		std::cout << "R.axis() = " << R.axis().transpose() << std::endl;
-
-		std::cout << "R.inverse():\n" << R.inverse().toRotationMatrix() << std::endl;
-
-		//R = Eigen::AngleAxisd::Identity();
-		R.fromRotationMatrix(Eigen::AngleAxisd::Matrix3::Identity());
-		std::cout << R.toRotationMatrix() << std::endl;
-	}
-
-	//-----
-	// Scaling.
-
-	{
-		//Eigen::UniformScaling<double> S(2.0);
-		Eigen::UniformScaling<double> S = Eigen::Scaling(2.0);
-
-		std::cout << "S.factor() = " << S.factor() << std::endl;
-		std::cout << "S.inverse() = " << S.inverse().factor() << std::endl;
-	}
-
-	{
-		//Eigen::DiagonalMatrix<double, 2> S(2.0, 4.0);
-		Eigen::DiagonalMatrix<double, 2> S = Eigen::Scaling(2.0, 4.0);
-
-		std::cout << "S.diagonal() = " << S.diagonal().transpose() << std::endl;
-		std::cout << "S.inverse() = " << S.inverse().diagonal().transpose() << std::endl;
-	}
-
-	{
-		//Eigen::DiagonalMatrix<double, 3> S(2.0, 4.0, 8.0);
-		Eigen::DiagonalMatrix<double, 3> S = Eigen::Scaling(2.0, 4.0, 8.0);
-
-		std::cout << "S.diagonal() = " << S.diagonal().transpose() << std::endl;
-		std::cout << "S.inverse() = " << S.inverse().diagonal().transpose() << std::endl;
-	}
-
-	{
-		//Eigen::DiagonalMatrix<double, 5> S(2.0, 4.0, 8.0, 4.0, 2.0);
-		Eigen::DiagonalMatrix<double, 5> S = Eigen::Scaling(Eigen::Vector<double, 5>(2.0, 4.0, 8.0, 4.0, 2.0));
-
-		std::cout << "S.diagonal() = " << S.diagonal().transpose() << std::endl;
-		std::cout << "S.inverse() = " << S.inverse().diagonal().transpose() << std::endl;
-	}
-
-	//-----
-	// Translation.
-
-	{
-		//Eigen::Translation<double, 2> T(1.0, 2.0);
-		Eigen::Translation2d T(1.0, 2.0);
-
-		std::cout << "T.x() = " << T.x() << std::endl;
-		std::cout << "T.y() = " << T.y() << std::endl;
-		std::cout << "T.vector() = " << T.vector().transpose() << std::endl;
-		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
-
-		std::cout << "T.inverse() = " << T.inverse().vector().transpose() << std::endl;
-
-		T = Eigen::Translation2d::Identity();
-		std::cout << T.vector().transpose() << std::endl;
-	}
-
-	{
-		//Eigen::Translation<double, 3> T(1.0, 2.0, 3.0);
-		Eigen::Translation3d T(1.0, 2.0, 3.0);
-
-		std::cout << "T.x() = " << T.x() << std::endl;
-		std::cout << "T.y() = " << T.y() << std::endl;
-		std::cout << "T.z() = " << T.z() << std::endl;
-		std::cout << "T.vector() = " << T.vector().transpose() << std::endl;
-		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
-
-		std::cout << "T.inverse() = " << T.inverse().vector().transpose() << std::endl;
-
-		T = Eigen::Translation3d::Identity();
-		std::cout << T.vector().transpose() << std::endl;
-	}
-
-	{
-		Eigen::Translation<double, 5> T(Eigen::Vector<double, 5>(1.0, 2.0, 3.0, 4.0, 5.0));
-
-		std::cout << "T.x() = " << T.x() << std::endl;
-		std::cout << "T.y() = " << T.y() << std::endl;
-		std::cout << "T.z() = " << T.z() << std::endl;
-		std::cout << "T.vector() = " << T.vector().transpose() << std::endl;
-		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
-
-		std::cout << "T.inverse() = " << T.inverse().vector().transpose() << std::endl;
-
-		T = Eigen::Translation<double, 5>::Identity();
-		std::cout << T.vector().transpose() << std::endl;
-	}
-
-	//-----
-	// Affine transformation.
-
-	{
-		const Eigen::Vector3d translation(1, 2, 3);
-		const double angle(M_PI / 3.0);
-		const Eigen::Vector3d axis(0, 0, 1);
-		const double scale = 2.0;
-
-		//Eigen::Transform<double, 3, Eigen::Isometry> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Isometry3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Transform<double, 3, Eigen::Affine> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		Eigen::Affine3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Transform<double, 3, Eigen::AffineCompact> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::AffineCompact3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Transform<double, 3, Eigen::Projective> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Projective3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-
-		std::cout << "T.matrix():\n" << T.matrix() << std::endl;
-		std::cout << "T.linear():\n" << T.linear() << std::endl;
-		std::cout << "T.affine():\n" << T.affine() << std::endl;
-		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
-		std::cout << "T.rotation():\n" << T.rotation() << std::endl;
-		std::cout << "T.inverse():\n" << T.inverse().matrix() << std::endl;
-
-		T.makeAffine();
-		std::cout << "T.makeAffine():\n" << T.matrix() << std::endl;
-
-		T = Eigen::Transform<double, 3, Eigen::Affine>::Identity();
-		std::cout << "T.matrix():\n" << T.matrix() << std::endl;
-	}
-
-	//-----
-	// Linear transformation.
-
-	{
-		const float angle(M_PIf / 3.0f);
-		const Eigen::Vector3f axis(0, 0, 1);
-		const float scale = 2.0f;
-
-		//Eigen::Matrix<float, 2, 2> M = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
-		//Eigen::Matrix2f M = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
-		//Eigen::Matrix<float, 3, 3> M = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
-		Eigen::Matrix3f M = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
-
-		std::cout << "M:\n" << M << std::endl;
-	}
-}
-
 }  // namespace local
 }  // unnamed namespace
 
@@ -712,15 +506,13 @@ void basic_operation()
 	//local::dynamic_size_operation();
 	//local::fixed_size_block_operation();
 	//local::dynamic_size_block_operation();
-    
+
 	//local::coefficient_wise_unary_operation();
 	//local::coefficient_wise_binary_operation();
 
-	//local::matrix_arithmetic_1();
+	local::matrix_arithmetic_1();
 	//local::matrix_arithmetic_2();
 	//local::matrix_function_operation();
-
-	local::transformation();
 }
 
 }  // namespace my_eigen

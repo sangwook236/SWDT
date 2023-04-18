@@ -21,6 +21,8 @@ void linear_system();
 void linear_least_squares();
 void nonlinear_least_squares();
 
+void transformation_test();
+
 void spline();
 
 }  // namespace my_eigen
@@ -31,7 +33,7 @@ void spline();
 
 int eigen_main(int argc, char *argv[])
 {
-	my_eigen::basic_operation();
+	//my_eigen::basic_operation();
 
 	// Decomposition -----------------------------------------
 	//my_eigen::lu();
@@ -46,6 +48,9 @@ int eigen_main(int argc, char *argv[])
 	// Least squares -----------------------------------------
 	//my_eigen::linear_least_squares();
 	//my_eigen::nonlinear_least_squares();  // Not yet implemented.
+
+	// Geometry ----------------------------------------------
+	my_eigen::transformation_test();
 
 	// Unsupported -------------------------------------------
 	//my_eigen::spline();

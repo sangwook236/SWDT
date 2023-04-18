@@ -64,6 +64,9 @@
     <ClCompile Include="eigen\eigen_evd.cpp">
       <Filter>Source Files\eigen</Filter>
     </ClCompile>
+    <ClCompile Include="eigen\eigen_geometry.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
     <ClCompile Include="eigen\eigen_linear_system.cpp">
       <Filter>Source Files\eigen</Filter>
     </ClCompile>

@@ -226,6 +226,7 @@
     <ClCompile Include="eigen\eigen_basic_operation.cpp" />
     <ClCompile Include="eigen\eigen_cholesky.cpp" />
     <ClCompile Include="eigen\eigen_evd.cpp" />
+    <ClCompile Include="eigen\eigen_geometry.cpp" />
     <ClCompile Include="eigen\eigen_least_squares.cpp" />
     <ClCompile Include="eigen\eigen_linear_system.cpp" />
     <ClCompile Include="eigen\eigen_lu.cpp" />
