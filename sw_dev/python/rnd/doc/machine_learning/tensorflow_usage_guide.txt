@@ -9,6 +9,8 @@
 	- TensorBoard.
 		Run.
 			tensorboard --logdir=/path/to/log-directory
+			tensorboard --logdir=/path/to/log-directory --port=6007
+			tensorboard --logdir=/path/to/log-directory --port=6007 --verbosity=0 --bind_all
 		Open a web browser.
 			http://localhost:6006/
 
