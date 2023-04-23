@@ -5,11 +5,14 @@
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
+#include <pcl/features/normal_3d_omp.h>
 #include <pcl/features/integral_image_normal.h>
 #include <pcl/features/principal_curvatures.h>
 #include <pcl/features/pfh.h>
 #include <pcl/features/fpfh.h>
+#include <pcl/features/fpfh_omp.h>
 //#include <pcl/gpu/features/features.hpp>
+#include <pcl/registration/transformation_estimation_svd.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/visualization/cloud_viewer.h>
 
@@ -468,12 +471,12 @@ double computeCloudResolution(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cl
 // REF [site] >> https://stackoverflow.com/questions/41105987/pcl-feature-matching
 void feature_matching()
 {
-	pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud(new PointCloud<PointXYZ>());
-	loadPCDFile("./cloudASCII000.pcd", *source_cloud);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::io::loadPCDFile("./cloudASCII000.pcd", *source_cloud);
 	std::cout << "File 1 points: " << source_cloud->size() << std::endl;
 
 	// Compute model resolution.
-	double model_resolution = computeCloudResolution(source_cloud);
+	const double model_resolution = computeCloudResolution(source_cloud);
 
 	pcl::ISSKeypoint3D<pcl::PointXYZ, pcl::PointXYZ> iss_detector;
 	pcl::PointCloud<pcl::PointXYZ>::Ptr source_keypoints(new pcl::PointCloud<pcl::PointXYZ>());
@@ -532,12 +535,12 @@ void feature_matching()
 #endif
 
 	// Target point cloud.
-	pcl::PointCloud<pcl::PointXYZ>::Ptr target_cloud(new PointCloud<PointXYZ>());
-	loadPCDFile("cloudASCII003.pcd", *target_cloud);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr target_cloud(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::io::loadPCDFile("./cloudASCII003.pcd", *target_cloud);
 	std::cout << "File 2 points: " << target_cloud->size() << std::endl;
 
 	// Compute model resolution.
-	double model_resolution_1 = computeCloudResolution(target_cloud);
+	const double model_resolution_1 = computeCloudResolution(target_cloud);
 
 	pcl::ISSKeypoint3D<pcl::PointXYZ, pcl::PointXYZ> iss_detector_1;
 	pcl::PointCloud<pcl::PointXYZ>::Ptr target_keypoints(new pcl::PointCloud<pcl::PointXYZ>());
@@ -606,9 +609,9 @@ void feature_matching()
 	pcl::registration::CorrespondenceRejectorOneToOne corr_rej_one_to_one;
 	corr_rej_one_to_one.setInputCorrespondences(correspondences);
 	corr_rej_one_to_one.getCorrespondences(*correspondences_result_rej_one_to_one);
+	//corr_rej_one_to_one.getRemainingCorrespondences(*correspondences, *correspondences_result_rej_one_to_one);
 
 	// Correspondance rejection RANSAC.
-	Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
 	pcl::registration::CorrespondenceRejectorSampleConsensus<pcl::PointXYZ> rejector_sac;
 	pcl::CorrespondencesPtr correspondences_filtered(new pcl::Correspondences());
 	rejector_sac.setInputSource(source_keypoints);
@@ -617,24 +620,26 @@ void feature_matching()
 	rejector_sac.setMaximumIterations(1000000);
 	rejector_sac.setRefineModel(false);
 	rejector_sac.setInputCorrespondences(correspondences_result_rej_one_to_one);
-
 	rejector_sac.getCorrespondences(*correspondences_filtered);
-	correspondences.swap(correspondences_filtered);
-	std::cout << correspondences->size() << " vs. " << correspondences_filtered->size() << std::endl;
-	transform = rejector_sac.getBestTransformation();  // Transformation Estimation method 1.
+	//rejector_sac.getRemainingCorrespondences(*correspondences_result_rej_one_to_one, *correspondences_filtered);
 
-	// Transformation Estimation method 2.
+	std::cout << correspondences->size() << " vs. " << correspondences_filtered->size() << std::endl;
+
+	// Transformation estimation method 1.
+	const Eigen::Matrix4f &transform = rejector_sac.getBestTransformation();
+	// Transformation estimation method 2.
+	//Eigen::Matrix4f transform(Eigen::Matrix4f::Identity());
 	//pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
-	//transformation_estimation.estimateRigidTransformation(*source_keypoints, *target_keypoints, *correspondences, transform);
-	std::cout << "Estimated transform:" << std::endl << transform << std::endl;
+	//transformation_estimation.estimateRigidTransformation(*source_keypoints, *target_keypoints, *correspondences_filtered, transform);
+	std::cout << "Estimated transform:\n" << transform << std::endl;
 
 	// Refinement transform source using transformation matrix.
-
 	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_source(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr final_output(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::transformPointCloud(*source_cloud, *transformed_source, transform);
 	pcl::io::savePCDFileASCII("./Transformed.pcd", (*transformed_source));
 
+	// Visualize.
 	pcl::visualization::PCLVisualizer viewer("Cloud Viewer");
 	//viewer.setBackgroundColor(0, 0, 0);
 	viewer.setBackgroundColor(1, 1, 1);
@@ -653,7 +658,7 @@ void feature_matching()
 	viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "target_cloud");
 	viewer.addPointCloud<pcl::PointXYZ>(target_keypoints, handler_target_keypoints, "target_keypoints");
 	viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "target_keypoints");
-	viewer.addCorrespondences<pcl::PointXYZ>(source_keypoints, target_keypoints, *correspondences, 1, "correspondences");
+	viewer.addCorrespondences<pcl::PointXYZ>(source_keypoints, target_keypoints, *correspondences_filtered, 1, "correspondences");
 
 	pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
 	icp.setInputSource(transformed_source);
@@ -708,6 +713,9 @@ namespace my_pcl {
 
 void feature()
 {
+	// REF [function] >> match_point_cloud_features_test() in ${NGVTECH_HOME}/cpp/test/pcl_test/feature_matching.cpp
+
+	//-----
 	//local::normal_estimation_tutorial();
 	//local::normal_estimation_using_integral_images_tutorial();
 
@@ -720,7 +728,7 @@ void feature()
 	//local::fpfh_estimation_tutorial();
 	//local::fpfh_estimation_gpu_test();  // Not yet implemented.
 
-	//--------------------
+	//-----
 	//local::feature_matching();
 
 	// ICCV tutorial.

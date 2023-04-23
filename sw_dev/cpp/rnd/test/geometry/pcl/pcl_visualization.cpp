@@ -444,6 +444,8 @@ namespace my_pcl {
 
 void visualization(int argc, char **argv)
 {
+	// REF [function] >> visualize_point_clouds() in ${NGVTECH_HOME}/cpp/test/pcl_test/main.cpp
+
 	local::visualization_tutorial(argc, argv);
 }
 

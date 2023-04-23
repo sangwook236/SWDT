@@ -2,11 +2,17 @@
 #include <thread>
 #include <iostream>
 #include <pcl/point_types.h>
+#include <pcl/filters/filter.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/approximate_voxel_grid.h>
 #include <pcl/features/normal_3d.h>
+#include <pcl/features/normal_3d_omp.h>
 #include <pcl/features/fpfh.h>
+#include <pcl/features/fpfh_omp.h>
 #include <pcl/registration/icp.h>
+#include <pcl/registration/ndt.h>
+#include <pcl/registration/sample_consensus_prerejective.h>
 #include <pcl/registration/ia_ransac.h>
 #include <pcl/registration/ia_fpcs.h>
 #include <pcl/registration/ia_kfpcs.h>
@@ -23,8 +29,8 @@ namespace
 namespace local
 {
 
-// REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/iterative_closest_point.html#iterative-closest-point
-void registration_tutorial()
+// REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/iterative_closest_point.html
+void icp_registration_tutorial()
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_in(new pcl::PointCloud<pcl::PointXYZ>(5, 1));
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZ>);
@@ -37,7 +43,7 @@ void registration_tutorial()
 		point.z = 1024 * rand() / (RAND_MAX + 1.0f);
 	}
 
-	std::cout << "Saved " << cloud_in->size() << " data points to input:" << std::endl;
+	std::cout << cloud_in->size() << " data points saved to input:" << std::endl;
 
 	for (const auto &point: *cloud_in)
 		std::cout << point << std::endl;
@@ -49,7 +55,7 @@ void registration_tutorial()
 		point.x += 0.7f;
 
 	//--------------------
-	std::cout << "Transformed " << cloud_in->size() << " data points:" << std::endl;
+	std::cout << cloud_in->size() << " data points transformed:" << std::endl;
 
 	for (const auto &point: *cloud_out)
 		std::cout << point << std::endl;
@@ -65,46 +71,47 @@ void registration_tutorial()
 	std::cout << icp.getFinalTransformation() << std::endl;
 }
 
-void registration_example()
+void icp_registration_example()
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2(new pcl::PointCloud<pcl::PointXYZ>);
-
-	// Load files.
+	{
+		// Load files.
 #if 1
-	const std::string input_filename1("./sample_1.pcd");
-	const std::string input_filename2("./sample_2.pcd");
+		const std::string input_filename1("/path/to/sample_1.pcd");
+		const std::string input_filename2("/path/to/sample_2.pcd");
 
-	const int retval1 = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filename1, *cloud1);
-	const int retval2 = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filename2, *cloud2);
-	//pcl::PCDReader reader;
-	//const int retval1 = reader.read(input_filename1, *cloud1);
-	//const int retval2 = reader.read(input_filename2, *cloud2);
+		const int retval1 = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filename1, *cloud1);
+		const int retval2 = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filename2, *cloud2);
+		//pcl::PCDReader reader;
+		//const int retval1 = reader.read(input_filename1, *cloud1);
+		//const int retval2 = reader.read(input_filename2, *cloud2);
 #else
-	const std::string input_filename1("./sample_1.ply");
-	const std::string input_filename2("./sample_2.ply");
+		const std::string input_filename1("/path/to/sample_1.ply");
+		const std::string input_filename2("/path/to/sample_2.ply");
 
-	const int retval1 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename1, *cloud1);
-	const int retval2 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename2, *cloud2);
-	//pcl::PLYReader reader;
-	//const int retval1 = reader.read(input_filename1, *cloud1);
-	//const int retval2 = reader.read(input_filename2, *cloud2);
+		const int retval1 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename1, *cloud1);
+		const int retval2 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename2, *cloud2);
+		//pcl::PLYReader reader;
+		//const int retval1 = reader.read(input_filename1, *cloud1);
+		//const int retval2 = reader.read(input_filename2, *cloud2);
 #endif
-	if (retval1 == -1)
-	{
-		const std::string err("File not found, " + input_filename1 + ".\n");
-		PCL_ERROR(err.c_str());
-		return;
-	}
-	if (retval2 == -1)
-	{
-		const std::string err("File not found, " + input_filename2 + ".\n");
-		PCL_ERROR(err.c_str());
-		return;
-	}
+		if (retval1 == -1)
+		{
+			const std::string err("File not found, " + input_filename1 + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+		if (retval2 == -1)
+		{
+			const std::string err("File not found, " + input_filename2 + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
 
-	std::cout << "Loaded " << cloud1->size() << " data points from " << input_filename1 << std::endl;
-	std::cout << "Loaded " << cloud2->size() << " data points from " << input_filename2 << std::endl;
+		std::cout << cloud1->size() << " data points loaded from " << input_filename1 << std::endl;
+		std::cout << cloud2->size() << " data points loaded from " << input_filename2 << std::endl;
+	}
 
 	//--------------------
 #if 0
@@ -159,8 +166,8 @@ void registration_example()
 	const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 	std::cout << "Point cloud registered: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
-	std::cout << "Converged: " << icp.hasConverged() << ", score: " << icp.getFitnessScore() << std::endl;
-	std::cout << icp.getFinalTransformation() << std::endl;
+	std::cout << "Converged = " << icp.hasConverged() << ", score = " << icp.getFitnessScore() << std::endl;
+	std::cout << "Transformation:\n" << icp.getFinalTransformation() << std::endl;
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1_proxy(&src_registered);
 #else
@@ -250,6 +257,7 @@ void registration_example()
 	viewer->setCameraFieldOfView(0.523599);  // [rad].
 	viewer->setCameraClipDistances(0.00522511, 50);
 	*/
+	viewer->resetCamera();
 
 	// Main loop.
 	while (!viewer->wasStopped())
@@ -263,6 +271,269 @@ void registration_example()
 	viewer.showCloud(cloud_rgb2, "point cloud 2");
 	while (!viewer.wasStopped());
 #endif
+}
+
+// REF [site] >> https://pcl.readthedocs.io/en/latest/normal_distributions_transform.html
+void ndt_example()
+{
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_source(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_target(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		// Load files.
+#if 1
+		const std::string input_filename1("/path/to/sample_1.pcd");
+		const std::string input_filename2("/path/to/sample_2.pcd");
+
+		const int retval1 = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filename1, *cloud_source);
+		const int retval2 = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filename2, *cloud_target);
+		//pcl::PCDReader reader;
+		//const int retval1 = reader.read(input_filename1, *cloud_source);
+		//const int retval2 = reader.read(input_filename2, *cloud_target);
+#else
+		const std::string input_filename1("/path/to/sample_1.ply");
+		const std::string input_filename2("/path/to/sample_2.ply");
+
+		const int retval1 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename1, *cloud_source);
+		const int retval2 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename2, *cloud_target);
+		//pcl::PLYReader reader;
+		//const int retval1 = reader.read(input_filename1, *cloud_source);
+		//const int retval2 = reader.read(input_filename2, *cloud_target);
+#endif
+		if (retval1 == -1)
+		{
+			const std::string err("File not found, " + input_filename1 + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+		if (retval2 == -1)
+		{
+			const std::string err("File not found, " + input_filename2 + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		std::cout << cloud_source->size() << " data points loaded from " << input_filename1 << std::endl;
+		std::cout << cloud_target->size() << " data points loaded from " << input_filename2 << std::endl;
+	}
+
+	//--------------------
+	// Filtering input scan to roughly 10% of original size to increase speed of registration.
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_source_filtered(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::ApproximateVoxelGrid<pcl::PointXYZ> approximate_voxel_filter;
+	approximate_voxel_filter.setLeafSize(0.2f, 0.2f, 0.2f);
+	approximate_voxel_filter.setInputCloud(cloud_source);
+	approximate_voxel_filter.filter(*cloud_source_filtered);
+	std::cout << cloud_source_filtered->size() << " data points filtered." << std::endl;
+
+	// Set initial alignment estimate found using robot odometry.
+	const Eigen::AngleAxisf init_rotation(0.6931f, Eigen::Vector3f::UnitZ());
+	const Eigen::Translation3f init_translation(1.79387f, 0.720047f, 0.0f);
+	const Eigen::Matrix4f init_guess = (init_translation * init_rotation).matrix();
+
+	//--------------------
+	// Initializing Normal Distributions Transform (NDT).
+	pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt;
+
+	// Setting scale dependent NDT parameters.
+	// Setting minimum transformation difference for termination condition.
+	ndt.setTransformationEpsilon(0.01);
+	// Setting maximum step size for More-Thuente line search.
+	ndt.setStepSize(0.1);
+	//Setting Resolution of NDT grid structure (VoxelGridCovariance).
+	ndt.setResolution(1.0f);
+
+	// Setting max number of registration iterations.
+	ndt.setMaximumIterations(35);
+
+	// Setting point cloud to be aligned.
+	ndt.setInputSource(cloud_source_filtered);
+	// Setting point cloud to be aligned to.
+	ndt.setInputTarget(cloud_target);
+
+	// Calculating required rigid transform to align the input cloud to the target cloud.
+	const auto start_time(std::chrono::high_resolution_clock::now());
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_source_registered(new pcl::PointCloud<pcl::PointXYZ>);
+	ndt.align(*cloud_source_registered, init_guess);
+	const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+	std::cout << "Point cloud registered: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+	std::cout << "Normal Distributions Transform has converged: " << ndt.hasConverged() << ", score: " << ndt.getFitnessScore() << std::endl;
+	std::cout << "Transformation:\n" << ndt.getFinalTransformation() << std::endl;
+
+	//-----
+	// Transforming unfiltered, input cloud using found transform.
+	pcl::transformPointCloud(*cloud_source, *cloud_source_registered, ndt.getFinalTransformation());
+
+	//-----
+	// Saving transformed input cloud.
+	//pcl::io::savePCDFileASCII("/path/to/registered.pcd", *cloud_source_registered);
+
+	//--------------------
+	// Initializing point cloud visualizer.
+	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
+	viewer->setBackgroundColor(0, 0, 0);
+
+	// Coloring and visualizing target cloud (red).
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> target_color(cloud_target, 255, 0, 0);
+	viewer->addPointCloud<pcl::PointXYZ>(cloud_target, target_color, "target cloud");
+	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "target cloud");
+
+	// Coloring and visualizing transformed input cloud (green).
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> output_color(cloud_source_registered, 0, 255, 0);
+	viewer->addPointCloud<pcl::PointXYZ>(cloud_source_registered, output_color, "source cloud");
+	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "source cloud");
+
+	// Starting visualizer.
+	viewer->addCoordinateSystem(1.0, "global");
+	viewer->initCameraParameters();
+	viewer->resetCamera();
+
+	// Wait until visualizer window is closed.
+	while (!viewer->wasStopped())
+	{
+		viewer->spinOnce(100);
+		//std::this_thread::sleep_for(100ms);
+	}
+}
+
+// REF [site] >> https://pcl.readthedocs.io/en/latest/alignment_prerejective.html
+void sample_consensus_prerejective_example()
+{
+	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_object(new pcl::PointCloud<pcl::PointNormal>);
+	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_scene(new pcl::PointCloud<pcl::PointNormal>);
+	{
+		// Load files.
+#if 1
+		const std::string input_filename1("/path/to/object.pcd");
+		const std::string input_filename2("/path/to/scene.pcd");
+
+		const int retval1 = pcl::io::loadPCDFile<pcl::PointNormal>(input_filename1, *cloud_object);
+		const int retval2 = pcl::io::loadPCDFile<pcl::PointNormal>(input_filename2, *cloud_scene);
+		//pcl::PCDReader reader;
+		//const int retval1 = reader.read(input_filename1, *cloud_object);
+		//const int retval2 = reader.read(input_filename2, *cloud_scene);
+#else
+		const std::string input_filename1("/path/to/object.ply");
+		const std::string input_filename2("/path/to/scene.ply");
+
+		const int retval1 = pcl::io::loadPLYFile<pcl::PointNormal>(input_filename1, *cloud_object);
+		const int retval2 = pcl::io::loadPLYFile<pcl::PointNormal>(input_filename2, *cloud_scene);
+		//pcl::PLYReader reader;
+		//const int retval1 = reader.read(input_filename1, *cloud_object);
+		//const int retval2 = reader.read(input_filename2, *cloud_scene);
+#endif
+		if (retval1 == -1)
+		{
+			const std::string err("File not found, " + input_filename1 + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+		if (retval2 == -1)
+		{
+			const std::string err("File not found, " + input_filename2 + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		std::cout << cloud_object->size() << " data points loaded from " << input_filename1 << std::endl;
+		std::cout << cloud_scene->size() << " data points loaded from " << input_filename2 << std::endl;
+	}
+
+	//--------------------
+	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_scene_downsampled(new pcl::PointCloud<pcl::PointNormal>);
+	pcl::PointCloud<pcl::FPFHSignature33>::Ptr object_features(new pcl::PointCloud<pcl::FPFHSignature33>);
+	pcl::PointCloud<pcl::FPFHSignature33>::Ptr scene_features(new pcl::PointCloud<pcl::FPFHSignature33>);
+
+	// Downsample.
+	std::cout << "Downsampling..." << std::endl;
+	pcl::VoxelGrid<pcl::PointNormal> grid;
+	const float leaf = 0.005f;
+	grid.setLeafSize(leaf, leaf, leaf);
+	grid.setInputCloud(cloud_object);
+	grid.filter(*cloud_object);
+	grid.setInputCloud(cloud_scene);
+	grid.filter(*cloud_scene_downsampled);
+
+	// Estimate normals for scene.
+	std::cout << "Estimating scene normals..." << std::endl;
+	pcl::NormalEstimationOMP<pcl::PointNormal, pcl::PointNormal> nest;
+	nest.setRadiusSearch(0.005);
+	nest.setInputCloud(cloud_scene_downsampled);
+	nest.setSearchSurface(cloud_scene);
+	nest.compute(*cloud_scene_downsampled);
+
+	// Estimate features.
+	std::cout << "Estimating features..." << std::endl;
+	pcl::FPFHEstimationOMP<pcl::PointNormal, pcl::PointNormal, pcl::FPFHSignature33> fest;
+	fest.setRadiusSearch(0.025);
+	fest.setInputCloud(cloud_object);
+	fest.setInputNormals(cloud_object);
+	fest.compute(*object_features);
+	fest.setInputCloud(cloud_scene_downsampled);
+	fest.setInputNormals(cloud_scene_downsampled);
+	fest.compute(*scene_features);
+
+	//--------------------
+	// Perform alignment.
+	pcl::SampleConsensusPrerejective<pcl::PointNormal, pcl::PointNormal, pcl::FPFHSignature33> align;
+	align.setInputSource(cloud_object);
+	align.setSourceFeatures(object_features);
+	align.setInputTarget(cloud_scene_downsampled);
+	align.setTargetFeatures(scene_features);
+	align.setMaximumIterations(50000);  // Number of RANSAC iterations.
+	align.setNumberOfSamples(3);  // Number of points to sample for generating/prerejecting a pose.
+	align.setCorrespondenceRandomness(5);  // Number of nearest features to use.
+	align.setSimilarityThreshold(0.95f);  // Polygonal edge length similarity threshold.
+	align.setMaxCorrespondenceDistance(2.5f * leaf);  // Inlier threshold.
+	align.setInlierFraction(0.25f);  // Required inlier fraction for accepting a pose hypothesis.
+
+	const auto start_time(std::chrono::high_resolution_clock::now());
+	pcl::PointCloud<pcl::PointNormal>::Ptr object_aligned(new pcl::PointCloud<pcl::PointNormal>);
+	align.align(*object_aligned);
+	const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+	std::cout << "Point cloud registered: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+	std::cout << "Converged = " << align.hasConverged() << ", score = " << align.getFitnessScore() << std::endl;
+	std::cout << "Inliers = " << align.getInliers().size() << " / " << cloud_object->size() << " = " << (float(align.getInliers().size()) / float(cloud_object->size())) std::endl;
+	std::cout << "Transformation:\n" << align.getFinalTransformation() << std::endl;
+	
+	//--------------------
+	// Visualize.
+	pcl::visualization::PCLVisualizer viewer("Alignment");
+	viewer.addPointCloud(cloud_scene_downsampled, pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal>(cloud_scene_downsampled, 0.0, 255.0, 0.0), "cloud_scene_downsampled");
+	viewer.addPointCloud(object_aligned, pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal>(object_aligned, 0.0, 0.0, 255.0), "object_aligned");
+	while (!viewer.wasStopped())
+	{
+		viewer.spinOnce();
+		//std::this_thread::sleep_for(100ms);
+	}
+}
+
+// REF [site] >> https://pointclouds.org/documentation/namespacepcl_1_1registration.html
+void transformation_estimation_test()
+{
+	raise std::runtime_error("Not yet implemented");
+
+	/*
+	//pcl::registration::TransformationEstimation2D<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimation3Point<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationDQ<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationDualQuaternion<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationLM<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationPointToPlane<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationPointToPlaneWeighted<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationPointToPlaneLLS<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationPointToPlaneLLSWeighted<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationSymmetricPointToPlaneLLS<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+	//pcl::registration::TransformationEstimationSVDScale<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
+
+	Eigen::Matrix4f T(Eigen::Matrix4f::Identity());
+	//transformation_estimation.estimateRigidTransformation(cloud_src, cloud_tgt, T);
+	//transformation_estimation.estimateRigidTransformation(cloud_src, indices_src, cloud_tgt, T);
+	//transformation_estimation.estimateRigidTransformation(cloud_src, indices_src, cloud_tgt, indices_tgt, T);
+	transformation_estimation.estimateRigidTransformation(cloud_src, cloud_tgt, correspondences, T);
+	*/
 }
 
 // REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/test/registration/test_sac_ia.cpp
@@ -644,8 +915,12 @@ namespace my_pcl
 
 void registration()
 {
-	//local::registration_tutorial();
-	local::registration_example();
+	//local::icp_registration_tutorial();
+	//local::icp_registration_example();
+	local::ndt_example();  // Not yet tested.
+	local::sample_consensus_prerejective_example();  // Not yet tested.
+
+	//local::transformation_estimation_test();  // Not yet implemented.
 
 	// Initial alignment.
 	//local::sac_ic_test();  // NOTE [info] >> Slow. (~20 secs)

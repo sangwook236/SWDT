@@ -138,6 +138,8 @@ namespace my_pcl {
 
 void keypoint()
 {
+	// REF [function] >> detect_keypoints_test() in ${NGVTECH_HOME}/cpp/test/pcl_test/feature_matching.cpp
+
 	local::narf_keypoint_tutorial();
 }
 
