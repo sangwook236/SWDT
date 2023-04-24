@@ -611,7 +611,7 @@ void feature_matching()
 	corr_rej_one_to_one.getCorrespondences(*correspondences_result_rej_one_to_one);
 	//corr_rej_one_to_one.getRemainingCorrespondences(*correspondences, *correspondences_result_rej_one_to_one);
 
-	// Correspondance rejection RANSAC.
+	// Correspondence rejection RANSAC.
 	pcl::registration::CorrespondenceRejectorSampleConsensus<pcl::PointXYZ> rejector_sac;
 	pcl::CorrespondencesPtr correspondences_filtered(new pcl::Correspondences());
 	rejector_sac.setInputSource(source_keypoints);

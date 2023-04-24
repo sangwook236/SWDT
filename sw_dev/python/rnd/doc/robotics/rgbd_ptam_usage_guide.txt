@@ -1,0 +1,9 @@
+[-] General.
+	- Site.
+		https://github.com/uoip/rgbd_ptam
+
+[-] Usage.
+	- Run.
+		python ptam.py --no-viz --dataset icl/tum --path /path/to/dataset
+			python ptam.py --dataset tum --path ~/work/dataset/rgbd/tum/rgbd_dataset_freiburg1_room
+			python ptam.py --dataset icl --path ~/work/dataset/rgbd/iclnuim/living_room_traj0_frei_png

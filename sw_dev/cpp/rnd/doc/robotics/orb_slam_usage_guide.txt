@@ -10,7 +10,7 @@
 		https://github.com/UZ-SLAMLab/ORB_SLAM3/tree/master/Examples/RGB-D
 
 		./rgbd_tum path_to_vocabulary path_to_settings path_to_sequence path_to_association
-			./rgbd_tum ../../Vocabulary/ORBvoc.txt ./RealSense_D435i.yaml ~/dataset/tum/rgbd_dataset_freiburg1_room ./associations/fr1_room.txt
+			./rgbd_tum ../../Vocabulary/ORBvoc.txt ./RealSense_D435i.yaml ~/work/dataset/rgbd/tum/rgbd_dataset_freiburg1_room ./associations/fr1_room.txt
 
 [-] Building (ORB_SLAM3, Ubuntu).
 	- Build.
