@@ -859,6 +859,20 @@ KoGPT API는 사람처럼 맥락을 이해하고 문제를 해결합니다.
 #	https://github.com/nomic-ai/gpt4all
 #	https://github.com/nomic-ai/nomic
 def gpt4all_example():
+	# Models:
+	#	nomic-ai/gpt4all-j.
+	#	nomic-ai/gpt4all-lora.
+	#	nomic-ai/gpt4all-j-lora.
+
+	import datasets
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("nomic-ai/gpt4all-j", revision="v1.2-jazzy")
+	elif False:
+		dataset = datasets.load_dataset("nomic-ai/gpt4all-j-prompt-generations", revision="v1.2-jazzy")
+		model = transformers.AutoModelForCausalLM.from_pretrained("nomic-ai/gpt4all-j-prompt-generations", revision="v1.2-jazzy")
+
+	#--------------------
 	# Install.
 	#	pip install nomic
 
@@ -901,7 +915,7 @@ def gpt4all_example():
 				print("------PROMPT-------\n" + prompt)
 				response = session.prompt(prompt)
 				print("-----RESPONSE------\n" + response)
-	else:
+	elif True:
 		# REF [site] >> https://github.com/nomic-ai/nomic/blob/main/examples/GPT4All.ipynb
 
 		session = nomic.gpt4all.GPT4All()
