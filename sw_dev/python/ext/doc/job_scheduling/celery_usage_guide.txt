@@ -1,0 +1,44 @@
+[-] General.
+	- Site.
+		http://celeryproject.org/
+		https://github.com/celery/celery
+
+	- Document.
+		https://docs.celeryq.dev/en/stable/
+
+[-] Usage (Python).
+	https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
+
+	- Broker.
+		For RabbitMQ:
+			https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/rabbitmq.html
+
+			If you're using Ubuntu or Debian:
+				sudo apt-get install rabbitmq-server
+			If you want to run it on Docker:
+				docker run -d -p 5672:5672 rabbitmq
+
+		For Redis:
+			https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.html
+
+			If you want to run it on Docker:
+				docker run -d -p 6379:6379 redis
+
+	- Run a Celery worker server.
+		celery -A tasks worker --loglevel=INFO
+
+	- Run a Celery client.
+
+[-] Usage (C++).
+	https://blog.petrzemek.net/2017/06/25/consuming-and-publishing-celery-tasks-in-cpp-via-amqp/
+
+[-] Installation.
+	https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
+
+	- Install.
+		pip install celery
+
+		For the Redis support:
+			https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.html
+
+			pip install celery[redis]
