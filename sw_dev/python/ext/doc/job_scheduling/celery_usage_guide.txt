@@ -32,6 +32,9 @@
 [-] Usage (C++).
 	https://blog.petrzemek.net/2017/06/25/consuming-and-publishing-celery-tasks-in-cpp-via-amqp/
 
+[-] Usage (Django).
+	https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html
+
 [-] Installation.
 	https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
 

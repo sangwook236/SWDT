@@ -7,9 +7,9 @@
 from celery import Celery
 
 #app = Celery("tasks", broker="pyamqp://guest@localhost//")  # With no result backend.
-#app = Celery("tasks", broker="redis://localhost:6379/0")
-app = Celery("tasks", backend="rpc://", broker="pyamqp://guest@localhost//")
-#app = Celery("tasks", backend="redis://localhost:6379/0", broker="pyamqp://guest@localhost//")
+#app = Celery("tasks", broker="redis://localhost:6379/0")  # With no result backend.
+#app = Celery("tasks", backend="rpc://", broker="pyamqp://guest@localhost//")
+app = Celery("tasks", backend="redis://localhost:6379/0", broker="pyamqp://guest@localhost//")  # Very commonly used.
 #app = Celery("tasks", backend="redis://localhost:6379/0", broker="redis://localhost:6379/0")
 
 """
@@ -52,6 +52,18 @@ app.config_from_object("celeryconfig")
 @app.task
 def add(x, y):
 	return x + y
+
+@app.task
+def sub(x, y):
+	return x - y
+
+@app.task
+def mul(x, y):
+	return x * y
+
+@app.task
+def div(x, y):
+	return x / y
 
 def main():
 	app.conf.broker_url = "pyamqp://guest@localhost//"
