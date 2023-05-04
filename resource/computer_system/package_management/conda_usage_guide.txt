@@ -5,8 +5,15 @@
 
 		https://conda-forge.org/
 
+	- Document.
+		https://docs.conda.io/en/latest/
+		https://docs.conda.io/projects/conda/en/stable/
+
+	- Directory.
+		~/.conda
+
 [-] Usage.
-	REF [site] >> http://egloos.zum.com/mataeoh/v/7052271
+	http://egloos.zum.com/mataeoh/v/7052271
 
 	- Basic.
 		conda --help
@@ -76,6 +83,12 @@
 	- List environments.
 		conda info --envs
 
+	- Clean.
+		Remove unused packages and caches.
+
+		conda clean --all
+		conda clean --dry-run --all
+
 	- List packages and versions installed in an environment
 		conda list
 	- Search for a package.
@@ -106,3 +119,6 @@
 		https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
 	- Export the requirements.txt file.
 		conda list -e > requirements.txt
+
+[-] Usage (C/C++).
+	https://www.prouvost.dev/post/2021/c-development-with-conda/
