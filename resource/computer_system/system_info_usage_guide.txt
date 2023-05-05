@@ -1,0 +1,41 @@
+[-] Linux.
+	- OS.
+		cat /etc/os-release
+		cat /proc/version
+
+		lsb_release -a
+		uname -a
+		hostnamectl
+
+	- CPU.
+		cat /proc/cpuinfo
+
+		lscpu
+		lscpu --all --extended
+
+	- GPU.
+		ls /proc/driver/nvidia/gpus/
+		cat /proc/driver/nvidia/gpus/0000:01:00.0/information
+		cat /proc/driver/nvidia/gpus/0000:02:00.0/information
+
+		sudo lshw
+		sudo lshw -C display
+
+		lspci
+		lspci | grep ' VGA ' | cut -d" " -f 1
+		lspci | grep ' VGA ' | cut -d" " -f 1 | xargs -i lspci -v -s {}
+
+		nvidia-smi
+
+[-] Windows.
+	- OS.
+		Settings > System > About.
+
+	- CPU.
+		Task Manager
+
+		cpu-z
+
+	- GPU.
+		GPU-Z
+		CUDA-Z
