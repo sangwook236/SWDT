@@ -56,6 +56,19 @@
 	- cudatoolkit version (Python).
 		conda list
 
+	- Architecture.
+		https://developer.nvidia.com/cuda-gpus
+
+		GPU						Compute Capability 		Streaming Multiprocessor
+		GeForce RTX 3090 Ti		8.6	(compute_86)		sm_86
+		GeForce GTX 1080 Ti		6.1	(compute_61)		sm_61
+
+			compute_XX: architecture for a virtual (intermediate) code representation.
+			sm_XX: architecture for the real representation.
+
+		nvidia-smi --query-gpu=compute_cap --format=csv
+		GPU-Z.
+
 	- Docker.
 		Refer to docker_usage_guide.txt & triton_usage_guide.txt.
 

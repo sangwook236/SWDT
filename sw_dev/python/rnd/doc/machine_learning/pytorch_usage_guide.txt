@@ -77,3 +77,20 @@
 [-] Installation (PyTorch Geometric, PyG).
 	- Install.
 		Refer to pytorch_geometric_usage_guide.txt
+
+[-] Troubleshooting.
+	- <error> RuntimeError: CUDA error: no kernel image is available for execution on the device.
+		<check>
+			import torch
+			torch.cuda.is_available()
+			torch.rand(10).cuda()
+				Check the message.
+		<cause>
+			NVIDIA GeForce RTX 3090 with CUDA capability sm_86 is not compatible with the current PyTorch installation.
+			The current PyTorch install supports CUDA capabilities sm_37 sm_50 sm_60 sm_70.
+			If you want to use the NVIDIA GeForce RTX 3090 GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+			GPU						Compute Capability 		Streaming Multiprocessor
+			GeForce RTX 3090 Ti		8.6	(compute_86)		sm_86
+		<solution>
+			Install PyTorch which supports sm_86 compute capability.
