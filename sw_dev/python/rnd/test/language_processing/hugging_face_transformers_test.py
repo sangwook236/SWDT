@@ -1638,6 +1638,80 @@ def bloom_example():
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
+# REF [site] >> https://huggingface.co/facebook
+def opt_example():
+	# Models:
+	#	facebook/opt-125m.
+	#	facebook/opt-350m.
+	#	facebook/opt-2.7b.
+	#	facebook/opt-6.7b.
+	#	facebook/opt-13b.
+	#	facebook/opt-30b.
+	#
+	#	facebook/opt-iml-1.3b.
+	#	facebook/opt-iml-max-1.3b.
+	#	facebook/opt-iml-30b.
+	#	facebook/opt-iml-max-30b.
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("facebook/opt-30b", torch_dtype=torch.float16).cuda()
+		# The fast tokenizer currently does not work correctly.
+		tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/opt-30b", use_fast=False)
+
+		prompt = "Hello, I am conscious and"
+		input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
+
+		if True:
+			generated_ids = model.generate(input_ids)  # By default, generation is deterministic.
+		else:
+			tokenizer.set_seed(32)
+			generated_ids = model.generate(input_ids, do_sample=True)  # In order to use the top-k sampling, please set do_sample to True.
+
+		generated = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+		print(generated)
+
+	if True:
+		# Here's an example of how the model can have biased predictions.
+
+		model = transformers.AutoModelForCausalLM.from_pretrained("facebook/opt-30b", torch_dtype=torch.float16).cuda()
+		# The fast tokenizer currently does not work correctly.
+		tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/opt-30b", use_fast=False)
+
+		prompt = "The woman worked as a"
+		#prompt = "The man worked as a"
+		input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
+
+		transformers.set_seed(32)
+		generated_ids = model.generate(input_ids, do_sample=True, num_return_sequences=5, max_length=10)
+
+		generated = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+		print(generated)
+
+# REF [site] >> https://huggingface.co/facebook
+def galactica_example():
+	# Models:
+	#	facebook/galactica-125m.
+	#	facebook/galactica-1.3b.
+	#	facebook/galactica-6.7b.
+	#	facebook/galactica-30b.
+	#	facebook/galactica-120b.
+
+	# Install.
+	#	pip install bitsandbytes accelerate
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/galactica-120b")
+	#model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b")  # CPU.
+	model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b", device_map="auto")  # GPU.
+	#model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b", device_map="auto", torch_dtype=torch.float16)  # GPU. FP16.
+	#model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b", device_map="auto", load_in_8bit=True)  # GPU. INT8.
+
+	input_text = "The Transformer architecture [START_REF]"
+	#input_ids = tokenizer(input_text, return_tensors="pt").input_ids  # CPU.
+	input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")  # GPU.
+
+	outputs = model.generate(input_ids)
+	print(tokenizer.decode(outputs[0]))
+
 def palm_example():
 	if False:
 		# https://github.com/lucidrains/PaLM-pytorch
@@ -3666,17 +3740,17 @@ def main():
 
 	#-----
 	# BLOOM.
-
 	#bloom_example()
 
-	#-----
-	# PaLM.
+	# OPT.
+	opt_example()  # Not yet tested.
+	# Galactica.
+	galactica_example()  # Not yet tested.
 
+	# PaLM.
 	#palm_example()  # PaLM + RLHF.
 
-	#-----
 	# LLaMa.
-
 	#llama_example()  # Not yet tested.
 
 	#-----
