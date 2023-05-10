@@ -103,8 +103,8 @@ void icp_registration_tutorial()
 	pcl::PointCloud<pcl::PointXYZ> src_registered;
 	icp.align(src_registered);
 
-	std::cout << "Converged: " << icp.hasConverged() << ", score: " << icp.getFitnessScore() << std::endl;
-	std::cout << icp.getFinalTransformation() << std::endl;
+	std::cout << "Converged = " << icp.hasConverged() << ", score = " << icp.getFitnessScore() << std::endl;
+	std::cout << "Transformation:\n" << icp.getFinalTransformation() << std::endl;
 }
 
 void icp_registration_example()
@@ -186,31 +186,39 @@ void icp_registration_example()
 	icp.setInputSource(cloud_src_transformed);
 	icp.setInputTarget(cloud_tgt);
 
-	// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored).
-	//icp.setMaxCorrespondenceDistance(0.05);
-	// Set the maximum number of iterations (criterion 1).
+	// Set the maximum distance threshold between two correspondent points in source <-> target. (e.g., correspondences with higher distances will be ignored).
+	//icp.setMaxCorrespondenceDistance(0.05);  // 5cm.
+	// Set the maximum number of iterations.
 	icp.setMaximumIterations(100);
-	// Set the transformation epsilon (criterion 2).
+	// Set the number of iterations RANSAC should run for.
+	//icp.setRANSACIterations(100);
+	// Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
+	//icp.setRANSACOutlierRejectionThreshold(0.1);
+	// Set the transformation epsilon (maximum allowable translation squared difference between two consecutive transformations).
 	//icp.setTransformationEpsilon(1e-8);
-	// Set the Euclidean distance difference epsilon (criterion 3).
+	// Set the transformation rotation epsilon (maximum allowable rotation difference between two consecutive transformations).
+	//icp.setTransformationRotationEpsilon(1e-8);
+	// Set the Euclidean distance difference epsilon (maximum allowed Euclidean error between two consecutive steps).
 	//icp.setEuclideanFitnessEpsilon(1);
 
 #if 0
+	// This part is not yet tested.
+
 	pcl::registration::CorrespondenceEstimationBackProjection<pcl::PointXYZ, pcl::PointXYZ>::Ptr correspodence_est(new pcl::registration::CorrespondenceEstimationBackProjection<pcl::PointXYZ, pcl::PointXYZ>());
-	est->setVoxelRepresentationTarget(dt);
-	est->setInputSource(cloud_src);
-	est->setInputTarget(cloud_tgt);
-	est->setMaxCorrespondenceDistance(max_corr_distance);
+	correspodence_est->setVoxelRepresentationTarget(dt);
+	correspodence_est->setInputSource(cloud_src_transformed);
+	correspodence_est->setInputTarget(cloud_tgt);
+	//correspodence_est->setMaxCorrespondenceDistance(max_corr_distance);
 	icp.setCorrespondenceEstimation(correspodence_est);
 
 	pcl::registration::CorrespondenceRejectorSampleConsensus<pcl::PointXYZ>::Ptr correspodence_rej(new pcl::registration::CorrespondenceRejectorSampleConsensus<pcl::PointXYZ>());
-	correspodence_rej->setInputSource(cloud_src);
+	correspodence_rej->setInputSource(cloud_src_transformed);
 	correspodence_rej->setInputTarget(cloud_tgt);
-	correspodence_rej->setMaximumIterations(1000);
-	correspodence_rej->setInlierThreshold(0.005f);
+	//correspodence_rej->setMaximumIterations(max_iterations);
+	//correspodence_rej->setInlierThreshold(inlier_threshold);
 	icp.addCorrespondenceRejector(correspodence_rej);
 
-	pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ> transformation_est;
+	pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ>::Ptr transformation_est(new pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ>());
 	icp.setTransformationEstimation(transformation_est);
 #endif
 
@@ -841,8 +849,8 @@ void sac_ic_test()
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "SAC-IA performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
-		std::cout << "Converged: " << sac_ia.hasConverged() << ", score: " << sac_ia.getFitnessScore() << std::endl;
-		std::cout << sac_ia.getFinalTransformation() << std::endl;
+		std::cout << "Converged = " << sac_ia.hasConverged() << ", score = " << sac_ia.getFitnessScore() << std::endl;
+		std::cout << "Transformation:\n" << sac_ia.getFinalTransformation() << std::endl;
 	}
 
 	// Check again, for all possible caching schemes.
@@ -873,8 +881,8 @@ void sac_ic_test()
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "SAC-IA performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
-		std::cout << "Converged: " << sac_ia.hasConverged() << ", score: " << sac_ia.getFitnessScore() << std::endl;
-		std::cout << sac_ia.getFinalTransformation() << std::endl;
+		std::cout << "Converged = " << sac_ia.hasConverged() << ", score = " << sac_ia.getFitnessScore() << std::endl;
+		std::cout << "Transformation:\n" << sac_ia.getFinalTransformation() << std::endl;
 	}
 }
 
@@ -966,8 +974,8 @@ void fpcs_test()
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "4PCS performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
-		std::cout << "Converged: " << fpcs_ia.hasConverged() << ", score: " << fpcs_ia.getFitnessScore() << std::endl;
-		std::cout << fpcs_ia.getFinalTransformation() << std::endl;
+		std::cout << "Converged = " << fpcs_ia.hasConverged() << ", score = " << fpcs_ia.getFitnessScore() << std::endl;
+		std::cout << "Transformation:\n" << fpcs_ia.getFinalTransformation() << std::endl;
 	}
 
 	// Check for correct coarse transformation marix.
@@ -1089,8 +1097,8 @@ void kfpcs_test()
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "K-4PCS performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
-		std::cout << "Converged: " << kfpcs_ia.hasConverged() << ", score: " << kfpcs_ia.getFitnessScore() << std::endl;
-		std::cout << kfpcs_ia.getFinalTransformation() << std::endl;
+		std::cout << "Converged = " << kfpcs_ia.hasConverged() << ", score = " << kfpcs_ia.getFitnessScore() << std::endl;
+		std::cout << "Transformation:\n" << kfpcs_ia.getFinalTransformation() << std::endl;
 	}
 
 	//EXPECT_EQ(cloud_reg.size(), cloud_source.size());
