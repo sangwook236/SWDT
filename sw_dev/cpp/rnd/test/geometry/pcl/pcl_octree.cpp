@@ -37,9 +37,11 @@ void spatial_partitioning_and_search_operations_with_octrees_tutorial()
 
 	const float resolution = 128.0f;
 	pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> octree(resolution);
+	// NOTE [info] >> The boundary of an octree's leaf nodes is defined by the first added point cloud.
+	// Bounding box cannot be changed once the octree contains elements.
+	//octree.defineBoundingBox(const double min_x_arg, const double min_y_arg, const double min_z_arg, const double max_x_arg, const double max_y_arg, const double max_z_arg);
 	octree.setInputCloud(cloud);
 	octree.addPointsFromInputCloud();
-	//octree.defineBoundingBox(const double min_x_arg, const double min_y_arg, const double min_z_arg, const double max_x_arg, const double max_y_arg, const double max_z_arg);
 
 	// Neighbors within voxel search.
 	pcl::PointXYZ searchPoint;

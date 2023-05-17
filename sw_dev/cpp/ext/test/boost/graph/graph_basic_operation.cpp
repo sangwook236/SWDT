@@ -478,7 +478,7 @@ void bundled_properties_1()
 	// Without bundled properties.
 	{
 #if defined(__USE_BOOST_PROPERTY_KIND)
-		typedef boost::adjacency_list <
+		typedef boost::adjacency_list<
 			boost::listS, boost::vecS, boost::bidirectionalS,
 			// Vertex properties.
 			boost::property<boost::vertex_name_t, std::string,
@@ -541,7 +541,7 @@ void bundled_properties_1()
 			typedef boost::graph_property_tag kind;
 		} graph_use_metric;
 
-		typedef boost::adjacency_list <
+		typedef boost::adjacency_list<
 			boost::listS, boost::vecS, boost::bidirectionalS,
 			// Vertex properties.
 			boost::property<boost::vertex_name_t, std::string,
@@ -722,13 +722,13 @@ void graph_based_on_adjacency_matrix()
 
 		typedef boost::adjacency_matrix<boost::directedS> Graph;
 		Graph g(N);
-		add_edge(B, C, g);
-		add_edge(B, F, g);
-		add_edge(C, A, g);
-		add_edge(C, C, g);
-		add_edge(D, E, g);
-		add_edge(E, D, g);
-		add_edge(F, A, g);
+		boost::add_edge(B, C, g);
+		boost::add_edge(B, F, g);
+		boost::add_edge(C, A, g);
+		boost::add_edge(C, C, g);
+		boost::add_edge(D, E, g);
+		boost::add_edge(E, D, g);
+		boost::add_edge(F, A, g);
 
 		std::cout << "Vertex set: ";
 		boost::print_vertices(g, name);
@@ -750,11 +750,11 @@ void graph_based_on_adjacency_matrix()
 
 		typedef boost::adjacency_matrix<boost::undirectedS> UGraph;
 		UGraph ug(N);
-		add_edge(B, C, ug);
-		add_edge(B, F, ug);
-		add_edge(C, A, ug);
-		add_edge(D, E, ug);
-		add_edge(F, A, ug);
+		boost::add_edge(B, C, ug);
+		boost::add_edge(B, F, ug);
+		boost::add_edge(C, A, ug);
+		boost::add_edge(D, E, ug);
+		boost::add_edge(F, A, ug);
 
 		std::cout << "Vertex set: ";
 		boost::print_vertices(ug, name);

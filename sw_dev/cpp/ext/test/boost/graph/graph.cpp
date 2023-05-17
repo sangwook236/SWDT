@@ -401,7 +401,7 @@ void metric_tsp_approximation();
 
 void graph()
 {
-    // Basic.
+	// Basic.
 	{
 		std::cout << "Quick tour ---------------------------------------------------" << std::endl;
 		// Access and iterate vertices, edges, and their properties.
@@ -439,55 +439,55 @@ void graph()
 
 	// Algorithm.
 	{
-        std::cout << "\nTraversal algorithms -----------------------------------------" << std::endl;
-        //boost_graph::traversal();
+		std::cout << "\nTraversal algorithms -----------------------------------------" << std::endl;
+		//boost_graph::traversal();
 
-        std::cout << "\nShortest paths / cost minimization algorithms ----------------" << std::endl;
-        //boost_graph::shortest_paths();
+		std::cout << "\nShortest paths / cost minimization algorithms ----------------" << std::endl;
+		//boost_graph::shortest_paths();
 
-        std::cout << "\nOther core algorithms ----------------------------------------" << std::endl;
-        //local::other_core_algorithms();  // Not yet implemented.
+		std::cout << "\nOther core algorithms ----------------------------------------" << std::endl;
+		//local::other_core_algorithms();  // Not yet implemented.
 
-        std::cout << "\nMinimum spanning tree algorithms -----------------------------" << std::endl;
-        //boost_graph::minimum_spanning_tree();
+		std::cout << "\nMinimum spanning tree algorithms -----------------------------" << std::endl;
+		//boost_graph::minimum_spanning_tree();
 
-        std::cout << "\nRandom spanning tree algorithms ------------------------------" << std::endl;
-        //boost_graph::random_spanning_tree();  // Not yet implemented.
+		std::cout << "\nRandom spanning tree algorithms ------------------------------" << std::endl;
+		//boost_graph::random_spanning_tree();  // Not yet implemented.
 
-        std::cout << "\nAlgorithm for common spanning trees of two graphs ------------" << std::endl;
-        //boost_graph::common_spanning_tree();  // Not yet implemented.
+		std::cout << "\nAlgorithm for common spanning trees of two graphs ------------" << std::endl;
+		//boost_graph::common_spanning_tree();  // Not yet implemented.
 
-        std::cout << "\nConnected components algorithms ------------------------------" << std::endl;
-        //local::connected_components();
+		std::cout << "\nConnected components algorithms ------------------------------" << std::endl;
+		//local::connected_components();
 
-        std::cout << "\nMaximum flow and matching algorithms -------------------------" << std::endl;
-        //boost_graph::maximum_flow_and_matching();
+		std::cout << "\nMaximum flow and matching algorithms -------------------------" << std::endl;
+		//boost_graph::maximum_flow_and_matching();
 
-        std::cout << "\nMinimum cut algorithms ---------------------------------------" << std::endl;
-        //boost_graph::minimum_cut();
+		std::cout << "\nMinimum cut algorithms ---------------------------------------" << std::endl;
+		//boost_graph::minimum_cut();
 
-        std::cout << "\nSparse matrix ordering algorithms ----------------------------" << std::endl;
-        //local::sparse_matrix_ordering();  // Not yet implemented.
+		std::cout << "\nSparse matrix ordering algorithms ----------------------------" << std::endl;
+		//local::sparse_matrix_ordering();  // Not yet implemented.
 
-        std::cout << "\nLayout algorithms --------------------------------------------" << std::endl;
-        //local::layout_algorithms();  // Not yet implemented.
+		std::cout << "\nLayout algorithms --------------------------------------------" << std::endl;
+		//local::layout_algorithms();  // Not yet implemented.
 
-        std::cout << "\nClustering algorithms ----------------------------------------" << std::endl;
-        //local::clustering();  // Not yet implemented.
+		std::cout << "\nClustering algorithms ----------------------------------------" << std::endl;
+		//local::clustering();  // Not yet implemented.
 
-        std::cout << "\nPlanar graph algorithms --------------------------------------" << std::endl;
-        //local::planar_graph_algorithms();  // Not yet implemented.
+		std::cout << "\nPlanar graph algorithms --------------------------------------" << std::endl;
+		//local::planar_graph_algorithms();  // Not yet implemented.
 
-        std::cout << "\nGraph metrics ------------------------------------------------" << std::endl;
-        //local::graph_metrics();  // Not yet implemented.
+		std::cout << "\nGraph metrics ------------------------------------------------" << std::endl;
+		//local::graph_metrics();  // Not yet implemented.
 
-        std::cout << "\nGraph structure comparisons ----------------------------------" << std::endl;
-        //local::graph_structure_comparisons();  // Not yet implemented.
-    }
+		std::cout << "\nGraph structure comparisons ----------------------------------" << std::endl;
+		//local::graph_structure_comparisons();  // Not yet implemented.
+	}
 
-    // Application.
-    {
+	// Application.
+	{
 		// Traveling salesperson problem (TSP).
-        //boost_graph::metric_tsp_approximation();
-    }
+		//boost_graph::metric_tsp_approximation();
+	}
 }
