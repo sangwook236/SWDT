@@ -1,14 +1,74 @@
 [-] General.
 	- Site.
-		http://www.graphviz.org/
+		https://www.graphviz.org/
 		http://www.research.att.com/sw/tools/graphviz/
+
+	- Document.
+		https://www.graphviz.org/Documentation.php
+		${GRAPHVIZ_INSTALL_DIR}/share/graphviz/doc/html
+		${GRAPHVIZ_INSTALL_DIR}/share/graphviz/doc/pdf
+
+[-] Tool.
+	- CLI.
+		For directed graph:
+			dot -Tpng graph.dot -o graph.png
+			dot -Tsvg graph.dot -o graph.svg
+			dot -Tpdf graph.dot -o graph.pdf
+			dot -Tps graph.dot -o graph.ps
+
+			dot -Tpng graph.dot > graph.png
+
+		For undirected graph:
+			neato -Tpng graph.dot -o graph.png
+
+	- GUI.
+		GVedit
+		xdot
+
+	- Web.
+		http://magjac.com/graphviz-visual-editor/
+
+[-] Usage (dot file).
+	- Comment.
+		//
+		/* */
+
+	- Graph attribute.
+		REF [site] >> https://www.graphviz.org/doc/info/attrs.html
+
+		rankdir: "TB", "LR", "BT", "RL".
+			rankdir = "BT";
+
+	- Example.
+		strict digraph {
+			a [shape="ellipse" style="filled" fillcolor="#1f77b4"]
+			b [shape="polygon" style="filled" fillcolor="#ff7f0e"]
+			a -> b [fillcolor="#a6cee3" color="#1f78b4"]
+		}
+
+		digraph G {
+			graph [rankdir=LR, ratio=fill, size="3,3"];
+			node [shape=circle];
+			0 [label=A];
+			1 [label=B];
+			2 [label=C];
+			3 [label=D];
+			4 [label=E];
+			0->1 [label=1.2];
+			0->3 [label=4.5];
+			2->0 [label=2.6];
+			3->2 [label=0.4];
+			2->4 [label=5.2];
+			1->3 [label=1.8];
+			3->4 [label=3.3];
+		}
 
 [-] Building.
 	- Download files.
 	- Add the third-party libraries.
 	- Download third-party executable packages.
 		http://www.research.att.com/sw/tools/graphviz/dist/third-party.zip
-		http://www.graphviz.org/
+		https://www.graphviz.org/
 	- Set include & library paths of third-party libraries.
 		${GRAPHVIZ_HOME}/third-party/include
 		${GRAPHVIZ_HOME}/third-party/lib
