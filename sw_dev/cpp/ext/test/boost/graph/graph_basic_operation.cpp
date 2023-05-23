@@ -184,6 +184,10 @@ void boost_quick_tour()
 	//
 	std::for_each(boost::vertices(g).first, boost::vertices(g).second, exercise_vertex<graph_type>(g, name));
 
+	const auto &[eit_begin, eit_end] = boost::edges(g);
+	const auto eit = std::find_if(eit_begin, eit_end, [&weightmap](const auto &elem) { return weightmap[elem] > 2.0f; });
+	std::cout << *eit << std::endl;
+
 	// Output.
 	std::map<std::string, std::string> graph_attr, vertex_attr, edge_attr;
 	graph_attr["size"] = "3,3";
