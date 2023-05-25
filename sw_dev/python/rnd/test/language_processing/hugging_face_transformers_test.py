@@ -3750,7 +3750,7 @@ def main():
 	# PaLM.
 	#palm_example()  # PaLM + RLHF.
 
-	# LLaMa.
+	# LLaMA.
 	#llama_example()  # Not yet tested.
 
 	#-----

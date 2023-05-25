@@ -58,13 +58,13 @@ def simple_example():
 	print(f"{'forge.example' in config=}")
 	print(f"{'python.org' in config=}")
 
-	print(f"{config['forge.example']['User']=}")
+	print(f"{config['forge.example']['User']=}")  # str.
 	#print(f"{config['forge.example']['User1234567']=}")  # KeyError: 'User1234567'.
 	print(f"{config['DEFAULT']['Compression']=}")
 
 	topsecret = config['topsecret.server.example']
-	print(f"{topsecret['ForwardX11']=}")
-	print(f"{topsecret['Port']=}")
+	print(f"{topsecret['ForwardX11']=}")  # str.
+	print(f"{topsecret['Port']=}")  # str.
 
 	for key in config['forge.example']:
 		print(key)

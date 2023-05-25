@@ -276,6 +276,9 @@ def init_process(rank, world_size, use_cuda, fn, backend='gloo'):
 	""" Initialize the distributed environment. """
 	os.environ['MASTER_ADDR'] = '127.0.0.1'
 	os.environ['MASTER_PORT'] = '29500'
+	# Which backend to use? (rule of thumb):
+	#	Use the NCCL backend for distributed GPU training.
+	#	Use the Gloo backend for distributed CPU training.
 	if backend in ['gloo', 'nccl']:
 		#torch.distributed.init_process_group(backend, init_method=None, timeout=datetime.timedelta(0, 1800), world_size=-1, rank=-1, store=None, group_name='')
 		torch.distributed.init_process_group(backend, rank=rank, world_size=world_size)
@@ -423,12 +426,13 @@ def train_distributedly(gpu, config):
 		sampler=train_sampler
 	)
 
-	start = datetime.now()
+	start_time = datetime.datetime.now()
 	total_step = len(train_loader)
 	for epoch in range(config['epochs']):
 		for i, (images, labels) in enumerate(train_loader):
 			images = images.cuda(non_blocking=True)
 			labels = labels.cuda(non_blocking=True)
+
 			# Forward pass.
 			outputs = model(images)
 			loss = criterion(outputs, labels)
@@ -438,15 +442,15 @@ def train_distributedly(gpu, config):
 			loss.backward()
 			optimizer.step()
 			if (i + 1) % 100 == 0 and gpu == 0:
-				print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(
-					epoch + 1, 
-					config['epochs'], 
-					i + 1, 
+				print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}.'.format(
+					epoch + 1,
+					config['epochs'],
+					i + 1,
 					total_step,
 					loss.item()
 				))
 	if gpu == 0:
-		print('Training complete in: ' + str(datetime.now() - start))
+		print('Training complete in: ' + str(datetime.datetime.now() - start_time))
 
 # REF [site] >> https://medium.com/analytics-vidhya/distributed-training-in-pytorch-part-1-distributed-data-parallel-ae5c645e74cb
 def distributed_data_parallel_example():
@@ -467,9 +471,11 @@ def main():
 		print('PyTorch Distributed not available.')
 		return
 
+	#print('torch.distributed.is_initialized() = {}.'.format(torch.distributed.is_initialized()))  # Check if the default process group has been initialized.
 	#print('torch.distributed.is_mpi_available() = {}.'.format(torch.distributed.is_mpi_available()))
 	#print('torch.distributed.is_nccl_available() = {}.'.format(torch.distributed.is_nccl_available()))
-	#print('torch.distributed.is_initialized() = {}.'.format(torch.distributed.is_initialized()))
+	#print('torch.distributed.is_gloo_available() = {}.'.format(torch.distributed.is_gloo_available()))
+	#print('torch.distributed.is_torchelastic_launched() = {}.'.format(torch.distributed.is_torchelastic_launched()))
 
 	#--------------------
 	#distributed_tutorial()
@@ -478,7 +484,10 @@ def main():
 	#mpi_distributed_tutorial()  # Use mpirun to run.
 
 	#--------------------
-	distributed_data_parallel_example()
+	#distributed_data_parallel_example()
+
+	# Data parallelism (DP).
+	#	Refer to ./pytorch_data_and_model_parallelism.py
 
 #--------------------------------------------------------------------
 
