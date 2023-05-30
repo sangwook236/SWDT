@@ -427,6 +427,19 @@ class LeNet5(pl.LightningModule):
 		return x
 
 	def training_step(self, batch, batch_idx):
+		"""
+		batch_idx  # [0, self.trainer.num_training_batches) = [0, train_steps_per_epoch).
+
+		self.trainer.num_training_batches  # train_steps_per_epoch.
+		self.trainer.num_val_batches  # val_steps_per_epoch.
+		self.trainer.num_test_batches  # test_steps_per_epoch.
+		self.trainer.num_predict_batches
+		self.trainer.num_sanity_val_batches
+
+		self.current_epoch  # [0, self.trainer.max_epochs) = [0, num_epochs].
+		self.trainer.max_epochs  # num_epochs + 1.
+		"""
+
 		start_time = time.time()
 		loss, y = self._shared_step(batch, batch_idx)
 		performances = self._evaluate_performance(y, batch, batch_idx)
