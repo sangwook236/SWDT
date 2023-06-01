@@ -79,7 +79,8 @@ struct exercise_vertex
 		// Write out the incoming edges.
 		std::cout << "\tIn-edges: ";
 		typename boost::graph_traits<Graph>::in_edge_iterator in_i, in_end;
-		for (boost::tie(in_i, in_end) = boost::in_edges(v, g_); in_i != in_end; ++in_i)  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
+		// NOTE [info] >> Directed graphs can only store outgoing edges.
+		for (boost::tie(in_i, in_end) = boost::in_edges(v, g_); in_i != in_end; ++in_i)
 		{
 			e = *in_i;
 			vertex_descriptor_type src = boost::source(e, g_), targ = boost::target(e, g_);
@@ -225,20 +226,32 @@ void basic_operation()
 		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
 #endif
 
-		undirected_graph_type ungraph(3);
+		undirected_graph_type ungraph(4);
 		boost::add_edge(0, 1, ungraph);
-		boost::add_edge(1, 0, ungraph);  // NOTICE [caution] >> Fail to add an edge.
+		//boost::add_edge(1, 0, ungraph);
+		std::cout << "Is a duplicate edge added to undirected graph? " << std::boolalpha << boost::add_edge(0, 1, ungraph).second << std::endl;
+		std::cout << "Is a duplicate edge added to undirected graph? " << std::boolalpha << boost::add_edge(1, 0, ungraph).second << std::endl;
 		boost::add_edge(0, 2, ungraph);
+		boost::add_edge(3, 0, ungraph);
+		//boost::add_edge(0, 0, ungraph);
 
-		directed_graph_type digraph(3);
+		directed_graph_type digraph(4);
 		boost::add_edge(0, 1, digraph);
-		boost::add_edge(1, 0, digraph);
+		//boost::add_edge(1, 0, digraph);
+		std::cout << "Is a duplicate edge added to directed graph? " << std::boolalpha << boost::add_edge(0, 1, digraph).second << std::endl;
+		std::cout << "Is a duplicate edge added to directed graph? " << std::boolalpha << boost::add_edge(1, 0, digraph).second << std::endl;
 		boost::add_edge(0, 2, digraph);
+		boost::add_edge(3, 0, digraph);
+		//boost::add_edge(0, 0, digraph);
 
-		bidirectional_graph_type bigraph(3);
+		bidirectional_graph_type bigraph(4);
 		boost::add_edge(0, 1, bigraph);
-		boost::add_edge(1, 0, bigraph);
+		//boost::add_edge(1, 0, bigraph);
+		std::cout << "Is a duplicate edge added to bidirectional graph? " << std::boolalpha << boost::add_edge(0, 1, bigraph).second << std::endl;
+		std::cout << "Is a duplicate edge added to bidirectional graph? " << std::boolalpha << boost::add_edge(1, 0, bigraph).second << std::endl;
 		boost::add_edge(0, 2, bigraph);
+		boost::add_edge(3, 0, bigraph);
+		//boost::add_edge(0, 0, bigraph);
 
 		std::cout << "Number of edges in the undirected graph = " << boost::num_edges(ungraph) << std::endl;
 		std::cout << "Number of edges in the directed graph = " << boost::num_edges(digraph) << std::endl;
@@ -252,6 +265,18 @@ void basic_operation()
 		std::cout << std::endl;
 		std::pair<bidirectional_graph_type::edge_iterator, bidirectional_graph_type::edge_iterator> es3 = boost::edges(bigraph);
 		std::copy(es3.first, es3.second, std::ostream_iterator<bidirectional_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+
+		//const auto &graph = ungraph;
+		//const auto &graph = digraph;  // Error.
+		const auto &graph = bigraph;
+		const auto &[avit_begin, avit_end] = boost::adjacent_vertices(0, graph);  // Vertices of outgoing edges.
+		std::cout << "Vertices of outgoing edges: ";
+		std::copy(avit_begin, avit_end, std::ostream_iterator<size_t>(std::cout, ", "));
+		std::cout << std::endl;
+		const auto &[iavit_begin, iavit_end] = boost::inv_adjacent_vertices(0, graph);  // Vertices of incoming edges.
+		std::cout << "Vertices of incoming edges: ";
+		std::copy(iavit_begin, iavit_end, std::ostream_iterator<size_t>(std::cout, ", "));
 		std::cout << std::endl;
 	}
 
@@ -296,7 +321,7 @@ void basic_operation()
 	{
 		// When using the directedS tag in BGL, you are allowed to use only the out_edges helper function and associated iterators.
 		// Using in_edges requires changing the graph type to bidirectionalS, although this is still more or less a directed graph.
-		//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;  // NOTICE [error] >> Compile-time error.
+		//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> graph_type;
 
 		graph_type g;
@@ -313,7 +338,8 @@ void basic_operation()
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
 			std::cout << "In-edges for " << *vertexIt << ": ";
-			boost::tie(inEdgeIt, inEdgeEnd) = boost::in_edges(*vertexIt, g);  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
+			// NOTE [info] >> Directed graphs can only store outgoing edges.
+			boost::tie(inEdgeIt, inEdgeEnd) = boost::in_edges(*vertexIt, g);
 			for (; inEdgeIt != inEdgeEnd; ++inEdgeIt)
 				std::cout << *inEdgeIt << " ";
 			std::cout << std::endl;
@@ -354,7 +380,8 @@ void basic_operation()
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
-			std::cout << "In-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
+			// NOTE [info] >> Directed graphs can only store outgoing edges.
+			std::cout << "In-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;
 			std::cout << "Out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
 		}
 
@@ -446,7 +473,7 @@ void bundled_properties_1()
 			//map_attrs.use_metric = true;
 			//map_attrs.use_right = false;
 
-			// NOTE [error] >> compile-time error.
+			// NOTE [error] >> Compile-time error.
 			/*
 			map[boost::vertex_bundle].name = "TROY";  // Change the corresponding property of 0th vertex.
 			map[boost::vertex_bundle].population = -49170;  // Change the corresponding property of 0th vertex.

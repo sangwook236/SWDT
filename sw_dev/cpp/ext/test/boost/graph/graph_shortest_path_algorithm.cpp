@@ -48,7 +48,7 @@ void dijkstra_example()
 	vertex_descriptor_type s = boost::vertex(A, g);
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-	// VC++ has trouble with the named parameters mechanism
+	// VC++ has trouble with the named parameters mechanism.
 	boost::property_map<graph_type, boost::vertex_index_t>::type indexmap = boost::get(boost::vertex_index, g);
 	boost::dijkstra_shortest_paths(
 		g, s, &p[0], &d[0], weightmap, indexmap,
@@ -61,7 +61,7 @@ void dijkstra_example()
 	boost::dijkstra_shortest_paths(g, s, boost::predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::vertex_index, g))).distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
 #endif
 
-	std::cout << "distances and parents: " << std::endl;
+	std::cout << "Distances and parents: " << std::endl;
 	boost::graph_traits<graph_type>::vertex_iterator vi, vend;
 	for (boost::tie(vi, vend) = boost::vertices(g); vi != vend; ++vi)
 	{
@@ -125,17 +125,17 @@ record_predecessors<PredecessorMap> make_predecessor_recorder(PredecessorMap p)
 
 class custom_dijkstra_visitor : public boost::default_dijkstra_visitor
 {
-    template <class Edge, class Graph>
-    void edge_relaxed(Edge e, Graph &g)
+	template <class Edge, class Graph>
+	void edge_relaxed(Edge e, Graph &g)
 	{
 		// do something
-    }
+	}
 
-    template <class Edge, class Graph>
-    void edge_not_relaxed(Edge e, Graph &g)
+	template <class Edge, class Graph>
+	void edge_not_relaxed(Edge e, Graph &g)
 	{
 		// do something
-    }
+	}
 };
 
 class custom_bellman_visitor : public boost::default_bellman_visitor
@@ -212,12 +212,12 @@ void shortest_paths()
 
 		graph_type g(edges, edges + sizeof(edges) / sizeof(edge_type), edge_weights, num_nodes);
 
-		// vector for storing distance property
+		// Vector for storing distance property.
 		std::vector<int> d(boost::num_vertices(g));
-		// get the first vertex
+		// Get the first vertex.
 		vertex_descriptor_type s = *(boost::vertices(g).first);
 
-		// invoke variant 2 of Dijkstra's algorithm
+		// Invoke variant 2 of Dijkstra's algorithm.
 		//boost::dijkstra_shortest_paths(g, s, boost::distance_map(&d[0]));
 		boost::dijkstra_shortest_paths(g, s, boost::distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
 
@@ -228,16 +228,16 @@ void shortest_paths()
 		std::cout << std::endl;
 
 		//
-		std::vector<vertex_descriptor_type> p(boost::num_vertices(g), boost::graph_traits<graph_type>::null_vertex());  // the predecessor array
+		std::vector<vertex_descriptor_type> p(boost::num_vertices(g), boost::graph_traits<graph_type>::null_vertex());  // The predecessor array.
 		//boost::dijkstra_shortest_paths(g, s, boost::distance_map(&d[0]).visitor(make_predecessor_recorder(&p[0])));
 		boost::dijkstra_shortest_paths(g, s, boost::distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))).visitor(local::make_predecessor_recorder(&p[0])));
 
-		std::cout << "parents in the tree of shortest paths:" << std::endl;
+		std::cout << "Parents in the tree of shortest paths:" << std::endl;
 		for (vi = boost::vertices(g).first; vi != boost::vertices(g).second; ++vi)
 		{
 			std::cout << "parent(" << *vi;
 			//if (p[*vi] == vertex_descriptor_type() && *vi == s)
-			if (p[*vi] == boost::graph_traits<graph_type>::null_vertex())  // not working
+			if (p[*vi] == boost::graph_traits<graph_type>::null_vertex())  // Not working.
 				std::cout << ") = no parent" << std::endl;
 			else
 				std::cout << ") = " << p[*vi] << std::endl;
