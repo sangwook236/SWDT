@@ -5,12 +5,12 @@
 #include <boost/graph/directed_graph.hpp>
 #include <boost/graph/grid_graph.hpp>
 #include <boost/graph/graphviz.hpp>
+#include <boost/graph/graph_utility.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/typeof/typeof.hpp>
-#include <boost/graph/graph_utility.hpp>
 #include <boost/utility.hpp>
-#include <boost/pending/disjoint_sets.hpp>
 #include <boost/foreach.hpp>
+#include <boost/pending/disjoint_sets.hpp>
 #include <fstream>
 #include <iostream>
 #include <algorithm>

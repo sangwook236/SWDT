@@ -98,6 +98,103 @@ void dijkstra_example()
 	}
 }
 
+// REF [site] >> https://stackoverflow.com/questions/31145082/bgl-dijkstra-shortest-paths-with-bundled-properties
+void dijkstra_bundled_property_example()
+{
+	struct vertex_properties_t
+	{
+		std::string label;
+		int p1;
+		size_t id;
+	};
+
+	struct edge_properties_t
+	{
+		std::string label;
+		int p1;
+		int weight;
+	};
+
+	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, vertex_properties_t, edge_properties_t> graph_t;
+	typedef graph_t::vertex_descriptor vertex_descriptor_t;
+	typedef graph_t::edge_descriptor edge_descriptor_t;
+	//typedef boost::property_map<graph_t, boost::vertex_index_t>::type index_map_t;
+	//typedef boost::iterator_property_map<vertex_descriptor_t*, index_map_t*, vertex_descriptor_t, vertex_descriptor_t&> predecessor_map_t;
+
+	// Create a graph object.
+	graph_t g;
+
+	// Add vertices.
+	const vertex_descriptor_t v1 = boost::add_vertex(g);
+	const vertex_descriptor_t v2 = boost::add_vertex(g);
+	const vertex_descriptor_t v3 = boost::add_vertex(g);
+	const vertex_descriptor_t v4 = boost::add_vertex(g);
+
+	// Set vertex properties.
+	g[v1].p1 = 1;  g[v1].label = "v1";  g[v1].id = 0;
+	g[v2].p1 = 2;  g[v2].label = "v2";  g[v2].id = 1;
+	g[v3].p1 = 3;  g[v3].label = "v3";  g[v3].id = 2;
+	g[v4].p1 = 4;  g[v4].label = "v4";  g[v4].id = 3;
+
+	// Add edges.
+	const std::pair<edge_descriptor_t, bool> e01 = boost::add_edge(v1, v2, g);
+	const std::pair<edge_descriptor_t, bool> e02 = boost::add_edge(v2, v3, g);
+	const std::pair<edge_descriptor_t, bool> e03 = boost::add_edge(v3, v4, g);
+	const std::pair<edge_descriptor_t, bool> e04 = boost::add_edge(v4, v1, g);
+	const std::pair<edge_descriptor_t, bool> e05 = boost::add_edge(v1, v3, g);
+
+	// Set edge properties.
+	g[e01.first].p1 = 1;  g[e01.first].weight = 1;  g[e01.first].label = "v1-v2";
+	g[e02.first].p1 = 2;  g[e02.first].weight = 2;  g[e02.first].label = "v2-v3";
+	g[e03.first].p1 = 3;  g[e03.first].weight = 1;  g[e03.first].label = "v3-v4";
+	g[e04.first].p1 = 4;  g[e04.first].weight = 1;  g[e04.first].label = "v4-v1";
+	g[e05.first].p1 = 5;  g[e05.first].weight = 3;  g[e05.first].label = "v1-v3";
+
+	// Print out some useful information.
+	std::cout << "Graph:" << std::endl;
+	boost::print_graph(g, boost::get(&vertex_properties_t::label, g));
+	std::cout << "num_vertices: " << boost::num_vertices(g) << std::endl;
+	std::cout << "num_edges: " << boost::num_edges(g) << std::endl;
+
+	// BGL Dijkstra's shortest paths here.
+	std::vector<int> distances(boost::num_vertices(g));
+	std::vector<vertex_descriptor_t> predecessors(boost::num_vertices(g));
+
+	boost::dijkstra_shortest_paths(
+		g, v1,
+		boost::weight_map(boost::get(&edge_properties_t::weight, g))
+#if 1
+			.distance_map(boost::make_iterator_property_map(distances.begin(), boost::get(boost::vertex_index, g)))
+			.predecessor_map(boost::make_iterator_property_map(predecessors.begin(), boost::get(boost::vertex_index, g)))
+#else
+			.distance_map(boost::make_iterator_property_map(distances.begin(), boost::get(&vertex_properties_t::id, g)))
+			.predecessor_map(boost::make_iterator_property_map(predecessors.begin(), boost::get(&vertex_properties_t::id, g)))
+#endif
+	);
+
+	// Extract the shortest path from v1 to v3.
+	typedef std::vector<edge_descriptor_t> path_t;
+	path_t path;
+
+	vertex_descriptor_t v = v3;
+	for(vertex_descriptor_t u = predecessors[v]; u != v; v = u, u = predecessors[v])
+	{
+		const std::pair<edge_descriptor_t, bool> edge_pair = boost::edge(u, v, g);
+		path.push_back(edge_pair.first);
+	}
+
+	std::cout << std::endl;
+	std::cout << "Shortest Path from v1 to v3:" << std::endl;
+	for(path_t::reverse_iterator riter = path.rbegin(); riter != path.rend(); ++riter)
+	{
+		const vertex_descriptor_t u_tmp = boost::source(*riter, g);
+		const vertex_descriptor_t v_tmp = boost::target(*riter, g);
+		const edge_descriptor_t e_tmp = boost::edge(u_tmp, v_tmp, g).first;
+
+		std::cout << "  " << g[u_tmp].label << " -> " << g[v_tmp].label << "  (weight: " << g[e_tmp].weight << ")" << std::endl;
+	}
+}
+
 template<class PredecessorMap>
 class record_predecessors : public boost::default_dijkstra_visitor
 {
@@ -195,6 +292,7 @@ void shortest_paths()
 {
 	// Dijkstra's algorithm -----------------------------------------
 	local::dijkstra_example();
+	local::dijkstra_bundled_property_example();
 
 	// Bellman-Ford algorithm -----------------------------------------
 	// REF [file] >> ${BOOST_HOME}/libs/graph/example/bellman-example.cpp
