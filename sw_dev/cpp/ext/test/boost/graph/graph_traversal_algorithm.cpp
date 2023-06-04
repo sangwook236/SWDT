@@ -115,6 +115,31 @@ public:
 */
 };
 
+void simple_dfs_example()
+{
+	typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
+	typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, EdgeWeightProperty> graph_type;
+
+	graph_type g;
+	boost::add_edge(0, 1, 8, g);
+	boost::add_edge(0, 3, 18, g);
+	boost::add_edge(1, 2, 20, g);
+	boost::add_edge(2, 3, 2, g);
+	boost::add_edge(3, 1, 1, g);
+	boost::add_edge(1, 3, 7, g);
+
+	local::custom_dfs_visitor vis;
+#if 0
+	boost::depth_first_search(g, boost::visitor(vis).root_vertex(boost::vertex(0, g)));
+#elif 0
+	// TODO [check] >> This implementation isn't tested yet.
+	std::vector<boost::default_color_type> vertex_colors(boost::num_vertices(g), boost::white_color);
+	boost::depth_first_search(g, boost::visitor(vis), boost::make_iterator_property_map(vertex_colors.begin(), boost::get(boost::vertex_index, g)), boost::vertex(0, g));
+#else
+	boost::depth_first_search(g, boost::visitor(vis));
+#endif
+}
+
 template<typename TimeMap>
 class bfs_time_visitor : public boost::default_bfs_visitor
 {
@@ -250,7 +275,7 @@ void bfs_example()
 	// A vector to hold the discover time property for each vertex.
 	std::vector<size_type> dtime(boost::num_vertices(g));
 	typedef boost::iterator_property_map<std::vector<size_type>::iterator, boost::property_map<graph_type, boost::vertex_index_t>::const_type> dtime_pm_type;
-	dtime_pm_type dtime_pm(dtime.begin(), get(boost::vertex_index, g));
+	dtime_pm_type dtime_pm(dtime.begin(), boost::get(boost::vertex_index, g));
 
 	size_type time = 0;
 	bfs_time_visitor<dtime_pm_type> vis(dtime_pm, time);
@@ -262,7 +287,7 @@ void bfs_example()
 	std::copy(range.begin(), range.end(), discover_order.begin());
 	std::sort(discover_order.begin(), discover_order.end(), boost::indirect_cmp<dtime_pm_type, std::less<size_type> >(dtime_pm));
 
-	std::cout << "order of discovery: ";
+	std::cout << "Order of discovery: ";
 	for (int i = 0; i < N; ++i)
 		std::cout << name[discover_order[i]] << " ";
 	std::cout << std::endl;
@@ -847,43 +872,16 @@ namespace boost_graph {
 // REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
 void traversal()
 {
-	std::cout << "depth-first search -------------------------------------------" << std::endl;
-	{
-		typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, EdgeWeightProperty> graph_type;
+	std::cout << "Depth-first search -------------------------------------------" << std::endl;
+	local::simple_dfs_example();
 
-		graph_type g;
-		boost::add_edge(0, 1, 8, g);
-		boost::add_edge(0, 3, 18, g);
-		boost::add_edge(1, 2, 20, g);
-		boost::add_edge(2, 3, 2, g);
-		boost::add_edge(3, 1, 1, g);
-		boost::add_edge(1, 3, 7, g);
-
-		local::custom_dfs_visitor vis;
-#if 0
-		boost::depth_first_search(g, boost::visitor(vis).root_vertex(boost::vertex(0, g)));
-#elif 0
-		// TODO [check] >> this implementation isn't tested yet.
-		std::vector<boost::default_color_type> vertex_colors(boost::num_vertices(g), boost::white_color);
-		boost::depth_first_search(g, boost::visitor(vis), boost::make_iterator_property_map(vertex_colors.begin(), boost::get(boost::vertex_index, g)), boost::vertex(0, g));
-#else
-		boost::depth_first_search(g, boost::visitor(vis));
-#endif
-	}
-
-
-	std::cout << "\nbreadth-first search -----------------------------------------" << std::endl;
-	{
-		local::bfs_example();
-		local::bfs_name_printer_example();
-	}
+	std::cout << "\nBreadth-first search -----------------------------------------" << std::endl;
+	local::bfs_example();
+	local::bfs_name_printer_example();
 
 	std::cout << "\nA* search ----------------------------------------------------" << std::endl;
-	{
-		local::astar_cities_example();
-		local::astar_maze_example();
-	}
+	local::astar_cities_example();
+	local::astar_maze_example();
 }
 
 }  // namespace boost_graph

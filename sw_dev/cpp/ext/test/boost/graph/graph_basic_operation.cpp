@@ -721,6 +721,19 @@ void bundled_properties_2()
 		boost::add_edge(v0, v4, prop, g);
 	}
 
+#if 0
+	{
+		const auto &names = boost::get(&VertexProperty::name, g);
+
+		std::cout << "Vertex set: ";
+		boost::print_vertices(g, names);
+		std::cout << "Edge set: ";
+		boost::print_edges(g, names);
+		std::cout << "Outgoing edges:" << std::endl;
+		boost::print_graph(g, names);
+	}
+#endif
+
 	//std::ofstream dot("./data/boost/graph.dot");
 #if 0
 	boost::write_graphviz(
@@ -769,7 +782,7 @@ void graph_based_on_adjacency_matrix()
 		boost::print_edges(g, name);
 		std::cout << std::endl;
 
-		std::cout << "Out-edges: " << std::endl;
+		std::cout << "Outgoing edges: " << std::endl;
 		boost::print_graph(g, name);
 		std::cout << std::endl;
 	}

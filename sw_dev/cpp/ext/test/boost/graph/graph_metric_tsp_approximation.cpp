@@ -17,7 +17,7 @@
 namespace {
 namespace local {
 
-// add edges to the graph (for each node connect it to all other nodes).
+// Add edges to the graph (for each node connect it to all other nodes).
 template<typename VertexListGraph, typename PointContainer, typename WeightMap, typename VertexIndexMap>
 void connectAllEuclidean(VertexListGraph &g, const PointContainer &points, WeightMap wmap, VertexIndexMap vmap, int /*sz*/)
 {
@@ -91,7 +91,7 @@ void metric_tsp_approximation()
 	weight_map_type weight_map(boost::get(boost::edge_weight, g));
 	vertex_map_type v_map(boost::get(boost::vertex_index, g));
 
-	// build a complete graph.
+	// Build a complete graph.
 	local::connectAllEuclidean(g, position_vec, weight_map, v_map, n);
 
 	//

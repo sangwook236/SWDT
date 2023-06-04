@@ -184,15 +184,22 @@ void dijkstra_bundled_property_example()
 	}
 
 	std::cout << std::endl;
-	std::cout << "Shortest Path from v1 to v3:" << std::endl;
+	std::cout << "Shortest path from v1 to v3:" << std::endl;
+#if 1
 	for(path_t::reverse_iterator riter = path.rbegin(); riter != path.rend(); ++riter)
 	{
 		const vertex_descriptor_t u_tmp = boost::source(*riter, g);
 		const vertex_descriptor_t v_tmp = boost::target(*riter, g);
-		const edge_descriptor_t e_tmp = boost::edge(u_tmp, v_tmp, g).first;
 
-		std::cout << "  " << g[u_tmp].label << " -> " << g[v_tmp].label << "  (weight: " << g[e_tmp].weight << ")" << std::endl;
+		std::cout << "  " << g[u_tmp].label << " -> " << g[v_tmp].label << "  (weight: " << g[*riter].weight << ")" << std::endl;
 	}
+#else
+	auto rit = path.rbegin();
+	std::cout << pose_graph[boost::source(*rit, pose_graph)].frame_id;
+	for(; rit != path.rend(); ++rit)
+		std::cout << " -(w: " << pose_graph[*rit].weight << ")-> " << pose_graph[ boost::target(*rit, pose_graph)].frame_id;
+	std::cout << std::endl;
+#endif
 }
 
 template<class PredecessorMap>
