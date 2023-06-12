@@ -18,7 +18,7 @@ class AddTestCase(unittest.TestCase):
 		self.assertEqual(add(1, 2), 4)
 		self.assertEqual(add(-1, -2), -3)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Usage:
 #	python add_test.py

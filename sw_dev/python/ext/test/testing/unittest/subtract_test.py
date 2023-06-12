@@ -15,7 +15,7 @@ class SubtractTestCase(unittest.TestCase):
 		self.assertEqual(subtract(1, 2), 0)
 		self.assertEqual(subtract(2, 1), 1)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Usage:
 #	python subtract_test.py

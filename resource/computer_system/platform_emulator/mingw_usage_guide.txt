@@ -46,7 +46,7 @@
 
 [-] Usage.
 	- Reference.
-    	${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
 [-] Package Management.
 	- MinGW.
@@ -104,8 +104,8 @@
 			${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32
 
 [-] MSYS.
-	- Installation.
-		MSYS2:
+	- Install.
+		MSYS2 (Windows):
 			REF [site] >> https://sourceforge.net/p/msys2/wiki/MSYS2%20installation/
 			==> Install only one of two installation files below.
 				msys2-i686-yyyymmdd.exe
@@ -114,6 +114,10 @@
 					MSYS2 MinGW 32-bit
 					MSYS2 MinGW 64-bit
 					MSYS2 MSYS
+	- Uninstall.
+		MSYS2 (Windows):
+			Use Control Panel.
+			
 	- Update package database.
 		MSYS2:
 			REF [site] >> http://msys2.github.io/
