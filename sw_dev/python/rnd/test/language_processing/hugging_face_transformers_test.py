@@ -1864,6 +1864,22 @@ def llama_example():
 		configuration = model.config
 
 	if True:
+		if False:
+			# Initializing a LLaMA llama-7b style configuration.
+			configuration = transformers.LlamaConfig()
+
+			# Initializing a model from the llama-7b style configuration.
+			model = transformers.LlamaModel(configuration)
+
+			# Accessing the model configuration.
+			configuration = model.config
+
+		if False:
+			tokenizer = transformers.LlaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+
+			encoded = tokenizer.encode("Hello this is a test")
+			print(encoded)
+
 		model = transformers.LlamaForCausalLM.from_pretrained("decapoda-research/llama-7b-hf")
 		tokenizer = transformers.AutoTokenizer.from_pretrained("decapoda-research/llama-7b-hf")
 
