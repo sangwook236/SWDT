@@ -36,6 +36,9 @@
     <ClCompile Include="itk\itk_main.cpp">
       <Filter>Source Files\itk</Filter>
     </ClCompile>
+    <ClCompile Include="itk\itk_segmentation.cpp">
+      <Filter>Source Files\itk</Filter>
+    </ClCompile>
     <ClCompile Include="ritk\ritk_main.cpp">
       <Filter>Source Files\ritk</Filter>
     </ClCompile>

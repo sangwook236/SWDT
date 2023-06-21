@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 		std::cout << "\nFeature Selection Toolbox (FST) library -----------------------------" << std::endl;
 		//retval = fst_main(argc, argv);
 	}
-    catch (const std::bad_alloc &ex)
+	catch (const std::bad_alloc &ex)
 	{
 		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;

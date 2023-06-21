@@ -37,6 +37,7 @@
 		<Unit filename="gegl/gegl_main.cpp" />
 		<Unit filename="graphicsmagick/graphicsmagick_main.cpp" />
 		<Unit filename="itk/itk_main.cpp" />
+		<Unit filename="itk/itk_segmentation.cpp" />
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="ritk/ritk_main.cpp" />

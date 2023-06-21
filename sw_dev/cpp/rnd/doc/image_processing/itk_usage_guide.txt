@@ -1,39 +1,30 @@
 [-] General.
 	- Site.
-		http://www.itk.org
+		https://itk.org/
 
-[-] Building.
-	- ITK site로 부터 file download.
-		-. http://www.itk.org
-	- CMake site로 부터 file download.
-		-. http://www.cmake.org/
-	- 압축 해제.
-	- CMake에 의해 생성된 build 관련 file이 생성된 directory 생성.
-	- CMakeSetup 실행.
-		-. MS Windows에서 실행시 Win32용 installation package를 사용하지 말고
-			압축되어 있는 것을 받아 압축해제 후 사용하는 것이 편함.
-	- CMakeSetup 환경에서 option을 적절히 설정.
-		-. STLport를 사용하기 위해서는 "/D VCL_STLPORT"를 compile option에 추가.
-			CMAKE_CXX_FLAGS
-			CMAKE_C_FLAGS
-	- CMakeSetup에서 build 설정 file 생성.
-		-. "OK" button을 눌러 최종적으로 build 설정 file 생성.
-	- Visual Studio IDE에서 "${ITK_ROOT}/ITK.dsw"를 open.
-		Building 시작 전 환경을 적절히 설정.
-			>< STLport를 사용하기 위해서는 "${ITK_ROOT}/Code/Common/itk_hashtable.h"를 아래와 같이 수정
-				(수정전) #if defined(VCL_SUNPRO_CC) || defined (_MSC_VER) || defined(__BORLANDC__) || ((defined(__ICC)||defined(__ECC)) && defined(linux))
-				(수정후) #if !defined(VCL_STLPORT) && (defined(VCL_SUNPRO_CC) || defined (_MSC_VER) || defined(__BORLANDC__) || ((defined(__ICC)||defined(__ECC)) && defined(linux)))
-		"ALL_BUILD" project로 building.
-		"RUN_TESTS" project로 building.
-			>< building된 ITK library의 검증을 위해.
-		"INSTALL" project로 building.
-			>< %ITK_BUILD_ROOT%가 있는 drive의 하위에 생성.
-				Drive:/usr/local/include/InsightToolkit
-				Drive:/usr/local/lib/InsightToolkit
-			>< debug & release build의 file name이 동일.
-				따라서 install시 덮어쓰지 않도록 주의하여야 함.
+[-] Usage.
+	- Creating a Project Workspace using CMake.
+		"The ITK Software Guide" 2.2 Getting Started with ITK.
 
-[-] Linking.
+		Procedure.
+			Create directory & files.
+				CMakeLists.txt
+					==> Copy from "The ITK Software Guide"
+				HelloWorld.cxx
+			Run CMakeSetup in MS Windows Environment.
+			Work in CMakeSetup.
+				Choose source & bin directories.
+				Push "Configure" button.
+				Modify options.
+					Add "/D VCL_STLPORT" to compile options for using STLport.
+						CMAKE_CXX_FLAGS option
+						CMAKE_C_FLAGS option
+				Push "Configure" button once more.
+				Push "OK" button to create a building configuration file.
+			Open HelloWorld.dsw in Visual Studio IDE.
+			Start building an executable file using "ALL_BUILD" project.
+
+[-] Linking (MSVC).
 	- Include path.
 		${ITK_ROOT}/Code/Common
 		${ITK_ROOT}/Code/IO
@@ -71,48 +62,61 @@
 	- STLport와의 linking 하기 위해서 compile option을 추가해야 할지도 모름.
 		VCL_STLPORT 추가.
 
-[-] Creating a Project Workspace using CMake.
-	- Reference.
-		"The ITK Software Guide" 2.2 Getting Started with ITK.
-	- Procedure.
-		Create directory & files.
-			CMakeLists.txt
-				==> Copy from "The ITK Software Guide"
-			HelloWorld.cxx
-		Run CMakeSetup in MS Windows Environment.
-		Work in CMakeSetup.
-			Choose source & bin directories.
-			Push "Configure" button.
-			Modify options.
-				Add "/D VCL_STLPORT" to compile options for using STLport.
-					CMAKE_CXX_FLAGS option
-					CMAKE_C_FLAGS option
-			Push "Configure" button once more.
-			Push "OK" button to create a building configuration file.
-		Open HelloWorld.dsw in Visual Studio IDE.
-		Start building an executable file using "ALL_BUILD" project.
+[-] Installation (MSVC).
+	- Build.
+		Download.
+			https://itk.org/
+		Decompress.
 
-[-] Building 4.3.0 (MSVC)
-	- Build as static library. (?)
-		Shared library로 building이 가능하지만, ITK library를 사용하는 측에서 오류를 발생시킬 수 있음.
-	- External library 사용 설정.
-		ITK에서 제공하는 external library를 사용하는 것이 유리.
-		ITK_USE_SYSTEM_???은 ITK에서 제공되는 library가 아니라 system에 설치된 library를 사용한다는 의미.
-		==> 아래와 같이 설정.
-			ITK_USE_SYSTEM_DCMTK				OFF
-			ITK_USE_SYSTEM_GDCM					OFF
-			ITK_USE_SYSTEM_HDF5					OFF
-			ITK_USE_SYSTEM_JPEG					OFF
-			ITK_USE_SYSTEM_PNG					OFF
-			ITK_USE_SYSTEM_TIFF					OFF
-			ITK_USE_SYSTEM_VXL					OFF
-				==> Module_ITKVideoBridgeVXL을 ON한 경우 OFF되지 않음.
-			ITK_USE_SYSTEM_ZLIB					OFF
+		CMake.
+			CMake에 의해 생성된 build 관련 file이 생성된 directory 생성.
+			CMakeSetup 실행.
+				MS Windows에서 실행시 Win32용 installation package를 사용하지 말고
+					압축되어 있는 것을 받아 압축해제 후 사용하는 것이 편함.
+			CMakeSetup 환경에서 option을 적절히 설정.
+				STLport를 사용하기 위해서는 "/D VCL_STLPORT"를 compile option에 추가.
+					CMAKE_CXX_FLAGS
+					CMAKE_C_FLAGS
+			CMakeSetup에서 build 설정 file 생성.
+				"OK" button을 눌러 최종적으로 build 설정 file 생성.
 
-			Module_ITKDCMTK						OFF
-			Module_ITKIODCMTK					OFF
-			Module_ITKVideoBridgeOpenCV			ON
-			Module_ITKVideoBridgeVXL			OFF
-				==> VXL library를 build할 때 사용된 2D graphics library와 충돌하는 경우 발생.
+		Visual Studio IDE에서 "${ITK_ROOT}/ITK.dsw"를 open.
+			Building 시작 전 환경을 적절히 설정.
+				STLport를 사용하기 위해서는 "${ITK_ROOT}/Code/Common/itk_hashtable.h"를 아래와 같이 수정
+					(수정전) #if defined(VCL_SUNPRO_CC) || defined (_MSC_VER) || defined(__BORLANDC__) || ((defined(__ICC)||defined(__ECC)) && defined(linux))
+					(수정후) #if !defined(VCL_STLPORT) && (defined(VCL_SUNPRO_CC) || defined (_MSC_VER) || defined(__BORLANDC__) || ((defined(__ICC)||defined(__ECC)) && defined(linux)))
+			"ALL_BUILD" project로 building.
+			"RUN_TESTS" project로 building.
+				Building된 ITK library의 검증을 위해.
+			"INSTALL" project로 building.
+				%ITK_BUILD_ROOT%가 있는 drive의 하위에 생성.
+					Drive:/usr/local/include/InsightToolkit
+					Drive:/usr/local/lib/InsightToolkit
+				Debug & release build의 file name이 동일.
+					따라서 install시 덮어쓰지 않도록 주의하여야 함.
 
-			USE_SYSTEM_FFTW						ON
+[-] Installation v4.3.0 (MSVC)
+	- Build.
+		Build as static library. (?)
+			Shared library로 building이 가능하지만, ITK library를 사용하는 측에서 오류를 발생시킬 수 있음.
+		External library 사용 설정.
+			ITK에서 제공하는 external library를 사용하는 것이 유리.
+			ITK_USE_SYSTEM_???은 ITK에서 제공되는 library가 아니라 system에 설치된 library를 사용한다는 의미.
+			==> 아래와 같이 설정.
+				ITK_USE_SYSTEM_DCMTK				OFF
+				ITK_USE_SYSTEM_GDCM					OFF
+				ITK_USE_SYSTEM_HDF5					OFF
+				ITK_USE_SYSTEM_JPEG					OFF
+				ITK_USE_SYSTEM_PNG					OFF
+				ITK_USE_SYSTEM_TIFF					OFF
+				ITK_USE_SYSTEM_VXL					OFF
+					==> Module_ITKVideoBridgeVXL을 ON한 경우 OFF되지 않음.
+				ITK_USE_SYSTEM_ZLIB					OFF
+
+				Module_ITKDCMTK						OFF
+				Module_ITKIODCMTK					OFF
+				Module_ITKVideoBridgeOpenCV			ON
+				Module_ITKVideoBridgeVXL			OFF
+					==> VXL library를 build할 때 사용된 2D graphics library와 충돌하는 경우 발생.
+
+				USE_SYSTEM_FFTW						ON
