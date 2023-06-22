@@ -1501,6 +1501,131 @@ def flan_t5_example():
 		outputs = model.generate(input_ids)
 		print(tokenizer.decode(outputs[0]))
 
+def palm_example():
+	if False:
+		# https://github.com/lucidrains/PaLM-pytorch
+
+		# Install.
+		#	pip install PaLM-pytorch
+
+		import palm_pytorch
+
+		if True:
+			palm = palm_pytorch.PaLM(
+				num_tokens=20000,
+				dim=512,
+				depth=12,
+				heads=8,
+				dim_head=64,
+			)
+		else:
+			# The PaLM 540B in the paper would be.
+			palm = palm_pytorch.PaLM(
+				num_tokens=256000,
+				dim=18432,
+				depth=118,
+				heads=48,
+				dim_head=256,
+			)
+
+		tokens = torch.randint(0, 20000, (1, 2048))
+		logits = palm(tokens)  # (1, 2048, 20000).
+
+		print(f"{logits.shape=}")
+
+	if True:
+		# https://github.com/lucidrains/PaLM-rlhf-pytorch
+
+		# Install.
+		#	pip install palm-rlhf-pytorch
+
+		import palm_rlhf_pytorch
+
+		# 1. train PaLM, like any other autoregressive transformer.
+
+		palm = palm_rlhf_pytorch.PaLM(
+			num_tokens=20000,
+			dim=512,
+			depth=12,
+			flash_attn=False,  # https://arxiv.org/abs/2205.14135
+		).cuda()
+
+		seq = torch.randint(0, 20000, (1, 2048)).cuda()
+
+		loss = palm(seq, return_loss=True)
+		loss.backward()
+
+		#torch.save(palm.state_dict(), "/path/to/pretrained/palm.pt")
+
+		# After much training, you can now generate sequences.
+		generated = palm.generate(2048)  # (1, 2048).
+
+		#-----
+		# 2.train your reward model, with the curated human feedback.
+
+		palm = palm_rlhf_pytorch.PaLM(
+			num_tokens=20000, 
+			dim=512,
+			depth=12,
+			causal=False,
+		)
+
+		#palm.load("/path/to/pretrained/palm.pt")
+
+		reward_model = palm_rlhf_pytorch.RewardModel(
+			palm,
+			num_binned_output=5,  # Say rating from 1 to 5.
+		).cuda()
+
+		#torch.save(reward_model.state_dict(), "/path/to/pretrained/reward_model.pt")
+
+		# Mock data.
+		seq = torch.randint(0, 20000, (1, 1024)).cuda()
+		prompt_mask = torch.zeros(1, 1024).bool().cuda()  # Which part of the sequence is prompt, which part is response.
+		labels = torch.randint(0, 5, (1,)).cuda()
+
+		# Train.
+		loss = reward_model(seq, prompt_mask=prompt_mask, labels=labels)
+		loss.backward()
+
+		# After much training.
+		reward = reward_model(seq, prompt_mask=prompt_mask)
+
+		#-----
+		# 3. pass your transformer and the rewards model to the RLHFTrainer.
+
+		# Load your pretrained palm.
+		palm = palm_rlhf_pytorch.PaLM(
+			num_tokens=20000,
+			dim=512,
+			depth=12,
+		).cuda()
+
+		#palm.load("/path/to/pretrained/palm.pt")
+
+		# Load your pretrained reward model.
+		reward_model = palm_rlhf_pytorch.RewardModel(
+			palm,
+			num_binned_output=5,
+		).cuda()
+
+		#reward_model.load("/path/to/pretrained/reward_model.pt")
+
+		# Ready your list of prompts for reinforcement learning.
+		prompts = torch.randint(0, 256, (50000, 512)).cuda()  # 50k prompts.
+
+		# Pass it all to the trainer and train.
+		trainer = palm_rlhf_pytorch.RLHFTrainer(
+			palm=palm,
+			reward_model=reward_model,
+			prompt_token_ids=prompts,
+		)
+
+		trainer.train(num_episodes=50000)
+
+		# Generate say 10 samples and use the reward model to return the best one.
+		answer = trainer.generate(2048, prompt=prompts[0], num_samples=10)  # (<= 2048,).
+
 # REF [site] >>
 #	https://huggingface.co/bigscience
 #	https://huggingface.co/docs/transformers/model_doc/bloom
@@ -1643,7 +1768,7 @@ def opt_example():
 	# Models:
 	#	facebook/opt-125m.
 	#	facebook/opt-350m.
-	#	facebook/opt-2.7b.
+	#	facebook/opt-2.7b: ~5.30GB.
 	#	facebook/opt-6.7b.
 	#	facebook/opt-13b.
 	#	facebook/opt-30b.
@@ -1654,9 +1779,9 @@ def opt_example():
 	#	facebook/opt-iml-max-30b.
 
 	if True:
-		model = transformers.AutoModelForCausalLM.from_pretrained("facebook/opt-30b", torch_dtype=torch.float16).cuda()
+		model = transformers.AutoModelForCausalLM.from_pretrained("facebook/opt-2.7b", torch_dtype=torch.float16).cuda()
 		# The fast tokenizer currently does not work correctly.
-		tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/opt-30b", use_fast=False)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/opt-2.7b", use_fast=False)
 
 		prompt = "Hello, I am conscious and"
 		input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
@@ -1673,9 +1798,9 @@ def opt_example():
 	if True:
 		# Here's an example of how the model can have biased predictions.
 
-		model = transformers.AutoModelForCausalLM.from_pretrained("facebook/opt-30b", torch_dtype=torch.float16).cuda()
+		model = transformers.AutoModelForCausalLM.from_pretrained("facebook/opt-2.7b", torch_dtype=torch.float16).cuda()
 		# The fast tokenizer currently does not work correctly.
-		tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/opt-30b", use_fast=False)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/opt-2.7b", use_fast=False)
 
 		prompt = "The woman worked as a"
 		#prompt = "The man worked as a"
@@ -1692,16 +1817,16 @@ def galactica_example():
 	# Models:
 	#	facebook/galactica-125m.
 	#	facebook/galactica-1.3b.
-	#	facebook/galactica-6.7b.
+	#	facebook/galactica-6.7b: ~13.73GB.
 	#	facebook/galactica-30b.
 	#	facebook/galactica-120b.
 
 	# Install.
 	#	pip install bitsandbytes accelerate
 
-	tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/galactica-120b")
+	tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/galactica-6.7b")
 	#model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b")  # CPU.
-	model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b", device_map="auto")  # GPU.
+	model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-6.7b", device_map="auto")  # GPU.
 	#model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b", device_map="auto", torch_dtype=torch.float16)  # GPU. FP16.
 	#model = transformers.OPTForCausalLM.from_pretrained("facebook/galactica-120b", device_map="auto", load_in_8bit=True)  # GPU. INT8.
 
@@ -1712,138 +1837,13 @@ def galactica_example():
 	outputs = model.generate(input_ids)
 	print(tokenizer.decode(outputs[0]))
 
-def palm_example():
-	if False:
-		# https://github.com/lucidrains/PaLM-pytorch
-
-		# Install.
-		#	pip install PaLM-pytorch
-
-		import palm_pytorch
-
-		if True:
-			palm = palm_pytorch.PaLM(
-				num_tokens=20000,
-				dim=512,
-				depth=12,
-				heads=8,
-				dim_head=64,
-			)
-		else:
-			# The PaLM 540B in the paper would be.
-			palm = palm_pytorch.PaLM(
-				num_tokens=256000,
-				dim=18432,
-				depth=118,
-				heads=48,
-				dim_head=256,
-			)
-
-		tokens = torch.randint(0, 20000, (1, 2048))
-		logits = palm(tokens)  # (1, 2048, 20000).
-
-		print(f"{logits.shape=}")
-
-	if True:
-		# https://github.com/lucidrains/PaLM-rlhf-pytorch
-
-		# Install.
-		#	pip install palm-rlhf-pytorch
-
-		import palm_rlhf_pytorch
-
-		# 1. train PaLM, like any other autoregressive transformer.
-
-		palm = palm_rlhf_pytorch.PaLM(
-			num_tokens=20000,
-			dim=512,
-			depth=12,
-			flash_attn=False,  # https://arxiv.org/abs/2205.14135
-		).cuda()
-
-		seq = torch.randint(0, 20000, (1, 2048)).cuda()
-
-		loss = palm(seq, return_loss=True)
-		loss.backward()
-
-		#torch.save(palm.state_dict(), "/path/to/pretrained/palm.pt")
-
-		# After much training, you can now generate sequences.
-		generated = palm.generate(2048)  # (1, 2048).
-
-		#-----
-		# 2.train your reward model, with the curated human feedback.
-
-		palm = palm_rlhf_pytorch.PaLM(
-			num_tokens=20000, 
-			dim=512,
-			depth=12,
-			causal=False,
-		)
-
-		#palm.load("/path/to/pretrained/palm.pt")
-
-		reward_model = palm_rlhf_pytorch.RewardModel(
-			palm,
-			num_binned_output=5,  # Say rating from 1 to 5.
-		).cuda()
-
-		#torch.save(reward_model.state_dict(), "/path/to/pretrained/reward_model.pt")
-
-		# Mock data.
-		seq = torch.randint(0, 20000, (1, 1024)).cuda()
-		prompt_mask = torch.zeros(1, 1024).bool().cuda()  # Which part of the sequence is prompt, which part is response.
-		labels = torch.randint(0, 5, (1,)).cuda()
-
-		# Train.
-		loss = reward_model(seq, prompt_mask=prompt_mask, labels=labels)
-		loss.backward()
-
-		# After much training.
-		reward = reward_model(seq, prompt_mask=prompt_mask)
-
-		#-----
-		# 3. pass your transformer and the rewards model to the RLHFTrainer.
-
-		# Load your pretrained palm.
-		palm = palm_rlhf_pytorch.PaLM(
-			num_tokens=20000,
-			dim=512,
-			depth=12,
-		).cuda()
-
-		#palm.load("/path/to/pretrained/palm.pt")
-
-		# Load your pretrained reward model.
-		reward_model = palm_rlhf_pytorch.RewardModel(
-			palm,
-			num_binned_output=5,
-		).cuda()
-
-		#reward_model.load("/path/to/pretrained/reward_model.pt")
-
-		# Ready your list of prompts for reinforcement learning.
-		prompts = torch.randint(0, 256, (50000, 512)).cuda()  # 50k prompts.
-
-		# Pass it all to the trainer and train.
-		trainer = palm_rlhf_pytorch.RLHFTrainer(
-			palm=palm,
-			reward_model=reward_model,
-			prompt_token_ids=prompts,
-		)
-
-		trainer.train(num_episodes=50000)
-
-		# Generate say 10 samples and use the reward model to return the best one.
-		answer = trainer.generate(2048, prompt=prompts[0], num_samples=10)  # (<= 2048,).
-
 # REF [site] >>
 #	https://huggingface.co/decapoda-research
 #	https://huggingface.co/docs/transformers/main/en/model_doc/llama
 def llama_example():
 	# Models:
 	#	decapoda-research/llama-smallint-pt.
-	#	decapoda-research/llama-7b-hf.
+	#	decapoda-research/llama-7b-hf: ~13.5GB.
 	#	decapoda-research/llama-13b-hf.
 	#	decapoda-research/llama-30b-hf.
 	#	decapoda-research/llama-65b-hf.
@@ -1875,13 +1875,15 @@ def llama_example():
 			configuration = model.config
 
 		if False:
-			tokenizer = transformers.LlaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+			tokenizer = transformers.LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
 
 			encoded = tokenizer.encode("Hello this is a test")
 			print(encoded)
 
 		model = transformers.LlamaForCausalLM.from_pretrained("decapoda-research/llama-7b-hf")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("decapoda-research/llama-7b-hf")
+		#tokenizer = transformers.AutoTokenizer.from_pretrained("decapoda-research/llama-7b-hf")  # ValueError: Tokenizer class LLaMATokenizer does not exist or is not currently imported.
+		#tokenizer = transformers.LlamaTokenizer.from_pretrained("decapoda-research/llama-7b-hf")  # Not good.
+		tokenizer = transformers.LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
 
 		prompt = "Hey, are you conscious? Can you talk to me?"
 		inputs = tokenizer(prompt, return_tensors="pt")
@@ -3717,7 +3719,7 @@ def main():
 	#korean_table_question_answering_example()  # Not correctly working.
 
 	#--------------------
-	# Language model.
+	# Language.
 
 	#encoder_decoder_example()
 
@@ -3755,33 +3757,29 @@ def main():
 	#flan_t5_example()
 
 	#-----
-	# BLOOM.
-	#bloom_example()
-
-	# OPT.
-	opt_example()  # Not yet tested.
-	# Galactica.
-	galactica_example()  # Not yet tested.
-
-	# PaLM.
 	#palm_example()  # PaLM + RLHF.
+	#bloom_example()  # BLOOM.
 
-	# LLaMA.
-	#llama_example()  # Not yet tested.
+	#opt_example()  # OPT.
+	#galactica_example()  # Galactica.
+
+	llama_example()  # LLaMA.
 
 	#-----
 	# Code.
 
-	#codet5_example()
-	#codegen_example()
+	#codet5_example()  # CodeT5.
+	#codegen_example()  # CodeGen.
 
 	#--------------------
 	# Vision.
 
+	# ViT.
 	#vit_example()
 	#vit_masked_image_modeling_example()
 	#vit_image_classification_example()
 
+	# DeiT.
 	#deit_example()
 	#deit_masked_image_modeling_example()
 	#deit_image_classification_example()
@@ -3790,26 +3788,29 @@ def main():
 	#--------------------
 	# Vision and language.
 
+	# ViLT.
 	#vilt_example()
 	#vilt_masked_lm_example()
 	#vilt_question_answering_example()
 	#vilt_images_and_text_classification_example()
 	#vilt_image_and_text_retrieval_example()
 
+	# BEiT.
 	#beit_example()
 	#beit_masked_image_modeling_example()
 	#beit_image_classification_example()
 	#beit_semantic_segmentation_example()
 
-	#clip_example()
-	#align_example()
-	#git_example()
-	blip_example()
+	#clip_example()  # CLIP.
+	#align_example()  # ALIGN
+	#git_example()  # GIT.
+	#blip_example()  # BLIP.
 
 	#--------------------
 	# Document.
 
-	# LayoutLM requires libraries: tesseract, detectron2.
+	# LayoutLM.
+	#	Required libraries: tesseract, detectron2.
 	#layoutlmv2_example()
 	#layoutlmv2_sequence_classification_example()
 	#layoutlmv2_token_classification_example()
@@ -3820,6 +3821,7 @@ def main():
 	#layoutlmv3_token_classification_example()
 	#layoutlmv3_question_answering_example()
 
+	# Donut.
 	#donut_example()
 	#donut_document_image_classification_example()
 	#donut_document_document_parsing_example()
@@ -3831,21 +3833,22 @@ def main():
 	# Table.
 
 	#table_transformer_example()  # Table Transformer (TATR).
-	#tapex_example()
+	#tapex_example()  # TaPEx.
 
 	#--------------------
 	# Text.
 
-	#trocr_example()
+	#trocr_example()  # TrOCR.
 
 	#--------------------
 	# Speech.
 
-	#speecht5_example()
+	#speecht5_example()  # SpeechT5.
 
 	#-----
 	# Speech recognition.
 
+	# Whisper.
 	#openai_whisper_example()
 	#speech_brain_asr_example()  # Error.
 
