@@ -1,0 +1,80 @@
+[-] General.
+	- Site.
+		https://developer.nvidia.com/nvidia-nemo
+		https://github.com/NVIDIA/NeMo
+
+	- Document.
+		https://docs.nvidia.com/deeplearning/nemo/user-guide/docs/en/stable/index.html
+
+	- Key features.
+		Speech processing:
+			Automatic speech recognition (ASR).
+			Speech classification, speech command recognition and language identification.
+			Voice activity detection (VAD).
+			Speaker recognition (SR).
+			Speaker diarization.
+			Self-supervised learning.
+			Speech intent classification and slot filling.
+			NGC collection of pre-trained speech processing models.
+
+		Natural language processing (NLP):
+			NeMo Megatron pre-training of large language models.
+			Neural machine translation (NMT).
+			Punctuation and capitalization.
+			Token classification (named entity recognition).
+			Text classification.
+			Joint intent and slot classification.
+			Question answering.
+			GLUE benchmark.
+			Information retrieval.
+			Entity linking.
+			Dialogue state rracking.
+			Prompt learning.
+			(Inverse) text normalization.
+			Synthetic tabular data ceneration.
+			NGC collection of pre-trained NLP models.
+
+		Speech synthesis:
+			Text-to-Speech (TTS).
+			NGC collection of pre-trained TTS models.
+
+[-] Usage.
+	- Tutorial.
+		https://docs.nvidia.com/deeplearning/nemo/user-guide/docs/en/stable/starthere/tutorials.html
+		https://github.com/NVIDIA/NeMo/tree/main/tutorials
+
+	- Example.
+		https://github.com/NVIDIA/NeMo/tree/main/examples
+
+[-] Installation.
+	https://docs.nvidia.com/deeplearning/nemo/user-guide/docs/en/main/starthere/intro.html
+	https://github.com/NVIDIA/NeMo
+
+	- Install.
+		conda create --name nemo python==3.8
+		conda activate nemo
+
+		conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+
+		Pip:
+			apt update && apt install -y libsndfile1 ffmpeg
+			pip install Cython
+			pip install nemo_toolkit[all]
+
+		Pip from source:
+			apt update && apt install -y libsndfile1 ffmpeg
+			pip install Cython
+			python -m pip install git+https://github.com/NVIDIA/NeMo.git@{BRANCH}#egg=nemo_toolkit[all]
+
+		From source:
+			apt update && apt install -y libsndfile1 ffmpeg
+			git clone https://github.com/NVIDIA/NeMo
+			cd NeMo
+			./reinstall.sh
+
+		Docker containers:
+			DOCKER_BUILDKIT=1 docker build -f Dockerfile -t nemo:latest.
+
+			docker run --gpus all -it --rm -v <nemo_github_folder>:/NeMo --shm-size=8g \
+				-p 8888:8888 -p 6006:6006 --ulimit memlock=-1 --ulimit \
+				stack=67108864 --device=/dev/snd nvcr.io/nvidia/pytorch:21.05-py3
