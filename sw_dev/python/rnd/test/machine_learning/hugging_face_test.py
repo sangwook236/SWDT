@@ -1831,11 +1831,19 @@ def main():
 	#	https://github.com/huggingface/accelerate/blob/main/examples/complete_cv_example.py
 
 	#--------------------
-	# Hugging Face Transformers.
+	# Transformers.
 	#	Refer to ../language_processing/hugging_face_transformers_test.py.
 
+	#-----
+	# Object detection.
+	#	Refer to ../object_detection/hugging_face_object_detection_test.py.
+
+	#-----
+	# Segmentation.
+	#	Refer to ../segmentation/hugging_face_segmentation_test.py.
+
 	#--------------------
-	# Hugging Face Diffusers.
+	# Diffusers.
 	#	Refer to ../machine_vision/diffusion_model_test.py.
 
 	#--------------------
