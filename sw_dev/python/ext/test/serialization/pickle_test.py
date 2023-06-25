@@ -11,14 +11,14 @@ def main():
 		with open(filepath, 'wb') as fd:
 			pickle.dump(favorite_color, fd)
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(filepath, ex))
+		print(f'File not found, {filepath}: {ex}.')
 
 	try:
 		with open(filepath, 'rb') as fd:
 			loaded = pickle.load(fd)
 			print(loaded)
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(filepath, ex))
+		print(f'File not found, {filepath}: {ex}.')
 
 	#--------------------
 	dumped = pickle.dumps(favorite_color)  # An object of type 'bytes'.

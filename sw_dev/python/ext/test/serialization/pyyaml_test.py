@@ -94,11 +94,11 @@ sp: 0
 			data = yaml.load(fd, Loader=yaml.FullLoader)
 			print(data)
 	except yaml.scanner.ScannerError as ex:
-		print('yaml.scanner.ScannerError in {}: {}.'.format(filepath, ex))
+		print(f'yaml.scanner.ScannerError in {filepath}: {ex}.')
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error in {}: {}.'.format(filepath, ex))
+		print(f'Unicode decode error in {filepath}: {ex}.')
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(filepath, ex))
+		print(f'File not found, {filepath}: {ex}.')
 
 	try:
 		filepath = './tmp.yml'
@@ -106,9 +106,9 @@ sp: 0
 			yaml.dump(data, fd)
 			#yaml.dump(data, fd, indent=4)
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error in {}: {}.'.format(filepath, ex))
+		print(f'Unicode decode error in {filepath}: {ex}.')
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(filepath, ex))
+		print(f'File not found, {filepath}: {ex}.')
 
 # REF [site] >> https://pyyaml.org/wiki/PyYAMLDocumentation
 def alias_test():
@@ -163,11 +163,11 @@ def include_test():
 			data = yaml.load(fd, Loader=MyIncludeLoader)
 			print(data)
 	except yaml.scanner.ScannerError as ex:
-		print('yaml.scanner.ScannerError in {}: {}.'.format(filepath, ex))
+		print(f'yaml.scanner.ScannerError in {filepath}: {ex}.')
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error in {}: {}.'.format(filepath, ex))
+		print(f'Unicode decode error in {filepath}: {ex}.')
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(filepath, ex))
+		print(f'File not found, {filepath}: {ex}.')
 
 def main():
 	#simple_example()
