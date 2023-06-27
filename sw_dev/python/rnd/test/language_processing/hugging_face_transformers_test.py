@@ -1894,6 +1894,69 @@ def llama_example():
 		generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 		print(generated)
 
+# REF [site] >> https://huggingface.co/mosaicml
+def mpt_example():
+	# Models:
+	#	mosaicml/mpt-7b.
+	#	mosaicml/mpt-7b-chat: ~13.3GB.
+	#	mosaicml/mpt-7b-instruct.
+	#	mosaicml/mpt-7b-storywriter.
+	#	mosaicml/mpt-30b.
+	#	mosaicml/mpt-30b-chat.
+	#	mosaicml/mpt-30b-instruct.
+
+	#device = "cuda" if torch.cuda.is_available() else "cpu"
+	device = "cpu"
+
+	if True:
+		name = "mosaicml/mpt-7b-chat"  # CUDA out-of-memory.
+		tokenizer = transformers.AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
+	else:
+		name = "mosaicml/mpt-30b-chat"  # CUDA out-of-memory.
+		tokenizer = transformers.AutoTokenizer.from_pretrained("mosaicml/mpt-30b")
+
+	if False:
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			name,
+			trust_remote_code=True
+		)  # CPU.
+	elif False:
+		config = transformers.AutoConfig.from_pretrained(name, trust_remote_code=True)
+		config.attn_config["attn_impl"] = "triton"  # Change this to use triton-based FlashAttention.
+		config.init_device = device  # For fast initialization directly on GPU!
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			name,
+			config=config,
+			torch_dtype=torch.bfloat16,  # Load model weights in bfloat16.
+			trust_remote_code=True
+		)
+	elif True:
+		config = transformers.AutoConfig.from_pretrained(name, trust_remote_code=True)
+		config.max_seq_len = 4096  # (input + output) tokens can now be up to 4096.
+		#config.max_seq_len = 16384  # (input + output) tokens can now be up to 16384.
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			name,
+			config=config,
+			trust_remote_code=True
+		)
+
+	if False:
+		with torch.autocast(device, dtype=torch.bfloat16):
+			inputs = tokenizer("Here is a recipe for vegan banana bread:\n", return_tensors="pt").to(device)
+			outputs = model.generate(**inputs, max_new_tokens=100)
+			print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
+	else:
+		# Using the HF pipeline.
+		pipe = transformers.pipeline("text-generation", model=model, tokenizer=tokenizer, device=device)  # Warning: The model 'MPTForCausalLM' is not supported for text-generation.
+		with torch.autocast(device, dtype=torch.bfloat16):
+			generated = pipe(
+				"Here is a recipe for vegan banana bread:\n",
+				max_new_tokens=100, do_sample=True, use_cache=True
+			)
+			print(generated)
+
 # REF [site] >> https://huggingface.co/Salesforce
 def codet5_example():
 	# Models:
@@ -2772,6 +2835,60 @@ def blip_example():
 		out = model.generate(**inputs)
 
 		print(processor.decode(out[0], skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/tvlt
+def tvlt_example():
+	import numpy as np
+
+	if False:
+		# Initializing a TVLT ZinengTang/tvlt-base style configuration.
+		configuration = transformers.TvltConfig()
+
+		# Initializing a model (with random weights) from the ZinengTang/tvlt-base style configuration.
+		model = transformers.TvltModel(configuration)
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if True:
+		processor = transformers.TvltProcessor.from_pretrained("ZinengTang/tvlt-base")
+		model = transformers.TvltModel.from_pretrained("ZinengTang/tvlt-base")
+
+		num_frames = 8
+		images = list(np.random.randn(num_frames, 3, 224, 224))
+		audio = list(np.random.randn(10000))
+		input_dict = processor(images, audio, sampling_rate=44100, return_tensors="pt")
+
+		outputs = model(**input_dict)
+
+		loss = outputs.loss
+
+	if True:
+		processor = transformers.TvltProcessor.from_pretrained("ZinengTang/tvlt-base")
+		model = transformers.TvltForPreTraining.from_pretrained("ZinengTang/tvlt-base")
+
+		num_frames = 8
+		images = list(np.random.randn(num_frames, 3, 224, 224))
+		images_mixed = list(np.random.randn(num_frames, 3, 224, 224))
+		audio = list(np.random.randn(10000))
+		input_dict = processor(images, audio, images_mixed, sampling_rate=44100, mask_pixel=True, mask_audio=True, return_tensors="pt")
+
+		outputs = model(**input_dict)
+
+		loss = outputs.loss
+
+	if True:
+		processor = transformers.TvltProcessor.from_pretrained("ZinengTang/tvlt-base")
+		model = transformers.TvltForAudioVisualClassification.from_pretrained("ZinengTang/tvlt-base")
+
+		num_frames = 8
+		images = list(np.random.randn(num_frames, 3, 224, 224))
+		audio = list(np.random.randn(10000))
+		input_dict = processor(images, audio, sampling_rate=44100, return_tensors="pt")
+
+		outputs = model(**input_dict)
+
+		loss = outputs.loss
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
@@ -3765,6 +3882,8 @@ def main():
 
 	llama_example()  # LLaMA.
 
+	#mpt_example()  # MPT.
+
 	#-----
 	# Code.
 
@@ -3805,6 +3924,11 @@ def main():
 	#align_example()  # ALIGN
 	#git_example()  # GIT.
 	#blip_example()  # BLIP.
+
+	#--------------------
+	# Vision and audio.
+
+	#tvlt_example()  # TVLT.
 
 	#--------------------
 	# Document.
