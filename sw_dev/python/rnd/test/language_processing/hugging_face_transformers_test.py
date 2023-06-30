@@ -1844,14 +1844,17 @@ def llama_example():
 	# Models:
 	#	decapoda-research/llama-smallint-pt.
 	#	decapoda-research/llama-7b-hf: ~13.5GB.
-	#	decapoda-research/llama-13b-hf.
-	#	decapoda-research/llama-30b-hf.
-	#	decapoda-research/llama-65b-hf.
+	#	decapoda-research/llama-13b-hf: ~39.1GB.
+	#	decapoda-research/llama-30b-hf: ~81.5GB.
+	#	decapoda-research/llama-65b-hf: ~130.7GB.
 	#	decapoda-research/llama-7b-hf-int4.
 	#	decapoda-research/llama-13b-hf-int4.
 	#	decapoda-research/llama-30b-hf-int4.
 	#	decapoda-research/llama-65b-hf-int4.
 	#	decapoda-research/llama-7b-hf-int8.
+
+	#device = "cuda" if torch.cuda.is_available() else "cpu"
+	device = "cpu"
 
 	if False:
 		# Initializing a LLaMA llama-7b style configuration.
@@ -1863,7 +1866,7 @@ def llama_example():
 		# Accessing the model configuration.
 		configuration = model.config
 
-	if True:
+	if False:
 		if False:
 			# Initializing a LLaMA llama-7b style configuration.
 			configuration = transformers.LlamaConfig()
@@ -1892,6 +1895,28 @@ def llama_example():
 		generate_ids = model.generate(inputs.input_ids, max_length=30)
 
 		generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(generated)
+
+	#-----
+	if True:
+		model = transformers.LlamaForCausalLM.from_pretrained("decapoda-research/llama-7b-hf")
+		tokenizer = transformers.LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+
+		prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
+A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.
+
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?
+A: """
+
+		print("Generating text...")
+		start_time = time.time()
+		#with torch.autocast(device, dtype=torch.bfloat16):
+		model.to(device)
+		with torch.no_grad():
+			inputs = tokenizer(prompt, return_tensors="pt").to(device)
+			generate_ids = model.generate(inputs.input_ids, max_length=256)
+			generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(f"Text generated: {time.time() - start_time} secs.")
 		print(generated)
 
 # REF [site] >> https://huggingface.co/mosaicml
@@ -1947,7 +1972,7 @@ def mpt_example():
 			inputs = tokenizer("Here is a recipe for vegan banana bread:\n", return_tensors="pt").to(device)
 			outputs = model.generate(**inputs, max_new_tokens=100)
 			print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
-	else:
+	elif False:
 		# Using the HF pipeline.
 		pipe = transformers.pipeline("text-generation", model=model, tokenizer=tokenizer, device=device)  # Warning: The model 'MPTForCausalLM' is not supported for text-generation.
 		with torch.autocast(device, dtype=torch.bfloat16):
@@ -1956,6 +1981,19 @@ def mpt_example():
 				max_new_tokens=100, do_sample=True, use_cache=True
 			)
 			print(generated)
+
+	#-----
+	if True:
+		prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
+A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.
+
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?
+A: """
+
+		with torch.autocast(device, dtype=torch.bfloat16):
+			inputs = tokenizer(prompt, return_tensors="pt").to(device)
+			outputs = model.generate(**inputs, max_new_tokens=100)
+			print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
 # REF [site] >> https://huggingface.co/Salesforce
 def codet5_example():

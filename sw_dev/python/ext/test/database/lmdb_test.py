@@ -14,21 +14,26 @@ def basic_operation():
 		#with lmdb.open(lmdb_file_prefix, map_size=1024**2, max_dbs=10, subdir=False, readonly=False, create=True) as env:
 			with env.begin(write=True) as txn:  # A transaction object
 				for id in range(100):
-					key, val = 'id_{}'.format(id), '{}'.format(id)
+					key, val = f'id_{id}', f'{id}'
 					txn.put(key.encode('ascii'), val.encode('ascii'))
 	except lmdb.MapFullError as ex:
-		print('lmdb.MapFullError raised: {}.'.format(ex))
+		print(f'lmdb.MapFullError raised: {ex}.')
 
 	try:
 		lmdb_dir_path = './mylmdb'
 		with lmdb.open(lmdb_dir_path, readonly=True) as env:
 			with env.begin() as txn:  # A transaction object.
+				cursor = txn.cursor()
+				for key, value in cursor:
+					#print(f'{key}: {value}.')
+					print(f"{key.decode('ascii')}: {value.decode('ascii')}.")
+
 				for id in range(100):
-					key = 'id_{}'.format(id)
+					key = f'id_{id}'
 					val = txn.get(key.encode('ascii'))
-					print('{} = {}.'.format(key, val.decode('ascii')))
+					print(f"{key} = {val.decode('ascii')}.")
 	except lmdb.MapFullError as ex:
-		print('lmdb.MapFullError raised: {}.'.format(ex))
+		print(f'lmdb.MapFullError raised: {ex}.')
 
 def write_to_db_example(use_caffe_datum=False):
 	N = 1000
