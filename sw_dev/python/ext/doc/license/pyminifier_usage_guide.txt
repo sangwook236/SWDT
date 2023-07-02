@@ -1,0 +1,34 @@
+[-] General.
+	- Site.
+		https://github.com/liftoff/pyminifier
+		http://liftoff.github.io/pyminifier/
+
+[-] Usage.
+	- Minify.
+		pyminifier /path/to/file.py
+		pyminifier -o /path/to/file_after.py /path/to/file.py
+		pyminifier /path/to/file.py > /path/to/file_after.py
+
+		pyminifier --destdir=/path/to/after_dir /path/to/file.py
+
+		pyminifier --nonlatin /path/to/file.py
+		pyminifier --replacement-length=50 /path/to/file.py
+
+	- Compress.
+		pyminifier --gzip /path/to/file.py
+		pyminifier --bzip2 /path/to/file.py
+		pyminifier --lzma /path/to/file.py
+
+		pyminifier --pyz=/path/to/file.pyz /path/to/file.py
+			Re-minify:
+				/path/to/file.pyz /path/to/file.py
+
+	- Obfuscate.
+		pyminifier --obfuscate /path/to/file.py
+		pyminifier --obfuscate --gzip /path/to/file.py
+
+[-] Installation.
+	- Install.
+		pip install "setuptools<58.0.0"
+		pip install 2to3
+		pip install pyminifier
