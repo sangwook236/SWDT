@@ -267,6 +267,21 @@ void principal_curvature_estimation_example()
 	}
 	//stream.close();
 
+#if 0
+	// Save files.
+	//pcl::io::savePCDFile("./cloud_normals.pcd", *cloud_with_normals, false);
+	//pcl::io::savePCDFile("./principal_curvatures.pcd", *principal_curvatures, false);
+
+	// Save point a point cloud, normals, and principal curvatures to a single PCD file.
+	pcl::PCLPointCloud2 cloud2, cloud2_normals, cloud2_principal_curvatures;
+	pcl::toPCLPointCloud2(*cloud, cloud2);
+	pcl::toPCLPointCloud2(*cloud_with_normals, cloud2_normals);
+	pcl::toPCLPointCloud2(*principal_curvatures, cloud2_principal_curvatures);
+	pcl::concatenate(cloud2, cloud2_normals);
+	pcl::concatenate(cloud2, cloud2_principal_curvatures);
+	pcl::io::savePCDFile("./cloud2.pcd", cloud2, Eigen::Vector4f::Zero(), Eigen::Quaternionf::Identity(), false);
+#endif
+
 	std::cout << "#valid principal curvatures = " << valid_point_indices.size() << std::endl;
 
 	cloud.reset(new pcl::PointCloud<pcl::PointXYZ>(*cloud, valid_point_indices));

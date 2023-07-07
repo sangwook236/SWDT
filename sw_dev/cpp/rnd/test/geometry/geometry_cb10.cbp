@@ -72,6 +72,7 @@
 		<Unit filename="pcl/pcl_ransac.cpp" />
 		<Unit filename="pcl/pcl_registration.cpp" />
 		<Unit filename="pcl/pcl_resampling.cpp" />
+		<Unit filename="pcl/pcl_segmentation.cpp" />
 		<Unit filename="pcl/pcl_visualization.cpp" />
 		<Extensions>
 			<code_completion />
