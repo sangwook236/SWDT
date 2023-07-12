@@ -1919,6 +1919,65 @@ A: """
 		print(f"Text generated: {time.time() - start_time} secs.")
 		print(generated)
 
+# REF [site] >> https://huggingface.co/nvidia
+def megatron_example():
+	# Models:
+	#	nvidia/megatron-bert-cased-345m.
+	#	nvidia/megatron-bert-uncased-345m.
+	#	nvidia/megatron-gpt2-345m.
+	#	nvidia/nemo-megatron-gpt-1.3B.
+	#	nvidia/nemo-megatron-gpt-5B
+	#	nvidia/nemo-megatron-gpt-20B.
+	#	nvidia/nemo-megatron-t5-3B.
+	#	nvidia/nemo-megatron-mt5-3B.
+
+	"""
+	Step 1: Install NeMo and dependencies.
+		git clone https://github.com/ericharper/apex.git
+		cd apex
+		git checkout nm_v1.11.0
+		pip install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" --global-option="--fast_layer_norm" --global-option="--distributed_adam" --global-option="--deprecated_fused_adam" ./
+
+		pip install nemo_toolkit['nlp']==1.11.0
+
+	Step 2: Launch eval server.
+		git clone https://github.com/NVIDIA/NeMo.git 
+		cd NeMo/examples/nlp/language_modeling
+		git checkout v1.11.0
+		python megatron_gpt_eval.py gpt_model_file=nemo_gpt5B_fp16_tp2.nemo server=True tensor_model_parallel_size=2 trainer.devices=2
+	"""
+		
+	# Step 3: Send prompts to your model!
+	import json
+
+	port_num = 5555
+	headers = {"Content-Type": "application/json"}
+
+	def request_data(data):
+		resp = requests.put(
+			"http://localhost:{}/generate".format(port_num),
+			data=json.dumps(data),
+			headers=headers
+		)
+		sentences = resp.json()["sentences"]
+		return sentences
+
+	data = {
+		"sentences": ["Tell me an interesting fact about space travel."]*1,
+		"tokens_to_generate": 50,
+		"temperature": 1.0,
+		"add_BOS": True,
+		"top_k": 0,
+		"top_p": 0.9,
+		"greedy": False,
+		"all_probs": False,
+		"repetition_penalty": 1.2,
+		"min_tokens_to_generate": 2,
+	}
+
+	sentences = request_data(data)
+	print(sentences)
+
 # REF [site] >> https://huggingface.co/mosaicml
 def mpt_example():
 	# Models:
@@ -3572,6 +3631,39 @@ def speecht5_example():
 
 		sf.write("./speecht5_tts.wav", speech.numpy(), samplerate=16000)
 
+# REF [site] >> https://huggingface.co/nvidia
+def nvidia_asr_example():
+	# Models:
+	#	en, es, uk, fr, it, de, pl, hr, be, ca, ua, ru, zh.
+	#
+	#	nvidia/stt_en_conformer_ctc_small.
+	#	nvidia/stt_en_conformer_ctc_large.
+	#	nvidia/stt_en_conformer_transducer_large.
+	#	nvidia/stt_en_conformer_transducer_xlarge.
+	#	nvidia/stt_en_fastconformer_ctc_large.
+	#	nvidia/stt_en_fastconformer_ctc_xlarge.
+	#	nvidia/stt_en_fastconformer_transducer_large.
+	#	nvidia/stt_en_fastconformer_transducer_xlarge.
+	#	nvidia/stt_en_fastconformer_transducer_xxlarge.
+	#	nvidia/stt_en_fastconformer_hybrid_large_pc.
+	#	nvidia/stt_en_citrinet_256_ls.
+	#	nvidia/stt_en_citrinet_384_ls.
+	#	nvidia/stt_en_citrinet_512_ls.
+	#	nvidia/stt_en_citrinet_768_ls.
+	#	nvidia/stt_en_citrinet_1024_ls.
+	#	nvidia/stt_en_citrinet_1024_gamma_0_25,
+
+	# Install.
+	#	pip install nemo_toolkit['all']
+
+	import nemo.collections.asr as nemo_asr
+	asr_model = nemo_asr.models.EncDecRNNTBPEModel.from_pretrained(model_name="nvidia/stt_en_fastconformer_transducer_large")
+
+	# Get a sample file.
+	#	wget https://dldata-public.s3.us-east-2.amazonaws.com/2086-149220-0033.wav
+	transcribed = asr_model.transcribe(["./2086-149220-0033.wav"])
+	print(transcribed)
+
 def openai_whisper_example():
 	# Models:
 	#	openai/whisper-tiny.
@@ -3715,6 +3807,33 @@ def speech_brain_asr_example():
 	# https://huggingface.co/speechbrain/asr-whisper-large-v2-commonvoice-fr/tree/main
 	asr_model.transcribe_file("./example-fr.mp3")
 
+# REF [site] >> https://huggingface.co/nvidia
+def nvidia_tts_example():
+	# Models:
+	#	nvidia/tts_hifigan.
+	#	nvidia/tts_en_fastpitch.
+
+	# Install.
+	#	pip install nemo_toolkit['all']
+
+	import soundfile as sf
+
+	# Load FastPitch.
+	from nemo.collections.tts.models import FastPitchModel
+	spec_generator = FastPitchModel.from_pretrained("nvidia/tts_en_fastpitch")
+
+	# Load vocoder.
+	from nemo.collections.tts.models import HifiGanModel
+	model = HifiGanModel.from_pretrained(model_name="nvidia/tts_hifigan")
+
+	# Generate audio.
+	parsed = spec_generator.parse("You can type your sentence here to get nemo to produce speech.")
+	spectrogram = spec_generator.generate_spectrogram(tokens=parsed)
+	audio = model.convert_spectrogram_to_audio(spec=spectrogram)
+
+	# Save the audio to disk in a file called speech.wav
+	sf.write("./speech.wav", audio.to("cpu").numpy(), 22050)
+
 # REF [site] >> https://huggingface.co/speechbrain
 def speech_brain_tts_example():
 	import speechbrain
@@ -3857,6 +3976,52 @@ def tensor_speech_tts_example():
 			energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
 		)
 
+def decision_transformer_example():
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		# Initializing a DecisionTransformer configuration.
+		configuration = transformers.DecisionTransformerConfig()
+
+		# Initializing a model (with random weights) from the configuration.
+		model = transformers.DecisionTransformerModel(configuration)
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if True:
+		import gym
+
+		model = transformers.DecisionTransformerModel.from_pretrained("edbeeching/decision-transformer-gym-hopper-medium")
+		# Evaluation.
+		model = model.to(device)
+		model.eval()
+
+		env = gym.make("Hopper-v3")
+		state_dim = env.observation_space.shape[0]
+		act_dim = env.action_space.shape[0]
+
+		state = env.reset()
+		states = torch.from_numpy(state).reshape(1, 1, state_dim).to(device=device, dtype=torch.float32)
+		actions = torch.zeros((1, 1, act_dim), device=device, dtype=torch.float32)
+		rewards = torch.zeros(1, 1, device=device, dtype=torch.float32)
+		target_return = torch.tensor(TARGET_RETURN, dtype=torch.float32).reshape(1, 1)
+		timesteps = torch.tensor(0, device=device, dtype=torch.long).reshape(1, 1)
+		attention_mask = torch.zeros(1, 1, device=device, dtype=torch.float32)
+
+		# Forward pass.
+		with torch.no_grad():
+			state_preds, action_preds, return_preds = model(
+				states=states,
+				actions=actions,
+				rewards=rewards,
+				returns_to_go=target_return,
+				timesteps=timesteps,
+				attention_mask=attention_mask,
+				return_dict=False,
+			)
+
 def main():
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
@@ -3920,6 +4085,7 @@ def main():
 
 	llama_example()  # LLaMA.
 
+	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.
 
 	#-----
@@ -4011,14 +4177,20 @@ def main():
 	# Speech recognition.
 
 	# Whisper.
+	#nvidia_asr_example()
 	#openai_whisper_example()
 	#speech_brain_asr_example()  # Error.
 
 	#-----
 	# Speech synthesis.
 
+	#nvidia_tts_example()  # FastPitch + HiFiGAN.
 	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
 	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN.
+
+	#--------------------
+
+	#decision_transformer_example()  # Decision transformer. Not yet tested.
 
 #--------------------------------------------------------------------
 

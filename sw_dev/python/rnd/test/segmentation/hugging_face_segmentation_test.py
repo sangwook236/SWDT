@@ -50,8 +50,42 @@ def segment_anything_example():
 		print(f"Masks: shape = {masks[0].shape}, dtype = {masks[0].dtype}.")
 		print(f"{scores=}.")
 
+# REF [site] >> https://huggingface.co/nvidia
+def segformer_example():
+	# Models:
+	#	nvidia/segformer-b0-finetuned-cityscapes-768-768.
+	#	nvidia/segformer-b0-finetuned-cityscapes-512-1024.
+	#	nvidia/segformer-b0-finetuned-cityscapes-640-1280.
+	#	nvidia/segformer-b0-finetuned-cityscapes-1024-1024.
+	#	nvidia/segformer-b1-finetuned-cityscapes-1024-1024.
+	#	nvidia/segformer-b2-finetuned-cityscapes-1024-1024.
+	#	nvidia/segformer-b3-finetuned-cityscapes-1024-1024.
+	#	nvidia/segformer-b4-finetuned-cityscapes-1024-1024.
+	#	nvidia/segformer-b5-finetuned-cityscapes-1024-1024.
+	#	nvidia/segformer-b0-finetuned-ade-512-512.
+	#	nvidia/segformer-b1-finetuned-ade-512-512.
+	#	nvidia/segformer-b2-finetuned-ade-512-512.
+	#	nvidia/segformer-b3-finetuned-ade-512-512.
+	#	nvidia/segformer-b4-finetuned-ade-512-512.
+	#	nvidia/segformer-b5-finetuned-ade-640-640.
+
+	feature_extractor = transformers.SegformerFeatureExtractor.from_pretrained("nvidia/segformer-b0-finetuned-cityscapes-1024-1024")
+	#processor = transformers.SegformerImageProcessor.from_pretrained("nvidia/segformer-b0-finetuned-cityscapes-1024-1024")
+	model = transformers.SegformerForSemanticSegmentation.from_pretrained("nvidia/segformer-b0-finetuned-cityscapes-1024-1024")
+
+	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+	image = Image.open(requests.get(url, stream=True).raw)
+
+	inputs = feature_extractor(images=image, return_tensors="pt")
+	#inputs = processor(images=image, return_tensors="pt")
+	outputs = model(**inputs)
+	logits = outputs.logits  # Shape: (batch_size, num_labels, height / 4, width / 4).
+	print(f"{logits=}.")
+
 def main():
 	segment_anything_example()  # Segment Anything (SAM).
+
+	#segformer_example()  # SegFormer.
 
 #--------------------------------------------------------------------
 
