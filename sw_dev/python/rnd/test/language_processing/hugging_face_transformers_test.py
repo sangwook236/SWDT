@@ -2054,15 +2054,183 @@ A: """
 			outputs = model.generate(**inputs, max_new_tokens=100)
 			print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
+# REF [site] >> https://github.com/microsoft/CodeBERT
+def codebert_example():
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+	if True:
+		if False:
+			tokenizer = transformers.RobertaTokenizer.from_pretrained("microsoft/codebert-base")
+			model = transformers.RobertaModel.from_pretrained("microsoft/codebert-base")
+		else:
+			tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/codebert-base")
+			model = transformers.AutoModel.from_pretrained("microsoft/codebert-base")
+		model.to(device)
+
+		nl_tokens = tokenizer.tokenize("return maximum value")
+		# ['return', 'Ġmaximum', 'Ġvalue'].
+
+		code_tokens = tokenizer.tokenize("def max(a,b): if a>b: return a else return b")
+		# ['def', 'Ġmax', '(', 'a', ',', 'b', '):', 'Ġif', 'Ġa', '>', 'b', ':', 'Ġreturn', 'Ġa', 'Ġelse', 'Ġreturn', 'Ġb'].
+
+		tokens = [tokenizer.cls_token] + nl_tokens + [tokenizer.sep_token] + code_tokens + [tokenizer.eos_token]
+		# ['<s>', 'return', 'Ġmaximum', 'Ġvalue', '</s>', 'def', 'Ġmax', '(', 'a', ',', 'b', '):', 'Ġif', 'Ġa', '>', 'b', ':', 'Ġreturn', 'Ġa', 'Ġelse', 'Ġreturn', 'Ġb', '</s>'].
+
+		tokens_ids = tokenizer.convert_tokens_to_ids(tokens)
+		# [0, 30921, 4532, 923, 2, 9232, 19220, 1640, 102, 6, 428, 3256, 114, 10, 15698, 428, 35, 671, 10, 1493, 671, 741, 2].
+
+		context_embeddings = model(torch.tensor(tokens_ids)[None,:])[0]  # [1, 23, 768].
+
+	if True:
+		# CodeBERT is not suitable for mask prediction task, while CodeBERT (MLM) is suitable for mask prediction task.
+
+		model = transformers.RobertaForMaskedLM.from_pretrained("microsoft/codebert-base-mlm")
+		tokenizer = transformers.RobertaTokenizer.from_pretrained("microsoft/codebert-base-mlm")
+		fill_mask = transformers.pipeline("fill-mask", model=model, tokenizer=tokenizer)
+
+		CODE = "if (x is not None) <mask> (x>1)"
+		outputs = fill_mask(CODE)
+
+		print(outputs)
+		"""
+		Output: s'and', 'or', 'if', 'then', 'AND'.
+		The detailed outputs:
+		{'sequence': '<s> if (x is not None) and (x>1)</s>', 'score': 0.6049249172210693, 'token': 8}
+		{'sequence': '<s> if (x is not None) or (x>1)</s>', 'score': 0.30680200457572937, 'token': 50}
+		{'sequence': '<s> if (x is not None) if (x>1)</s>', 'score': 0.02133703976869583, 'token': 114}
+		{'sequence': '<s> if (x is not None) then (x>1)</s>', 'score': 0.018607674166560173, 'token': 172}
+		{'sequence': '<s> if (x is not None) AND (x>1)</s>', 'score': 0.007619690150022507, 'token': 4248}
+		"""
+
+# REF [site] >> https://huggingface.co/huggingface/CodeBERTa-language-id
+def codeberta_example():
+	# Models:
+	#	huggingface/CodeBERTa-small-v1.
+	#	huggingface/CodeBERTa-language-id.
+
+	if True:
+		# Masked language modeling prediction.
+
+		fill_mask = transformers.pipeline(
+			"fill-mask",
+			model="huggingface/CodeBERTa-small-v1",
+			tokenizer="huggingface/CodeBERTa-small-v1"
+		)
+
+		# PHP.
+		PHP_CODE = """
+public static <mask> set(string $key, $value) {
+	if (!in_array($key, self::$allowedKeys)) {
+		throw new \InvalidArgumentException('Invalid key given');
+	}
+	self::$storedValues[$key] = $value;
+}
+""".lstrip()
+
+		outputs = fill_mask(PHP_CODE)
+		"""
+		Top 5 predictions:
+		' function' # prob 0.9999827146530151
+		'function'  # 
+		' void'     # 
+		' def'      # 
+		' final'    #
+		"""
+
+		# Python.
+		PYTHON_CODE = """
+def pipeline(
+	task: str,
+	model: Optional = None,
+	framework: Optional[<mask>] = None,
+	**kwargs
+) -> Pipeline:
+	pass
+""".lstrip()
+
+		outputs = fill_mask(PYTHON_CODE)
+		# Top 5 predictions: 'framework', 'Framework', ' framework', 'None', 'str'.
+
+		# Natural language (not code).
+		outputs = fill_mask("My name is <mask>.")
+		# {'sequence': '<s> My name is undefined.</s>', 'score': 0.2548016905784607, 'token': 3353}
+		# {'sequence': '<s> My name is required.</s>', 'score': 0.07290805131196976, 'token': 2371}
+		# {'sequence': '<s> My name is null.</s>', 'score': 0.06323737651109695, 'token': 469}
+		# {'sequence': '<s> My name is name.</s>', 'score': 0.021919190883636475, 'token': 652}
+		# {'sequence': '<s> My name is disabled.</s>', 'score': 0.019681859761476517, 'token': 7434}
+
+	if False:
+		# Programming language identification.
+		# Using the raw model.
+
+		CODEBERTA_LANGUAGE_ID = "huggingface/CodeBERTa-language-id"
+
+		tokenizer = transformers.RobertaTokenizer.from_pretrained(CODEBERTA_LANGUAGE_ID)
+		model = transformers.RobertaForSequenceClassification.from_pretrained(CODEBERTA_LANGUAGE_ID)
+
+		input_ids = tokenizer.encode(CODE_TO_IDENTIFY)
+
+		logits = model(input_ids)[0]
+
+		language_idx = logits.argmax()  # Index for the resulting label.
+
+	if True:
+		# Programming language identification.
+		# Using Pipelines.
+
+		CODEBERTA_LANGUAGE_ID = "huggingface/CodeBERTa-language-id"
+
+		pipeline = transformers.TextClassificationPipeline(
+			model=transformers.RobertaForSequenceClassification.from_pretrained(CODEBERTA_LANGUAGE_ID),
+			tokenizer=transformers.RobertaTokenizer.from_pretrained(CODEBERTA_LANGUAGE_ID)
+		)
+
+		#outputs = pipeline(CODE_TO_IDENTIFY)
+
+		outputs = pipeline("""
+def f(x):
+	return x**2
+""")
+		# [{'label': 'python', 'score': 0.9999965}].
+
+		outputs = pipeline("const foo = 'bar'")
+		# [{'label': 'javascript', 'score': 0.9977546}].
+
+		outputs = pipeline("foo = 'bar'")
+		# [{'label': 'javascript', 'score': 0.7176245}].
+
+		outputs = pipeline("foo = u'bar'")
+		# [{'label': 'python', 'score': 0.7638422}]
+
+		outputs = pipeline("echo $FOO")
+		# [{'label': 'php', 'score': 0.9995257}]
+
+		outputs = pipeline("outcome := rand.Intn(6) + 1")
+		# [{'label': 'go', 'score': 0.9936151}]
+
+		outputs = pipeline(":=")
+		# [{'label': 'go', 'score': 0.9998052}]
+
 # REF [site] >> https://huggingface.co/Salesforce
 def codet5_example():
 	# Models:
 	#	Salesforce/codet5-small.
 	#	Salesforce/codet5-base: ~892MB.
-	#	Salesforce/codet5-large.
-	#
 	#	Salesforce/codet5-base-multi-sum: ~892MB.
-	#
+	#	Salesforce/codet5-base-codexglue-sum-python.
+	#	Salesforce/codet5-base-codexglue-sum-go.
+	#	Salesforce/codet5-base-codexglue-sum-php.
+	#	Salesforce/codet5-base-codexglue-sum-javascript.
+	#	Salesforce/codet5-base-codexglue-sum-java.
+	#	Salesforce/codet5-base-codexglue-sum-ruby.
+	#	Salesforce/codet5-base-codexglue-clone.
+	#	Salesforce/codet5-base-codexglue-concode.
+	#	Salesforce/codet5-base-codexglue-defect.
+	#	Salesforce/codet5-base-codexglue-refine-small.
+	#	Salesforce/codet5-base-codexglue-refine-medium.
+	#	Salesforce/codet5-base-codexglue-translate-cs-java.
+	#	Salesforce/codet5-base-codexglue-translate-java-cs.
+	#	Salesforce/codet5-large.
 	#	Salesforce/codet5-large-ntp-py: ~1.48GB.
 
 	if True:
@@ -2113,6 +2281,67 @@ def codet5_example():
 		print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))  # Output: "print("Hello World!")".
 
 # REF [site] >> https://huggingface.co/Salesforce
+def codet5p_example():
+	# Models:
+	#	Salesforce/codet5p-220m.
+	#	Salesforce/codet5p-220m-py.
+	#	Salesforce/codet5p-770m.
+	#	Salesforce/codet5p-770m-py.
+	#	Salesforce/codet5p-2b.
+	#	Salesforce/codet5p-6b.
+	#	Salesforce/codet5p-16b.
+	#	Salesforce/instructcodet5p-16b.
+
+	if True:
+		from transformers import T5ForConditionalGeneration, AutoTokenizer
+
+		checkpoint = "Salesforce/codet5p-770m"
+		device = "cuda"  # For GPU usage or "cpu" for CPU usage.
+
+		tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+		model = T5ForConditionalGeneration.from_pretrained(checkpoint).to(device)
+
+		inputs = tokenizer.encode("def print_hello_world():<extra_id_0>", return_tensors="pt").to(device)
+
+		outputs = model.generate(inputs, max_length=10)
+
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+		# Output: print "Hello World".
+
+	if True:
+		checkpoint = "Salesforce/codet5p-770m-py"
+		device = "cuda"  # For GPU usage or "cpu" for CPU usage.
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
+		model = transformers.T5ForConditionalGeneration.from_pretrained(checkpoint).to(device)
+
+		inputs = tokenizer.encode("def print_hello_world():", return_tensors="pt").to(device)
+
+		outputs = model.generate(inputs, max_length=10)
+
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+		# Output: print('Hello World!').
+
+	if True:
+		checkpoint = "Salesforce/instructcodet5p-16b"
+		device = "cuda"  # For GPU usage or "cpu" for CPU usage.
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
+		model = transformers.AutoModelForSeq2SeqLM.from_pretrained(
+			checkpoint,
+			torch_dtype=torch.float16,
+			low_cpu_mem_usage=True,
+			trust_remote_code=True
+		).to(device)
+
+		encoding = tokenizer("def print_hello_world():", return_tensors="pt").to(device)
+		encoding['decoder_input_ids'] = encoding['input_ids'].clone()
+
+		outputs = model.generate(**encoding, max_length=15)
+
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/Salesforce
 def codegen_example():
 	# Models:
 	#	Salesforce/codegen-350M-nl.
@@ -2139,6 +2368,116 @@ def codegen_example():
 	generated_ids = model.generate(input_ids, max_length=128)
 
 	print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/Salesforce
+def codegen2_example():
+	# Models:
+	#	Salesforce/codegen2-1B.
+	#	Salesforce/codegen2-3_7B.
+	#	Salesforce/codegen2-7B.
+	#	Salesforce/codegen2-16B.
+
+	if True:
+		# Causal sampling.
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Salesforce/codegen2-1B")
+		model = transformers.AutoModelForCausalLM.from_pretrained("Salesforce/codegen2-1B", trust_remote_code=True, revision="main")
+
+		text = "def hello_world():"
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		generated_ids = model.generate(input_ids, max_length=128)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
+
+	if True:
+		"""
+		Infill sampling.
+
+		For infill sampling, we introduce three new special token types:
+			<mask_N>: N-th span to be masked. In practice, use <mask_1> to where you want to sample infill.
+			<sep>: Separator token between the suffix and the infilled sample. See below.
+			<eom>: "End-Of-Mask" token that model will output at the end of infilling. You may use this token to truncate the output.
+		"""
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Salesforce/codegen2-1B")
+		model = transformers.AutoModelForCausalLM.from_pretrained("Salesforce/codegen2-1B", trust_remote_code=True, revision="main")
+
+		"""
+		If we want to generate infill for the following cursor position of a function:
+
+		def hello_world():
+			|
+			return name
+		"""
+
+		def format(prefix, suffix):
+			return prefix + "<mask_1>" + suffix + "<|endoftext|>" + "<sep>" + "<mask_1>"
+
+		prefix = "def hello_world():\n    "
+		suffix = "    return name"
+		text = format(prefix, suffix)
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		generated_ids = model.generate(input_ids, max_length=128)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=False)[len(text):])
+
+# REF [site] >> https://huggingface.co/Salesforce
+def codegen25_example():
+	# Models:
+	#	Salesforce/codegen25-7b-multi.
+	#	Salesforce/codegen25-7b-mono.
+	#	Salesforce/codegen25-7b-instruct.
+
+	# Install:
+	#	pip install tiktoken==0.4.0
+
+	if True:
+		# Causal sampling (code autocompletion).
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Salesforce/codegen25-7b-multi", trust_remote_code=True)
+		model = transformers.AutoModelForCausalLM.from_pretrained("Salesforce/codegen25-7b-multi")
+
+		text = "def hello_world():"
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		generated_ids = model.generate(input_ids, max_length=128)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=True))
+
+	if True:
+		"""
+		Infill sampling.
+
+		For infill sampling, we follow the CodeGen2 format:
+			<mask_N>: N-th span to be masked. In practice, use <mask_1> to where you want to sample infill.
+			<sep>: Separator token between the suffix and the infilled sample. See below.
+			<eom>: "End-Of-Mask" token that model will output at the end of infilling. You may use this token to truncate the output.
+		"""
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Salesforce/codegen25-7b-multi", trust_remote_code=True)
+		model = transformers.AutoModelForCausalLM.from_pretrained("Salesforce/codegen25-7b-multi")
+
+		"""
+		If we want to generate infill for the following cursor position of a function:
+
+		def hello_world():
+			|
+			return name
+		"""
+
+		def format(prefix, suffix):
+			return prefix + "<mask_1>" + suffix + "<|endoftext|>" + "<sep>" + "<mask_1>"
+
+		prefix = "def hello_world():\n    "
+		suffix = "    return name"
+		text = format(prefix, suffix)
+		input_ids = tokenizer(text, return_tensors="pt").input_ids
+
+		generated_ids = model.generate(input_ids, max_length=128)
+
+		print(tokenizer.decode(generated_ids[0], skip_special_tokens=False)[len(text):])
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -3596,40 +3935,23 @@ def trocr_example():
 		outputs = model(pixel_values=pixel_values, decoder_input_ids=decoder_input_ids)  # ['loss', 'logits', 'past_key_values', 'decoder_hidden_states', 'decoder_attentions', 'cross_attentions', 'encoder_last_hidden_state', 'encoder_hidden_states', 'encoder_attentions'].
 
 # REF [site] >> https://huggingface.co/microsoft
-def speecht5_example():
+def microsoft_asr_example():
 	import datasets
-	import soundfile as sf
 
-	if True:
-		dataset = datasets.load_dataset("hf-internal-testing/librispeech_asr_demo", "clean", split="validation")
-		dataset = dataset.sort("id")
-		sampling_rate = dataset.features["audio"].sampling_rate
-		example_speech = dataset[0]["audio"]["array"]
+	dataset = datasets.load_dataset("hf-internal-testing/librispeech_asr_demo", "clean", split="validation")
+	dataset = dataset.sort("id")
+	sampling_rate = dataset.features["audio"].sampling_rate
+	example_speech = dataset[0]["audio"]["array"]
 
-		processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_asr")
-		model = transformers.SpeechT5ForSpeechToText.from_pretrained("microsoft/speecht5_asr")
+	processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_asr")
+	model = transformers.SpeechT5ForSpeechToText.from_pretrained("microsoft/speecht5_asr")
 
-		inputs = processor(audio=example_speech, sampling_rate=sampling_rate, return_tensors="pt")
+	inputs = processor(audio=example_speech, sampling_rate=sampling_rate, return_tensors="pt")
 
-		predicted_ids = model.generate(**inputs, max_length=100)
+	predicted_ids = model.generate(**inputs, max_length=100)
 
-		transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
-		print(transcription[0])
-
-	if True:
-		processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-		model = transformers.SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
-		vocoder = transformers.SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
-
-		inputs = processor(text="Hello, my dog is cute", return_tensors="pt")
-
-		# Load xvector containing speaker's voice characteristics from a dataset.
-		embeddings_dataset = datasets.load_dataset("Matthijs/cmu-arctic-xvectors", split="validation")
-		speaker_embeddings = torch.tensor(embeddings_dataset[7306]["xvector"]).unsqueeze(0)
-
-		speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
-
-		sf.write("./speecht5_tts.wav", speech.numpy(), samplerate=16000)
+	transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
+	print(transcription[0])
 
 # REF [site] >> https://huggingface.co/nvidia
 def nvidia_asr_example():
@@ -3664,7 +3986,7 @@ def nvidia_asr_example():
 	transcribed = asr_model.transcribe(["./2086-149220-0033.wav"])
 	print(transcribed)
 
-def openai_whisper_example():
+def openai_asr_example():
 	# Models:
 	#	openai/whisper-tiny.
 	#	openai/whisper-base.
@@ -3806,6 +4128,25 @@ def speech_brain_asr_example():
 
 	# https://huggingface.co/speechbrain/asr-whisper-large-v2-commonvoice-fr/tree/main
 	asr_model.transcribe_file("./example-fr.mp3")
+
+# REF [site] >> https://huggingface.co/microsoft
+def microsoft_tts_example():
+	import datasets
+	import soundfile as sf
+
+	processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
+	model = transformers.SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
+	vocoder = transformers.SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+
+	inputs = processor(text="Hello, my dog is cute", return_tensors="pt")
+
+	# Load xvector containing speaker's voice characteristics from a dataset.
+	embeddings_dataset = datasets.load_dataset("Matthijs/cmu-arctic-xvectors", split="validation")
+	speaker_embeddings = torch.tensor(embeddings_dataset[7306]["xvector"]).unsqueeze(0)
+
+	speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
+
+	sf.write("./speecht5_tts.wav", speech.numpy(), samplerate=16000)
 
 # REF [site] >> https://huggingface.co/nvidia
 def nvidia_tts_example():
@@ -3976,6 +4317,31 @@ def tensor_speech_tts_example():
 			energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
 		)
 
+# REF [site] >> https://huggingface.co/microsoft
+def microsoft_voice_conversion_example():
+	import numpy as np
+	import datasets
+	import soundfile as sf
+
+	dataset = datasets.load_dataset("hf-internal-testing/librispeech_asr_demo", "clean", split="validation")
+	dataset = dataset.sort("id")
+	sampling_rate = dataset.features["audio"].sampling_rate
+	example_speech = dataset[0]["audio"]["array"]
+
+	processor = transformers.SpeechT5Processor.from_pretrained("microsoft/speecht5_vc")
+	model = transformers.SpeechT5ForSpeechToSpeech.from_pretrained("microsoft/speecht5_vc")
+	vocoder = transformers.SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+
+	inputs = processor(audio=example_speech, sampling_rate=sampling_rate, return_tensors="pt")
+
+	# Load xvector containing speaker's voice characteristics from a file.
+	speaker_embeddings = np.load("./xvector_speaker_embedding.npy")
+	speaker_embeddings = torch.tensor(speaker_embeddings).unsqueeze(0)
+
+	speech = model.generate_speech(inputs["input_values"], speaker_embeddings, vocoder=vocoder)
+
+	sf.write("./speecht5_vc.wav", speech.numpy(), samplerate=16000)
+
 def decision_transformer_example():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
@@ -4091,8 +4457,13 @@ def main():
 	#-----
 	# Code.
 
+	#codebert_example()  # CodeBERT.
+	#codeberta_example()  # CodeBERTa.
 	#codet5_example()  # CodeT5.
+	#codet5p_example()  # CodeT5+.
 	#codegen_example()  # CodeGen.
+	#codegen2_example()  # CodeGen2.
+	#codegen25_example()  # CodeGen2.5.
 
 	#--------------------
 	# Vision.
@@ -4171,22 +4542,26 @@ def main():
 	#--------------------
 	# Speech.
 
-	#speecht5_example()  # SpeechT5.
-
 	#-----
 	# Speech recognition.
 
-	# Whisper.
-	#nvidia_asr_example()
-	#openai_whisper_example()
-	#speech_brain_asr_example()  # Error.
+	#microsoft_asr_example()  # SpeechT5.
+	#nvidia_asr_example()  # Conformer & Citrinet.
+	#openai_asr_example()  # Whisper.
+	#speech_brain_asr_example()  # Whisper. Error.
 
 	#-----
 	# Speech synthesis.
 
+	#microsoft_tts_example()  # SpeechT5.
 	#nvidia_tts_example()  # FastPitch + HiFiGAN.
 	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
 	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN.
+
+	#-----
+	# Speech-to-speech.
+
+	#microsoft_voice_conversion_example()  # SpeechT5.
 
 	#--------------------
 
