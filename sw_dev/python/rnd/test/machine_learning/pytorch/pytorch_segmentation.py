@@ -15,6 +15,8 @@ def main():
 	#	DeepLabv3 MobileNetV3-Large
 	#	LR-ASPP MobileNetV3-Large
 
+	# REF [file] >> ./pytorch_model.py
+
 	# Instance segmentation.
 	#	REF [file] >> ./pytorch_object_detection.py
 

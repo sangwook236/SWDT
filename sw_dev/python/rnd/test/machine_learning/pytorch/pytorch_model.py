@@ -3,6 +3,95 @@
 
 import torch, torchvision
 
+# REF [site] >> https://pytorch.org/vision/stable/models.html
+def pre_trained_models_example():
+	from torchvision.models import resnet50, ResNet50_Weights
+
+	# Initializing pre-trained models.
+
+	# Old weights with accuracy 76.130%
+	resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
+
+	# New weights with accuracy 80.858%
+	resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
+
+	# Best available weights (currently alias for IMAGENET1K_V2)
+	# Note that these weights may change across versions
+	resnet50(weights=ResNet50_Weights.DEFAULT)
+
+	# Strings are also supported
+	resnet50(weights="IMAGENET1K_V2")
+
+	# No weights - random initialization
+	resnet50(weights=None)
+
+	# Using pretrained weights:
+	resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
+	resnet50(weights="IMAGENET1K_V1")
+	resnet50(pretrained=True)  # Deprecated
+	resnet50(True)  # Deprecated
+
+	# Using no weights:
+	resnet50(weights=None)
+	resnet50()
+	resnet50(pretrained=False)  # Deprecated
+	resnet50(False)  # Deprecated
+
+	#-----
+	# Using the pre-trained models.
+
+	# Initialize the Weight Transforms
+	weights = ResNet50_Weights.DEFAULT
+	preprocess = weights.transforms()
+
+	# Apply it to the input image
+	img = torch.rand(5, 3, 512, 512)
+	img_transformed = preprocess(img)
+
+	# Initialize model
+	model = resnet50(weights=weights)
+
+	# Set model to eval mode
+	model.eval()
+	with torch.no_grad():
+		outputs = model(img_transformed)
+
+	#-----
+	# Listing and retrieving available models.
+
+	from torchvision.models import get_model, get_model_weights, get_weight, list_models
+
+	# List available models
+	all_models = list_models()
+	classification_models = list_models(module=torchvision.models)
+
+	# Initialize models
+	m1 = get_model("mobilenet_v3_large", weights=None)
+	m2 = get_model("quantized_mobilenet_v3_large", weights="DEFAULT")
+
+	# Fetch weights
+	weights = get_weight("MobileNet_V3_Large_QuantizedWeights.DEFAULT")
+	assert weights == torchvision.models.quantization.MobileNet_V3_Large_QuantizedWeights.DEFAULT
+
+	weights_enum = get_model_weights("quantized_mobilenet_v3_large")
+	assert weights_enum == torchvision.models.quantization.MobileNet_V3_Large_QuantizedWeights
+
+	weights_enum2 = get_model_weights(torchvision.models.quantization.mobilenet_v3_large)
+	assert weights_enum == weights_enum2
+
+	#-----
+	# Using models from Hub.
+
+	# Option 1: passing weights param as string
+	model = torch.hub.load("pytorch/vision", "resnet50", weights="IMAGENET1K_V2")
+
+	# Option 2: passing weights param as enum
+	weights = torch.hub.load("pytorch/vision", "get_weight", weights="ResNet50_Weights.IMAGENET1K_V2")
+	model = torch.hub.load("pytorch/vision", "resnet50", weights=weights)
+
+	weight_enum = torch.hub.load("pytorch/vision", "get_model_weights", name="resnet50")
+	print([weight for weight in weight_enum])
+
 def simple_classification_test():
 	#model = torchvision.models.alexnet(pretrained=True)
 	#model = torchvision.models.vgg16(pretrained=True)
@@ -174,9 +263,16 @@ def resnet_fpn_backbone_test():
 def main():
 	# REF [site] >> https://pytorch.org/vision/stable/models.html
 
+	pre_trained_models_example()
+
+	# For ViT models:
+	#	REF [function] >> vit_test() in ./pytorch_transformer.py
+
 	#--------------------
 	# Classification.
 	#	AlexNet, VGG, ResNet, SqueezeNet, DenseNet, Inception v3, GoogLeNet, ShuffleNet v2, MobileNetV2, MobileNetV3, ResNeXt, Wide ResNet, MNASNet, EfficientNet, RegNet, VisionTransformer, ConvNeXt.
+
+	# REF [file] >> ./pytorch_classification.py
 
 	#simple_classification_test()
 
@@ -187,6 +283,8 @@ def main():
 	#--------------------
 	# Semantic segmentation.
 	#	FCN ResNet, DeepLabV3 ResNet, DeepLabV3 MobileNetV3, LR-ASPP MobileNetV3.
+
+	# REF [file] >> ./pytorch_segmentation.py
 
 	#--------------------
 	# Object detection, instance segmentation, and person keypoint detection.
@@ -199,7 +297,7 @@ def main():
 	#fasterrcnn_resnet50_fpn_test()
 	#fcos_resnet50_fpn_test()
 
-	resnet_fpn_backbone_test()
+	#resnet_fpn_backbone_test()
 
 	#--------------------
 	# Video classification.

@@ -960,6 +960,70 @@ def huggingface_pytorch_transformers_test():
 	labels = torch.tensor([1])
 	seq_classif_loss = sequence_classification_model(tokens_tensor, token_type_ids=segments_tensors, labels=labels)
 
+# REF [function] >> pre_trained_models_example() in ./pytorch_model.py
+def vit_test():
+	import torchvision
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	# ViT-B/16 (Base):
+	#	ViT_B_16_Weights.DEFAULT, ViT_B_16_Weights.IMAGENET1K_V1, ViT_B_16_Weights.IMAGENET1K_SWAG_E2E_V1, ViT_B_16_Weights.IMAGENET1K_SWAG_LINEAR_V1.
+	# ViT-B/32 (Base):
+	#	ViT_B_32_Weights.DEFAULT, ViT_B_32_Weights.IMAGENET1K_V1.
+	# ViT-L/16 (Large):
+	#	ViT_L_16_Weights.DEFAULT, ViT_L_16_Weights.IMAGENET1K_V1, ViT_L_16_Weights.IMAGENET1K_SWAG_E2E_V1, ViT_L_16_Weights.IMAGENET1K_SWAG_LINEAR_V1.
+	# ViT-L/32 (Large):
+	#	ViT_L_32_Weights.DEFAULT, ViT_L_32_Weights.IMAGENET1K_V1.
+	# ViT-H/14 (Huge):
+	#	ViT_H_14_Weights.DEFAULT, ViT_H_14_Weights.IMAGENET1K_SWAG_E2E_V1, ViT_H_14_Weights.IMAGENET1K_SWAG_LINEAR_V1.
+
+	#weights = "DEFAULT"
+	#weights = "IMAGENET1K_V1"
+	#weights = None  # No weights.
+	weights = torchvision.models.vision_transformer.ViT_B_16_Weights.DEFAULT
+	#weights = torchvision.models.vision_transformer.ViT_B_16_Weights.IMAGENET1K_V1
+
+	#vit = getattr(torchvision.models, "vit_b_16")(weights=weights)  # torchvision.models.vision_transformer.VisionTransformer.
+	vit = torchvision.models.vit_b_16(weights=weights)  # torchvision.models.vision_transformer.VisionTransformer.
+	vit.to(device)
+
+	if False:
+		# Show the model.
+		print(vit)
+
+		for name, module in vit._modules.items():
+			print(f"{name}: {type(module)}.")
+
+		assert "conv_proj" in vit._modules
+		assert "encoder" in vit._modules
+		assert "heads" in vit._modules
+
+		print(f"{type(vit.conv_proj)=}.")
+		print(f"{type(vit.encoder)=}.")
+		print(f"{type(vit.heads)=}.")
+
+	if True:
+		preprocess = weights.transforms()
+	else:
+		preprocess = torchvision.transforms.Compose([
+			#torchvision.transforms.ToPILImage(),
+			torchvision.transforms.Resize([224, 224]),
+			#torchvision.transforms.RandomCrop([224, 224]),
+			#torchvision.transforms.ToTensor(),
+			torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+		])
+
+	imgs = torch.rand(5, 3, 512, 512)
+	inputs = preprocess(imgs)
+	inputs = inputs.to(device)
+
+	vit.eval()
+	with torch.no_grad():
+		outputs = vit(inputs)
+
+	print(f"{outputs.shape=}.")
+
 # REF [site] >> https://pytorch.org/tutorials/beginner/vt_tutorial.html
 def vision_transformer_tutorial():
 	raise NotImplementedError
@@ -979,7 +1043,7 @@ def main():
 	#	Encoder-only transformer model = transformer model architecture in an encoder-only setup.
 	#	Decoder-only transformer model = transformer model architecture in a decoder-only setup.
 
-	transformer_tutorial()
+	#transformer_tutorial()
 	#decoder_based_transformer_test()
 
 	#-----
@@ -994,9 +1058,10 @@ def main():
 	#huggingface_pytorch_transformers_test()
 
 	#--------------------
-	# Data-efficient Image Transformers (DeiT).
+	# Vision.
 
-	#vision_transformer_tutorial()  # Not yet implemented.
+	vit_test()
+	#vision_transformer_tutorial()  # Data-efficient Image Transformers (DeiT). Not yet implemented.
 
 #--------------------------------------------------------------------
 

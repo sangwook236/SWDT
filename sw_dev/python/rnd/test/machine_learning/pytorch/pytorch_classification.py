@@ -336,6 +336,8 @@ def main():
 	#	Video ResNet
 	#	S3D
 
+	# REF [file] >> ./pytorch_model.py.
+
 	#cifar10_on_cpu()
 	cifar10_on_gpu()
 
