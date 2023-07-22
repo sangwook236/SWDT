@@ -222,6 +222,16 @@ def vit_pytorch_test():
 	#torch.save(model.state_dict(), "./pretrained-net.pt")
 
 def main():
+	# Model			Layers		Hidden size		MLP size	Heads	Params
+	#----------------------------------------------------------------------
+	# ViT-Base		12			768				3072		12		86M
+	# ViT-Large		24			1024			4096		16		307M
+	# ViT-Huge		32			1280			5120		16		632M
+
+	# REF [file] >>
+	#	${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_transformer.py
+	#	${SWDT_PYTHON_HOME}/rnd/test/language_processing/hugging_face_transformers_test.py
+
 	vit_pytorch_test()
 
 #--------------------------------------------------------------------

@@ -1822,11 +1822,11 @@ def main():
 	#accelerate_simple_example()
 	#accelerate_quicktour()  # Not yet completed.
 
-	# NLP:
+	# Language:
 	#	https://github.com/huggingface/accelerate/blob/main/examples/nlp_example.py
 	#	https://github.com/huggingface/accelerate/blob/main/examples/complete_nlp_example.py
 
-	# CV:
+	# Vision:
 	#	https://github.com/huggingface/accelerate/blob/main/examples/cv_example.py
 	#	https://github.com/huggingface/accelerate/blob/main/examples/complete_cv_example.py
 

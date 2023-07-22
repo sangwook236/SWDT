@@ -30,3 +30,21 @@
 		Set Visual Studio environment.
 			${Visual_Studio_HOME}/Community/VC/Auxiliary/Build/vcvars32.bat
 			${Visual_Studio_HOME}/Community/VC/Auxiliary/Build/vcvars64.bat
+
+[-] Installation (Ubuntu).
+	- Install.
+		From source:
+			https://nodejs.org/
+
+			cd ${nodejs_HOME}
+			./configure
+			make -j8
+			sudo make install
+			
+		From apt: (X)
+			sudo apt install nodejs
+			sudo apt install npm
+
+	- Check.
+		node -v
+		npm -v

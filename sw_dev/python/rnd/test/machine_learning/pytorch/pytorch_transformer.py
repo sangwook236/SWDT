@@ -1029,6 +1029,8 @@ def vision_transformer_tutorial():
 	raise NotImplementedError
 
 def main():
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
+
 	# Transformer layers:
 	#	torch.nn.Transformer
 	#	torch.nn.TransformerEncoder
@@ -1059,6 +1061,8 @@ def main():
 
 	#--------------------
 	# Vision.
+
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_vision/vit_test.py
 
 	vit_test()
 	#vision_transformer_tutorial()  # Data-efficient Image Transformers (DeiT). Not yet implemented.

@@ -834,6 +834,8 @@ def set_anomaly_detection_tutorial():
 		print("Image %i: %4.2f%%" % (i, 100.0 * p))
 
 def main():
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
+
 	#simple_transformer_tutorial()
 	sequence_to_sequence_tutorial()
 	#set_anomaly_detection_tutorial()

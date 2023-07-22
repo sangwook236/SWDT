@@ -4389,6 +4389,8 @@ def decision_transformer_example():
 			)
 
 def main():
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
+
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
 	#quick_tour()
@@ -4467,6 +4469,8 @@ def main():
 
 	#--------------------
 	# Vision.
+
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_vision/vit_test.py
 
 	# ViT.
 	#vit_example()
