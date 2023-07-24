@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import time
-import numpy as np
-from mmocr.ocr import MMOCR
-
 # REF [site] >> https://mmsegmentation.readthedocs.io/en/latest/user_guides/3_inference.html
 def inference_with_existing_models_tutorial():
 	from mmseg.apis import MMSegInferencer

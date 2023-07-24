@@ -35,27 +35,27 @@
 
 	- Update.
 		conda update conda
-		conda update PACKAGE_NAMES
+		conda update <PACKAGE_NAMES>
 
 	- Activate an environment.
-		conda activate ENV_NAME
-		source activate ENV_NAME (Linux)
-		activate ENV_NAME (Windows)
+		conda activate <ENV_NAME>
+		source activate <ENV_NAME> (Linux)
+		activate <ENV_NAME> (Windows)
 	- Activate the root environment.
 		conda activate
 		source activate (Linux)
 		activate (Windows)
 	- Dectivate an environment.
-		conda deactivate ENV_NAME
-		source deactivate ENV_NAME (Linux)
-		deactivate ENV_NAME (Windows)
+		conda deactivate <ENV_NAME>
+		source deactivate <ENV_NAME> (Linux)
+		deactivate <ENV_NAME> (Windows)
 	- Deactivate the root environment.
 		conda deactivate
 		source deactivate (Linux)
 		deactivate (Windows)
 
 	- Create an environment.
-		conda create --name ENV_NAME PACKAGE_NAMES
+		conda create --name <ENV_NAME> <PACKAGE_NAMES>
 			Create a new conda environment from a list of specified packages.
 		e.g.)
 			conda create --name env astroid babel
@@ -65,7 +65,7 @@
 
 		conda env create -f environment.yml
 			In environment.yml:
-				name: <env-name>
+				name: <ENV_NAME>
 				channels:
 					- conda-forge
 				dependencies:
@@ -73,42 +73,65 @@
 					- numpy=1.9.*
 					- pandas
 			Refer to "Export the environment.yml file".
-		conda create --name ENV_NAME --file requirements.txt
+		conda create --name <ENV_NAME> --file requirements.txt
 			conda list -e > requirements.txt
 	- Clone an environment.
-		conda create --name NEW_ENV_NAME --clone EXISTING_ENV_NAME
+		conda create --name <NEW_ENV_NAME> --clone <EXISTING_ENV_NAME>
 	- Remove an environment.
-		conda remove --name ENV_NAME --all
-		conda env remove --name ENV_NAME
+		conda remove --name <ENV_NAME> --all
+		conda env remove --name <ENV_NAME>
 	- List environments.
 		conda info --envs
+		conda env list
 
 	- Clean.
 		Remove unused packages and caches.
 
 		conda clean --all
 		conda clean --dry-run --all
+	- Reset.
+		conda list --revisions
+		conda install --revision <REVISION>
+			Revert to the specified REVISION.
 
 	- List packages and versions installed in an environment
 		conda list
 	- Search for a package.
-		conda list PACKAGE_NAME
+		conda list <PACKAGE_NAME>
 	- Install a package.
-		conda install PACKAGE_NAMES
+		conda install <PACKAGE_NAMES>
 		conda install --file requirements.txt
-		conda install --name ENV_NAME PACKAGE_NAMES
-		conda install -c conda-forge PACKAGE_NAMES
+		conda install --name <ENV_NAME> <PACKAGE_NAMES>
+		conda install -c conda-forge <PACKAGE_NAMES>
 		conda install --channel https://conda.anaconda.org/pandas bottleneck
 			Download into the current environment from http://anaconda.org.
 			Go to http://anaconda.org in a browser and in the top left box named "Search Packages" type "bottleneck" and click the Search button.
 	- Remove a package.
-		conda remove PACKAGE_NAME
-		conda remove --name ENV_NAME PACKAGE_NAMES
+		conda remove <PACKAGE_NAME>
+		conda remove --name <ENV_NAME> <PACKAGE_NAMES>
 
 	- Update a package.
-		conda update PACKAGE_NAMES
+		conda update <PACKAGE_NAMES>
 	- Update all packages.
 		conda update --all
+
+	- Update an environment.
+		conda env update
+		conda env update --name <ENV_NAME>
+		conda env update --file environment.yml
+		conda env update --name <ENV_NAME> --file environment.yml
+
+		conda env update --file environment.yml --prune
+		conda env update --name <ENV_NAME> --file environment.yml --prune
+			Remove installed packages not defined in environment.yml.
+	- Configure an environment.
+		conda env config vars list
+		conda env config vars list --name <ENV_NAME>
+
+		conda env config vars set VAR1=something VAR2=anything
+		conda env config vars unset VAR1
+
+		conda env config --append channels conda-forge
 
 	- Export the environment.yml file.
 		https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
