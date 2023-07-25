@@ -42,6 +42,7 @@ def quick_tour():
 
 		# Encode text.
 		input_ids = torch.tensor([tokenizer.encode('Here is some text to encode', add_special_tokens=True)])  # Add special tokens takes care of adding [CLS], [SEP], <s>... tokens in the right way for each model.
+		model.eval()
 		with torch.no_grad():
 			last_hidden_states = model(input_ids)[0]  # Models outputs are now tuples.
 
@@ -1711,6 +1712,7 @@ def bloom_example():
 
 		inputs = tokenizer('Hello, my dog is cute', return_tensors='pt')
 
+		model.eval()
 		with torch.no_grad():
 			logits = model(**inputs).logits
 
@@ -1751,6 +1753,7 @@ def bloom_example():
 
 		inputs = tokenizer('HuggingFace is a company based in Paris and New York', add_special_tokens=False, return_tensors='pt')
 
+		model.eval()
 		with torch.no_grad():
 			logits = model(**inputs).logits
 
@@ -1853,8 +1856,9 @@ def llama_example():
 	#	decapoda-research/llama-65b-hf-int4.
 	#	decapoda-research/llama-7b-hf-int8.
 
-	#device = "cuda" if torch.cuda.is_available() else "cpu"
-	device = "cpu"
+	#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	device = torch.device("cpu")
+	print(f"Device: {device}.")
 
 	if False:
 		# Initializing a LLaMA llama-7b style configuration.
@@ -1899,8 +1903,11 @@ def llama_example():
 
 	#-----
 	if True:
+		print("Loading a model...")
+		start_time = time.time()
 		model = transformers.LlamaForCausalLM.from_pretrained("decapoda-research/llama-7b-hf")
 		tokenizer = transformers.LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+		print(f"A model loaded: {time.time() - start_time} secs.")
 
 		prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
 A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.
@@ -1912,12 +1919,160 @@ A: """
 		start_time = time.time()
 		#with torch.autocast(device, dtype=torch.bfloat16):
 		model.to(device)
+		model.eval()
 		with torch.no_grad():
 			inputs = tokenizer(prompt, return_tensors="pt").to(device)
 			generate_ids = model.generate(inputs.input_ids, max_length=256)
 			generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 		print(f"Text generated: {time.time() - start_time} secs.")
 		print(generated)
+
+# REF [site] >> https://huggingface.co/meta-llama
+def llama2_example():
+	# Models:
+	#	meta-llama/Llama-2-7b.
+	#	meta-llama/Llama-2-13b.
+	#	meta-llama/Llama-2-70b.
+	#	meta-llama/Llama-2-7b-hf: ~12.6GB.
+	#	meta-llama/Llama-2-13b-hf: ~24.3GB.
+	#	meta-llama/Llama-2-70b-hf.
+	#	meta-llama/Llama-2-7b-chat.
+	#	meta-llama/Llama-2-13b-chat.
+	#	meta-llama/Llama-2-70b-chat.
+	#	meta-llama/Llama-2-7b-chat-hf.
+	#	meta-llama/Llama-2-13b-chat-hf.
+	#	meta-llama/Llama-2-70b-chat-hf.
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if True:
+		# Model parallelism.
+		#	https://huggingface.co/docs/accelerate/usage_guides/big_modeling
+
+		import accelerate
+
+		model_name = "meta-llama/Llama-2-7b-hf"
+		checkpoint_shards_dir_path = "./huggingface_checkpoint_shards"
+
+		if False:
+			# Save checkpoint shards.
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name)
+
+			print(f"Saving checkpoint shards to {checkpoint_shards_dir_path}...")
+			start_time = time.time()
+			accelerator = accelerate.Accelerator()
+			accelerator.save_model(model, save_directory=checkpoint_shards_dir_path, max_shard_size="10GB", safe_serialization=False)
+			print(f"Checkpoint shards saved: {time.time() - start_time} secs.")
+
+		if True:
+			# Load checkpoint shards.
+			#model_config = transformers.AutoModelForCausalLM.from_pretrained(model_name).config
+			model_config = transformers.LlamaConfig()
+			#model_config = model.config
+
+			with accelerate.init_empty_weights():
+				model = transformers.AutoModelForCausalLM.from_config(model_config)
+
+			# Designing a device map.
+			# We don't want to use more than 10GiB on each of the two GPUs and no more than 30GiB of CPU RAM for the model weights:
+			#device_map = accelerate.infer_auto_device_map(model, max_memory={0: "10GiB", 1: "10GiB", "cpu": "30GiB"})
+			# With BLOOM-176B on 8x80 A100 setup, the close-to-ideal map is:
+			#device_map = accelerate.infer_auto_device_map(model, max_memory={0: "30GIB", 1: "46GIB", 2: "46GIB", 3: "46GIB", 4: "46GIB", 5: "46GIB", 6: "46GIB", 7: "46GIB"})
+			# If you opt to fully design the device_map yourself, it should be a dictionary with keys being module names of your model and values being a valid device identifier (for instance an integer for the GPUs) or "cpu" for CPU offload, "disk" for disk offload:
+			#device_map = {"block1": 0, "block2": 1}
+			#device_map = {"block1": 0, "block2.linear1": 0, "block2.linear2": 1, "block2.linear3": 1}
+			#device_map = {"block1": 0, "block2.linear1": 1, "block2.linear2": 1}
+			# Llama 2 7B:
+			#device_map = {"model.embed_tokens": 0, "model.layers.0": 0, "model.layers.1": 0, "model.layers.2": 0, "model.layers.3": 0, "model.layers.4": 0, "model.layers.5": 0, "model.layers.6": 0, "model.layers.7": 0, "model.layers.8": 0, "model.layers.9": 0, "model.layers.10": 0, "model.layers.11": 0, "model.layers.12": 0, "model.layers.13": 0, "model.layers.14": 0, "model.layers.15.self_attn": 0, "model.layers.15.input_layernorm": 1, "model.layers.15.post_attention_layernorm": 1, "model.layers.16": 1, "model.layers.17": 1, "model.layers.18": 1, "model.layers.19": 1, "model.layers.20": 1, "model.layers.21": 1, "model.layers.22": 1, "model.layers.23": 1, "model.layers.24": 1, "model.layers.25": 1, "model.layers.26": 1, "model.layers.27": 1, "model.layers.28": 1, "model.layers.29": 1, "model.layers.30": 1, "model.layers.31": 1, "model.norm": 1, "lm_head": 1, "model.layers.15.mlp": 1}  # RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cuda:1!
+			device_map = {"model.embed_tokens": 0, "model.layers.0": 0, "model.layers.1": 0, "model.layers.2": 0, "model.layers.3": 0, "model.layers.4": 0, "model.layers.5": 0, "model.layers.6": 0, "model.layers.7": 0, "model.layers.8": 0, "model.layers.9": 0, "model.layers.10": 0, "model.layers.11": 0, "model.layers.12": 0, "model.layers.13": 0, "model.layers.14": 1, "model.layers.15.self_attn": 1, "model.layers.15.input_layernorm": 1, "model.layers.15.post_attention_layernorm": 1, "model.layers.16": 1, "model.layers.17": 1, "model.layers.18": 1, "model.layers.19": 1, "model.layers.20": 1, "model.layers.21": 1, "model.layers.22": 1, "model.layers.23": 1, "model.layers.24": 1, "model.layers.25": 1, "model.layers.26": 1, "model.layers.27": 1, "model.layers.28": 1, "model.layers.29": 1, "model.layers.30": 1, "model.layers.31": 1, "model.norm": 1, "lm_head": 1, "model.layers.15.mlp": 1}
+			# Llama 2 13B:
+
+			print(f"Loading checkpoint shards from {checkpoint_shards_dir_path}...")
+			start_time = time.time()
+			model = accelerate.load_checkpoint_and_dispatch(
+				model, checkpoint=checkpoint_shards_dir_path,
+				#device_map="auto",
+				device_map=device_map,
+				no_split_module_classes=["Block"],
+			)
+			print(f"Checkpoint shards loaded: {time.time() - start_time} secs.")
+
+			# Device map.
+			print(model.hf_device_map)
+
+		# Inference.
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
+A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.
+
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?
+A: """
+
+		print("Generating text...")
+		start_time = time.time()
+		model.eval()
+		with torch.no_grad():
+			inputs = tokenizer(prompt, return_tensors="pt").to(device)
+			#inputs = tokenizer(prompt, return_tensors="pt").to(0)
+			generate_ids = model.generate(inputs.input_ids, max_length=256)
+			generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(f"Text generated: {time.time() - start_time} secs.")
+		print(generated)
+
+	#-----
+	if False:
+		model_name = "meta-llama/Llama-2-7b-hf"
+
+		print(f"Loading a model, {model_name}...")
+		start_time = time.time()
+		#model = transformers.AutoModelForCausalLM.from_pretrained(model_name)
+		model = transformers.LlamaForCausalLM.from_pretrained(model_name)
+		#tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		tokenizer = transformers.LlamaTokenizerFast.from_pretrained(model_name)
+		#tokenizer = transformers.LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+		print(f"A model loaded: {time.time() - start_time} secs.")
+
+		prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
+A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.
+
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?
+A: """
+
+		print("Generating text...")
+		start_time = time.time()
+		#with torch.autocast(device, dtype=torch.bfloat16):
+		model.to(device)
+		model.eval()
+		with torch.no_grad():
+			inputs = tokenizer(prompt, return_tensors="pt").to(device)
+			generate_ids = model.generate(inputs.input_ids, max_length=256)
+			generated = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(f"Text generated: {time.time() - start_time} secs.")
+		print(generated)
+
+	if False:
+		model_name = "meta-llama/Llama-2-7b-chat-hf"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_name,
+			torch_dtype=torch.float16,
+			device_map="auto",
+		)
+
+		sequences = pipeline(
+			'I liked "Breaking Bad" and "Band of Brothers". Do you have any recommendations of other shows I might like?\n',
+			do_sample=True,
+			top_k=10,
+			num_return_sequences=1,
+			eos_token_id=tokenizer.eos_token_id,
+			max_length=200,
+		)
+		for seq in sequences:
+			print(f"Result: {seq['generated_text']}")
 
 # REF [site] >> https://huggingface.co/nvidia
 def megatron_example():
@@ -1989,8 +2144,9 @@ def mpt_example():
 	#	mosaicml/mpt-30b-chat.
 	#	mosaicml/mpt-30b-instruct.
 
-	#device = "cuda" if torch.cuda.is_available() else "cpu"
-	device = "cpu"
+	#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	device = torch.device("cpu")
+	print(f"Device: {device}.")
 
 	if True:
 		name = "mosaicml/mpt-7b-chat"  # CUDA out-of-memory.
@@ -2057,6 +2213,7 @@ A: """
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
 
 	if True:
 		if False:
@@ -2492,6 +2649,7 @@ def vit_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		outputs = model(**inputs)
 
@@ -2548,6 +2706,7 @@ def vit_image_classification_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		logits = model(**inputs).logits
 
@@ -2568,6 +2727,7 @@ def deit_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		outputs = model(**inputs)
 
@@ -2629,6 +2789,7 @@ def deit_image_classification_with_teacher_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		logits = model(**inputs).logits
 
@@ -2676,6 +2837,7 @@ def vilt_masked_lm_example():
 	inferred_token = [text]
 
 	# Gradually fill in the MASK tokens, one by one.
+	model.eval()
 	with torch.no_grad():
 		for i in range(tl):
 			encoded = processor.tokenizer(inferred_token)
@@ -2773,6 +2935,7 @@ def beit_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		outputs = model(**inputs)
 
@@ -2812,6 +2975,7 @@ def beit_image_classification_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		logits = model(**inputs).logits
 
@@ -2863,6 +3027,7 @@ def clip_example():
 		inputs = processor(text=texts, images=image, return_tensors="pt", padding=True)
 		print(f"Input: {inputs}.")  # {"input_ids", "attention_mask", "pixel_values"}.
 
+		model.eval()
 		with torch.no_grad():
 			outputs = model(**inputs)  # {loss, logits_per_image, logits_per_text, text_embeds, image_embeds, text_model_output, vision_model_output}.
 
@@ -2882,6 +3047,7 @@ def clip_example():
 
 		inputs = tokenizer(["a photo of a cat", "a photo of a dog"], padding=True, return_tensors="pt")
 
+		model.eval()
 		with torch.no_grad():
 			outputs = model(**inputs)
 
@@ -2946,6 +3112,7 @@ def align_example():
 		inputs = processor(text=texts, images=image, return_tensors="pt")
 		print(f"Input: {inputs}.")
 
+		model.eval()
 		with torch.no_grad():
 			outputs = model(**inputs)
 
@@ -2964,6 +3131,7 @@ def align_example():
 		text = "an image of a cat"
 		inputs = processor(text=text, images=image, return_tensors="pt")
 
+		model.eval()
 		with torch.no_grad():
 			outputs = model(**inputs)
 
@@ -3556,6 +3724,7 @@ def donut_example():
 
 	inputs = feature_extractor(image, return_tensors="pt")
 
+	model.eval()
 	with torch.no_grad():
 		outputs = model(**inputs)
 
@@ -3568,7 +3737,8 @@ def donut_document_image_classification_example():
 	from transformers import DonutProcessor, VisionEncoderDecoderModel
 	from datasets import load_dataset
 
-	device = "cuda" if torch.cuda.is_available() else "cpu"
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
 
 	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
 	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
@@ -3608,7 +3778,8 @@ def donut_document_document_parsing_example():
 	from transformers import DonutProcessor, VisionEncoderDecoderModel
 	from datasets import load_dataset
 
-	device = "cuda" if torch.cuda.is_available() else "cpu"
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
 
 	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
 	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
@@ -3648,7 +3819,8 @@ def donut_document_visual_question_answering_example():
 	from transformers import DonutProcessor, VisionEncoderDecoderModel
 	from datasets import load_dataset
 
-	device = "cuda" if torch.cuda.is_available() else "cpu"
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
 
 	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
 	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
@@ -4070,7 +4242,8 @@ def openai_asr_example():
 
 		import evaluate
 
-		device = "cuda" if torch.cuda.is_available() else "cpu"
+		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+		print(f"Device: {device}.")
 
 		processor = transformers.WhisperProcessor.from_pretrained(pretrained_model_name)
 		model = transformers.WhisperForConditionalGeneration.from_pretrained(pretrained_model_name).to(device)
@@ -4080,6 +4253,7 @@ def openai_asr_example():
 			input_features = processor(audio["array"], sampling_rate=audio["sampling_rate"], return_tensors="pt").input_features
 			batch["reference"] = processor.tokenizer._normalize(batch["text"])
 
+			model.eval()
 			with torch.no_grad():
 				predicted_ids = model.generate(input_features.to(device))[0]
 			transcription = processor.decode(predicted_ids)
@@ -4100,7 +4274,8 @@ def openai_asr_example():
 		#	Chunking is enabled by setting chunk_length_s=30 when instantiating the pipeline.
 		#	It can also be extended to predict utterance level timestamps by passing return_timestamps=True.
 
-		device = "cuda:0" if torch.cuda.is_available() else "cpu"
+		device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+		print(f"Device: {device}.")
 
 		pipe = transformers.pipeline(
 			"automatic-speech-recognition",
@@ -4377,6 +4552,7 @@ def decision_transformer_example():
 		attention_mask = torch.zeros(1, 1, device=device, dtype=torch.float32)
 
 		# Forward pass.
+		model.eval()
 		with torch.no_grad():
 			state_preds, action_preds, return_preds = model(
 				states=states,
@@ -4398,6 +4574,7 @@ def main():
 
 	#--------------------
 	# Pipeline.
+	#	https://huggingface.co/docs/transformers/main/en/pipeline_tutorial
 
 	#pipeline_example()
 
@@ -4405,6 +4582,29 @@ def main():
 
 	#korean_fill_mask_example()
 	#korean_table_question_answering_example()  # Not correctly working.
+
+	#--------------------
+	# Preprocessing.
+	#	https://huggingface.co/docs/transformers/main/en/preprocessing
+
+	#--------------------
+	# Training.
+	
+	# Fine-tune a pretrained model:
+	#	https://huggingface.co/docs/transformers/main/en/training
+	# Distributed training with Hugging Face Accelerate:
+	#	https://huggingface.co/docs/transformers/main/en/accelerate
+	# Share a model:
+	#	https://huggingface.co/docs/transformers/main/en/model_sharing
+
+	#--------------------
+	# Data and model parallelism.
+
+	# Efficient Training on Multiple GPUs:
+	#	https://huggingface.co/docs/transformers/main/en/perf_train_gpu_many
+
+	# Model Parallelism:
+	#	https://huggingface.co/docs/transformers/v4.19.4/en/parallelism
 
 	#--------------------
 	# Language.
@@ -4451,7 +4651,8 @@ def main():
 	#opt_example()  # OPT.
 	#galactica_example()  # Galactica.
 
-	llama_example()  # LLaMA.
+	#llama_example()  # LLaMA.
+	llama2_example()  # Llama 2.
 
 	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.

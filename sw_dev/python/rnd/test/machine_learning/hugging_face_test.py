@@ -1819,6 +1819,8 @@ def main():
 	# Accelerate.
 	#	A library that enables the same PyTorch code to be run across any distributed configuration by adding just four lines of code!
 
+	# https://huggingface.co/docs/accelerate/index
+
 	#accelerate_simple_example()
 	#accelerate_quicktour()  # Not yet completed.
 
@@ -1829,6 +1831,19 @@ def main():
 	# Vision:
 	#	https://github.com/huggingface/accelerate/blob/main/examples/cv_example.py
 	#	https://github.com/huggingface/accelerate/blob/main/examples/complete_cv_example.py
+
+	# Distributed Inference:
+	# 	Distributed Inference with Hugging Face Accelerate:
+	#		https://huggingface.co/docs/accelerate/usage_guides/distributed_inference
+
+	# Model parallelism:
+	#	Handling big models for inference:
+	#		https://huggingface.co/docs/accelerate/usage_guides/big_modeling
+
+	# REF [function] >> llama2_example() in ../language_processing/hugging_face_transformers_test.py.
+
+	# Quantization:
+	#	https://huggingface.co/docs/accelerate/usage_guides/quantization
 
 	#--------------------
 	# Transformers.
