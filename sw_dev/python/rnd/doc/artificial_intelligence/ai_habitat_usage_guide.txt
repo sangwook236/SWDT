@@ -1,0 +1,79 @@
+[-] General.
+	- Site.
+		https://aihabitat.org/
+
+		https://github.com/facebookresearch/habitat-sim
+		https://github.com/facebookresearch/habitat-lab
+		https://github.com/facebookresearch/habitat-challenge
+
+	- Document.
+		https://aihabitat.org/docs/habitat-sim/
+		https://aihabitat.org/docs/habitat-lab/
+
+[-] Tutorial.
+	- ECCV 2020 Tutorial.
+		https://aihabitat.org/tutorial/2020/
+
+[-] Installation.
+	- Install Habitat-Sim.
+		https://aihabitat.org/
+		https://github.com/facebookresearch/habitat-sim
+
+		conda create -n habitat python=3.9 cmake=3.14.0
+		conda activate habitat
+
+		Install on machines with an attached display:
+			conda install habitat-sim -c conda-forge -c aihabitat
+		Install on headless machines (i.e. without an attached display, e.g. in a cluster) and machines with multiple GPUs (this parameter relies on EGL and thus does not work on MacOS):
+			conda install habitat-sim headless -c conda-forge -c aihabitat
+		Install habitat-sim with bullet physics (most common scenario):
+			conda install habitat-sim withbullet -c conda-forge -c aihabitat
+		Install habitat-sim with physics on headless machines:
+			conda install habitat-sim withbullet headless -c conda-forge -c aihabitat
+
+	- Test Habitat-Sim.
+		https://github.com/facebookresearch/habitat-sim
+
+		Download some 3D assets using our python data download utility:
+			Download (testing) 3D scenes:
+				python -m habitat_sim.utils.datasets_download --uids habitat_test_scenes --data-path /path/to/data/
+			Download example objects:
+				python -m habitat_sim.utils.datasets_download --uids habitat_example_objects --data-path /path/to/data/
+
+		Interactive testing:
+			Use the interactive viewer included with Habitat-Sim in either C++ or python:
+			NOTE: depending on your choice of installation, you may need to add '/path/to/habitat-sim' to your PYTHONPATH.
+				e.g. from 'habitat-sim/' directory run 'export PYTHONPATH=$(pwd)'
+
+			python examples/viewer.py --scene /path/to/data/scene_datasets/habitat-test-scenes/skokloster-castle.glb
+
+		Physical interactions:
+			Habitat-sim provides rigid and articulated dynamics simulation via integration with Bullet physics.
+
+			Download our fully interactive ReplicaCAD apartment dataset (140 MB):
+				NOTE: by default, data will be downloaded into habitat-sim/data/. Optionally modify the data path by adding:  `--data-path /path/to/data/`.
+
+				With conda install:
+					python -m habitat_sim.utils.datasets_download --uids replica_cad_dataset
+
+				With source (from inside habitat_sim/):
+					python src_python/habitat_sim/utils/datasets_download.py --uids replica_cad_dataset
+
+			Load a ReplicaCAD scene in the viewer application with physics enabled:
+				NOTE: habitat-sim/ directory must be on your `PYTHONPATH`.
+
+				python examples/viewer.py --dataset data/replica_cad/replicaCAD.scene_dataset_config.json --scene apt_1
+
+		Non-interactive testing (e.g. for headless systems):
+			python examples/example.py --scene /path/to/data/scene_datasets/habitat-test-scenes/skokloster-castle.glb
+			python examples/example.py --scene /path/to/data/scene_datasets/habitat-test-scenes/skokloster-castle.glb --enable_physics
+
+	- Install Habitat-Lab.
+		https://github.com/facebookresearch/habitat-lab
+
+		git clone --branch stable https://github.com/facebookresearch/habitat-lab.git
+		cd habitat-lab
+		pip install -e habitat-lab
+
+		Install Habitat-Baselines:
+			pip install -e habitat-baselines

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import random, copy
+import random, copy, time
 import numpy as np
 import ai2thor.controller, ai2thor.util.metrics
 from PIL import Image
@@ -265,10 +265,11 @@ def ithor_example():
 
 	if False:
 		# Scene distribution.
-		kitchens = [f"FloorPlan{i}" for i in range(1, 31)]
-		living_rooms = [f"FloorPlan{200 + i}" for i in range(1, 31)]
-		bedrooms = [f"FloorPlan{300 + i}" for i in range(1, 31)]
-		bathrooms = [f"FloorPlan{400 + i}" for i in range(1, 31)]
+		#	REF [site] >> https://ai2thor.allenai.org/demo/
+		kitchens = [f"FloorPlan{i}" for i in range(1, 31)]  # FloorPlan1 ~ FloorPlan30.
+		living_rooms = [f"FloorPlan{200 + i}" for i in range(1, 31)]  # FloorPlan201 ~ FloorPlan230.
+		bedrooms = [f"FloorPlan{300 + i}" for i in range(1, 31)]  # FloorPlan301 ~ FloorPlan330.
+		bathrooms = [f"FloorPlan{400 + i}" for i in range(1, 31)]  # FloorPlan401 ~ FloorPlan430.
 
 		scenes = kitchens + living_rooms + bedrooms + bathrooms
 
@@ -837,6 +838,10 @@ def manipulathor_example():
 
 # REF [site] >> https://ai2thor.allenai.org/robothor/documentation
 def robothor_example():
+	# Scenes.
+	#	REF [site] >> https://ai2thor.allenai.org/demo/
+	#	Train (60 = 12 x 5): FloorPlan_Train1_1, FloorPlan_Train1_2, FloorPlan_Train1_3, FloorPlan_Train1_4, FloorPlan_Train1_5, FloorPlan_Train2_1, ..., FloorPlan_Train12_5.
+	#	Validation (15 = 3 x 5): FloorPlan_Val1_1, FloorPlan_Val1_2, FloorPlan_Val1_3, FloorPlan_Val1_4, FloorPlan_Val1_5, FloorPlan_Val2_1, ..., FloorPlan_Val3_5.
 	controller = ai2thor.controller.Controller(
 		agentMode="locobot",
 		visibilityDistance=1.5,
@@ -1049,41 +1054,54 @@ def simulation_test():
 		model_path = prior.load_model(project="procthor-models", model="object-nav-pretraining")
 		torch.load(model_path)
 
+	# List of dict('name', 'position', 'rotation', 'visible', 'isInteractable', 'receptacle', 'toggleable', 'isToggled', 'breakable', 'isBroken', 'canFillWithLiquid', 'isFilledWithLiquid', 'fillLiquid', 'dirtyable', 'isDirty', 'canBeUsedUp', 'isUsedUp', 'cookable', 'isCooked', 'temperature', 'isHeatSource', 'isColdSource', 'sliceable', 'isSliced', 'openable', 'isOpen', 'openness', 'pickupable', 'isPickedUp', 'moveable', 'mass', 'salientMaterials', 'receptacleObjectIds', 'distance', 'objectType', 'objectId', 'assetId', 'parentReceptacles', 'controlledObjects', 'isMoving', 'axisAlignedBoundingBox', 'objectOrientedBoundingBox')'s.
 	#for obj in controller.last_event.metadata["objects"]:
 	#	print(f'{obj["objectType"]}: {obj["objectId"]} - {obj["name"]}: {obj["visible"]}: {obj["position"]} - {obj["rotation"]}.')
 	print(f'#objects = {len(controller.last_event.metadata["objects"])}.')
 
-	# Randomize the position of the agent in the scene, before starting an episode.
-	reachable_positions = controller.step(action="GetReachablePositions").metadata["actionReturn"]
+	reachable_positions = controller.step(action="GetReachablePositions").metadata["actionReturn"]  # List of dict(x, y, z)'s.
 	#reachable_positions = controller.last_event.metadata["actionReturn"]  # None.
 	assert reachable_positions
 
 	if False:
-		# Visualize these positions (plot them on a scatter plot).
+		# Visualize objects' and reachable positions (plot them on a scatter plot).
 		obj_xs = [obj["position"]["x"] for obj in controller.last_event.metadata["objects"]]
 		obj_zs = [obj["position"]["z"] for obj in controller.last_event.metadata["objects"]]
 		xs = [rp["x"] for rp in reachable_positions]
 		zs = [rp["z"] for rp in reachable_positions]
 
 		plt.scatter(xs, zs)
-		plt.scatter(obj_xs, obj_zs, color="red")
+		plt.scatter(obj_xs, obj_zs, color="red", marker="*")
 		plt.xlabel("$x$")
 		plt.ylabel("$z$")
 		plt.title("Reachable Positions in the Scene")
 		plt.tight_layout()
 		plt.show()
 
+	# Randomize the position of the agent in the scene, before starting an episode.
 	position = random.choice(reachable_positions)
 	controller.step(
 		action="Teleport",
 		position=position
 	)
 
-	#while True:
-	#	pass
+	while True:
+		if random.randint(0, 1):
+			controller.step(action="MoveAhead")
+		else:
+			controller.step(action="MoveBack")
+
+		if random.randint(0, 1):
+			controller.step(action="RotateRight", degrees=90)
+		else:
+			controller.step(action="RotateLeft", degrees=90)
+
+		time.sleep(0.5)
+
+	controller.step(action="Done")
 
 def main():
-	# Install.
+	# Install:
 	#	pip install ai2thor prior
 
 	#procthor_example()  # ProcTHOR.
