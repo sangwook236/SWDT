@@ -874,7 +874,7 @@ def gpt4all_example():
 		model = transformers.AutoModelForCausalLM.from_pretrained("nomic-ai/gpt4all-j-prompt-generations", revision="v1.2-jazzy")
 
 	#--------------------
-	# Install.
+	# Install:
 	#	pip install nomic
 
 	import nomic.gpt4all
@@ -1454,7 +1454,7 @@ def flan_t5_example():
 	if False:
 		# Running the model on a GPU.
 
-		# Install.
+		# Install:
 		#	pip install accelerate
 
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
@@ -1471,7 +1471,7 @@ def flan_t5_example():
 	if False:
 		# Running the model on a GPU using different precisions (FP16).
 
-		# Install.
+		# Install:
 		#	pip install accelerate
 
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
@@ -1488,7 +1488,7 @@ def flan_t5_example():
 	if False:
 		# Running the model on a GPU using different precisions (INT8).
 
-		# Install.
+		# Install:
 		#	pip install bitsandbytes accelerate
 
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
@@ -1506,7 +1506,7 @@ def palm_example():
 	if False:
 		# https://github.com/lucidrains/PaLM-pytorch
 
-		# Install.
+		# Install:
 		#	pip install PaLM-pytorch
 
 		import palm_pytorch
@@ -1537,7 +1537,7 @@ def palm_example():
 	if True:
 		# https://github.com/lucidrains/PaLM-rlhf-pytorch
 
-		# Install.
+		# Install:
 		#	pip install palm-rlhf-pytorch
 
 		import palm_rlhf_pytorch
@@ -1824,7 +1824,7 @@ def galactica_example():
 	#	facebook/galactica-30b.
 	#	facebook/galactica-120b.
 
-	# Install.
+	# Install:
 	#	pip install bitsandbytes accelerate
 
 	tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/galactica-6.7b")
@@ -3440,6 +3440,68 @@ def blip_example():
 
 		print(processor.decode(out[0], skip_special_tokens=True))
 
+# REF [site] >> https://huggingface.co/openflamingo
+def openflamingo_example():
+	# Models:
+	#	openflamingo/OpenFlamingo-3B-vitl-mpt1b.
+	#	openflamingo/OpenFlamingo-3B-vitl-mpt1b-langinstruct.
+	#	openflamingo/OpenFlamingo-4B-vitl-rpj3b.
+	#	openflamingo/OpenFlamingo-4B-vitl-rpj3b-langinstruct.
+	#	openflamingo/OpenFlamingo-9B-vitl-mpt7b.
+
+	# Install:
+	#	pip install open-flamingo
+
+	from open_flamingo import create_model_and_transforms
+	import huggingface_hub
+
+	# Initialization.
+	model, image_processor, tokenizer = create_model_and_transforms(
+		clip_vision_encoder_path="ViT-L-14",
+		clip_vision_encoder_pretrained="openai",
+		lang_encoder_path="anas-awadalla/mpt-1b-redpajama-200b",
+		tokenizer_path="anas-awadalla/mpt-1b-redpajama-200b",
+		cross_attn_every_n_layers=1
+	)
+
+	# Grab model checkpoint from huggingface hub.
+	checkpoint_path = huggingface_hub.hf_hub_download("openflamingo/OpenFlamingo-3B-vitl-mpt1b", "checkpoint.pt")
+	model.load_state_dict(torch.load(checkpoint_path), strict=False)
+
+	# Generation example.
+
+	# Step 1: Load images.
+	demo_image_one = Image.open(requests.get("http://images.cocodataset.org/val2017/000000039769.jpg", stream=True).raw)
+	demo_image_two = Image.open(requests.get("http://images.cocodataset.org/test-stuff2017/000000028137.jpg", stream=True).raw)
+	query_image = Image.open(requests.get("http://images.cocodataset.org/test-stuff2017/000000028352.jpg", stream=True).raw)
+
+	# Step 2: Preprocessing images.
+	#	Details: For OpenFlamingo, we expect the image to be a torch tensor of shape batch_size x num_media x num_frames x channels x height x width. 
+	#	In this case batch_size = 1, num_media = 3, num_frames = 1, channels = 3, height = 224, width = 224.
+	vision_x = [image_processor(demo_image_one).unsqueeze(0), image_processor(demo_image_two).unsqueeze(0), image_processor(query_image).unsqueeze(0)]
+	vision_x = torch.cat(vision_x, dim=0)
+	vision_x = vision_x.unsqueeze(1).unsqueeze(0)
+
+	# Step 3: Preprocessing text.
+	#	Details: In the text we expect an <image> special token to indicate where an image is.
+	#	We also expect an <|endofchunk|> special token to indicate the end of the text portion associated with an image.
+	tokenizer.padding_side = "left"  # For generation padding tokens should be on the left.
+	lang_x = tokenizer(
+		["<image>An image of two cats.<|endofchunk|><image>An image of a bathroom sink.<|endofchunk|><image>An image of"],
+		return_tensors="pt",
+	)
+
+	# Step 4: Generate text.
+	generated_text = model.generate(
+		vision_x=vision_x,
+		lang_x=lang_x["input_ids"],
+		attention_mask=lang_x["attention_mask"],
+		max_new_tokens=20,
+		num_beams=3,
+	)
+
+	print(f"Generated text: {tokenizer.decode(generated_text[0])}.")
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/tvlt
 def tvlt_example():
 	import numpy as np
@@ -4147,7 +4209,7 @@ def nvidia_asr_example():
 	#	nvidia/stt_en_citrinet_1024_ls.
 	#	nvidia/stt_en_citrinet_1024_gamma_0_25,
 
-	# Install.
+	# Install:
 	#	pip install nemo_toolkit['all']
 
 	import nemo.collections.asr as nemo_asr
@@ -4329,7 +4391,7 @@ def nvidia_tts_example():
 	#	nvidia/tts_hifigan.
 	#	nvidia/tts_en_fastpitch.
 
-	# Install.
+	# Install:
 	#	pip install nemo_toolkit['all']
 
 	import soundfile as sf
@@ -4424,7 +4486,7 @@ def tensor_speech_tts_example():
 	#	tensorspeech/tts-mb_melgan-thorsten-ger.
 	#	tensorspeech/tts-mb_melgan-synpaflex-fr.
 
-	# Install.
+	# Install:
 	#	pip install TensorFlowTTS
 
 	import tensorflow as tf
@@ -4704,6 +4766,7 @@ def main():
 	#align_example()  # ALIGN
 	#git_example()  # GIT.
 	#blip_example()  # BLIP.
+	#openflamingo_example()  # OpenFlamingo.
 
 	#--------------------
 	# Vision and audio.
