@@ -202,7 +202,7 @@ def atari_games_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def pybullet_example():
-	# PyBullet: Normalizing input features
+	# PyBullet: Normalizing input features.
 
 	import pybullet_envs
 
@@ -325,7 +325,7 @@ def advanced_saving_and_loading_example():
 	from stable_baselines3.sac.policies import MlpPolicy
 
 	# Create the model, the training environment and the test environment (for evaluation).
-	model = SAC('MlpPolicy', 'Pendulum-v1', verbose=1, learning_rate=1e-3, create_eval_env=True)
+	model = SAC("MlpPolicy", "Pendulum-v1", verbose=1, learning_rate=1e-3, create_eval_env=True)
 
 	# Evaluate the model every 1000 steps on 5 test episodes and save the evaluation to the "logs/" folder.
 	model.learn(6000, eval_freq=1000, n_eval_episodes=5, eval_log_path="./logs/")
