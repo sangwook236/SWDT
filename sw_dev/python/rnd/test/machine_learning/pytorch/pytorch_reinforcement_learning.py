@@ -350,6 +350,12 @@ def dqn_atari_breakout_test():
 	model_target.to(device)
 	model_target.eval()
 
+	if False:
+		# Initialize weights
+		for param in model.parameters():
+			if param.dim() > 1 and param.requires_grad:
+				torch.nn.init.xavier_uniform_(param)
+
 	#-----
 	# Train
 
@@ -357,6 +363,7 @@ def dqn_atari_breakout_test():
 	# In the Deepmind paper they use RMSProp however then Adam optimizer
 	#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.01, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)
 	optimizer = torch.optim.Adam(model.parameters(), lr=0.00025, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+	#max_clipping_norm = None
 	max_clipping_norm = 1.0
 
 	# Using huber loss for stability
@@ -380,7 +387,7 @@ def dqn_atari_breakout_test():
 		state = np.array(env.reset())  # [?, H, W, C]
 		episode_reward = 0
 
-		for timestep in range(1, max_steps_per_episode):
+		for episode_step in range(1, max_steps_per_episode):
 			#env.render()  # Adding this line would show the attempts of the agent in a pop up window
 			#screen = env.render(mode="rgb_array")
 
@@ -405,7 +412,7 @@ def dqn_atari_breakout_test():
 			epsilon = max(epsilon, epsilon_min)
 
 			# Apply the sampled action in our environment
-			state_next, reward, done, _ = env.step(action)
+			state_next, reward, done, info = env.step(action)
 			state_next = np.array(state_next)
 
 			episode_reward += reward
@@ -458,15 +465,15 @@ def dqn_atari_breakout_test():
 
 				loss = loss_function(updated_q_values, q_action)
 				loss.backward()
-				torch.nn.utils.clip_grad_norm_(model.parameters(), max_clipping_norm)
+				if max_clipping_norm is not None:
+					torch.nn.utils.clip_grad_norm_(model.parameters(), max_clipping_norm)
 				optimizer.step()
 
 			if frame_count % update_target_network == 0:
 				# Update the the target network with new weights
 				model_target.load_state_dict(model.state_dict())
 				# Log details
-				template = "Running reward: {:.2f} at episode {}, frame count {}."
-				print(template.format(running_reward, episode_count, frame_count))
+				print(f"Running reward: {running_reward:.2f} at episode {episode_count}, frame count {frame_count}.")
 
 			# Limit the state and reward history
 			if len(rewards_history) > max_memory_length:
@@ -491,10 +498,343 @@ def dqn_atari_breakout_test():
 			print(f"Solved at episode {episode_count}!")
 			break
 
+# REF [site] >> https://keras.io/examples/rl/ddpg_pendulum/
+def ddpg_inverted_pendulum_test():
+	import numpy as np
+	import torch
+	import gym
+	#import gymnasium as gym
+	import matplotlib.pyplot as plt
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		# For gym
+		gym.envs.register(
+			id="Pendulum-v1",
+			entry_point="gym.envs.classic_control:PendulumEnv",
+			max_episode_steps=300,  # Default: 200
+			#reward_threshold=-110.0,  # Default: None
+		)
+	env = gym.make("Pendulum-v1")
+	#env = gym.make("Pendulum-v1", max_episode_steps=500)
+
+	num_states = env.observation_space.shape[0]
+	num_actions = env.action_space.shape[0]
+	upper_bound = env.action_space.high[0]
+	lower_bound = env.action_space.low[0]
+
+	print(f"Action space: {env.action_space}.")
+	print(f"Observation space: {env.observation_space}.")
+	print(f"Dimension of state space = {num_states}.")
+	print(f"Dimension of action space = {num_actions}.")
+	print(f"Min & max value of actions = [{lower_bound}, {upper_bound}].")
+	print(f"Max epsode steps = {env.spec.max_episode_steps}.")  # NOTE [info] >> not working
+	print(f"Reward threshold = {env.spec.reward_threshold}.")
+
+	# An Ornstein-Uhlenbeck process for generating noise
+	class OUActionNoise:
+		def __init__(self, mean, std_deviation, theta=0.15, dt=1e-2, x_initial=None):
+			self.theta = theta
+			self.mean = mean
+			self.std_dev = std_deviation
+			self.dt = dt
+			self.x_initial = x_initial
+			self.reset()
+
+		def __call__(self):
+			# Formula taken from https://www.wikipedia.org/wiki/Ornstein-Uhlenbeck_process.
+			x = (
+				self.x_prev
+				+ self.theta * (self.mean - self.x_prev) * self.dt
+				+ self.std_dev * np.sqrt(self.dt) * np.random.normal(size=self.mean.shape)
+			)
+			# Store x into x_prev
+			# Makes next noise dependent on current one
+			self.x_prev = x
+			return x
+
+		def reset(self):
+			if self.x_initial is not None:
+				self.x_prev = self.x_initial
+			else:
+				self.x_prev = np.zeros_like(self.mean)
+
+	# Experience replay
+	class Buffer:
+		def __init__(self, buffer_capacity=100000, batch_size=64):
+			# Number of "experiences" to store at max
+			self.buffer_capacity = buffer_capacity
+			# Num of tuples to train on.
+			self.batch_size = batch_size
+
+			# Its tells us num of times record() was called
+			self.buffer_counter = 0
+
+			# Instead of list of tuples as the exp.replay concept go
+			# We use different np.arrays for each tuple element
+			self.state_buffer = np.zeros((self.buffer_capacity, num_states))
+			self.action_buffer = np.zeros((self.buffer_capacity, num_actions))
+			self.reward_buffer = np.zeros((self.buffer_capacity, 1))
+			self.next_state_buffer = np.zeros((self.buffer_capacity, num_states))
+
+		# Takes (s, a, r, s') obervation tuple as input
+		def record(self, obs_tuple):
+			# Set index to zero if buffer_capacity is exceeded, replacing old records
+			index = self.buffer_counter % self.buffer_capacity
+
+			self.state_buffer[index] = obs_tuple[0]
+			self.action_buffer[index] = obs_tuple[1]
+			self.reward_buffer[index] = obs_tuple[2]
+			self.next_state_buffer[index] = obs_tuple[3]
+
+			self.buffer_counter += 1
+
+		def update(self, state_batch, action_batch, reward_batch, next_state_batch):
+			# Training and updating Actor & Critic networks.
+			# See Pseudo Code in the paper.
+
+			critic_model.train()
+			actor_model.train()
+
+			# Zero the parameter gradients
+			critic_optimizer.zero_grad()
+
+			# Forward + backward + optimize
+			with torch.no_grad():
+				target_actions = target_actor(next_state_batch.to(device))
+				y = reward_batch.to(device) + gamma * target_critic(next_state_batch.to(device), target_actions.to(device))
+			critic_value = critic_model(state_batch.to(device), action_batch.to(device))
+
+			critic_loss = critic_loss_function(y, critic_value)
+			#critic_loss = torch.mean(torch.square(y - critic_value))
+			critic_loss.backward()
+			critic_optimizer.step()
+
+			# Zero the parameter gradients
+			actor_optimizer.zero_grad()
+
+			# Forward + backward + optimize
+			actions = actor_model(state_batch.to(device))
+			critic_value = critic_model(state_batch.to(device), actions.to(device))
+
+			# Used `-value` as we want to maximize the value given by the critic for our actions
+			actor_loss = actor_loss_function(critic_value)
+			#actor_loss = -torch.mean(critic_value)
+			actor_loss.backward()
+			actor_optimizer.step()
+
+		# We compute the loss and update parameters
+		def learn(self):
+			# Get sampling range
+			record_range = min(self.buffer_counter, self.buffer_capacity)
+			# Randomly sample indices
+			batch_indices = np.random.choice(record_range, self.batch_size)
+
+			# Convert to tensors
+			state_batch = torch.tensor(self.state_buffer[batch_indices], dtype=torch.float32)
+			action_batch = torch.tensor(self.action_buffer[batch_indices], dtype=torch.float32)
+			reward_batch = torch.tensor(self.reward_buffer[batch_indices], dtype=torch.float32)
+			next_state_batch = torch.tensor(self.next_state_buffer[batch_indices], dtype=torch.float32)
+
+			self.update(state_batch, action_batch, reward_batch, next_state_batch)
+
+	# This update target parameters slowly
+	# Based on rate `tau`, which is much less than one.
+	def update_target(target_weights, weights, tau):
+		for (a, b) in zip(target_weights, weights):
+			a.copy_(b * tau + a * (1 - tau))
+
+	# Actor and critic networks
+	class Actor(torch.nn.Module):
+		def __init__(self, num_states, upper_bound):
+			super().__init__()
+
+			self.upper_bound = upper_bound
+
+			self.fc1 = torch.nn.Linear(num_states, 256)
+			self.fc2 = torch.nn.Linear(256, 256)
+			self.fc3 = torch.nn.Linear(256, 1)
+
+			# Initialize weights between -3e-3 and 3-e3
+			for param in self.fc3.parameters():
+				if param.dim() > 1 and param.requires_grad:
+					torch.nn.init.uniform_(param, a=-0.003, b=0.003)
+
+		def forward(self, x):
+			x = torch.nn.functional.relu(self.fc1(x))
+			x = torch.nn.functional.relu(self.fc2(x))
+			x = torch.tanh(self.fc3(x))
+			# Our upper bound is 2.0 for Pendulum
+			return x * self.upper_bound
+
+	class Critic(torch.nn.Module):
+		def __init__(self, num_states, num_actions):
+			super().__init__()
+
+			self.state_fc1 = torch.nn.Linear(num_states, 16)
+			self.state_fc2 = torch.nn.Linear(16, 32)
+
+			self.action_fc = torch.nn.Linear(num_actions, 32)
+
+			self.fc1 = torch.nn.Linear(64, 256)
+			self.fc2 = torch.nn.Linear(256, 256)
+			self.fc3 = torch.nn.Linear(256, 1)
+
+		def forward(self, state, action):
+			state = torch.nn.functional.relu(self.state_fc1(state))
+			state = torch.nn.functional.relu(self.state_fc2(state))
+
+			action = torch.nn.functional.relu(self.action_fc(action))
+
+			x = torch.cat([state, action], dim=-1)
+			x = torch.nn.functional.relu(self.fc1(x))
+			x = torch.nn.functional.relu(self.fc2(x))
+			return self.fc3(x)
+
+	# Sample an action from our actor network plus some noise for exploration
+	def policy(state, noise_object):
+		actor_model.eval()
+		with torch.no_grad():
+			sampled_actions = actor_model(state.to(device)).squeeze()
+		noise = noise_object()
+		# Adding noise to action
+		sampled_actions = sampled_actions.cpu().numpy() + noise
+
+		# We make sure action is within bounds
+		legal_action = np.clip(sampled_actions, lower_bound, upper_bound)
+
+		return [np.squeeze(legal_action)]
+
+	# Training hyperparameters
+	std_dev = 0.2
+	ou_noise = OUActionNoise(mean=np.zeros(1), std_deviation=float(std_dev) * np.ones(1))
+
+	actor_model = Actor(num_states, upper_bound)
+	critic_model = Critic(num_states, num_actions)
+	target_actor = Actor(num_states, upper_bound)
+	target_critic = Critic(num_states, num_actions)
+	actor_model.to(device)
+	critic_model.to(device)
+	target_actor.to(device)
+	target_critic.to(device)
+	target_actor.eval()
+	target_critic.eval()
+
+	# Making the weights equal initially
+	target_actor.load_state_dict(actor_model.state_dict())
+	target_critic.load_state_dict(critic_model.state_dict())
+
+	# Learning rate for actor-critic models
+	actor_lr = 0.001
+	critic_lr = 0.002
+
+	actor_optimizer = torch.optim.Adam(actor_model.parameters(), lr=actor_lr)
+	critic_optimizer = torch.optim.Adam(critic_model.parameters(), lr=critic_lr)
+
+	def negative_mean_loss(input):
+		return -torch.mean(input)
+
+	actor_loss_function = negative_mean_loss
+	critic_loss_function = torch.nn.MSELoss(reduction="mean")
+
+	total_episodes = 100
+	# Discount factor for future rewards
+	gamma = 0.99
+	# Used to update target networks
+	tau = 0.005
+
+	buffer = Buffer(buffer_capacity=50000, batch_size=64)
+
+	#-----
+	# Main training loop
+
+	# To store reward history of each episode
+	ep_reward_list = []
+	# To store average reward history of last few episodes
+	avg_reward_list = []
+
+	# Takes about 4 min to train
+	for ep in range(total_episodes):
+		#prev_state = env.reset()
+		prev_state, info = env.reset()  # For gym & gymnasium
+		episodic_reward = 0
+
+		episode_step = 0
+		while True:
+		#for episode_step in range(1, env.spec.max_episode_steps):
+			# Uncomment this to see the Actor in action
+			# But not in a Python notebook.
+			#env.render()
+			#screen = env.render(mode="rgb_array")
+
+			action = policy(torch.tensor(prev_state, dtype=torch.float32).unsqueeze(dim=0), ou_noise)
+
+			# Recieve state and reward from environment
+			#state, reward, done, info = env.step(action)
+			state, reward, terminated, truncated, info = env.step(action)  # For gym & gymnasium
+
+			# TODO [check] >> env.spec.max_episode_steps is not working
+			if episode_step >= env.spec.max_episode_steps:
+				#done = True
+				terminated, truncated = False, True
+				info.update({"TimeLimit.truncated": True})
+
+			buffer.record((prev_state, action, reward, state))
+			episodic_reward += reward
+
+			buffer.learn()
+			with torch.no_grad():
+				update_target(target_actor.parameters(), actor_model.parameters(), tau)
+				update_target(target_critic.parameters(), critic_model.parameters(), tau)
+
+			# End this episode when `done` is True
+			#if done:
+			if terminated or truncated:
+				break
+
+			prev_state = state
+			episode_step += 1
+
+		ep_reward_list.append(episodic_reward)
+
+		# Mean of last 40 episodes
+		avg_reward = np.mean(ep_reward_list[-40:])
+		print(f"Episode {ep}: avg reward = {avg_reward}.")
+		avg_reward_list.append(avg_reward)
+
+	# Plotting graph
+	# Episodes versus Avg. Rewards
+	plt.plot(avg_reward_list)
+	plt.xlabel("Episode")
+	plt.ylabel("Avg. Epsiodic Reward")
+	plt.show()
+
+	# Save the weights
+	torch.save({"state_dict": actor_model.state_dict()}, "./pendulum_actor.pth")
+	torch.save({"state_dict": critic_model.state_dict()}, "./pendulum_critic.pth")
+
+	torch.save({"state_dict": target_actor.state_dict()}, "./pendulum_target_actor.pth")
+	torch.save({"state_dict": target_critic.state_dict()}, "./pendulum_target_critic.pth")
+
 def main():
+	# Value-function-based algorithm
+
 	# Deep Q-Network (DQN)
 	#dqn_cart_pole_tutorial()  # More structured implementation.
-	dqn_atari_breakout_test()  # Naive low-level implementation.
+	dqn_atari_breakout_test()  # Naive low-level implementation. Failed to train.
+
+	#-----
+	# Policy gradient algorithm
+
+	# Deep deterministic policy gradient (DDPG) algorithm
+	#	Model-free, off-policy actor-critic algorithm
+	#ddpg_inverted_pendulum_test()
+
+	# Twin delayed deep deterministic (TD3) policy gradient algorithm
+	#	Twin delayed DDPG
+	#	TD3 is a direct successor of DDPG and improves it using three major tricks: clipped double Q-Learning, delayed policy update and target policy smoothing
 
 #--------------------------------------------------------------------
 

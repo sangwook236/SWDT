@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os
+import os, time
 import numpy as np
-import gym
 from stable_baselines3 import A2C, DQN, PPO, SAC, DDPG, TD3, HerReplayBuffer
 from stable_baselines3.common import results_plotter
 from stable_baselines3.common.evaluation import evaluate_policy
@@ -18,6 +17,8 @@ import matplotlib.pyplot as plt
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/quickstart.html
 def getting_started():
+	import gym
+
 	env = gym.make("CartPole-v1")
 	model = A2C("MlpPolicy", env, verbose=1)
 	#model = A2C("MlpPolicy", "CartPole-v1", verbose=1)
@@ -34,6 +35,8 @@ def getting_started():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def basic_usage_example():
+	import gym
+
 	# Basic Usage: Training, Saving, Loading.
 
 	# Create environment.
@@ -68,6 +71,8 @@ def basic_usage_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def multiprocessing_example():
+	import gym
+
 	# Multiprocessing: Unleashing the Power of Vectorized Environments
 
 	def make_env(env_id, rank, seed=0):
@@ -117,6 +122,8 @@ def multiprocessing_with_off_policy_algorithms_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def using_callback_example():
+	import gym
+
 	# Using Callback: Monitoring Training.
 
 	class SaveOnBestTrainingRewardCallback(BaseCallback):
@@ -202,9 +209,10 @@ def atari_games_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def pybullet_example():
-	# PyBullet: Normalizing input features.
-
+	import gym
 	import pybullet_envs
+
+	# PyBullet: Normalizing input features.
 
 	env = DummyVecEnv([lambda: gym.make("HalfCheetahBulletEnv-v0")])
 	# Automatically normalize the input features and reward.
@@ -235,9 +243,10 @@ def pybullet_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def hindsight_experience_replay_example():
-	# Hindsight Experience Replay (HER).
-
+	import gym
 	import highway_env
+
+	# Hindsight Experience Replay (HER).
 
 	env = gym.make("parking-v0")
 
@@ -289,9 +298,9 @@ def hindsight_experience_replay_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def learning_rate_schedule_example():
-	# Learning Rate Schedule.
-
 	from typing import Callable
+
+	# Learning Rate Schedule.
 
 	def linear_schedule(initial_value: float) -> Callable[[float], float]:
 		"""
@@ -320,9 +329,9 @@ def learning_rate_schedule_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def advanced_saving_and_loading_example():
-	# Advanced Saving and Loading.
-
 	from stable_baselines3.sac.policies import MlpPolicy
+
+	# Advanced Saving and Loading.
 
 	# Create the model, the training environment and the test environment (for evaluation).
 	model = SAC("MlpPolicy", "Pendulum-v1", verbose=1, learning_rate=1e-3, create_eval_env=True)
@@ -370,10 +379,10 @@ def advanced_saving_and_loading_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def accessing_and_modifying_model_parameters_example():
-	# Accessing and modifying model parameters.
-
 	from typing import Dict
 	import torch
+
+	# Accessing and modifying model parameters.
 
 	def mutate(params: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
 		"""Mutate parameters by adding normal noise to them"""
@@ -441,6 +450,8 @@ def SB3_and_ProcgenEnv_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def record_video_example():
+	import gym
+
 	# Record a Video.
 
 	env_id = "CartPole-v1"
@@ -468,9 +479,9 @@ def record_video_example():
 
 # REF [site] >> https://stable-baselines3.readthedocs.io/en/master/guide/examples.html
 def make_gif_example():
-	# Make a GIF of a Trained Agent.
-
 	import imageio
+
+	# Make a GIF of a Trained Agent.
 
 	model = A2C("MlpPolicy", "LunarLander-v2").learn(100_000)
 
@@ -483,10 +494,252 @@ def make_gif_example():
 		obs, _, _ ,_ = model.env.step(action)
 		img = model.env.render(mode="rgb_array")
 
-	imageio.mimsave("lander_a2c.gif", [np.array(img) for i, img in enumerate(images) if i % 2 == 0], fps=29)
+	imageio.mimsave("./lander_a2c.gif", [np.array(img) for i, img in enumerate(images) if i % 2 == 0], fps=29)
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/dqn.html
+def dqn_module_example():
+	from stable_baselines3 import DQN
+	import gymnasium as gym
+
+	env = gym.make("CartPole-v1", render_mode="human")
+	#env = gym.make("CartPole-v1", render_mode="human", max_episode_steps=500)
+	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+
+	model = DQN("MlpPolicy", env, verbose=1)
+
+	print("Training...")
+	start_time = time.time()
+	model.learn(total_timesteps=10000, log_interval=4)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	model.save("./dqn_cartpole")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	model = DQN.load("./dqn_cartpole")
+
+	obs, info = env.reset()
+	while True:
+		action, _states = model.predict(obs, deterministic=True)
+		obs, reward, terminated, truncated, info = env.step(action)  # numpy.ndarray, float, bool, bool, dict
+		if terminated or truncated:
+			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
+			obs, info = env.reset()
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html
+def a2c_module_example():
+	from stable_baselines3 import A2C
+	from stable_baselines3.common.env_util import make_vec_env
+
+	# Parallel environments
+	vec_env = make_vec_env("CartPole-v1", n_envs=4)
+	model = A2C("MlpPolicy", vec_env, verbose=1)
+
+	print("Training...")
+	start_time = time.time()
+	model.learn(total_timesteps=25000)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	model.save("./a2c_cartpole")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	model = A2C.load("./a2c_cartpole")
+
+	obs = vec_env.reset()
+	while True:
+		action, _states = model.predict(obs)
+		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
+		vec_env.render("human")
+		if dones.any():
+			print(f"Dones: {dones}, Rewards: {rewards}, Infos: {infos}.")  # infos: [{"episode": {"r": <cumulative reward>, "l": <episode length>, "t": <elapsed time since instantiation of wrapper>}, ...}]
+			#obs = vec_env.reset()
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html
+def ppo_module_example():
+	from stable_baselines3 import PPO
+	from stable_baselines3.common.env_util import make_vec_env
+
+	# Parallel environments
+	vec_env = make_vec_env("CartPole-v1", n_envs=4)
+	model = PPO("MlpPolicy", vec_env, verbose=1)
+
+	print("Training...")
+	start_time = time.time()
+	model.learn(total_timesteps=250000)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	model.save("./ppo_cartpole")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	model = PPO.load("./ppo_cartpole")
+
+	obs = vec_env.reset()
+	while True:
+		action, _states = model.predict(obs)
+		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
+		vec_env.render("human")
+		if dones.any():
+			print(f"Dones: {dones}, Rewards: {rewards}, Infos: {infos}.")  # infos: [{"episode": {"r": <cumulative reward>, "l": <episode length>, "t": <elapsed time since instantiation of wrapper>}, ...}]
+			#obs = vec_env.reset()
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/ddpg.html
+def ddpg_module_example():
+	import numpy as np
+	from stable_baselines3 import DDPG
+	from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
+	import gymnasium as gym
+
+	env = gym.make("Pendulum-v1", render_mode="rgb_array")
+	#env = gym.make("Pendulum-v1", render_mode="rgb_array", max_episode_steps=500)
+	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+
+	# The noise objects for DDPG
+	n_actions = env.action_space.shape[-1]
+	action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions))
+	model = DDPG("MlpPolicy", env, action_noise=action_noise, verbose=1)
+
+	print("Training...")
+	start_time = time.time()
+	model.learn(total_timesteps=10000, log_interval=10)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	vec_env = model.get_env()
+
+	model.save("./ddpg_pendulum")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	model = DDPG.load("./ddpg_pendulum")
+
+	obs = vec_env.reset()
+	while True:
+		action, _states = model.predict(obs)
+		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
+		vec_env.render("human")
+		if dones.any():
+			print(f"Dones: {dones}, Rewards: {rewards}, Infos: {infos}.")  # infos: [{"episode": {"r": <cumulative reward>, "l": <episode length>, "t": <elapsed time since instantiation of wrapper>}, ...}]
+			#obs = vec_env.reset()
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/td3.html
+def td3_module_example():
+	import numpy as np
+	from stable_baselines3 import TD3
+	from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
+	import gymnasium as gym
+
+	env = gym.make("Pendulum-v1", render_mode="rgb_array")
+	#env = gym.make("Pendulum-v1", render_mode="rgb_array", max_episode_steps=500)
+	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+
+	# The noise objects for TD3
+	n_actions = env.action_space.shape[-1]
+	action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions))
+	model = TD3("MlpPolicy", env, action_noise=action_noise, verbose=1)
+
+	print("Training...")
+	start_time = time.time()
+	model.learn(total_timesteps=10000, log_interval=10)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	vec_env = model.get_env()
+
+	model.save("./td3_pendulum")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	model = TD3.load("./td3_pendulum")
+
+	obs = vec_env.reset()
+	while True:
+		action, _states = model.predict(obs)
+		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
+		vec_env.render("human")
+		if dones.any():
+			print(f"Dones: {dones}, Rewards: {rewards}, Infos: {infos}.")  # infos: [{"episode": {"r": <cumulative reward>, "l": <episode length>, "t": <elapsed time since instantiation of wrapper>}, ...}]
+			#obs = vec_env.reset()
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/sac.html
+def sac_module_example():
+	from stable_baselines3 import SAC
+	import gymnasium as gym
+
+	env = gym.make("Pendulum-v1", render_mode="human")
+	#env = gym.make("Pendulum-v1", render_mode="human", max_episode_steps=500)
+	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+
+	model = SAC("MlpPolicy", env, verbose=1)
+
+	print("Training...")
+	start_time = time.time()
+	model.learn(total_timesteps=10000, log_interval=4)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	model.save("./sac_pendulum")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	model = SAC.load("./sac_pendulum")
+
+	obs, info = env.reset()
+	while True:
+		action, _states = model.predict(obs, deterministic=True)
+		obs, reward, terminated, truncated, info = env.step(action)  # numpy.ndarray, numpy.float64, bool, bool, dict
+		if terminated or truncated:
+			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
+			obs, info = env.reset()
+
+# REF [site] >> https://stable-baselines3.readthedocs.io/en/master/modules/her.html
+def her_module_example():
+	from stable_baselines3 import HerReplayBuffer, DDPG, DQN, SAC, TD3
+	from stable_baselines3.her.goal_selection_strategy import GoalSelectionStrategy
+	from stable_baselines3.common.envs import BitFlippingEnv
+
+	model_class = DQN  # Works also with SAC, DDPG and TD3
+	N_BITS = 15
+
+	env = BitFlippingEnv(n_bits=N_BITS, continuous=model_class in [DDPG, SAC, TD3], max_steps=N_BITS)
+
+	# Available strategies (cf. paper): future, final, episode
+	goal_selection_strategy = "future"  # Equivalent to GoalSelectionStrategy.FUTURE
+
+	# Initialize the model
+	model = model_class(
+		"MultiInputPolicy",
+		env,
+		replay_buffer_class=HerReplayBuffer,
+		# Parameters for HER
+		replay_buffer_kwargs=dict(
+			n_sampled_goal=4,
+			goal_selection_strategy=goal_selection_strategy,
+		),
+		verbose=1,
+	)
+
+	# Train the model
+	print("Training...")
+	start_time = time.time()
+	model.learn(1000)
+	print(f"Trained: {time.time() - start_time} secs.")
+
+	model.save("./her_bit_env")
+	del model  # Remove to demonstrate saving and loading
+
+	#-----
+	# Because it needs access to `env.compute_reward()`, HER must be loaded with the env
+	model = model_class.load("./her_bit_env", env=env)
+
+	obs, info = env.reset()
+	for _ in range(100):
+		action, _ = model.predict(obs, deterministic=True)
+		obs, reward, terminated, truncated, info = env.step(action)
+		if terminated or truncated:
+			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
+			obs, info = env.reset()
 
 def main():
-	getting_started()
+	#getting_started()
 
 	#basic_usage_example()
 	#multiprocessing_example()
@@ -504,6 +757,39 @@ def main():
 	#SB3_and_ProcgenEnv_example()
 	#record_video_example()
 	#make_gif_example()
+
+	#-----
+	# Value-function-based algorithm
+
+	# Deep Q network (DQN)
+	#dqn_module_example()
+
+	#-----
+	# Policy gradient algorithm
+
+	# Advantage actor critic (A2C)
+	#	A synchronous, deterministic variant of asynchronous advantage actor critic (A3C)
+	#	It uses multiple workers to avoid the use of a replay buffer
+	#a2c_module_example()
+	# Proximal policy optimization (PPO)
+	#	It combines ideas from A2C (having multiple workers) and TRPO (it uses a trust region to improve the actor)
+	#ppo_module_example()
+	# Deep deterministic policy gradient (DDPG)
+	#	Model-free, off-policy actor-critic algorithm
+	#	It combines the trick for DQN with the deterministic policy gradient, to obtain an algorithm for continuous actions
+	#ddpg_module_example()
+	# Twin delayed DDPG (TD3)
+	#	Function approximation error in actor-critic methods
+	#	TD3 is a direct successor of DDPG and improves it using three major tricks: clipped double Q-Learning, delayed policy update and target policy smoothing
+	td3_module_example()
+	# Soft actor critic (SAC)
+	#	Off-policy maximum entropy deep reinforcement learning with a stochastic actor
+	#sac_module_example()
+
+	#-----
+
+	# Hindsight experience replay (HER)
+	#her_module_example()
 
 #--------------------------------------------------------------------
 
