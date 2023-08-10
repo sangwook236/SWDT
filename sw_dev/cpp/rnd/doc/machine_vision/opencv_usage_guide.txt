@@ -30,30 +30,30 @@
 			https://medium.com/@linjunghsuan/add-opencv-library-into-android-studio-6b02bc2920c0
 
 [-] Building (CMake + Linux).
-	- CUDA_nvcuvid_LIBRARY Ç×¸ñÀÌ ¿Ã¹Ù¸£°Ô ¼³Á¤µÇ¾î ÀÖÁö ¾Ê´Ù´Â ¿À·ù ¹ß»ı.
-		NVIDIA CUDA library Áß¿¡¼­ video decoder (NVCUVID) library¸¦ »ç¿ëÇÏ´Âµ¥,
-		ÇØ´ç libraryÀÇ path°¡ ´Ù¸¥ CUDA library¿Í ´Ù¸£°Ô ¼³Á¤µÇ¾î ÀÖ¾î ¹ß»ı.
-		==> Video decoder (NVCUVID) libraryÀÎ libnvcuvid.so & libnvcuvid.so.1 fileÀ» ¾Æ·¡¿Í °°ÀÌ ¼³Á¤.
+	- CUDA_nvcuvid_LIBRARY í•­ëª©ì´ ì˜¬ë°”ë¥´ê²Œ ì„¤ì •ë˜ì–´ ìˆì§€ ì•Šë‹¤ëŠ” ì˜¤ë¥˜ ë°œìƒ.
+		NVIDIA CUDA library ì¤‘ì—ì„œ video decoder (NVCUVID) libraryë¥¼ ì‚¬ìš©í•˜ëŠ”ë°,
+		í•´ë‹¹ libraryì˜ pathê°€ ë‹¤ë¥¸ CUDA libraryì™€ ë‹¤ë¥´ê²Œ ì„¤ì •ë˜ì–´ ìˆì–´ ë°œìƒ.
+		==> Video decoder (NVCUVID) libraryì¸ libnvcuvid.so & libnvcuvid.so.1 fileì„ ì•„ë˜ì™€ ê°™ì´ ì„¤ì •.
 			sudo ln -s /usr/lib/nvidia-current/libnvcuvid.so /usr/lib/libnvcuvid.so
 			sudo ln -s /usr/lib/nvidia-current/libnvcuvid.so.1 /usr/lib/libnvcuvid.so.1
 
 [-] Building (Linux).
-	- CUDA °ü·Ã ÇÔ¼ö¸¦ Ã£À» ¼ö ¾ø´Ù´Â ¿À·ù ¹ß»ı.
+	- CUDA ê´€ë ¨ í•¨ìˆ˜ë¥¼ ì°¾ì„ ìˆ˜ ì—†ë‹¤ëŠ” ì˜¤ë¥˜ ë°œìƒ.
 		<error>
 			undefined reference to 'cuDeviceGetAttribute'
-		==> CUDA_CUDA_LIBRARY Ç×¸ñÀÌ ¿Ã¹Ù¸£°Ô ¼³Á¤µÇ¾î ÀÖÁö ¾Ê´Ù´Â ¿À·ù ¹ß»ı.
+		==> CUDA_CUDA_LIBRARY í•­ëª©ì´ ì˜¬ë°”ë¥´ê²Œ ì„¤ì •ë˜ì–´ ìˆì§€ ì•Šë‹¤ëŠ” ì˜¤ë¥˜ ë°œìƒ.
 			sudo ln -s /usr/lib/nvidia-current/libcuda.so /usr/lib/libcuda.so
 			sudo ln -s /usr/lib/nvidia-current/libcuda.so.1 /usr/lib/libcuda.so.1
 
 [-] Trouble shooting (VC).
 	- OpenEXR error in highgui project.
-		OpenEXR library¸¦ shared library linkingÇÏ±â À§ÇØ¼­ OPENEXR_DLL macro°¡ Á¤ÀÇµÇ¾î¾ß ÇÔ
-		==> CMake È¯°æ¿¡¼­ macro·Î /DOPENEXR_DLL¸¦ Á¤ÀÇÇÏ°Å³ª
-			highgui project¿¡ OPENEXR_DLL¸¦ Á¤ÀÇÇÏ¿©¾ß ÇÔ.
+		OpenEXR libraryë¥¼ shared library linkingí•˜ê¸° ìœ„í•´ì„œ OPENEXR_DLL macroê°€ ì •ì˜ë˜ì–´ì•¼ í•¨
+		==> CMake í™˜ê²½ì—ì„œ macroë¡œ /DOPENEXR_DLLë¥¼ ì •ì˜í•˜ê±°ë‚˜
+			highgui projectì— OPENEXR_DLLë¥¼ ì •ì˜í•˜ì—¬ì•¼ í•¨.
 
 	- protobuf library linking error.
 		<cause>
-			protobuf shared library¸¦ Á¤»óÀûÀ¸·Î linkÇÏÁö ¸øÇÔ.
+			protobuf shared libraryë¥¼ ì •ìƒì ìœ¼ë¡œ linkí•˜ì§€ ëª»í•¨.
 		<solution>
 			Link with protobuf as a shared library.
 				define PROTOBUF_USE_DLLS.

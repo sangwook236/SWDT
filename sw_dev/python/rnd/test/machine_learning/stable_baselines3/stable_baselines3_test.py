@@ -65,7 +65,7 @@ def basic_usage_example():
 	# Enjoy trained agent.
 	obs = env.reset()
 	for i in range(1000):
-		action, _states = model.predict(obs, deterministic=True)
+		action, states = model.predict(obs, deterministic=True)
 		obs, rewards, dones, info = env.step(action)
 		env.render()
 
@@ -105,7 +105,7 @@ def multiprocessing_example():
 
 	obs = env.reset()
 	for _ in range(1000):
-		action, _states = model.predict(obs)
+		action, states = model.predict(obs)
 		obs, rewards, dones, info = env.step(action)
 		env.render()
 
@@ -203,7 +203,7 @@ def atari_games_example():
 
 	obs = env.reset()
 	while True:
-		action, _states = model.predict(obs)
+		action, states = model.predict(obs)
 		obs, rewards, dones, info = env.step(action)
 		env.render()
 
@@ -520,7 +520,7 @@ def dqn_module_example():
 
 	obs, info = env.reset()
 	while True:
-		action, _states = model.predict(obs, deterministic=True)
+		action, states = model.predict(obs, deterministic=True)
 		obs, reward, terminated, truncated, info = env.step(action)  # numpy.ndarray, float, bool, bool, dict
 		if terminated or truncated:
 			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
@@ -548,7 +548,7 @@ def a2c_module_example():
 
 	obs = vec_env.reset()
 	while True:
-		action, _states = model.predict(obs)
+		action, states = model.predict(obs)
 		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
 		vec_env.render("human")
 		if dones.any():
@@ -577,7 +577,7 @@ def ppo_module_example():
 
 	obs = vec_env.reset()
 	while True:
-		action, _states = model.predict(obs)
+		action, states = model.predict(obs)
 		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
 		vec_env.render("human")
 		if dones.any():
@@ -615,7 +615,7 @@ def ddpg_module_example():
 
 	obs = vec_env.reset()
 	while True:
-		action, _states = model.predict(obs)
+		action, states = model.predict(obs)
 		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
 		vec_env.render("human")
 		if dones.any():
@@ -653,7 +653,7 @@ def td3_module_example():
 
 	obs = vec_env.reset()
 	while True:
-		action, _states = model.predict(obs)
+		action, states = model.predict(obs)
 		obs, rewards, dones, infos = vec_env.step(action)  # numpy.ndarray, numpy.ndarray, numpy.ndarray, list
 		vec_env.render("human")
 		if dones.any():
@@ -684,7 +684,7 @@ def sac_module_example():
 
 	obs, info = env.reset()
 	while True:
-		action, _states = model.predict(obs, deterministic=True)
+		action, states = model.predict(obs, deterministic=True)
 		obs, reward, terminated, truncated, info = env.step(action)  # numpy.ndarray, numpy.float64, bool, bool, dict
 		if terminated or truncated:
 			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")

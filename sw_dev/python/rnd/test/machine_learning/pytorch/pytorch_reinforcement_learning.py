@@ -261,6 +261,7 @@ def dqn_cart_pole_tutorial():
 
 # REF [site] >> https://keras.io/examples/rl/deep_q_network_breakout/
 def dqn_atari_breakout_test():
+	import time
 	import numpy as np
 	import torch
 	import torchvision
@@ -383,6 +384,8 @@ def dqn_atari_breakout_test():
 	episode_count = 0
 	frame_count = 0
 
+	print("Training...")
+	start_time = time.time()
 	while True:  # Run until solved
 		state = np.array(env.reset())  # [?, H, W, C]
 		episode_reward = 0
@@ -497,9 +500,11 @@ def dqn_atari_breakout_test():
 		if running_reward > 40:  # Condition to consider the task solved
 			print(f"Solved at episode {episode_count}!")
 			break
+	print(f"Trained: {time.time() - start_time:} secs.")
 
 # REF [site] >> https://keras.io/examples/rl/ddpg_pendulum/
 def ddpg_inverted_pendulum_test():
+	import time
 	import numpy as np
 	import torch
 	import gym
@@ -518,7 +523,8 @@ def ddpg_inverted_pendulum_test():
 			#reward_threshold=-110.0,  # Default: None
 		)
 	env = gym.make("Pendulum-v1")
-	#env = gym.make("Pendulum-v1", max_episode_steps=500)
+	#env = gym.make("Pendulum-v1", render_mode="rgb_array")
+	#env = gym.make("Pendulum-v1", render_mode="rgb_array", g=10.0, max_episode_steps=500)
 
 	num_states = env.observation_space.shape[0]
 	num_actions = env.action_space.shape[0]
@@ -530,6 +536,7 @@ def ddpg_inverted_pendulum_test():
 	print(f"Dimension of state space = {num_states}.")
 	print(f"Dimension of action space = {num_actions}.")
 	print(f"Min & max value of actions = [{lower_bound}, {upper_bound}].")
+	print(f"Render model = {env.render_mode}.")
 	print(f"Max epsode steps = {env.spec.max_episode_steps}.")  # NOTE [info] >> not working
 	print(f"Reward threshold = {env.spec.reward_threshold}.")
 
@@ -595,6 +602,11 @@ def ddpg_inverted_pendulum_test():
 			# Training and updating Actor & Critic networks.
 			# See Pseudo Code in the paper.
 
+			state_batch = state_batch.to(device)
+			action_batch = action_batch.to(device)
+			reward_batch = reward_batch.to(device)
+			next_state_batch = next_state_batch.to(device)
+
 			critic_model.train()
 			actor_model.train()
 
@@ -603,9 +615,9 @@ def ddpg_inverted_pendulum_test():
 
 			# Forward + backward + optimize
 			with torch.no_grad():
-				target_actions = target_actor(next_state_batch.to(device))
-				y = reward_batch.to(device) + gamma * target_critic(next_state_batch.to(device), target_actions.to(device))
-			critic_value = critic_model(state_batch.to(device), action_batch.to(device))
+				target_actions = target_actor(next_state_batch)
+				y = reward_batch + gamma * target_critic(next_state_batch, target_actions)
+			critic_value = critic_model(state_batch, action_batch)
 
 			critic_loss = critic_loss_function(y, critic_value)
 			#critic_loss = torch.mean(torch.square(y - critic_value))
@@ -616,8 +628,8 @@ def ddpg_inverted_pendulum_test():
 			actor_optimizer.zero_grad()
 
 			# Forward + backward + optimize
-			actions = actor_model(state_batch.to(device))
-			critic_value = critic_model(state_batch.to(device), actions.to(device))
+			actions = actor_model(state_batch)
+			critic_value = critic_model(state_batch, actions)
 
 			# Used `-value` as we want to maximize the value given by the critic for our actions
 			actor_loss = actor_loss_function(critic_value)
@@ -756,6 +768,8 @@ def ddpg_inverted_pendulum_test():
 	avg_reward_list = []
 
 	# Takes about 4 min to train
+	print("Training...")
+	start_time = time.time()
 	for ep in range(total_episodes):
 		#prev_state = env.reset()
 		prev_state, info = env.reset()  # For gym & gymnasium
@@ -767,7 +781,6 @@ def ddpg_inverted_pendulum_test():
 			# Uncomment this to see the Actor in action
 			# But not in a Python notebook.
 			#env.render()
-			#screen = env.render(mode="rgb_array")
 
 			action = policy(torch.tensor(prev_state, dtype=torch.float32).unsqueeze(dim=0), ou_noise)
 
@@ -803,34 +816,72 @@ def ddpg_inverted_pendulum_test():
 		avg_reward = np.mean(ep_reward_list[-40:])
 		print(f"Episode {ep}: avg reward = {avg_reward}.")
 		avg_reward_list.append(avg_reward)
+	print(f"Trained: {time.time() - start_time} secs.")
+	#env.close()
 
-	# Plotting graph
-	# Episodes versus Avg. Rewards
-	plt.plot(avg_reward_list)
-	plt.xlabel("Episode")
-	plt.ylabel("Avg. Epsiodic Reward")
-	plt.show()
+	if True:
+		# Plotting graph
+		# Episodes versus Avg. Rewards
+		plt.plot(avg_reward_list)
+		plt.xlabel("Episode")
+		plt.ylabel("Avg. Epsiodic Reward")
+		plt.show()
 
-	# Save the weights
-	torch.save({"state_dict": actor_model.state_dict()}, "./pendulum_actor.pth")
-	torch.save({"state_dict": critic_model.state_dict()}, "./pendulum_critic.pth")
+	if False:
+		# Save the weights
+		torch.save({"state_dict": actor_model.state_dict()}, "./pendulum_actor.pth")
+		torch.save({"state_dict": critic_model.state_dict()}, "./pendulum_critic.pth")
 
-	torch.save({"state_dict": target_actor.state_dict()}, "./pendulum_target_actor.pth")
-	torch.save({"state_dict": target_critic.state_dict()}, "./pendulum_target_critic.pth")
+		torch.save({"state_dict": target_actor.state_dict()}, "./pendulum_target_actor.pth")
+		torch.save({"state_dict": target_critic.state_dict()}, "./pendulum_target_critic.pth")
+
+	#-----
+	target_actor.eval()
+	target_critic.eval()
+	actor_model.eval()
+	critic_model.eval()
+
+	#env = gym.make("Pendulum-v1", render_mode="rgb_array", g=10.0, max_episode_steps=500)
+	obs, info = env.reset()
+	while True:
+		#env.render()  # FIXME [fix] >> do not render the environment
+
+		states = torch.tensor(np.expand_dims(obs, axis=0), dtype=torch.float32)
+		states = states.to(device)
+		if True:
+			with torch.no_grad():
+				actions = actor_model(states)
+		else:
+			with torch.no_grad():
+				target_actions = target_actor(states)
+				target_values = target_critic(states, target_actions)
+				actions = actor_model(states)
+				values = critic_model(states, actions)
+			print(f"Target action: {target_actions.cpu().numpy()}, Action: {actions.cpu().numpy()}, Target value: {target_values.cpu().numpy()}, Value: {values.cpu().numpy()}.")
+		action = actions.squeeze(dim=0).cpu().numpy()
+
+		obs, reward, terminated, truncated, info = env.step(action)
+
+		if terminated or truncated:
+			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
+			obs, info = env.reset()
+
+	env.render()
+	env.close()
 
 def main():
 	# Value-function-based algorithm
 
 	# Deep Q-Network (DQN)
 	#dqn_cart_pole_tutorial()  # More structured implementation.
-	dqn_atari_breakout_test()  # Naive low-level implementation. Failed to train.
+	#dqn_atari_breakout_test()  # Naive low-level implementation. Failed to train.
 
 	#-----
 	# Policy gradient algorithm
 
 	# Deep deterministic policy gradient (DDPG) algorithm
 	#	Model-free, off-policy actor-critic algorithm
-	#ddpg_inverted_pendulum_test()
+	ddpg_inverted_pendulum_test()
 
 	# Twin delayed deep deterministic (TD3) policy gradient algorithm
 	#	Twin delayed DDPG

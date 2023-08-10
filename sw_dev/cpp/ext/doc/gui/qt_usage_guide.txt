@@ -95,7 +95,9 @@
 	- <error> qt.qpa.plugin: Could not load the Qt platform plugin "xcb".
 		<solution>
 			(Optional) Install OpenCV library.
+				pip uninstall opencv-python
 				pip install opencv-python-headless
+
 				pip install opencv-python==3.4.10.37
 			(Optional) Set the environment variables.
 				export QT_PLUGIN_PATH=$HOME/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/Qt5/plugins
@@ -109,6 +111,8 @@
 				export QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins
 				export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms
 				export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+
+				export QT_QPA_PLATFORM=offscreen
 			(Optional) Install a library.
 				sudo apt install libxcb-xinerama0
 
@@ -141,6 +145,7 @@
 			Cannot find moc.exe & uic.exe.
 		<solution>
 			set QTDIR=${QT_HOME}
+
 	- Qt platform loading error.
 		<error>
 			This application failed to start because it could not find or load the Qt platform plugin "windows" in "".
