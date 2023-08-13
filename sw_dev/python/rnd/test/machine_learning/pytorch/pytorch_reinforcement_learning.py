@@ -310,10 +310,12 @@ def dqn_atari_breakout_test():
 		env = wrap_deepmind(env, frame_stack=True, scale=True)
 	else:
 		env = make_atari_env("BreakoutNoFrameskip-v4")  # stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv
+		#env = make_atari_env("BreakoutNoFrameskip-v4", env_kwargs=dict(render_mode="human"))  # stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv
 	env.seed(seed)
 
 	print(f"Action space: {env.action_space}.")
 	print(f"Observation space: {env.observation_space}.")
+	print(f"Action space meanings: {env.envs[0].get_action_meanings()}.")
 
 	num_actions = env.action_space.n
 
@@ -390,16 +392,15 @@ def dqn_atari_breakout_test():
 		state = np.array(env.reset())  # [?, H, W, C]
 		episode_reward = 0
 
-		for episode_step in range(1, max_steps_per_episode):
-			#env.render()  # Adding this line would show the attempts of the agent in a pop up window
-			#screen = env.render(mode="rgb_array")
+		for episode_step in range(1, max_steps_per_episode + 1):
+			#screen = env.render()  # Adding this line would show the attempts of the agent in a pop up window
 
 			frame_count += 1
 
 			# Use epsilon-greedy for exploration
 			if frame_count < epsilon_random_frames or epsilon > np.random.rand(1)[0]:
 				# Take random action
-				action = [np.random.choice(num_actions, size=None)]
+				action = [np.random.choice(num_actions)]
 			else:
 				# Predict action Q-values
 				# From environment state
@@ -475,8 +476,9 @@ def dqn_atari_breakout_test():
 			if frame_count % update_target_network == 0:
 				# Update the the target network with new weights
 				model_target.load_state_dict(model.state_dict())
+
 				# Log details
-				print(f"Running reward: {running_reward:.2f} at episode {episode_count}, frame count {frame_count}.")
+				print(f"Running reward: {running_reward:.4f} at episode {episode_count}, frame count {frame_count}.")
 
 			# Limit the state and reward history
 			if len(rewards_history) > max_memory_length:
@@ -487,6 +489,7 @@ def dqn_atari_breakout_test():
 				del done_history[:1]
 
 			if done:
+				#print(f"Done: {done}, Reward: {reward}, Info: {info}.")
 				break
 
 		# Update running reward to check condition for solving
@@ -523,8 +526,8 @@ def ddpg_inverted_pendulum_test():
 			#reward_threshold=-110.0,  # Default: None
 		)
 	env = gym.make("Pendulum-v1")
-	#env = gym.make("Pendulum-v1", render_mode="rgb_array")
-	#env = gym.make("Pendulum-v1", render_mode="rgb_array", g=10.0, max_episode_steps=500)
+	#env = gym.make("Pendulum-v1", render_mode="human")
+	#env = gym.make("Pendulum-v1", render_mode="human", g=10.0, max_episode_steps=500)
 
 	num_states = env.observation_space.shape[0]
 	num_actions = env.action_space.shape[0]
@@ -537,7 +540,7 @@ def ddpg_inverted_pendulum_test():
 	print(f"Dimension of action space = {num_actions}.")
 	print(f"Min & max value of actions = [{lower_bound}, {upper_bound}].")
 	print(f"Render model = {env.render_mode}.")
-	print(f"Max epsode steps = {env.spec.max_episode_steps}.")  # NOTE [info] >> not working
+	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
 	print(f"Reward threshold = {env.spec.reward_threshold}.")
 
 	# An Ornstein-Uhlenbeck process for generating noise
@@ -775,12 +778,10 @@ def ddpg_inverted_pendulum_test():
 		prev_state, info = env.reset()  # For gym & gymnasium
 		episodic_reward = 0
 
-		episode_step = 0
-		while True:
-		#for episode_step in range(1, env.spec.max_episode_steps):
+		for episode_step in range(1, env.spec.max_episode_steps + 1):
 			# Uncomment this to see the Actor in action
 			# But not in a Python notebook.
-			#env.render()
+			#env.render()  # Slow.
 
 			action = policy(torch.tensor(prev_state, dtype=torch.float32).unsqueeze(dim=0), ou_noise)
 
@@ -788,11 +789,10 @@ def ddpg_inverted_pendulum_test():
 			#state, reward, done, info = env.step(action)
 			state, reward, terminated, truncated, info = env.step(action)  # For gym & gymnasium
 
-			# TODO [check] >> env.spec.max_episode_steps is not working
-			if episode_step >= env.spec.max_episode_steps:
-				#done = True
-				terminated, truncated = False, True
-				info.update({"TimeLimit.truncated": True})
+			#if episode_step >= env.spec.max_episode_steps and not terminated and not truncated:
+			#	#done = True
+			#	truncated = True
+			#	info.update({"TimeLimit.truncated_by_user": True})
 
 			buffer.record((prev_state, action, reward, state))
 			episodic_reward += reward
@@ -805,10 +805,10 @@ def ddpg_inverted_pendulum_test():
 			# End this episode when `done` is True
 			#if done:
 			if terminated or truncated:
+				#print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
 				break
 
 			prev_state = state
-			episode_step += 1
 
 		ep_reward_list.append(episodic_reward)
 
@@ -817,7 +817,7 @@ def ddpg_inverted_pendulum_test():
 		print(f"Episode {ep}: avg reward = {avg_reward}.")
 		avg_reward_list.append(avg_reward)
 	print(f"Trained: {time.time() - start_time} secs.")
-	#env.close()
+	env.close()
 
 	if True:
 		# Plotting graph
@@ -841,10 +841,10 @@ def ddpg_inverted_pendulum_test():
 	actor_model.eval()
 	critic_model.eval()
 
-	#env = gym.make("Pendulum-v1", render_mode="rgb_array", g=10.0, max_episode_steps=500)
+	env = gym.make("Pendulum-v1", render_mode="human", g=10.0, max_episode_steps=500)
 	obs, info = env.reset()
 	while True:
-		#env.render()  # FIXME [fix] >> do not render the environment
+		#env.render()
 
 		states = torch.tensor(np.expand_dims(obs, axis=0), dtype=torch.float32)
 		states = states.to(device)
