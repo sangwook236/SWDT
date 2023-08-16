@@ -503,7 +503,7 @@ def dqn_module_example():
 
 	env = gym.make("CartPole-v1", render_mode="human")
 	#env = gym.make("CartPole-v1", render_mode="human", max_episode_steps=500)
-	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+	print(f"Max episode steps = {env.spec.max_episode_steps}.")
 
 	model = DQN("MlpPolicy", env, verbose=1)
 
@@ -593,7 +593,7 @@ def ddpg_module_example():
 
 	env = gym.make("Pendulum-v1", render_mode="rgb_array")
 	#env = gym.make("Pendulum-v1", render_mode="rgb_array", max_episode_steps=500)
-	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+	print(f"Max episode steps = {env.spec.max_episode_steps}.")
 
 	# The noise objects for DDPG
 	n_actions = env.action_space.shape[-1]
@@ -631,7 +631,7 @@ def td3_module_example():
 
 	env = gym.make("Pendulum-v1", render_mode="rgb_array")
 	#env = gym.make("Pendulum-v1", render_mode="rgb_array", max_episode_steps=500)
-	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+	print(f"Max episode steps = {env.spec.max_episode_steps}.")
 
 	# The noise objects for TD3
 	n_actions = env.action_space.shape[-1]
@@ -667,7 +667,7 @@ def sac_module_example():
 
 	env = gym.make("Pendulum-v1", render_mode="human")
 	#env = gym.make("Pendulum-v1", render_mode="human", max_episode_steps=500)
-	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+	print(f"Max episode steps = {env.spec.max_episode_steps}.")
 
 	model = SAC("MlpPolicy", env, verbose=1)
 
