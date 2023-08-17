@@ -19,6 +19,7 @@ def dqn_cart_pole_tutorial():
 	import torch.nn.functional as F
 	import torchvision.transforms as T
 
+	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/cart_pole/
 	env = gym.make("CartPole-v0").unwrapped
 
 	# Set up matplotlib.
@@ -261,10 +262,9 @@ def dqn_cart_pole_tutorial():
 
 # REF [site] >> https://keras.io/examples/rl/deep_q_network_breakout/
 def dqn_atari_breakout_test():
-	import time
+	import time, datetime
 	import numpy as np
 	import torch
-	import torchvision
 	#from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 	#from stable_baselines.common.cmd_util import make_atari_env  # NOTE [info] >> TensorFlow is required.
 	from stable_baselines3.common.env_util import make_atari_env
@@ -280,41 +280,24 @@ def dqn_atari_breakout_test():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
 
-	# Configuration paramaters for the whole setup
+	# Number of input consecutive frames
+	num_consecutive_frames = 4
 	seed = 42
-	gamma = 0.99  # Discount factor for past rewards
-	epsilon = 1.0  # Epsilon greedy parameter
-	epsilon_min = 0.1  # Minimum epsilon greedy parameter
-	epsilon_max = 1.0  # Maximum epsilon greedy parameter
-	epsilon_interval = (epsilon_max - epsilon_min)  # Rate at which to reduce chance of random action being taken
-	batch_size = 32  # Size of batch taken from replay buffer
-	max_steps_per_episode = 10000
 
-	# Maximum replay length
-	# Note: The Deepmind paper suggests 1000000 however this causes memory issues
-	max_memory_length = 100000
-
-	# Number of frames to take random action and observe output
-	epsilon_random_frames = 50000
-	# Number of frames for exploration
-	epsilon_greedy_frames = 1000000.0
-	# Train the model after 4 actions
-	update_after_actions = 4
-	# How often to update the target network
-	update_target_network = 10000
-
+	# REF [site] >> https://gymnasium.farama.org/environments/atari/breakout/
 	if False:
-		# Use the Baseline Atari environment because of Deepmind helper functions
+		# Use the Baseline Atari environment because of DeepMind helper functions
 		env = make_atari("BreakoutNoFrameskip-v4")
 		# Warp the frames, grey scale, stake four frame and scale to smaller ratio
 		env = wrap_deepmind(env, frame_stack=True, scale=True)
 	else:
 		env = make_atari_env("BreakoutNoFrameskip-v4")  # stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv
-		#env = make_atari_env("BreakoutNoFrameskip-v4", env_kwargs=dict(render_mode="human"))  # stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv
+		#env = make_atari_env("BreakoutNoFrameskip-v4", env_kwargs=dict(render_mode="human"))
+		#env = make_atari_env("BreakoutNoFrameskip-v4", env_kwargs=dict(render_mode="human", max_episode_steps=500))
 	env.seed(seed)
 
-	print(f"Action space: {env.action_space}.")
 	print(f"Observation space: {env.observation_space}.")
+	print(f"Action space: {env.action_space}.")
 	print(f"Action space meanings: {env.envs[0].get_action_meanings()}.")
 
 	num_actions = env.action_space.n
@@ -323,191 +306,356 @@ def dqn_atari_breakout_test():
 	# Implement the Deep Q-Network (DQN)
 
 	class DQN(torch.nn.Module):
-		def __init__(self):
+		def __init__(self, num_actions=4, num_consecutive_frames=4):
 			super().__init__()
 
-			self.conv1 = torch.nn.Conv2d(1, 32, kernel_size=8, stride=4)
-			self.bn1 = torch.nn.BatchNorm2d(32)
-			self.conv2 = torch.nn.Conv2d(32, 64, kernel_size=4, stride=2)
-			self.bn2 = torch.nn.BatchNorm2d(64)
-			self.conv3 = torch.nn.Conv2d(64, 64, kernel_size=3, stride=1)
-			self.bn3 = torch.nn.BatchNorm2d(64)
+			"""
+			self.conv1 = torch.nn.Conv2d(num_consecutive_frames, 32, kernel_size=8, stride=4, bias=False)
+			#self.bn1 = torch.nn.BatchNorm2d(32)
+			self.conv2 = torch.nn.Conv2d(32, 64, kernel_size=4, stride=2, bias=False)
+			#self.bn2 = torch.nn.BatchNorm2d(64)
+			self.conv3 = torch.nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=False)
+			#self.bn3 = torch.nn.BatchNorm2d(64)
 
-			self.fc4 = torch.nn.Linear(7 * 7 * 64, 512)
-			self.fc5 = torch.nn.Linear(512, num_actions)
+			self.fc1 = torch.nn.Linear(7 * 7 * 64, 512)
+			self.fc2 = torch.nn.Linear(512, num_actions)
+			"""
+			self.conv1 = torch.nn.Conv2d(num_consecutive_frames, 32, kernel_size=8, stride=4, bias=False)
+			#self.bn1 = torch.nn.BatchNorm2d(32)
+			self.conv2 = torch.nn.Conv2d(32, 64, kernel_size=4, stride=2, bias=False)
+			#self.bn2 = torch.nn.BatchNorm2d(64)
+			self.conv3 = torch.nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=False)
+			#self.bn3 = torch.nn.BatchNorm2d(64)
+			self.conv4 = torch.nn.Conv2d(64, 1024, kernel_size=7, stride=1, bias=False)
+			#self.bn4 = torch.nn.BatchNorm2d(1024)
+
+			self.fc = torch.nn.Linear(1024, num_actions)
 
 		def forward(self, x):
-			# [B, 1, 84, 84]
-			x = torch.nn.functional.relu(self.bn1(self.conv1(x)))
-			x = torch.nn.functional.relu(self.bn2(self.conv2(x)))
-			x = torch.nn.functional.relu(self.bn3(self.conv3(x)))
-			x = torch.nn.functional.relu(self.fc4(x.view(x.size(0), -1)))
-			return self.fc5(x)  # Expected values, but not actions. Actions can be chosen from the expected values.
+			# [B, 4, 84, 84]: 4 consecutive frames
+			"""
+			#x = torch.nn.functional.relu(self.bn1(self.conv1(x)))
+			#x = torch.nn.functional.relu(self.bn2(self.conv2(x)))
+			#x = torch.nn.functional.relu(self.bn3(self.conv3(x)))
+			x = torch.nn.functional.relu(self.conv1(x))
+			x = torch.nn.functional.relu(self.conv2(x))
+			x = torch.nn.functional.relu(self.conv3(x))
+			x = self.fc1(x.view(x.size(0), -1))
+			return self.fc2(x)  # Expected values, but not actions. Actions can be chosen from the expected values.
+			"""
+			#x = torch.nn.functional.relu(self.bn1(self.conv1(x)))
+			#x = torch.nn.functional.relu(self.bn2(self.conv2(x)))
+			#x = torch.nn.functional.relu(self.bn3(self.conv3(x)))
+			#x = torch.nn.functional.relu(self.bn3(self.conv4(x)))
+			x = torch.nn.functional.relu(self.conv1(x))
+			x = torch.nn.functional.relu(self.conv2(x))
+			x = torch.nn.functional.relu(self.conv3(x))
+			x = torch.nn.functional.relu(self.conv4(x))
+			return self.fc(x.view(x.size(0), -1))  # Expected values, but not actions. Actions can be chosen from the expected values.
 
 	# The first model makes the predictions for Q-values which are used to make a action.
-	model = DQN()
+	model = DQN(num_actions, num_consecutive_frames)
 	# Build a target model for the prediction of future rewards.
 	# The weights of a target model get updated every 10000 steps thus when the loss between the Q-values is calculated the target Q-value is stable.
-	model_target = DQN()
+	model_target = DQN(num_actions, num_consecutive_frames)
 	model.to(device)
 	model_target.to(device)
 	model_target.eval()
 
-	if False:
-		# Initialize weights
-		for param in model.parameters():
-			if param.dim() > 1 and param.requires_grad:
-				torch.nn.init.xavier_uniform_(param)
+	#-----
+	if True:
+		# Train
+
+		timestamp = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
+
+		# Configuration paramaters for the whole setup
+		gamma = 0.99  # Discount factor for past rewards
+		epsilon = 1.0  # Epsilon greedy parameter
+		epsilon_min = 0.1  # Minimum epsilon greedy parameter. NOTE [info] >> important parameter
+		epsilon_max = 1.0  # Maximum epsilon greedy parameter
+		epsilon_interval = (epsilon_max - epsilon_min)  # Rate at which to reduce chance of random action being taken
+		batch_size = 32  # Size of batch taken from replay buffer
+		max_steps_per_episode = 10000
+
+		# Maximum replay length
+		# Note: The DeepMind paper suggests 1000000 however this causes memory issues
+		max_memory_length = 100000
+
+		# Number of frames to take random action and observe output
+		epsilon_random_frames = 50000
+		# Number of frames for exploration
+		epsilon_greedy_frames = 1000000.0
+		# Train the model after 4 actions (how often to update policy)
+		update_after_actions = 4
+		# How often to update the target network
+		update_target_network = 10000
+
+		if True:
+			# Initialize weights
+			for param in model.parameters():
+				if param.dim() > 1 and param.requires_grad:
+					torch.nn.init.xavier_normal_(param, gain=2.0)
+			print("Model weights initialized.")
+
+		# Improves training time
+		# In the DeepMind paper they use RMSProp however then Adam optimizer
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00025, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)
+		optimizer = torch.optim.Adam(model.parameters(), lr=0.00025, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+		#max_clipping_norm = None
+		max_clipping_norm = 1.0
+
+		# Using Huber loss for stability
+		loss_function = torch.nn.HuberLoss()
+
+		# Experience replay buffers
+		state_history = []
+		action_history = []
+		state_next_history = []
+		rewards_history = []
+		done_history = []
+
+		if False:
+			# Initialize experience replay buffer
+			print("Initializing experience replay buffer...")
+			start_time = time.time()
+			while True:
+				state = env.reset()  # [#envs, H, W, 1]
+				state = state.repeat(repeats=num_consecutive_frames, axis=-1)  # N consecutive frames, [#envs, H, W, #frames]
+
+				for _ in range(max_steps_per_episode):
+					# Take random action
+					action = [np.random.choice(num_actions)]
+
+					# Apply the sampled action in our environment
+					state_next, reward, done, info = env.step(action)
+					#state_next = np.concatenate([state[...,1:], state_next], axis=-1)  # N consecutive frames
+					state_next = np.concatenate([state_next, state[...,:-1]], axis=-1)  # N consecutive frames
+
+					if reward[0] > 0:
+						# Save actions and states in replay buffer
+						state_history.append(state)
+						action_history.append(action)
+						state_next_history.append(state_next)
+						rewards_history.append(reward)
+						done_history.append(done)
+
+					if done:
+						break
+
+					state = state_next
+
+				if len(state_history) >= max_memory_length // 2:
+				#if len(state_history) >= max_memory_length // 10:
+					break
+			print(f"Experience replay buffer initialized: {time.time() - start_time} secs.")
+			print(f"Experience replay buffer: initial size = {len(state_history)}, max size = {max_memory_length}.")
+
+		episode_reward_history = []
+		running_reward = 0
+		episode_count = 0
+		frame_count = 0
+
+		print("Training...")
+		start_time = time.time()
+		while True:  # Run until solved
+			state = env.reset()  # [#envs, H, W, 1]
+			state = state.repeat(repeats=num_consecutive_frames, axis=-1)  # N consecutive frames, [#envs, H, W, #frames]
+
+			episode_reward = 0
+			for episode_step in range(1, max_steps_per_episode + 1):
+				#screen = env.render()  # Adding this line would show the attempts of the agent in a pop up window
+
+				frame_count += 1
+
+				# Use epsilon-greedy for exploration
+				if frame_count < epsilon_random_frames or epsilon > np.random.rand(1)[0]:
+					# Take random action
+					action = [np.random.choice(num_actions)]
+				else:
+					# Predict action Q-values
+					# From environment state
+					state_tensor = torch.tensor(state.transpose(0, 3, 1, 2), dtype=torch.float32, device=device)
+					model.eval()
+					with torch.no_grad():
+						action_probs = model(state_tensor)
+					# Take best action
+					action = [torch.argmax(action_probs[0], dim=-1).cpu().numpy()]
+
+				# Decay probability of taking random action
+				epsilon = max(epsilon - epsilon_interval / epsilon_greedy_frames, epsilon_min)
+				#if frame_count % 500 == 0:
+				#	epsilon = max(epsilon * 0.999, epsilon_min)
+
+				# Apply the sampled action in our environment
+				state_next, reward, done, info = env.step(action)
+				#state_next = np.concatenate([state[...,1:], state_next], axis=-1)  # N consecutive frames
+				state_next = np.concatenate([state_next, state[...,:-1]], axis=-1)  # N consecutive frames
+
+				episode_reward += reward
+
+				# Save actions and states in replay buffer
+				state_history.append(state)
+				action_history.append(action)
+				state_next_history.append(state_next)
+				rewards_history.append(reward)
+				done_history.append(done)
+				state = state_next
+
+				# Update every fourth frame and once batch size is over 32
+				if frame_count % update_after_actions == 0 and len(done_history) > batch_size:
+					# Get indices of samples for replay buffers
+					indices = np.random.choice(range(len(done_history)), size=batch_size)
+
+					# Using list comprehension to sample from replay buffer
+					state_sample = np.concatenate([state_history[i] for i in indices], axis=0)  # [B, H, W, #frames]
+					action_sample = np.concatenate([action_history[i] for i in indices], axis=0)  # [B]
+					state_next_sample = np.concatenate([state_next_history[i] for i in indices], axis=0)  # [B, H, W, #frames]
+					rewards_sample = np.concatenate([rewards_history[i] for i in indices], axis=0)  # [B]
+					done_sample = np.concatenate([done_history[i] for i in indices], axis=0, dtype=np.float32)  # [B]
+
+					# Build the updated Q-values for the sampled future states
+					# Use the target model for stability
+					state_next_sample = torch.tensor(state_next_sample.transpose(0, 3, 1, 2), dtype=torch.float32, device=device)
+					with torch.no_grad():
+						future_rewards = model_target(state_next_sample)
+					# Q value = reward + discount factor * expected future reward
+					updated_q_values = torch.tensor(rewards_sample) + gamma * torch.max(future_rewards.cpu(), dim=-1).values
+
+					# If final frame set the last value to -1
+					updated_q_values = updated_q_values * (1 - done_sample) - done_sample
+
+					# Create a mask so we only calculate loss on the updated Q-values
+					masks = torch.nn.functional.one_hot(torch.tensor(action_sample), num_classes=num_actions)
+
+					model.train()
+
+					# Zero the parameter gradients
+					optimizer.zero_grad()
+
+					# Forward + backward + optimize
+					# Train the model on the states and updated Q-values
+					state_sample = torch.tensor(state_sample.transpose(0, 3, 1, 2), dtype=torch.float32, device=device)
+					q_values = model(state_sample)
+					# Apply the masks to the Q-values to get the Q-value for action taken
+					q_action = torch.sum(torch.mul(q_values.cpu(), masks), dim=-1)
+
+					loss = loss_function(updated_q_values, q_action)
+					loss.backward()
+					if max_clipping_norm is not None:
+						torch.nn.utils.clip_grad_norm_(model.parameters(), max_clipping_norm)
+					optimizer.step()
+
+				if frame_count % update_target_network == 0:
+					# Update the the target network with new weights
+					model_target.load_state_dict(model.state_dict())
+
+					# Log details
+					print(f"Running reward = {running_reward:.4f} at episode {episode_count}, frame count {frame_count}: epsilon = {epsilon:.4f}.")
+
+				# Limit the state and reward history
+				if len(rewards_history) > max_memory_length:
+					del state_history[:1]
+					del action_history[:1]
+					del state_next_history[:1]
+					del rewards_history[:1]
+					del done_history[:1]
+
+				if done:
+					"""
+					Examples:
+						Done: [ True], Reward: [0.], Info: [{'lives': 4, 'episode_frame_number': 415, 'frame_number': 1843626, 'TimeLimit.truncated', False}], Episode reward: [2.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 3, 'episode_frame_number': 519, 'frame_number': 1843730, 'TimeLimit.truncated', False}], Episode reward: [0.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 2, 'episode_frame_number': 1211, 'frame_number': 1844422, 'TimeLimit.truncated', False}], Episode reward: [3.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 1, 'episode_frame_number': 1315, 'frame_number': 1844526, 'TimeLimit.truncated', False}], Episode reward: [0.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 0, 'episode_frame_number': 1409, 'frame_number': 1844620, 'episode': {'r': 5.0, 'l': 1409, 't': 2022.855433}, 'TimeLimit.truncated': False}], Episode reward: [0.].
+
+						Done: [ True], Reward: [0.], Info: [{'lives': 4, 'episode_frame_number': 300, 'frame_number': 2137036, 'TimeLimit.truncated': False}], Episode reward: [1.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 3, 'episode_frame_number': 828, 'frame_number': 2137564, 'TimeLimit.truncated': False}], Episode reward: [3.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 2, 'episode_frame_number': 932, 'frame_number': 2137668, 'TimeLimit.truncated': False}], Episode reward: [0.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 1, 'episode_frame_number': 1352, 'frame_number': 2138088, 'TimeLimit.truncated': False}], Episode reward: [2.].
+						Done: [ True], Reward: [0.], Info: [{'lives': 0, 'episode_frame_number': 1446, 'frame_number': 2138182, 'episode': {'r': 6.0, 'l': 1446, 't': 2390.495793}, 'TimeLimit.truncated': False}], Episode reward: [0.].
+					"""
+
+					#del info[0]["terminal_observation"]
+					#print(f"Done: {done}, Reward: {reward}, Info: {info}, Episode reward: {episode_reward}.")
+					break
+
+			# Update running reward to check condition for solving
+			episode_reward_history.append(episode_reward)
+			if len(episode_reward_history) > 100:
+				del episode_reward_history[:1]
+			running_reward = np.mean(episode_reward_history)
+
+			episode_count += 1
+
+			# Max average reward = 108 / 5 = 21.6.
+			#	#bricks = 18 x 6 = 108, #lives = 5.
+			#	Random actions should be considered.
+			# FIXME [restore] >>
+			#if running_reward > 40:  # Condition to consider the task solved
+			if running_reward > 10:  # Condition to consider the task solved. When epsilon_min = 0.01
+			#if running_reward > 4:  # Condition to consider the task solved. When epsilon_min = 0.1
+				print(f"Solved at episode {episode_count}!")
+				break
+		print(f"Trained: {time.time() - start_time:} secs.")
+		env.close()
+
+		if True:
+			# Save the weights
+			torch.save({"state_dict": model.state_dict()}, f"./dqn_breakout_{timestamp}.pth")
+			torch.save({"state_dict": model_target.state_dict()}, f"./dqn_breakout_target_{timestamp}.pth")
 
 	#-----
-	# Train
+	if False:
+		# Load the weights
+		loaded_data = torch.load("./dqn_breakout.pth", map_location=device)
+		model.load_state_dict(loaded_data['state_dict'])
+		loaded_data = torch.load("./dqn_breakout_target.pth", map_location=device)
+		model_target.load_state_dict(loaded_data['state_dict'])
 
-	# Improves training time
-	# In the Deepmind paper they use RMSProp however then Adam optimizer
-	#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.01, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)
-	optimizer = torch.optim.Adam(model.parameters(), lr=0.00025, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-	#max_clipping_norm = None
-	max_clipping_norm = 1.0
+		model.to(device)
+		model_target.to(device)
 
-	# Using huber loss for stability
-	loss_function = torch.nn.HuberLoss()
+	model.eval()
+	model_target.eval()
 
-	transform = torchvision.transforms.ToTensor()
+	env = make_atari_env("BreakoutNoFrameskip-v4", env_kwargs=dict(render_mode="human"))
+	state = env.reset()  # [#envs, H, W, 1]
+	state = state.repeat(repeats=num_consecutive_frames, axis=-1)  # N consecutive frames, [#envs, H, W, #frames]
+	episode_reward = 0
+	while True:
+		#env.render()
 
-	# Experience replay buffers
-	state_history = []
-	action_history = []
-	state_next_history = []
-	rewards_history = []
-	done_history = []
+		state_tensor = torch.tensor(state.transpose(0, 3, 1, 2), dtype=torch.float32, device=device)
+		if True:
+			with torch.no_grad():
+				values = model(state_tensor)
+		else:
+			with torch.no_grad():
+				values = model(state_tensor)
+				target_values = model_target(state_tensor)
+			print(f"Target value: {target_values.cpu().numpy()}, Value: {values.cpu().numpy()}.")
+		action = [torch.argmax(values[0], dim=-1).cpu().numpy()]
 
-	episode_reward_history = []
-	running_reward = 0
-	episode_count = 0
-	frame_count = 0
+		state_next, reward, done, info = env.step(action)
+		episode_reward += reward
 
-	print("Training...")
-	start_time = time.time()
-	while True:  # Run until solved
-		state = np.array(env.reset())  # [?, H, W, C]
-		episode_reward = 0
+		if done:
+			#del info[0]["terminal_observation"]
+			print(f"Done: {done}, Reward: {reward}, Info: {info}, Episode reward: {episode_reward}.")
+			state = env.reset()  # [#envs, H, W, 1]
+			state = state.repeat(repeats=num_consecutive_frames, axis=-1)  # N consecutive frames, [#envs, H, W, #frames]
+			episode_reward = 0
+		else:
+			#state = np.concatenate([state[...,1:], state_next], axis=-1)  # N consecutive frames
+			state = np.concatenate([state_next, state[...,:-1]], axis=-1)  # N consecutive frames
 
-		for episode_step in range(1, max_steps_per_episode + 1):
-			#screen = env.render()  # Adding this line would show the attempts of the agent in a pop up window
-
-			frame_count += 1
-
-			# Use epsilon-greedy for exploration
-			if frame_count < epsilon_random_frames or epsilon > np.random.rand(1)[0]:
-				# Take random action
-				action = [np.random.choice(num_actions)]
-			else:
-				# Predict action Q-values
-				# From environment state
-				state_tensor = torch.stack([transform(elem) for elem in state])
-				model.eval()
-				with torch.no_grad():
-					action_probs = model(state_tensor.to(device))
-				# Take best action
-				action = [torch.argmax(action_probs[0]).cpu().numpy()]
-
-			# Decay probability of taking random action
-			epsilon -= epsilon_interval / epsilon_greedy_frames
-			epsilon = max(epsilon, epsilon_min)
-
-			# Apply the sampled action in our environment
-			state_next, reward, done, info = env.step(action)
-			state_next = np.array(state_next)
-
-			episode_reward += reward
-
-			# Save actions and states in replay buffer
-			state_history.append(state)
-			action_history.append(action)
-			state_next_history.append(state_next)
-			rewards_history.append(reward)
-			done_history.append(done)
-			state = state_next
-
-			# Update every fourth frame and once batch size is over 32
-			if frame_count % update_after_actions == 0 and len(done_history) > batch_size:
-				# Get indices of samples for replay buffers
-				indices = np.random.choice(range(len(done_history)), size=batch_size)
-
-				# Using list comprehension to sample from replay buffer
-				state_sample = np.vstack([state_history[i] for i in indices]).astype(np.float32)
-				action_sample = np.vstack([action_history[i] for i in indices]).squeeze(axis=-1)
-				state_next_sample = np.vstack([state_next_history[i] for i in indices]).astype(np.float32)
-				rewards_sample = np.vstack([rewards_history[i] for i in indices]).squeeze(axis=-1)
-				done_sample = np.vstack([done_history[i] for i in indices]).astype(np.float32).squeeze(axis=-1)
-
-				# Build the updated Q-values for the sampled future states
-				# Use the target model for stability
-				state_next_sample = torch.stack([transform(elem) for elem in state_next_sample])
-				with torch.no_grad():
-					future_rewards = model_target(state_next_sample.to(device))
-				# Q value = reward + discount factor * expected future reward
-				updated_q_values = torch.tensor(rewards_sample) + gamma * torch.max(future_rewards.cpu(), dim=-1).values
-
-				# If final frame set the last value to -1
-				updated_q_values = updated_q_values * (1 - done_sample) - done_sample
-
-				# Create a mask so we only calculate loss on the updated Q-values
-				masks = torch.nn.functional.one_hot(torch.tensor(action_sample), num_classes=num_actions)
-
-				model.train()
-
-				# Zero the parameter gradients
-				optimizer.zero_grad()
-
-				# Forward + backward + optimize
-				# Train the model on the states and updated Q-values
-				state_sample = torch.stack([transform(elem) for elem in state_sample])
-				q_values = model(state_sample.to(device))
-				# Apply the masks to the Q-values to get the Q-value for action taken
-				q_action = torch.sum(torch.mul(q_values.cpu(), masks), dim=1)
-
-				loss = loss_function(updated_q_values, q_action)
-				loss.backward()
-				if max_clipping_norm is not None:
-					torch.nn.utils.clip_grad_norm_(model.parameters(), max_clipping_norm)
-				optimizer.step()
-
-			if frame_count % update_target_network == 0:
-				# Update the the target network with new weights
-				model_target.load_state_dict(model.state_dict())
-
-				# Log details
-				print(f"Running reward: {running_reward:.4f} at episode {episode_count}, frame count {frame_count}.")
-
-			# Limit the state and reward history
-			if len(rewards_history) > max_memory_length:
-				del state_history[:1]
-				del action_history[:1]
-				del state_next_history[:1]
-				del rewards_history[:1]
-				del done_history[:1]
-
-			if done:
-				#print(f"Done: {done}, Reward: {reward}, Info: {info}.")
-				break
-
-		# Update running reward to check condition for solving
-		episode_reward_history.append(episode_reward)
-		if len(episode_reward_history) > 100:
-			del episode_reward_history[:1]
-		running_reward = np.mean(episode_reward_history)
-
-		episode_count += 1
-
-		if running_reward > 40:  # Condition to consider the task solved
-			print(f"Solved at episode {episode_count}!")
-			break
-	print(f"Trained: {time.time() - start_time:} secs.")
+	#env.render()
+	env.close()
 
 # REF [site] >> https://keras.io/examples/rl/ddpg_pendulum/
 def ddpg_inverted_pendulum_test():
-	import time
+	import time, datetime
 	import numpy as np
 	import torch
 	import gym
@@ -517,6 +665,9 @@ def ddpg_inverted_pendulum_test():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
 
+	timestamp = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
+
+	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/pendulum/
 	if False:
 		# For gym
 		gym.envs.register(
@@ -531,16 +682,16 @@ def ddpg_inverted_pendulum_test():
 
 	num_states = env.observation_space.shape[0]
 	num_actions = env.action_space.shape[0]
-	upper_bound = env.action_space.high[0]
 	lower_bound = env.action_space.low[0]
+	upper_bound = env.action_space.high[0]
 
-	print(f"Action space: {env.action_space}.")
 	print(f"Observation space: {env.observation_space}.")
+	print(f"Action space: {env.action_space}.")
 	print(f"Dimension of state space = {num_states}.")
 	print(f"Dimension of action space = {num_actions}.")
 	print(f"Min & max value of actions = [{lower_bound}, {upper_bound}].")
-	print(f"Render model = {env.render_mode}.")
-	print(f"Max epsode steps = {env.spec.max_episode_steps}.")
+	print(f"Render mode = {env.render_mode}.")
+	print(f"Max episode steps = {env.spec.max_episode_steps}.")
 	print(f"Reward threshold = {env.spec.reward_threshold}.")
 
 	# An Ornstein-Uhlenbeck process for generating noise
@@ -827,36 +978,52 @@ def ddpg_inverted_pendulum_test():
 		plt.ylabel("Avg. Epsiodic Reward")
 		plt.show()
 
-	if False:
+	if True:
 		# Save the weights
-		torch.save({"state_dict": actor_model.state_dict()}, "./pendulum_actor.pth")
-		torch.save({"state_dict": critic_model.state_dict()}, "./pendulum_critic.pth")
+		torch.save({"state_dict": actor_model.state_dict()}, f"./ddpg_inverted_pendulum_actor_{timestamp}.pth")
+		torch.save({"state_dict": critic_model.state_dict()}, f"./ddpg_inverted_pendulum_critic_{timestamp}.pth")
 
-		torch.save({"state_dict": target_actor.state_dict()}, "./pendulum_target_actor.pth")
-		torch.save({"state_dict": target_critic.state_dict()}, "./pendulum_target_critic.pth")
+		torch.save({"state_dict": target_actor.state_dict()}, f"./ddpg_inverted_pendulum_target_actor_{timestamp}.pth")
+		torch.save({"state_dict": target_critic.state_dict()}, f"./ddpg_inverted_pendulum_target_critic_{timestamp}.pth")
 
 	#-----
-	target_actor.eval()
-	target_critic.eval()
+	if False:
+		# Load the weights
+		loaded_data = torch.load("./ddpg_inverted_pendulum_actor_.pth", map_location=device)
+		actor_model.load_state_dict(loaded_data['state_dict'])
+		loaded_data = torch.load("./ddpg_inverted_pendulum_critic_.pth", map_location=device)
+		critic_model.load_state_dict(loaded_data['state_dict'])
+
+		loaded_data = torch.load("./ddpg_inverted_pendulum_target_actor_.pth", map_location=device)
+		target_actor.load_state_dict(loaded_data['state_dict'])
+		loaded_data = torch.load("./ddpg_inverted_pendulum_target_critic_.pth", map_location=device)
+		target_critic.load_state_dict(loaded_data['state_dict'])
+
+		actor_model.to(device)
+		critic_model.to(device)
+		target_actor.to(device)
+		target_critic.to(device)
+
 	actor_model.eval()
 	critic_model.eval()
+	target_actor.eval()
+	target_critic.eval()
 
 	env = gym.make("Pendulum-v1", render_mode="human", g=10.0, max_episode_steps=500)
 	obs, info = env.reset()
 	while True:
 		#env.render()
 
-		states = torch.tensor(np.expand_dims(obs, axis=0), dtype=torch.float32)
-		states = states.to(device)
+		states = torch.tensor(np.expand_dims(obs, axis=0), dtype=torch.float32, device=device)
 		if True:
 			with torch.no_grad():
 				actions = actor_model(states)
 		else:
 			with torch.no_grad():
-				target_actions = target_actor(states)
-				target_values = target_critic(states, target_actions)
 				actions = actor_model(states)
 				values = critic_model(states, actions)
+				target_actions = target_actor(states)
+				target_values = target_critic(states, target_actions)
 			print(f"Target action: {target_actions.cpu().numpy()}, Action: {actions.cpu().numpy()}, Target value: {target_values.cpu().numpy()}, Value: {values.cpu().numpy()}.")
 		action = actions.squeeze(dim=0).cpu().numpy()
 
@@ -866,7 +1033,7 @@ def ddpg_inverted_pendulum_test():
 			print(f"Terminated: {terminated}, Truncated: {truncated}, Reward: {reward}, Info: {info}.")
 			obs, info = env.reset()
 
-	env.render()
+	#env.render()
 	env.close()
 
 def main():
@@ -878,6 +1045,14 @@ def main():
 
 	#-----
 	# Policy gradient algorithm
+
+	# REINFORCE
+	#	Training using REINFORCE for Mujoco
+	#		https://gymnasium.farama.org/tutorials/training_agents/reinforce_invpend_gym_v26/
+
+	# Advantage actor-critic (A2C)
+	#	Training A2C with Vector Envs and Domain Randomization
+	#		https://gymnasium.farama.org/tutorials/gymnasium_basics/vector_envs_tutorial/
 
 	# Deep deterministic policy gradient (DDPG) algorithm
 	#	Model-free, off-policy actor-critic algorithm
