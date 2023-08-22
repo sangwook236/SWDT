@@ -19,7 +19,7 @@ def dqn_cart_pole_tutorial():
 	import torch.nn.functional as F
 	import torchvision.transforms as T
 
-	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/cart_pole/
+	# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/cart_pole/
 	env = gym.make("CartPole-v0").unwrapped
 
 	# Set up matplotlib.
@@ -284,7 +284,7 @@ def dqn_atari_breakout_test():
 	num_consecutive_frames = 4
 	seed = 42
 
-	# REF [site] >> https://gymnasium.farama.org/environments/atari/breakout/
+	# REF [site] >> https://www.gymlibrary.dev/environments/atari/breakout/
 	if False:
 		# Use the Baseline Atari environment because of DeepMind helper functions
 		env = make_atari("BreakoutNoFrameskip-v4")
@@ -367,28 +367,25 @@ def dqn_atari_breakout_test():
 		# Train
 
 		timestamp = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
+		batch_size = 32  # Size of batch taken from replay buffer
 
 		# Configuration paramaters for the whole setup
 		gamma = 0.99  # Discount factor for past rewards
+
 		epsilon = 1.0  # Epsilon greedy parameter
-		epsilon_min = 0.1  # Minimum epsilon greedy parameter. NOTE [info] >> important parameter
+		epsilon_min = 0.001  # Minimum epsilon greedy parameter
 		epsilon_max = 1.0  # Maximum epsilon greedy parameter
-		epsilon_interval = (epsilon_max - epsilon_min)  # Rate at which to reduce chance of random action being taken
-		batch_size = 32  # Size of batch taken from replay buffer
+		epsilon_greedy_frames = 1000000.0  # Number of frames for exploration
+		#epsilon_interval = (epsilon_max - epsilon_min)  # Rate at which to reduce chance of random action being taken
+		delta_epsilon = (epsilon_max - epsilon_min) / epsilon_greedy_frames  # Amount to reduce chance of random action being taken
+		epsilon_random_frames = 50000  # Number of frames to take random action and observe output
+
 		max_steps_per_episode = 10000
+		update_after_actions = 4  # Train the model after 4 actions (how often to update policy)
+		update_target_network = 10000  # How often to update the target network
 
-		# Maximum replay length
 		# Note: The DeepMind paper suggests 1000000 however this causes memory issues
-		max_memory_length = 100000
-
-		# Number of frames to take random action and observe output
-		epsilon_random_frames = 50000
-		# Number of frames for exploration
-		epsilon_greedy_frames = 1000000.0
-		# Train the model after 4 actions (how often to update policy)
-		update_after_actions = 4
-		# How often to update the target network
-		update_target_network = 10000
+		max_memory_length = 1000000  # Maximum replay length
 
 		if True:
 			# Initialize weights
@@ -410,8 +407,8 @@ def dqn_atari_breakout_test():
 		# Experience replay buffers
 		state_history = []
 		action_history = []
+		reward_history = []
 		state_next_history = []
-		rewards_history = []
 		done_history = []
 
 		if False:
@@ -435,8 +432,8 @@ def dqn_atari_breakout_test():
 						# Save actions and states in replay buffer
 						state_history.append(state)
 						action_history.append(action)
+						reward_history.append(reward)
 						state_next_history.append(state_next)
-						rewards_history.append(reward)
 						done_history.append(done)
 
 					if done:
@@ -471,6 +468,7 @@ def dqn_atari_breakout_test():
 				if frame_count < epsilon_random_frames or epsilon > np.random.rand(1)[0]:
 					# Take random action
 					action = [np.random.choice(num_actions)]
+					#action = [env.action_space.sample()]
 				else:
 					# Predict action Q-values
 					# From environment state
@@ -482,9 +480,9 @@ def dqn_atari_breakout_test():
 					action = [torch.argmax(action_probs[0], dim=-1).cpu().numpy()]
 
 				# Decay probability of taking random action
-				epsilon = max(epsilon - epsilon_interval / epsilon_greedy_frames, epsilon_min)
-				#if frame_count % 500 == 0:
-				#	epsilon = max(epsilon * 0.999, epsilon_min)
+				#epsilon = max(epsilon - epsilon_interval / epsilon_greedy_frames, epsilon_min)
+				epsilon = max(epsilon - delta_epsilon, epsilon_min)
+				#if frame_count % 500 == 0: epsilon = max(epsilon * 0.999, epsilon_min)
 
 				# Apply the sampled action in our environment
 				state_next, reward, done, info = env.step(action)
@@ -496,8 +494,8 @@ def dqn_atari_breakout_test():
 				# Save actions and states in replay buffer
 				state_history.append(state)
 				action_history.append(action)
+				reward_history.append(reward)
 				state_next_history.append(state_next)
-				rewards_history.append(reward)
 				done_history.append(done)
 				state = state_next
 
@@ -509,8 +507,8 @@ def dqn_atari_breakout_test():
 					# Using list comprehension to sample from replay buffer
 					state_sample = np.concatenate([state_history[i] for i in indices], axis=0)  # [B, H, W, #frames]
 					action_sample = np.concatenate([action_history[i] for i in indices], axis=0)  # [B]
+					reward_sample = np.concatenate([reward_history[i] for i in indices], axis=0)  # [B]
 					state_next_sample = np.concatenate([state_next_history[i] for i in indices], axis=0)  # [B, H, W, #frames]
-					rewards_sample = np.concatenate([rewards_history[i] for i in indices], axis=0)  # [B]
 					done_sample = np.concatenate([done_history[i] for i in indices], axis=0, dtype=np.float32)  # [B]
 
 					# Build the updated Q-values for the sampled future states
@@ -519,7 +517,7 @@ def dqn_atari_breakout_test():
 					with torch.no_grad():
 						future_rewards = model_target(state_next_sample)
 					# Q value = reward + discount factor * expected future reward
-					updated_q_values = torch.tensor(rewards_sample) + gamma * torch.max(future_rewards.cpu(), dim=-1).values
+					updated_q_values = torch.tensor(reward_sample) + gamma * torch.max(future_rewards.cpu(), dim=-1).values
 
 					# If final frame set the last value to -1
 					updated_q_values = updated_q_values * (1 - done_sample) - done_sample
@@ -550,14 +548,14 @@ def dqn_atari_breakout_test():
 					model_target.load_state_dict(model.state_dict())
 
 					# Log details
-					print(f"Running reward = {running_reward:.4f} at episode {episode_count}, frame count {frame_count}: epsilon = {epsilon:.4f}.")
+					print(f"Running reward = {running_reward:.4f} at episode {episode_count}, frame {frame_count}: epsilon = {epsilon:.4f}.")
 
 				# Limit the state and reward history
-				if len(rewards_history) > max_memory_length:
+				if len(reward_history) > max_memory_length:
 					del state_history[:1]
 					del action_history[:1]
+					del reward_history[:1]
 					del state_next_history[:1]
-					del rewards_history[:1]
 					del done_history[:1]
 
 				if done:
@@ -593,8 +591,9 @@ def dqn_atari_breakout_test():
 			#	Random actions should be considered.
 			# FIXME [restore] >>
 			#if running_reward > 40:  # Condition to consider the task solved
-			if running_reward > 10:  # Condition to consider the task solved. When epsilon_min = 0.01
 			#if running_reward > 4:  # Condition to consider the task solved. When epsilon_min = 0.1
+			#if running_reward > 6:  # Condition to consider the task solved. When epsilon_min = 0.01
+			if running_reward > 8:  # Condition to consider the task solved. When epsilon_min = 0.001
 				print(f"Solved at episode {episode_count}!")
 				break
 		print(f"Trained: {time.time() - start_time:} secs.")
@@ -667,7 +666,7 @@ def ddpg_inverted_pendulum_test():
 
 	timestamp = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
 
-	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/pendulum/
+	# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/pendulum/
 	if False:
 		# For gym
 		gym.envs.register(
@@ -1041,7 +1040,7 @@ def main():
 
 	# Deep Q-Network (DQN)
 	#dqn_cart_pole_tutorial()  # More structured implementation.
-	#dqn_atari_breakout_test()  # Naive low-level implementation. Failed to train.
+	#dqn_atari_breakout_test()  # Naive low-level implementation.
 
 	#-----
 	# Policy gradient algorithm

@@ -1,0 +1,21 @@
+[-] General.
+	- Site.
+		https://github.com/openai/gym
+		https://github.com/Farama-Foundation/Gymnasium
+
+	- Documentation.
+		https://www.gymlibrary.dev/
+		https://gymnasium.farama.org/
+
+[-] Installation.
+	https://github.com/openai/gym
+	https://github.com/Farama-Foundation/Gymnasium
+
+	- Install.
+		pip install gym
+		pip install gym[atari]
+		pip install gym[all]
+
+		pip install gymnasium
+		pip install gymnasium[atari]
+		pip install gymnasium[all]

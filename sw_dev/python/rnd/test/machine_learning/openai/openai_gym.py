@@ -4,49 +4,17 @@
 import gym
 #import gymnasium as gym
 
-# REF [site] >> https://gymnasium.farama.org/content/basic_usage/
+# REF [site] >> https://www.gymlibrary.dev/content/basic_usage/
 def basic_usage_1():
 	# Initializing environments.
-	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/cart_pole/
-	env = gym.make('CartPole-v1')
 
-	# Interacting with the environment.
-	# REF [site] >> https://gymnasium.farama.org/environments/box2d/lunar_lander/
-	env = gym.make('LunarLander-v2', render_mode='human')
-	observation, info = env.reset()
-
-	for _ in range(1000):
-		action = env.action_space.sample()  # Agent policy that uses the observation and info.
-		observation, reward, terminated, truncated, info = env.step(action)
-
-		if terminated or truncated:
-			observation, info = env.reset()
-
-	env.close()
-
-	# Modifying the environment.
-	from gymnasium.wrappers import FlattenObservation
-
-	env = gym.make('CarRacing-v2')
-	print(f'{env.observation_space.shape=}.')
-
-	wrapped_env = FlattenObservation(env)
-	print(f'{wrapped_env.observation_space.shape=}.')
-
-	print(f'{wrapped_env=}.')
-	print(f'{wrapped_env.unwrapped=}.')
-
-# REF [site] >> https://www.gymlibrary.dev/content/basic_usage/
-def basic_usage_2():
-	# Initializing environments.
-
-	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/cart_pole/
+	# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/cart_pole/
 	env = gym.make('CartPole-v0')
 
 	#-----
 	# Interacting with the environment.
 
-	# REF [site] >> https://gymnasium.farama.org/environments/box2d/lunar_lander/
+	# REF [site] >> https://www.gymlibrary.dev/environments/box2d/lunar_lander/
 	env = gym.make('LunarLander-v2', render_mode='human')
 	env.action_space.seed(42)
 
@@ -135,6 +103,55 @@ def basic_usage_2():
 	env = gym.make('Pong-v4')
 	play(env, callback=plotter.callback)
 
+# REF [site] >> https://gymnasium.farama.org/content/basic_usage/
+def basic_usage_2():
+	# Initializing environments.
+	# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/cart_pole/
+	env = gym.make('CartPole-v1')
+
+	# Interacting with the environment.
+	# REF [site] >> https://www.gymlibrary.dev/environments/box2d/lunar_lander/
+	env = gym.make('LunarLander-v2', render_mode='human')
+	observation, info = env.reset()
+
+	for _ in range(1000):
+		action = env.action_space.sample()  # Agent policy that uses the observation and info.
+		observation, reward, terminated, truncated, info = env.step(action)
+
+		if terminated or truncated:
+			observation, info = env.reset()
+
+	env.close()
+
+	# Modifying the environment.
+	from gymnasium.wrappers import FlattenObservation
+
+	env = gym.make('CarRacing-v2')
+	print(f'{env.observation_space.shape=}.')
+
+	wrapped_env = FlattenObservation(env)
+	print(f'{wrapped_env.observation_space.shape=}.')
+
+	print(f'{wrapped_env=}.')
+	print(f'{wrapped_env.unwrapped=}.')
+
+# REF [site] >> https://gym.openai.com/docs/
+def simple_agent_environment_loop():
+	# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/cart_pole/
+	env = gym.make('CartPole-v1')
+	#env.reset()
+
+	for episode_step in range(20):
+		observation = env.reset()  # Return an initial observation.
+		for step in range(100):
+			env.render()
+			print(f'Observation = {observation}.')
+			action = env.action_space.sample()  # Take a random action.
+			observation, reward, done, info = env.step(action)
+			if done:
+				print(f'Episode finished after {step + 1} timesteps.')
+				break
+
 # REF [site] >> https://gym.openai.com/docs/
 def env_info():
 	space = gym.spaces.Discrete(8)  # Set with 8 elements {0, 1, 2, ..., 7}.
@@ -148,7 +165,7 @@ def env_info():
 	if True:
 		# Discrete action, continuous observation.
 
-		# REF [site] >> https://gymnasium.farama.org/environments/classic_control/cart_pole/
+		# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/cart_pole/
 		env = gym.make('CartPole-v1')
 		#env = gym.make('CartPole-v1', render_mode='human')
 		#env = gym.make('CartPole-v1', render_mode='human', max_episode_steps=500)
@@ -174,7 +191,7 @@ def env_info():
 	if True:
 		# Continuous action, continuous observation.
 
-		# REF [site] >> https://gymnasium.farama.org/environments/classic_control/pendulum/
+		# REF [site] >> https://www.gymlibrary.dev/environments/classic_control/pendulum/
 		env = gym.make('Pendulum-v1')
 		#env = gym.make('Pendulum-v1', render_mode='human')
 		#env = gym.make('Pendulum-v1', render_mode='human', g=10.0, max_episode_steps=500)
@@ -198,7 +215,7 @@ def env_info():
 	if True:
 		# Discrete action, discrete(image) observation.
 
-		# REF [site] >> https://gymnasium.farama.org/environments/atari/breakout/
+		# REF [site] >> https://www.gymlibrary.dev/environments/atari/breakout/
 		env = gym.make('Breakout-v4')
 		#env = gym.make('Breakout-v4', render_mode='human')
 		#env = gym.make('Breakout-v4', render_mode='human', max_episode_steps=500)
@@ -221,69 +238,67 @@ def env_info():
 		print(f'Max episode steps = {env.spec.max_episode_steps}.')
 		print(f'Reward threshold = {env.spec.reward_threshold}.')
 
-# REF [site] >> https://gym.openai.com/docs/
-def simple_agent_environment_loop():
-	# REF [site] >> https://gymnasium.farama.org/environments/classic_control/cart_pole/
-	env = gym.make('CartPole-v1')
-	#env.reset()
-
-	for episode_step in range(20):
-		observation = env.reset()  # Return an initial observation.
-		for step in range(100):
-			env.render()
-			print(f'Observation = {observation}.')
-			action = env.action_space.sample()  # Take a random action.
-			observation, reward, done, info = env.step(action)
-			if done:
-				print(f'Episode finished after {step + 1} timesteps.')
-				break
-
 def main():
 	# REF [site] >>
-	#	https://gymnasium.farama.org/
 	#	https://www.gymlibrary.dev/
+	#	https://gymnasium.farama.org/
 
 	basic_usage_1()
-	basic_usage_2()
+	#basic_usage_2()
+	#simple_agent_environment_loop()
 
 	#-----
 	# Environments:
+	#	Atari:
+	#		https://www.gymlibrary.dev/environments/atari/
+	#		https://gymnasium.farama.org/environments/atari/
+	#		Adventure, Air Raid, Alien, Amidar, Assault, Asterix, Asteroids, Atlantis, Atlantis2, Backgammon, Bank Heist, BasicMath, Battle Zone, Beam Rider, Berzerk, Blackjack, Bowling, Boxing, Breakout,
+	#		Carnival, Casino, Centipede, Chopper Command, Crazy Climber, Crossbow, Darkchambers, Defender, Demon Attack, DonkeyKong, Double Dunk, Earthworld, Elevator Action, Enduro, Entombed, Et,
+	# 		FishingDerby, FlagCapture, Freeway, Frogger, Frostbite, Galaxian, Gopher, Gravitar, Hangman, HauntedHouse, Hero, HumanCannonball, IceHockey, Jamesbond, JourneyEscape,
+	#		Kaboom, Kangaroo, KeystoneKapers, KingKong, Klax, Koolaid, Krull, Kung Fu Master, LaserGates, LostLuggage, MarioBros, MiniatureGolf, Montezuma Revenge, MrDo, Ms Pacman, Name This Game,
+	#		Othello, Pacman, Phoenix, Pitfall, Pitfall2, Pong, Pooyan, PrivateEye, Qbert, Riverraid, Road Runner, Robot Tank, Seaquest, SirLancelot, Skiing, Solaris, SpaceInvaders, SpaceWar, StarGunner, Superman, Surround,
+	#		Tennis, Tetris, TicTacToe3D, TimePilot, Trondead, Turmoil, Tutankham, Up n' Down, Venture, VideoCheckers, VideoChess, VideoCube, Video Pinball, Wizard Of Wor, WordZapper, YarsRevenge, Zaxxon.
+	#	MuJoCo:
+	#		https://www.gymlibrary.dev/environments/atari/
+	#		https://gymnasium.farama.org/environments/mujoco/
+	#		Ant, Half Cheetah, Hopper, Humanoid Standup, Humanoid, Inverted Double Pendulum, Inverted Pendulum, Pusher, Reacher, Swimmer, Walker2D.
+	#	Toy Text:
+	#		https://www.gymlibrary.dev/environments/atari/
+	#		https://gymnasium.farama.org/environments/toy_text/
+	#		Blackjack, Taxi, Cliff Walking, Frozen Lake.
 	#	Classic Control:
+	#		https://www.gymlibrary.dev/environments/atari/
 	#		https://gymnasium.farama.org/environments/classic_control/
 	#		Acrobot, Cart Pole, Mountain Car Continuous, Mountain Car, Pendulum.
 	#	Box2D:
+	#		https://www.gymlibrary.dev/environments/atari/
 	#		https://gymnasium.farama.org/environments/box2d/
 	#		Bipedal Walker, Car Racing, Lunar Lander.
-	#	Toy Text:
-	#		https://gymnasium.farama.org/environments/toy_text/
-	#		Blackjack, Taxi, Cliff Walking, Frozen Lake.
-	#	MuJoCo:
-	#		https://gymnasium.farama.org/environments/mujoco/
-	#		Ant, Half Cheetah, Hopper, Humanoid, Humanoid Standup, Inverted Double Pendulum, Inverted Pendulum, Pusher, Reacher, Swimmer, Walker2D.
-	#	Atari:
-	#		https://gymnasium.farama.org/environments/atari/
-	#		Adventure, AirRaid, Alien, Amidar, Assault, Asterix, Asteroids, Atlantis, Atlantis2, Backgammon, BankHeist, BasicMath, BattleZone, BeamRider, Berzerk, Blackjack, Bowling, Boxing, Breakout,
-	#		Carnival, Casino, Centipede, ChopperCommand, CrazyClimber, Crossbow, Darkchambers, Defender, DemonAttack, DonkeyKong, DoubleDunk, Earthworld, ElevatorAction, Enduro, Entombed, Et,
-	# 		FFishingDerby, FlagCapture, Freeway, Frogger, Frostbite, Galaxian, Gopher, Gravitar, Hangman, HauntedHouse, Hero, HumanCannonball, IceHockey, Jamesbond, JourneyEscape,
-	#		Kaboom, Kangaroo, KeystoneKapers, KingKong, Klax, Koolaid, Krull, KungFuMaster, LaserGates, LostLuggage, MarioBros, MiniatureGolf, MontezumaRevenge, MrDo, MsPacman, NameThisGame,
-	#		Othello, Pacman, Phoenix, Pitfall, Pitfall2, Pong, Pooyan, PrivateEye, Qbert, Riverraid, RoadRunner, Robotank, Seaquest, SirLancelot, Skiing, Solaris, SpaceInvaders, SpaceWar, StarGunner, Superman, Surround,
-	#		Tennis, Tetris, TicTacToe3D, TimePilot, Trondead, Turmoil, Tutankham, UpNDown, Venture, VideoCheckers, VideoChess, VideoCube, VideoPinball, WizardOfWor, WordZapper, YarsRevenge, Zaxxon.
 	#	Third Party Environments:
-	#		https://gymnasium.farama.org/environments/third_party_environments/
 	#		https://www.gymlibrary.dev/environments/third_party_environments/
-	#		Video Game environments:
+	#		https://gymnasium.farama.org/environments/third_party_environments/
+	#		Video Game Environments:
 	#			ViZDoom, MineRL, Procgen, Unity ML Agents.
-	#		Robotics environments:
-	#			PyFlyt, MarsExplorer, robo-gym, DexterousHands, OmniIsaacGymEnvs.
-	#		Autonomous Driving environments:
-	#			CommonRoad-RL, racing_dreamer, racecar_gym.
 	#		Classic Environments (board, card, etc. games):
 	#			RubiksCubeGym, GymGo, MindMaker Unreal Engine Plugin.
-	#		Other environments:
-	#			CompilerGym, DACBench, NLPGym, ShinRL, GymFC.
+	#		Robotics Environments:
+	#			GymFC, gym-gazebo, gym-pybullet-drones, MarsExplorer, PyBullet Robotics Environments, robo-gym, PyFlyt.
+	#		Autonomous Driving and Traffic Control Environments:
+	#			gym-carla, CommonRoad-RL, racing_dreamer, racecar_gym.
+	#		Multi Agents:
+	#			PettingZoo.
+	#		Other Environments:
+	#			CompilerGym, DACBench, Gridworld, NLPGym, ShinRL, iGibson, l2r, PyElastica, DexterousHands, OmniIsaacGymEnvs, SpaceRobotEnv.
 
 	env_info()
-	#simple_agent_environment_loop()
+
+	#-----
+	# Custom environment.
+
+	# Make your own custom environment:
+	#	https://www.gymlibrary.dev/content/environment_creation/
+	# Vectorising your environments:
+	#	https://www.gymlibrary.dev/content/vectorising/
 
 	#-----
 	# Gymnasium basics.
@@ -299,7 +314,7 @@ def main():
 	#	https://gymnasium.farama.org/tutorials/gymnasium_basics/vector_envs_tutorial/
 
 	#-----
-	# Training Agents.
+	# Training agents.
 	#	https://gymnasium.farama.org/tutorials/training_agents/
 
 	# Training using REINFORCE for Mujoco.
@@ -308,14 +323,6 @@ def main():
 	#	https://gymnasium.farama.org/tutorials/training_agents/blackjack_tutorial/
 	# Frozenlake benchmark.
 	#	https://gymnasium.farama.org/tutorials/training_agents/FrozenLake_tuto/
-
-	#-----
-	# Custom Environment.
-
-	# Make your own custom environment:
-	#	https://www.gymlibrary.dev/content/environment_creation/
-	# Vectorising your environments:
-	#	https://www.gymlibrary.dev/content/vectorising/
 
 #--------------------------------------------------------------------
 
