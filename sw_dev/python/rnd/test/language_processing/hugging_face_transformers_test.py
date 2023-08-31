@@ -84,6 +84,28 @@ def quick_tour():
 
 		print('{} processed.'.format(model_class.__name__))
 
+def transformers_test():
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	model = transformers.BertModel.from_pretrained("bert-base-uncased")
+
+	max_length = 100
+	#max_length = 1000
+	gradient_accumulation_steps = 4
+	#gradient_accumulation_steps = 40
+	model_flops = (
+		model.floating_point_ops({
+			"input_ids": torch.zeros((1, max_length))
+		})
+		* gradient_accumulation_steps
+	)
+
+	#print("Model:")
+	#print(model)
+	print(f"Memory footprint = {model.get_memory_footprint() / 1e9} GB.")
+	print(f"Flops = {model_flops / 1e9} GFLOPs.")
+
 def tokenizer_test():
 	pretrained_model_name = 'bert-base-uncased'
 	#pretrained_model_name = 'openai-gpt'
@@ -4579,7 +4601,21 @@ def microsoft_voice_conversion_example():
 
 	sf.write("./speecht5_vc.wav", speech.numpy(), samplerate=16000)
 
+# REF [site] >>
+#	https://huggingface.co/edbeeching
+#	https://github.com/huggingface/transformers/blob/main/examples/research_projects/decision_transformer/run_decision_transformer.py
 def decision_transformer_example():
+	# Models:
+	#	edbeeching/decision-transformer-gym-halfcheetah-medium.
+	#	edbeeching/decision-transformer-gym-halfcheetah-medium-replay.
+	#	edbeeching/decision-transformer-gym-halfcheetah-expert.
+	#	edbeeching/decision-transformer-gym-hopper-medium.
+	#	edbeeching/decision-transformer-gym-hopper-medium-replay.
+	#	edbeeching/decision-transformer-gym-hopper-expert.
+	#	edbeeching/decision-transformer-gym-hopper-expert-new.
+	#	edbeeching/decision-transformer-gym-walker2d-medium.
+	#	edbeeching/decision-transformer-gym-walker2d-medium-replay.
+
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
 
@@ -4597,9 +4633,8 @@ def decision_transformer_example():
 		import gym
 
 		model = transformers.DecisionTransformerModel.from_pretrained("edbeeching/decision-transformer-gym-hopper-medium")
-		# Evaluation.
 		model = model.to(device)
-		model.eval()
+		model.eval()  # Evaluation.
 
 		env = gym.make("Hopper-v3")
 		state_dim = env.observation_space.shape[0]
@@ -4614,7 +4649,6 @@ def decision_transformer_example():
 		attention_mask = torch.zeros(1, 1, device=device, dtype=torch.float32)
 
 		# Forward pass.
-		model.eval()
 		with torch.no_grad():
 			state_preds, action_preds, return_preds = model(
 				states=states,
@@ -4632,6 +4666,8 @@ def main():
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
 	#quick_tour()
+
+	#transformers_test()
 	#tokenizer_test()
 
 	#--------------------
@@ -4832,8 +4868,13 @@ def main():
 	#microsoft_voice_conversion_example()  # SpeechT5.
 
 	#--------------------
+	# Agent.
 
 	#decision_transformer_example()  # Decision transformer. Not yet tested.
+
+	#--------------------
+	# Inference engine.
+	#	https://betterprogramming.pub/frameworks-for-serving-llms-60b7f7b23407
 
 #--------------------------------------------------------------------
 

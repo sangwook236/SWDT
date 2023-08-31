@@ -19,6 +19,7 @@
 		pip install diffusers[torch]
 		pip install datasets
 		pip install accelerate
+		pip install optimum
 		pip install evaluate
 		pip install evaluate[template]
 		pip install huggingface_hub

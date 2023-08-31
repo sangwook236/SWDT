@@ -490,6 +490,20 @@ def datasets_tutorials():
 
 	# Upload with Python.
 
+def datasets_test():
+	import itertools
+	import datasets
+
+	ds = datasets.load_dataset("c4", "en", split="train", streaming=True)
+	#ds = datasets.load_dataset("EleutherAI/pile", split="train", streaming=True)
+
+	print("Dataset:")
+	n = 5
+	top_n = itertools.islice(ds, n)
+	for i in top_n:
+		print("-----")
+		print(i)
+
 # REF [site] >> https://huggingface.co/docs/datasets/how_to
 def datasets_how_to_guides__general_use():
 	import torch
@@ -1793,6 +1807,8 @@ def main():
 	#datasets_quicktour()
 	#datasets_tutorials()
 
+	#datasets_test()
+
 	# How-to guides.
 	#	https://huggingface.co/docs/datasets/how_to
 	#datasets_how_to_guides__general_use()
@@ -1867,6 +1883,13 @@ def main():
 	#	Prompt engineering: Prefix-Tuning, P-Tuning, Prompt Tuning.
 	#
 	#	Refer to ./hugging_face_peft_test.py.
+
+	#--------------------
+	# Inference.
+	#	Efficient Inference on CPU:
+	#		https://huggingface.co/docs/transformers/perf_infer_cpu
+	#	Efficient Inference on a Single GPU:
+	#		https://huggingface.co/docs/transformers/perf_infer_gpu_one
 
 #--------------------------------------------------------------------
 
