@@ -2658,6 +2658,38 @@ def codegen25_example():
 
 		print(tokenizer.decode(generated_ids[0], skip_special_tokens=False)[len(text):])
 
+# REF [site] >> https://huggingface.co/codeparrot
+def codeparrot_example():
+	# Models:
+	#	codeparrot/codeparrot: ~6.17GB.
+	#	codeparrot/codeparrot-small.
+	#	codeparrot/codeparrot-small-multi.
+	#	codeparrot/codeparrot-small-text-to-code.
+	#	codeparrot/codeparrot-small-code-to-text.
+	#	codeparrot/codeparrot-small-complexity-prediction.
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("codeparrot/codeparrot")
+		model = transformers.AutoModelWithLMHead.from_pretrained("codeparrot/codeparrot")
+
+		inputs = tokenizer("def hello_world():", return_tensors="pt")
+		outputs = model(**inputs)
+
+		logits = outputs.logits  # [batch size, 5(?), vocab size].
+
+		predicted_label = logits.argmax(-1)  # ???
+		print(f"Predicted label: {predicted_label}.")
+		#predicted_token = tokenizer.convert_ids_to_tokens(predicted_label[0])
+		#print(f"Predicted token: {predicted_token}.")
+
+	if True:
+		pipe = transformers.pipeline("text-generation", model="codeparrot/codeparrot")
+		outputs = pipe("def hello_world():")
+
+		print("Prediction:")
+		#print(outputs)
+		print(outputs[0]["generated_text"])
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
 	from transformers import ViTImageProcessor, ViTModel, ViTForMaskedImageModeling
@@ -4602,6 +4634,7 @@ def microsoft_voice_conversion_example():
 	sf.write("./speecht5_vc.wav", speech.numpy(), samplerate=16000)
 
 # REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/decision_transformer
 #	https://huggingface.co/edbeeching
 #	https://github.com/huggingface/transformers/blob/main/examples/research_projects/decision_transformer/run_decision_transformer.py
 def decision_transformer_example():
@@ -4765,6 +4798,7 @@ def main():
 	#codegen_example()  # CodeGen.
 	#codegen2_example()  # CodeGen2.
 	#codegen25_example()  # CodeGen2.5.
+	#codeparrot_example()  # CodeParrot.
 
 	#--------------------
 	# Vision.
