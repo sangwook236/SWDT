@@ -4693,6 +4693,60 @@ def decision_transformer_example():
 				return_dict=False,
 			)
 
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/trajectory_transformer
+def trajectory_transformer_example():
+	# Models:
+	#	CarlCochet/trajectory-transformer-ant-medium-v2
+	#	CarlCochet/trajectory-transformer-ant-medium-replay-v2
+	#	CarlCochet/trajectory-transformer-ant-medium-expert-v2
+	#	CarlCochet/trajectory-transformer-ant-expert-v2.
+	#	CarlCochet/trajectory-transformer-halfcheetah-medium-replay-v2
+	#	CarlCochet/trajectory-transformer-halfcheetah-medium-v2.
+	#	CarlCochet/trajectory-transformer-halfcheetah-medium-expert-v2
+	#	CarlCochet/trajectory-transformer-halfcheetah-expert-v2
+	#	CarlCochet/trajectory-transformer-hopper-medium-v2
+	#	CarlCochet/trajectory-transformer-hopper-medium-replay-v2
+	#	CarlCochet/trajectory-transformer-hopper-medium-expert-v2
+	#	CarlCochet/trajectory-transformer-hopper-expert-v2
+	#	CarlCochet/trajectory-transformer-walker2d-medium-v2
+	#	CarlCochet/trajectory-transformer-walker2d-medium-replay-v2
+	#	CarlCochet/trajectory-transformer-walker2d-medium-expert-v2
+	#	CarlCochet/trajectory-transformer-walker2d-expert-v2
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		# Initializing a TrajectoryTransformer CarlCochet/trajectory-transformer-halfcheetah-medium-v2 style configuration
+		configuration = transformers.TrajectoryTransformerConfig()
+
+		# Initializing a model (with random weights) from the CarlCochet/trajectory-transformer-halfcheetah-medium-v2 style configuration
+		model = transformers.TrajectoryTransformerModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = TrajectoryTransformerModel.from_pretrained("CarlCochet/trajectory-transformer-halfcheetah-medium-v2")
+		model.to(device)
+		model.eval()
+
+		observations_dim, action_dim, batch_size = 17, 6, 256
+		seq_length = observations_dim + action_dim + 1
+
+		trajectories = torch.LongTensor([np.random.permutation(self.seq_length) for _ in range(batch_size)]).to(device)
+		targets = torch.LongTensor([np.random.permutation(self.seq_length) for _ in range(batch_size)]).to(device)
+
+		outputs = model(
+			trajectories,
+			targets=targets,
+			use_cache=True,
+			output_attentions=True,
+			output_hidden_states=True,
+			return_dict=True,
+		)
+
 def main():
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
 
@@ -4905,6 +4959,7 @@ def main():
 	# Agent.
 
 	#decision_transformer_example()  # Decision transformer. Not yet tested.
+	#trajectory_transformer_example()  # Decision transformer. Not yet tested.
 
 	#--------------------
 	# Inference engine.
