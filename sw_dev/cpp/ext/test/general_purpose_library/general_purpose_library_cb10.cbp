@@ -43,6 +43,7 @@
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib/nvidia-367" />
 		</Linker>
+		<Unit filename="dlib/dlib_control_example.cpp" />
 		<Unit filename="dlib/dlib_dnn_example.cpp" />
 		<Unit filename="dlib/dlib_graph_labeling_example.cpp" />
 		<Unit filename="dlib/dlib_main.cpp" />

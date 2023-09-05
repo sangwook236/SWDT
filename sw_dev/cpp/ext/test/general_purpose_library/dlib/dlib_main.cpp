@@ -110,5 +110,8 @@ int dlib_main(int argc, char *argv[])
 	// Face alignment.
 	local::face_alignment_example();
 
+	// Control.
+	//my_dlib::control_example();  // Not yet tested.
+
 	return 0;
 }

@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dlib\dlib_control_example.cpp" />
     <ClCompile Include="dlib\dlib_dnn_example.cpp" />
     <ClCompile Include="dlib\dlib_graph_labeling_example.cpp" />
     <ClCompile Include="dlib\dlib_inception_example.cpp" />
