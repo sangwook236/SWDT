@@ -281,7 +281,7 @@ def dqn_atari_breakout_test():
 	print(f"Device: {device}.")
 
 	# Number of input consecutive frames
-	num_consecutive_frames = 4
+	num_consecutive_frames = 6  # 4 -> 8 (error) -> 6
 	seed = 42
 
 	# REF [site] >> https://www.gymlibrary.dev/environments/atari/breakout/
@@ -317,8 +317,8 @@ def dqn_atari_breakout_test():
 			self.conv3 = torch.nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=False)
 			#self.bn3 = torch.nn.BatchNorm2d(64)
 
-			self.fc1 = torch.nn.Linear(7 * 7 * 64, 512)
-			self.fc2 = torch.nn.Linear(512, num_actions)
+			self.fc1 = torch.nn.Linear(7 * 7 * 64, 2048)  # 512 -> 2048
+			self.fc2 = torch.nn.Linear(2048, num_actions)  # 512 -> 2048
 			"""
 			self.conv1 = torch.nn.Conv2d(num_consecutive_frames, 32, kernel_size=8, stride=4, bias=False)
 			#self.bn1 = torch.nn.BatchNorm2d(32)
@@ -326,10 +326,10 @@ def dqn_atari_breakout_test():
 			#self.bn2 = torch.nn.BatchNorm2d(64)
 			self.conv3 = torch.nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=False)
 			#self.bn3 = torch.nn.BatchNorm2d(64)
-			self.conv4 = torch.nn.Conv2d(64, 1024, kernel_size=7, stride=1, bias=False)
-			#self.bn4 = torch.nn.BatchNorm2d(1024)
+			self.conv4 = torch.nn.Conv2d(64, 2048, kernel_size=7, stride=1, bias=False)  # 1024 -> 2048
+			#self.bn4 = torch.nn.BatchNorm2d(2048)  # 1024 -> 2048
 
-			self.fc = torch.nn.Linear(1024, num_actions)
+			self.fc = torch.nn.Linear(2048, num_actions)  # 1024 -> 2048
 
 		def forward(self, x):
 			# [B, 4, 84, 84]: 4 consecutive frames
@@ -346,7 +346,7 @@ def dqn_atari_breakout_test():
 			#x = torch.nn.functional.relu(self.bn1(self.conv1(x)))
 			#x = torch.nn.functional.relu(self.bn2(self.conv2(x)))
 			#x = torch.nn.functional.relu(self.bn3(self.conv3(x)))
-			#x = torch.nn.functional.relu(self.bn3(self.conv4(x)))
+			#x = torch.nn.functional.relu(self.bn4(self.conv4(x)))
 			x = torch.nn.functional.relu(self.conv1(x))
 			x = torch.nn.functional.relu(self.conv2(x))
 			x = torch.nn.functional.relu(self.conv3(x))
@@ -367,7 +367,9 @@ def dqn_atari_breakout_test():
 		# Train
 
 		timestamp = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
+		# NOTE [info] >> As batch size increases, initial learning rate should decrease (?)
 		batch_size = 32  # Size of batch taken from replay buffer
+		#batch_size = 1024  # Size of batch taken from replay buffer
 
 		# Configuration paramaters for the whole setup
 		gamma = 0.99  # Discount factor for past rewards
@@ -396,10 +398,28 @@ def dqn_atari_breakout_test():
 
 		# Improves training time
 		# In the DeepMind paper they use RMSProp however then Adam optimizer
-		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00025, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)
-		optimizer = torch.optim.Adam(model.parameters(), lr=0.00025, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-		#max_clipping_norm = None
-		max_clipping_norm = 1.0
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00025, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 8.40 (at episode 20601)
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00025, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 6. Running reward = 8.48 (at episode 18552)
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00025, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 8. Error
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00030, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 7.65
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00035, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 1024. batch_size = 32. num_consecutive_frames = 4. Running reward = 6.76
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00035, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 7.01
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00035, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 6. Running reward = 7.17 (at episode 18795)
+		#optimizer = torch.optim.RMSprop(model.parameters(), lr=0.00045, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 5.66
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.000025, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 1024. batch_size = 32. num_consecutive_frames = 4. Running reward > 8.0
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00025, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 6. Running reward = 7.62 (at episode 18007)
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00030, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 7.65
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.000325, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 6.84
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00035, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward > 8.0
+		optimizer = torch.optim.Adam(model.parameters(), lr=0.00035, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 6. running reward = 7.88 (at episode 18197)
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.000375, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 7.05
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00040, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 6.32
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00045, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # #hiddens = 2048. batch_size = 32. num_consecutive_frames = 4. Running reward = 5.34
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.0001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+		#optimizer = torch.optim.Adam(model.parameters(), lr=0.00015, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # batch_size = 1024
+		max_clipping_norm = None
+		#max_clipping_norm = 1.0
 
 		# Using Huber loss for stability
 		loss_function = torch.nn.HuberLoss()
@@ -449,6 +469,7 @@ def dqn_atari_breakout_test():
 
 		episode_reward_history = []
 		running_reward = 0
+		best_running_reward = 0
 		episode_count = 0
 		frame_count = 0
 
@@ -499,7 +520,7 @@ def dqn_atari_breakout_test():
 				done_history.append(done)
 				state = state_next
 
-				# Update every fourth frame and once batch size is over 32
+				# Update every fourth frame and once the size of replay buffer is over batch size
 				if frame_count % update_after_actions == 0 and len(done_history) > batch_size:
 					# Get indices of samples for replay buffers
 					indices = np.random.choice(range(len(done_history)), size=batch_size)
@@ -593,16 +614,20 @@ def dqn_atari_breakout_test():
 			#if running_reward > 40:  # Condition to consider the task solved
 			#if running_reward > 4:  # Condition to consider the task solved. When epsilon_min = 0.1
 			#if running_reward > 6:  # Condition to consider the task solved. When epsilon_min = 0.01
-			if running_reward > 8:  # Condition to consider the task solved. When epsilon_min = 0.001
+			#if running_reward > 8:  # Condition to consider the task solved. When epsilon_min = 0.001
+			if running_reward > 10:  # Condition to consider the task solved. When epsilon_min = 0.001
 				print(f"Solved at episode {episode_count}!")
 				break
+
+			# Save the weights
+			#if running_reward > best_running_reward:
+			if running_reward > best_running_reward and running_reward > 6:
+				best_running_reward = running_reward
+				torch.save({"state_dict": model.state_dict()}, f"./dqn_breakout_{timestamp}.pth")
+				torch.save({"state_dict": model_target.state_dict()}, f"./dqn_breakout_target_{timestamp}.pth")
+				print(f"Trained models saved: running reward = {running_reward:.4f} at episode {episode_count}.")
 		print(f"Trained: {time.time() - start_time:} secs.")
 		env.close()
-
-		if True:
-			# Save the weights
-			torch.save({"state_dict": model.state_dict()}, f"./dqn_breakout_{timestamp}.pth")
-			torch.save({"state_dict": model_target.state_dict()}, f"./dqn_breakout_target_{timestamp}.pth")
 
 	#-----
 	if False:
@@ -611,6 +636,7 @@ def dqn_atari_breakout_test():
 		model.load_state_dict(loaded_data['state_dict'])
 		loaded_data = torch.load("./dqn_breakout_target.pth", map_location=device)
 		model_target.load_state_dict(loaded_data['state_dict'])
+		print(f"Trained models loaded.")
 
 		model.to(device)
 		model_target.to(device)
@@ -1059,7 +1085,7 @@ def main():
 
 	# Twin delayed deep deterministic (TD3) policy gradient algorithm
 	#	Twin delayed DDPG
-	#	TD3 is a direct successor of DDPG and improves it using three major tricks: clipped double Q-Learning, delayed policy update and target policy smoothing
+	#	TD3 is a direct successor of DDPG and improves it using three major tricks: clipped double Q-Learning, delayed policy update, and target policy smoothing
 
 #--------------------------------------------------------------------
 
