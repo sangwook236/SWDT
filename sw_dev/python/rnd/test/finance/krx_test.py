@@ -125,7 +125,6 @@ def main():
 	simple_example_1()  # Not working.
 	simple_example_2()  # Not correctly working.
 
-
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:

@@ -51,7 +51,7 @@ void mpc_example()
 	// To be precise, each time you ask it for a control, it solves the
 	// following quadratic program:
 	//   
-	//     min     sum_i trans(x_i-target_i)*Q*(x_i-target_i) + trans(u_i)*R*u_i 
+	//     min     sum_i trans(x_i-target_i)*Q*(x_i-target_i) + trans(u_i)*R*u_i
 	//    x_i,u_i
 	//
 	//     such that: x_0     == current_state 
@@ -67,7 +67,7 @@ void mpc_example()
 	// define these parameters for our simple example.
 
 	dlib::matrix<double, STATES, 1> Q;
-	// Setup Q so that the MPC only cares about matching the target position and ignores the velocity.  
+	// Setup Q so that the MPC only cares about matching the target position and ignores the velocity.
 	Q = 1, 1, 0, 0;
 
 	dlib::matrix<double, CONTROLS, 1> R, lower, upper;
@@ -99,7 +99,7 @@ void mpc_example()
 		dlib::matrix<double, CONTROLS, 1> action = controller(current_state);
 		std::cout << "Best control: " << dlib::trans(action);
 
-		// Now draw our vehicle on the world. We will draw the vehicle as a black circle and its target position as a green circle.  
+		// Now draw our vehicle on the world. We will draw the vehicle as a black circle and its target position as a green circle.
 		dlib::assign_all_pixels(world, dlib::rgb_pixel(255, 255, 255));
 		const dpoint pos = dlib::point(current_state(0), current_state(1));
 		const dpoint goal = dlib::point(target(0), target(1));
@@ -113,7 +113,7 @@ void mpc_example()
 		current_state = A * current_state + B * action + C;
 		dlib::sleep(100);
 
-		// Every 100 iterations change the target to some other random location. 
+		// Every 100 iterations change the target to some other random location.
 		++iter;
 		if (iter > 100)
 		{
@@ -129,9 +129,11 @@ void mpc_example()
 
 namespace my_dlib {
 
-// REF [file] >> ${DLIB_HOME}/examples/optimization_ex.cpp
 void control_example()
 {
+	// REF [project] >> ${SWDT_C++_HOME}/rnd/test/control.
+
+	// Model predictive control (MPC), receding horizon control (RHC).
 	local::mpc_example();
 }
 
