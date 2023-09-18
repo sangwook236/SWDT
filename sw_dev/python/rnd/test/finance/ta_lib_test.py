@@ -47,21 +47,21 @@ def simple_example():
 	# Abstract API
 
 	inputs = {
-		'open': np.random.random(100),
-		'high': np.random.random(100),
-		'low': np.random.random(100),
-		'close': np.random.random(100),
-		'volume': np.random.random(100),
+		"open": np.random.random(100),
+		"high": np.random.random(100),
+		"low": np.random.random(100),
+		"close": np.random.random(100),
+		"volume": np.random.random(100),
 	}
 
 	#SMA = talib.abstract.SMA
-	#SMA = talib.abstract.Function('sma')
+	#SMA = talib.abstract.Function("sma")
 
 	# Uses close prices (default)
 	output = talib.abstract.SMA(inputs, timeperiod=25)
 
 	# Uses open prices
-	output = talib.abstract.SMA(inputs, timeperiod=25, price='open')
+	output = talib.abstract.SMA(inputs, timeperiod=25, price="open")
 
 	# Uses close prices (default)
 	upper, middle, lower = talib.abstract.BBANDS(inputs, 20, 2.0, 2.0)
@@ -70,7 +70,7 @@ def simple_example():
 	slowk, slowd = talib.abstract.STOCH(inputs, 5, 3, 0, 3, 0)  # Uses high, low, close by default
 
 	# Uses high, low, open instead
-	slowk, slowd = talib.abstract.STOCH(inputs, 5, 3, 0, 3, 0, prices=['high', 'low', 'open'])
+	slowk, slowd = talib.abstract.STOCH(inputs, 5, 3, 0, 3, 0, prices=["high", "low", "open"])
 
 	#-----
 	# Streaming API.

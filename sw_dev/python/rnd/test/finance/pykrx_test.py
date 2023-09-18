@@ -218,7 +218,7 @@ def main():
 	market_data_example()
 	#index_example()
 	#short_stock_selling_example()
-	#etx_example()
+	#etx_example()  # ETF, ETN, ELW.
 	#bond_example()
 
 #--------------------------------------------------------------------
