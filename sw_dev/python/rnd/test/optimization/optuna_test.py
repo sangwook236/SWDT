@@ -672,7 +672,20 @@ def main():
 	#ask_and_tell_interface_tutorial()  # Not yet implemented.
 	#re_use_the_best_trial_tutorial()
 
+	#--------------------
+	# XGBoost.
+	#	REF [site] >> https://github.com/optuna/optuna-examples/tree/main/xgboost
+
 	#xgboost_integration_example()
+
+	# scikit-learn.
+	#	REF [site] >> https://github.com/optuna/optuna-examples/tree/main/sklearn
+
+	# PyTorch.
+	#	REF [site] >> https://github.com/optuna/optuna-examples/tree/main/pytorch
+
+	# TensorFlow.
+	#	REF [site] >> https://github.com/optuna/optuna-examples/tree/main/tensorflow
 
 #--------------------------------------------------------------------
 

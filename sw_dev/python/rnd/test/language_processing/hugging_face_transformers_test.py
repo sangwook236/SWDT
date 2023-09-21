@@ -2096,6 +2096,37 @@ A: """
 		for seq in sequences:
 			print(f"Result: {seq['generated_text']}")
 
+# REF [site] >> https://huggingface.co/openlm-research
+def open_llama_example():
+	# Models:
+	#	openlm-research/open_llama_3b.
+	#	openlm-research/open_llama_7b.
+	#	openlm-research/open_llama_13b.
+	#	openlm-research/open_llama_3b_easylm.
+	#	openlm-research/open_llama_7b_easylm.
+	#	openlm-research/open_llama_13b_easylm.
+	#	openlm-research/open_llama_3b_v2.
+	#	openlm-research/open_llama_7b_v2: ~13.48GB.
+	#	openlm-research/open_llama_3b_v2_easylm.
+	#	openlm-research/open_llama_7b_v2_easylm.
+
+	# v2 models
+	#model_path = "openlm-research/open_llama_3b_v2"
+	model_path = "openlm-research/open_llama_7b_v2"
+	# v1 models
+	#model_path = "openlm-research/open_llama_3b"
+	#model_path = "openlm-research/open_llama_7b"
+	#model_path = "openlm-research/open_llama_13b"
+
+	tokenizer = transformers.LlamaTokenizer.from_pretrained(model_path)
+	model = transformers.LlamaForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, device_map="auto")
+
+	prompt = "Q: What is the largest animal?\nA:"
+	input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+
+	generation_output = model.generate(input_ids=input_ids, max_new_tokens=32)
+	print(tokenizer.decode(generation_output[0]))
+
 # REF [site] >> https://huggingface.co/nvidia
 def megatron_example():
 	# Models:
@@ -4837,7 +4868,8 @@ def main():
 	#galactica_example()  # Galactica.
 
 	#llama_example()  # LLaMA.
-	llama2_example()  # Llama 2.
+	#llama2_example()  # Llama 2.
+	open_llama_example()  # OpenLLaMA.
 
 	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.
@@ -4959,7 +4991,7 @@ def main():
 	# Agent.
 
 	#decision_transformer_example()  # Decision transformer. Not yet tested.
-	#trajectory_transformer_example()  # Decision transformer. Not yet tested.
+	#trajectory_transformer_example()  # Trajectory transformer. Not yet tested.
 
 	#--------------------
 	# Inference engine.
