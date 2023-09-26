@@ -60,7 +60,15 @@ def main():
 
 # Usage:
 #	python profiling_test.py
-#	python -m cProfile profiling_on_existing_application.py
+#
+#	In terminal:
+#		python -m cProfile profiling_on_existing_application.py
+#
+#		python -m cProfile -o ./test.prof test.py
+#		snakeviz ./test.prof
+#
+#		vprof -c cpmh test.py
+#		vprof -c cpmh "test.py --arg1 --arg2"
 
 if '__main__' == __name__:
 	main()

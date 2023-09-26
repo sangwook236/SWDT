@@ -2721,6 +2721,42 @@ def codeparrot_example():
 		#print(outputs)
 		print(outputs[0]["generated_text"])
 
+# REF [site] >> https://huggingface.co/codellama
+def code_llama_example():
+	# Models:
+	#	codellama/CodeLlama-7b-hf: ~13.48GB.
+	#	codellama/CodeLlama-13b-hf.
+	#	codellama/CodeLlama-34b-hf.
+	#	codellama/CodeLlama-7b-Python-hf.
+	#	codellama/CodeLlama-13b-Python-hf.
+	#	codellama/CodeLlama-34b-Python-hf.
+	#	codellama/CodeLlama-7b-Instruct-hf.
+	#	codellama/CodeLlama-13b-Instruct-hf.
+	#	codellama/CodeLlama-34b-Instruct-hf.
+
+	model = "codellama/CodeLlama-7b-hf"
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model)
+	pipeline = transformers.pipeline(
+		"text-generation",
+		model=model,
+		torch_dtype=torch.float16,
+		device_map="auto",
+	)
+
+	sequences = pipeline(
+		"import socket\n\ndef ping_exponential_backoff(host: str):",
+		do_sample=True,
+		top_k=10,
+		temperature=0.1,
+		top_p=0.95,
+		num_return_sequences=1,
+		eos_token_id=tokenizer.eos_token_id,
+		max_length=200,
+	)
+	for seq in sequences:
+		print(f"Result: {seq['generated_text']}")
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
 	from transformers import ViTImageProcessor, ViTModel, ViTForMaskedImageModeling
@@ -4822,6 +4858,8 @@ def main():
 	# Model Parallelism:
 	#	https://huggingface.co/docs/transformers/v4.19.4/en/parallelism
 
+	# Refer to llama2_example().
+
 	#--------------------
 	# Language.
 
@@ -4868,7 +4906,7 @@ def main():
 	#galactica_example()  # Galactica.
 
 	#llama_example()  # LLaMA.
-	#llama2_example()  # Llama 2.
+	#llama2_example()  # Llama 2. Model parallelism
 	open_llama_example()  # OpenLLaMA.
 
 	#megatron_example()  # Megatron-LM.
@@ -4885,6 +4923,7 @@ def main():
 	#codegen2_example()  # CodeGen2.
 	#codegen25_example()  # CodeGen2.5.
 	#codeparrot_example()  # CodeParrot.
+	#code_llama_example()  # Code Llama.
 
 	#--------------------
 	# Vision.
