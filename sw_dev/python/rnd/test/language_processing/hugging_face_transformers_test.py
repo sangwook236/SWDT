@@ -435,6 +435,219 @@ def encoder_decoder_example():
 	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
 	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
 
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/perceiver
+def perceiver_example():
+	if True:
+		# EXAMPLE 1: using the Perceiver to classify texts
+		# - we define a TextPreprocessor, which can be used to embed tokens
+		# - we define a ClassificationDecoder, which can be used to decode the final hidden states of the latents to classification logits using trainable position embeddings
+		config = transformers.PerceiverConfig()
+		preprocessor = transformers.models.perceiver.modeling_perceiver.PerceiverTextPreprocessor(config)
+		decoder = transformers.models.perceiver.modeling_perceiver.PerceiverClassificationDecoder(
+			config,
+			num_channels=config.d_latents,
+			trainable_position_encoding_kwargs=dict(num_channels=config.d_latents, index_dims=1),
+			use_query_residual=True,
+		)
+		model = transformers.PerceiverModel(config, input_preprocessor=preprocessor, decoder=decoder)
+
+		# You can then do a forward pass as follows:
+		tokenizer = transformers.PerceiverTokenizer()
+		text = "hello world"
+		inputs = tokenizer(text, return_tensors="pt").input_ids
+
+		with torch.no_grad():
+			outputs = model(inputs=inputs)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		# To train, one can train the model using standard cross-entropy:
+		criterion = torch.nn.CrossEntropyLoss()
+
+		labels = torch.tensor([1])
+		loss = criterion(logits, labels)
+		print(f"{loss=}.")
+
+		# EXAMPLE 2: using the Perceiver to classify images
+		# - we define an ImagePreprocessor, which can be used to embed images
+		config = transformers.PerceiverConfig(image_size=224)
+		preprocessor = transformers.models.perceiver.modeling_perceiver.PerceiverImagePreprocessor(
+			config,
+			prep_type="conv1x1",
+			spatial_downsample=1,
+			out_channels=256,
+			position_encoding_type="trainable",
+			concat_or_add_pos="concat",
+			project_pos_dim=256,
+			trainable_position_encoding_kwargs=dict(
+				num_channels=256,
+				index_dims=config.image_size**2,
+			),
+		)
+
+		model = transformers.PerceiverModel(
+			config,
+			input_preprocessor=preprocessor,
+			decoder=transformers.models.perceiver.modeling_perceiver.PerceiverClassificationDecoder(
+				config,
+				num_channels=config.d_latents,
+				trainable_position_encoding_kwargs=dict(num_channels=config.d_latents, index_dims=1),
+				use_query_residual=True,
+			),
+		)
+
+		# You can then do a forward pass as follows:
+		image_processor = transformers.PerceiverImageProcessor()
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		inputs = image_processor(image, return_tensors="pt").pixel_values
+
+		with torch.no_grad():
+			outputs = model(inputs=inputs)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		# To train, one can train the model using standard cross-entropy:
+		criterion = torch.nn.CrossEntropyLoss()
+
+		labels = torch.tensor([1])
+		loss = criterion(logits, labels)
+		print(f"{loss=}.")
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("deepmind/language-perceiver")
+		model = transformers.PerceiverForMaskedLM.from_pretrained("deepmind/language-perceiver")  # ~805MB.
+
+		# Training
+		text = "This is an incomplete sentence where some words are missing."
+		inputs = tokenizer(text, padding="max_length", return_tensors="pt")
+		# Mask " missing."
+		inputs["input_ids"][0, 52:61] = tokenizer.mask_token_id
+		labels = tokenizer(text, padding="max_length", return_tensors="pt").input_ids
+
+		outputs = model(**inputs, labels=labels)
+		loss = outputs.loss
+		round(loss.item(), 2)
+
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		# Inference
+		text = "This is an incomplete sentence where some words are missing."
+		encoding = tokenizer(text, padding="max_length", return_tensors="pt")
+
+		# Mask bytes corresponding to " missing.". Note that the model performs much better if the masked span starts with a space.
+		encoding["input_ids"][0, 52:61] = tokenizer.mask_token_id
+
+		# Forward pass
+		with torch.no_grad():
+			outputs = model(**encoding)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		masked_tokens_predictions = logits[0, 52:61].argmax(dim=-1).tolist()
+		predicted = tokenizer.decode(masked_tokens_predictions)
+		print(f"{predicted=}.")
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("deepmind/language-perceiver")
+		model = transformers.PerceiverForSequenceClassification.from_pretrained("deepmind/language-perceiver")  # ~805MB.
+
+		text = "hello world"
+		inputs = tokenizer(text, return_tensors="pt").input_ids
+		outputs = model(inputs=inputs)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+	if False:
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("deepmind/vision-perceiver-learned")
+		model = transformers. PerceiverForImageClassificationLearned.from_pretrained("deepmind/vision-perceiver-learned")  # ~249MB.
+
+		inputs = image_processor(images=image, return_tensors="pt").pixel_values
+		outputs = model(inputs=inputs)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		# Model predicts one of the 1000 ImageNet classes
+		predicted_class_idx = logits.argmax(-1).item()
+		print("Predicted class:", model.config.id2label[predicted_class_idx])
+
+	if False:
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("deepmind/vision-perceiver-fourier")
+		model = transformers.PerceiverForImageClassificationFourier.from_pretrained("deepmind/vision-perceiver-fourier")  # ~194MB.
+
+		inputs = image_processor(images=image, return_tensors="pt").pixel_values
+		outputs = model(inputs=inputs)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		# Model predicts one of the 1000 ImageNet classes
+		predicted_class_idx = logits.argmax(-1).item()
+		print("Predicted class:", model.config.id2label[predicted_class_idx])
+
+	if False:
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("deepmind/vision-perceiver-conv")
+		model = transformers.PerceiverForImageClassificationConvProcessing.from_pretrained("deepmind/vision-perceiver-conv")  # ~195MB.
+
+		inputs = image_processor(images=image, return_tensors="pt").pixel_values
+		outputs = model(inputs=inputs)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+		# Model predicts one of the 1000 ImageNet classes
+		predicted_class_idx = logits.argmax(-1).item()
+		print("Predicted class:", model.config.id2label[predicted_class_idx])
+
+	if False:
+		model = transformers.PerceiverForOpticalFlow.from_pretrained("deepmind/optical-flow-perceiver")  # ~164MB.
+
+		# In the Perceiver IO paper, the authors extract a 3 x 3 patch around each pixel,
+		# leading to 3 x 3 x 3 = 27 values for each pixel (as each pixel also has 3 color channels)
+		# patches have shape (batch_size, num_frames, num_channels, height, width)
+		# the authors train on resolutions of 368 x 496
+		patches = torch.randn(1, 2, 27, 368, 496)
+		outputs = model(inputs=patches)
+		logits = outputs.logits
+		print(f"{logits.shape=}.")
+
+	if False:
+		import numpy as np
+
+		# Create multimodal inputs
+		images = torch.randn((1, 16, 3, 224, 224))
+		audio = torch.randn((1, 30720, 1))
+		inputs = dict(image=images, audio=audio, label=torch.zeros((images.shape[0], 700)))
+
+		model = transformers.PerceiverForMultimodalAutoencoding.from_pretrained("deepmind/multimodal-perceiver")  # ~79.5MB.
+
+		# In the Perceiver IO paper, videos are auto-encoded in chunks
+		# each chunk subsamples different index dimensions of the image and audio modality decoder queries
+		nchunks = 128
+		image_chunk_size = np.prod((16, 224, 224)) // nchunks
+		audio_chunk_size = audio.shape[1] // model.config.samples_per_patch // nchunks
+		# Process the first chunk
+		chunk_idx = 0
+		subsampling = {
+			"image": torch.arange(image_chunk_size * chunk_idx, image_chunk_size * (chunk_idx + 1)),
+			"audio": torch.arange(audio_chunk_size * chunk_idx, audio_chunk_size * (chunk_idx + 1)),
+			"label": None,
+		}
+
+		outputs = model(inputs=inputs, subsampled_output_points=subsampling)
+		logits = outputs.logits
+		print(f'{logits["audio"].shape=}.')
+		print(f'{logits["image"].shape=}.')
+		print(f'{logits["label"].shape=}.')
+
 def gpt2_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_gpt2.py
 
@@ -4861,9 +5074,13 @@ def main():
 	# Refer to llama2_example().
 
 	#--------------------
-	# Language.
+	# Model.
 
 	#encoder_decoder_example()
+	perceiver_example()  # Perceiver & Perceiver IO.
+
+	#--------------------
+	# Language.
 
 	#-----
 	# GPT.
@@ -4907,7 +5124,7 @@ def main():
 
 	#llama_example()  # LLaMA.
 	#llama2_example()  # Llama 2. Model parallelism
-	open_llama_example()  # OpenLLaMA.
+	#open_llama_example()  # OpenLLaMA.
 
 	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.
