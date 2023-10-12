@@ -4914,6 +4914,84 @@ def microsoft_voice_conversion_example():
 	sf.write("./speecht5_vc.wav", speech.numpy(), samplerate=16000)
 
 # REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/time_series_transformer
+#	https://huggingface.co/blog/time-series-transformers
+def time_series_transformer_example():
+	if False:
+		# Initializing a Time Series Transformer configuration with 12 time steps for prediction
+		configuration = transformers.TimeSeriesTransformerConfig(prediction_length=12)
+
+		# Randomly initializing a model (with random weights) from the configuration
+		model = transformers.TimeSeriesTransformerModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if False:
+		import huggingface_hub
+
+		file = huggingface_hub.hf_hub_download(repo_id="hf-internal-testing/tourism-monthly-batch", filename="train-batch.pt", repo_type="dataset")
+		batch = torch.load(file)
+
+		model = transformers.TimeSeriesTransformerModel.from_pretrained("huggingface/time-series-transformer-tourism-monthly")
+
+		# During training, one provides both past and future values as well as possible additional features
+		outputs = model(
+			past_values=batch["past_values"],
+			past_time_features=batch["past_time_features"],
+			past_observed_mask=batch["past_observed_mask"],
+			static_categorical_features=batch["static_categorical_features"],
+			static_real_features=batch["static_real_features"],
+			future_values=batch["future_values"],
+			future_time_features=batch["future_time_features"],
+		)
+
+		last_hidden_state = outputs.last_hidden_state
+		print(f"{last_hidden_state.shape=}.")
+
+	if True:
+		import huggingface_hub
+
+		file = huggingface_hub.hf_hub_download(repo_id="hf-internal-testing/tourism-monthly-batch", filename="train-batch.pt", repo_type="dataset")
+		batch = torch.load(file)
+
+		model = transformers.TimeSeriesTransformerForPrediction.from_pretrained("huggingface/time-series-transformer-tourism-monthly")
+
+		# During training, one provides both past and future values as well as possible additional features
+		outputs = model(
+			past_values=batch["past_values"],
+			past_time_features=batch["past_time_features"],
+			past_observed_mask=batch["past_observed_mask"],
+			static_categorical_features=batch["static_categorical_features"],
+			static_real_features=batch["static_real_features"],
+			future_values=batch["future_values"],
+			future_time_features=batch["future_time_features"],
+		)
+
+		loss = outputs.loss
+		loss.backward()
+
+		# During inference, one only provides past values as well as possible additional features
+		# and the model autoregressively generates future values
+		outputs = model.generate(
+			past_values=batch["past_values"],
+			past_time_features=batch["past_time_features"],
+			past_observed_mask=batch["past_observed_mask"],
+			static_categorical_features=batch["static_categorical_features"],
+			static_real_features=batch["static_real_features"],
+			future_time_features=batch["future_time_features"],
+		)
+
+		mean_prediction = outputs.sequences.mean(dim=1)
+		std_prediction = outputs.sequences.std(dim=1)  # ?
+
+		#print(f"{model.config=}.")
+		print(f"{model.config.distribution_output=}.")  # Student's t-distribution
+		print(f"{outputs.sequences.shape=}.")  # (batch size, number of samples, prediction length)
+		print(f"{mean_prediction.shape=}.")
+		print(f"{std_prediction.shape=}.")
+
+# REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/decision_transformer
 #	https://huggingface.co/edbeeching
 #	https://github.com/huggingface/transformers/blob/main/examples/research_projects/decision_transformer/run_decision_transformer.py
@@ -5077,7 +5155,7 @@ def main():
 	# Model.
 
 	#encoder_decoder_example()
-	perceiver_example()  # Perceiver & Perceiver IO.
+	#perceiver_example()  # Perceiver & Perceiver IO.
 
 	#--------------------
 	# Language.
@@ -5244,7 +5322,12 @@ def main():
 	#microsoft_voice_conversion_example()  # SpeechT5.
 
 	#--------------------
-	# Agent.
+	# Sequence.
+
+	time_series_transformer_example()  # Probabilistic time series transformer.
+
+	#--------------------
+	# Learning theory.
 
 	#decision_transformer_example()  # Decision transformer. Not yet tested.
 	#trajectory_transformer_example()  # Trajectory transformer. Not yet tested.
