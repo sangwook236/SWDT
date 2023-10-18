@@ -22,6 +22,37 @@ from gluonts.evaluation import make_evaluation_predictions
 from gluonts.evaluation import Evaluator
 import matplotlib.pyplot as plt
 
+# REF [site] >> https://ts.gluon.ai/stable/
+def simple_example():
+	from gluonts.dataset.pandas import PandasDataset
+	from gluonts.dataset.split import split
+	from gluonts.torch import DeepAREstimator
+
+	# Load data from a CSV file into a PandasDataset
+	df = pd.read_csv(
+		"https://raw.githubusercontent.com/AileenNielsen/TimeSeriesAnalysisWithPython/master/data/AirPassengers.csv",
+		index_col=0,
+		parse_dates=True,
+	)
+	dataset = PandasDataset(df, target="#Passengers")
+
+	# Split the data for training and testing
+	training_data, test_gen = split(dataset, offset=-36)
+	test_data = test_gen.generate_instances(prediction_length=12, windows=3)
+
+	# Train the model and make predictions
+	model = DeepAREstimator(
+		prediction_length=12, freq="M", trainer_kwargs={"max_epochs": 5}
+	).train(training_data)
+
+	forecasts = list(model.predict(test_data.input))
+
+	# Plot predictions
+	plt.plot(df["1954":], color="black")
+	for forecast in forecasts:
+		forecast.plot()
+	plt.legend(["True values"], loc="upper left", fontsize="xx-large")
+
 # REF [site] >> https://ts.gluon.ai/tutorials/forecasting/quick_start_tutorial.html
 def quick_start_tutorial():
 	# Provided datasets.
@@ -1459,6 +1490,18 @@ def extended_forecasting_tutorial():
 
 	plot_prob_forecasts(tss[0], forecasts[0])
 
+# REF [site] >> https://ts.gluon.ai/stable/tutorials/forecasting/hierarchical_model_tutorial.html
+def hierarchical_model_tutorial():
+	raise NotImplementedError
+
+# REF [site] >> https://ts.gluon.ai/stable/tutorials/advanced_topics/howto_pytorch_lightning.html
+def custom_models_with_pytorch():
+	raise NotImplementedError
+
+# REF [site] >> https://ts.gluon.ai/stable/tutorials/advanced_topics/hp_tuning_with_optuna.html
+def tuning_models_with_optuna():
+	raise NotImplementedError
+
 def r_forecast_package():
 	import ast
 	from gluonts.model.r_forecast import RForecastPredictor
@@ -1535,14 +1578,21 @@ def npts_test():
 	npts_forecast = list(npts_predictor.predict(train_ds))
 
 def main():
+	simple_example()
+
 	#quick_start_tutorial()
 	#extended_forecasting_tutorial()
+	#hierarchical_model_tutorial()  # Not yet implemented.
 
+	#custom_models_with_pytorch()  # Not yet implemented.
+	#tuning_models_with_optuna()  # Not yet implemented.
+
+	#-----
 	#r_forecast_package()
 	#deepar_test()
 	#prophet_test()  # Not yet implemented.
 	#temporal_fusion_transformer_test()  # Not yet implemented.
-	npts_test()
+	#npts_test()
 
 #--------------------------------------------------------------------
 
