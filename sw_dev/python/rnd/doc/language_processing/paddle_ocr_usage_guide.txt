@@ -1,0 +1,15 @@
+[-] General.
+	- Site.
+		https://github.com/PaddlePaddle/PaddleOCR
+
+[-] Installation (Ubuntu).
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
+
+	- Install.
+		sudo apt install libcudnn8 libcublas11
+
+		conda create --name ppocr python=3.10
+
+		pip install numpy matplotlib pillow opencv-python fitz
+		pip install paddlepaddle-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
+		pip install paddleocr>=2.0.1
