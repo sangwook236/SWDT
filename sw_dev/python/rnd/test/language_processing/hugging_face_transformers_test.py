@@ -5289,10 +5289,79 @@ def time_series_transformer_example():
 		std_prediction = outputs.sequences.std(dim=1)  # ?
 
 		#print(f"{model.config=}.")
+		print(f"{model.config.loss=}.")  # Negative log likelihood (NLL).
 		print(f"{model.config.distribution_output=}.")  # Student's t-distribution
+		print(f"{model.config.prediction_length=}.")
 		print(f"{outputs.sequences.shape=}.")  # (batch size, number of samples, prediction length)
 		print(f"{mean_prediction.shape=}.")
 		print(f"{std_prediction.shape=}.")
+
+		#-----
+		# REF [site] >> https://huggingface.co/blog/time-series-transformers
+
+		import numpy as np
+		import evaluate
+
+		forecasts = outputs.sequences
+		forecast_median = np.median(forecasts, 1)
+
+		file = huggingface_hub.hf_hub_download(repo_id="hf-internal-testing/tourism-monthly-batch", filename="train-batch.pt", repo_type="dataset")
+		#file = huggingface_hub.hf_hub_download(repo_id="hf-internal-testing/tourism-monthly-batch", filename="val-batch.pt", repo_type="dataset")
+		batch = torch.load(file)
+		assert len(forecast_median) == len(batch["future_values"]) == len(batch["past_values"])
+		batch_size = len(forecast_median)
+
+		#-----
+		mase_metric = evaluate.load("evaluate-metric/mase")
+		mape_metric = evaluate.load("evaluate-metric/mape")
+		smape_metric = evaluate.load("evaluate-metric/smape")
+
+		mase_metrics, mape_metrics, smape_metrics = [], [], []
+		for idx in range(batch_size):
+			mase = mase_metric.compute(
+				predictions=forecast_median[idx],
+				references=batch["future_values"][idx].numpy(),
+				training=batch["past_values"][idx].numpy(),
+				#periodicity=gluonts.time_feature.get_seasonality(freq),
+			)
+			mase_metrics.append(mase["mase"])
+
+			mape = mape_metric.compute(
+				predictions=forecast_median[idx],
+				references=batch["future_values"][idx].numpy(),
+			)
+			mape_metrics.append(mape["mape"])
+
+			smape = smape_metric.compute(
+				predictions=forecast_median[idx],
+				references=batch["future_values"][idx].numpy(),
+			)
+			smape_metrics.append(smape["smape"])
+		print(f"MASE = {np.mean(mase_metrics)}, MAPE = {np.mean(mape_metrics)}, sMAPE = {np.mean(smape_metrics)}.")
+
+		#-----
+		mase_metric = evaluate.load("evaluate-metric/mase", "multilist")
+		mape_metric = evaluate.load("evaluate-metric/mape", "multilist")
+		smape_metric = evaluate.load("evaluate-metric/smape", "multilist")
+
+		mase = mase_metric.compute(
+			predictions=forecast_median.transpose(),  # (timesteps, #sequences).
+			references=batch["future_values"].numpy().transpose(),  # (timesteps, #sequences).
+			training=batch["past_values"].numpy().transpose(),  # (timesteps, #sequences).
+			multioutput="raw_values",
+			#periodicity=gluonts.time_feature.get_seasonality(freq),
+		)
+		mape = mape_metric.compute(
+			predictions=forecast_median.transpose(),  # (timesteps, #sequences).
+			references=batch["future_values"].numpy().transpose(),  # (timesteps, #sequences).
+			multioutput="raw_values",
+		)
+		smape = smape_metric.compute(
+			predictions=forecast_median.transpose(),  # (timesteps, #sequences).
+			references=batch["future_values"].numpy().transpose(),  # (timesteps, #sequences).
+			multioutput="raw_values",
+		)
+		print(f'MASE = {np.mean(mase["mase"])}, MAPE = {np.mean(mape["mape"])}, sMAPE = {np.mean(smape["smape"])}.')
 
 # REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/decision_transformer
@@ -5571,7 +5640,7 @@ def main():
 	#--------------------
 	# Multimodal.
 
-	kosmos_example()  # Kosmos-2.
+	#kosmos_example()  # Kosmos-2.
 
 	#--------------------
 	# Document.
@@ -5634,7 +5703,7 @@ def main():
 	#--------------------
 	# Sequence.
 
-	#time_series_transformer_example()  # Probabilistic time series transformer.
+	time_series_transformer_example()  # Probabilistic time series transformer.
 
 	#--------------------
 	# Learning theory.

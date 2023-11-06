@@ -1544,6 +1544,360 @@ def evaluate_quick_tour():
 	results = suite.run("huggingface/prunebert-base-uncased-6-finepruned-w-distil-mnli")
 	print(f"Results: {results}.")
 
+def evaluate_test():
+	import evaluate
+
+	#--------------------
+	if False:
+		# Accuracy
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/accuracy
+
+		accuracy_metric = evaluate.load("accuracy")
+		results = accuracy_metric.compute(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0])
+		print(f"Accuracy = {results}.")
+
+		accuracy_metric = evaluate.load("accuracy")
+		results = accuracy_metric.compute(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0], normalize=False)
+		print(f"Accuracy = {results}.")
+
+		accuracy_metric = evaluate.load("accuracy")
+		results = accuracy_metric.compute(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0], sample_weight=[0.5, 2, 0.7, 0.5, 9, 0.4])
+		print(f"Accuracy = {results}.")
+
+	#--------------------
+	if False:
+		# Precision
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/precision
+
+		precision_metric = evaluate.load("precision")
+		results = precision_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
+		print(f"Precision = {results}.")
+
+		precision_metric = evaluate.load("precision")
+		results = precision_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
+		print(f"Precision = {results}.")
+
+		precision_metric = evaluate.load("precision")
+		results = precision_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
+		print(f"Precision = {results}.")
+
+		# Multiclass
+		predictions = [0, 2, 1, 0, 0, 1]
+		references = [0, 1, 2, 0, 1, 2]
+		results = precision_metric.compute(predictions=predictions, references=references, average="macro")
+		print(results)
+		results = precision_metric.compute(predictions=predictions, references=references, average="micro")
+		print(results)
+		results = precision_metric.compute(predictions=predictions, references=references, average="weighted")
+		print(results)
+		results = precision_metric.compute(predictions=predictions, references=references, average=None)
+		print(f'Precision = {[round(res, 2) for res in results["precision"]]}.')
+
+	#--------------------
+	if False:
+		# Recall
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/recall
+
+		recall_metric = evaluate.load("recall")
+		results = recall_metric.compute(references=[0, 0, 1, 1, 1], predictions=[0, 1, 0, 1, 1])
+		print(f"Recall = {results}.")
+
+		recall_metric = evaluate.load("recall")
+		results = recall_metric.compute(references=[0, 0, 1, 1, 1], predictions=[0, 1, 0, 1, 1], pos_label=0)
+		print(f"Recall = {results}.")
+
+		recall_metric = evaluate.load("recall")
+		sample_weight = [0.9, 0.2, 0.9, 0.3, 0.8]
+		results = recall_metric.compute(references=[0, 0, 1, 1, 1], predictions=[0, 1, 0, 1, 1], sample_weight=sample_weight)
+		print(f"Recall = {results}.")
+
+		# Multiclass
+		recall_metric = evaluate.load("recall")
+		predictions = [0, 2, 1, 0, 0, 1]
+		references = [0, 1, 2, 0, 1, 2]
+		results = recall_metric.compute(predictions=predictions, references=references, average="macro")
+		print(f"Recall = {results}.")
+		results = recall_metric.compute(predictions=predictions, references=references, average="micro")
+		print(f"Recall = {results}.")
+		results = recall_metric.compute(predictions=predictions, references=references, average="weighted")
+		print(f"Recall = {results}.")
+		results = recall_metric.compute(predictions=predictions, references=references, average=None)
+		print(f"Recall = {results}.")
+
+	#--------------------
+	if True:
+		# F1 score
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/f1
+
+		f1_metric = evaluate.load("f1")
+		results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
+		print(f"F1 = {results}.")
+
+		f1_metric = evaluate.load("f1")
+		results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
+		print(f"F1 = {results}.")
+
+		f1_metric = evaluate.load("f1")
+		results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
+		print(f"F1 = {results}.")
+
+		# Multiclass
+		predictions = [0, 2, 1, 0, 0, 1]
+		references = [0, 1, 2, 0, 1, 2]
+		results = f1_metric.compute(predictions=predictions, references=references, average="macro")
+		print(f"F1 = {results}.")
+		results = f1_metric.compute(predictions=predictions, references=references, average="micro")
+		print(f"F1 = {results}.")
+		results = f1_metric.compute(predictions=predictions, references=references, average="weighted")
+		print(f"F1 = {results}.")
+		results = f1_metric.compute(predictions=predictions, references=references, average=None)
+		print(f"F1 = {results}.")
+
+	#--------------------
+	if False:
+		# The area under the curve (AUC) for the Receiver Operating Characteristic Curve (ROC)
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/roc_auc
+
+		roc_auc_score = evaluate.load("roc_auc")
+		refs = [1, 0, 1, 1, 0, 0]
+		pred_scores = [0.5, 0.2, 0.99, 0.3, 0.1, 0.7]
+		results = roc_auc_score.compute(references=refs, prediction_scores=pred_scores)
+		print(f'ROC AUC = {round(results["roc_auc"], 2)}.')
+
+		roc_auc_score = evaluate.load("roc_auc", "multiclass")
+		refs = [1, 0, 1, 2, 2, 0]
+		pred_scores = [
+			[0.3, 0.5, 0.2],
+			[0.7, 0.2, 0.1],
+			[0.005, 0.99, 0.005],
+			[0.2, 0.3, 0.5],
+			[0.1, 0.1, 0.8],
+			[0.1, 0.7, 0.2]
+		]
+		results = roc_auc_score.compute(
+			references=refs,
+			prediction_scores=pred_scores,
+			multi_class="ovr",
+		)
+		print(f'ROC AUC = {round(results["roc_auc"], 2)}.')
+
+		roc_auc_score = evaluate.load("roc_auc", "multilabel")
+		refs = [
+			[1, 1, 0],
+			[1, 1, 0],
+			[0, 1, 0],
+			[0, 0, 1],
+			[0, 1, 1],
+			[1, 0, 1]
+		]
+		pred_scores = [
+			[0.3, 0.5, 0.2],
+			[0.7, 0.2, 0.1],
+			[0.005, 0.99, 0.005],
+			[0.2, 0.3, 0.5],
+			[0.1, 0.1, 0.8],
+			[0.1, 0.7, 0.2]
+		]
+		results = roc_auc_score.compute(
+			references=refs,
+			prediction_scores=pred_scores,
+			average=None,
+		)
+		print(f'ROC AUC = {[round(res, 2) for res in results["roc_auc"]]}.')
+
+	#--------------------
+	if False:
+		# Mahalanobis distance
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/mahalanobis
+
+		mahalanobis_metric = evaluate.load("mahalanobis")
+		results = mahalanobis_metric.compute(reference_distribution=[[0, 1], [1, 0]], X=[[0, 1]])
+		print(f"Mahalanobis = {results}.")
+
+	#--------------------
+	if False:
+		# Bilingual Evaluation Understudy (BLEU)
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/bleu
+
+		predictions = ["hello there general kenobi", "foo bar foobar"]
+		references = [
+			["hello there general kenobi"],
+			["foo bar foobar"]
+		]
+		bleu = evaluate.load("bleu")
+		results = bleu.compute(predictions=predictions, references=references)
+		print(f"BLEU = {results}.")
+
+		predictions = [
+			["hello there general kenobi"],
+			["foo bar foobar"]
+		]
+		references = [
+			[["hello there general kenobi"], ["hello there!"]],
+			[["foo bar foobar"]]
+		]
+		bleu = evaluate.load("bleu")
+		results = bleu.compute(predictions=predictions, references=references)
+		print(f"BLEU = {results}.")
+
+		from nltk.tokenize import word_tokenize
+
+		bleu = evaluate.load("bleu")
+		predictions = [
+			["hello there general kenobi"],
+			["foo bar foobar"]
+		]
+		references = [
+			[["hello there general kenobi"], ["hello there!"]],
+			[["foo bar foobar"]]
+		]
+		results = bleu.compute(predictions=predictions, references=references, tokenizer=word_tokenize)
+		print(results)
+		print(f"BLEU = {results}.")
+
+	#--------------------
+	if False:
+		# Perplexity
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/perplexity
+
+		import datasets
+
+		perplexity = evaluate.load("perplexity", module_type="metric")
+		input_texts = ["lorem ipsum", "Happy Birthday!", "Bienvenue"]
+		results = perplexity.compute(
+			model_id="gpt2",
+			add_start_token=False,
+			predictions=input_texts,
+		)
+		print(f"Perplexity = {results}.")
+
+		perplexity = evaluate.load("perplexity", module_type="metric")
+		input_texts = datasets.load_dataset(
+			"wikitext",
+			"wikitext-2-raw-v1",
+			split="test"
+		)["text"][:50]
+		input_texts = [s for s in input_texts if s != ""]
+		results = perplexity.compute(
+			model_id="gpt2",
+			predictions=input_texts,
+		)
+		print(f"Perplexity = {results}.")
+
+	#--------------------
+	if False:
+		# GLUE, the General Language Understanding Evaluation benchmark
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/glue
+
+		# Maximal values for the MRPC subset (which outputs accuracy and f1)
+		glue_metric = evaluate.load("glue", "mrpc")  # "mrpc" or "qqp"
+		references = [0, 1]
+		predictions = [0, 1]
+		results = glue_metric.compute(predictions=predictions, references=references)
+		print(f"GLUE = {results}.")
+
+		# Minimal values for the STSB subset (which outputs pearson and spearmanr)
+		glue_metric = evaluate.load("glue", "stsb")
+		references = [0., 1., 2., 3., 4., 5.]
+		predictions = [-10., -11., -12., -13., -14., -15.]
+		results = glue_metric.compute(predictions=predictions, references=references)
+		print(f"GLUE = {results}.")
+
+		# Partial match for the COLA subset (which outputs matthews_correlation)
+		glue_metric = evaluate.load("glue", "cola")
+		references = [0, 1]
+		predictions = [1, 1]
+		results = glue_metric.compute(predictions=predictions, references=references)
+		print(f"GLUE = {results}.")
+
+	#--------------------
+	if False:
+		# SuperGLUE
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/super_glue
+
+		# Maximal values for the COPA subset (which outputs accuracy)
+		super_glue_metric = evaluate.load("super_glue", "copa")  # Any of ["copa", "rte", "wic", "wsc", "wsc.fixed", "boolq", "axg"]
+		predictions = [0, 1]
+		references = [0, 1]
+		results = super_glue_metric.compute(predictions=predictions, references=references)
+		print(f"SuperGLUE = {results}.")
+
+		# Minimal values for the MultiRC subset (which outputs pearson and spearmanr)
+		super_glue_metric = evaluate.load("super_glue", "multirc")
+		predictions = [{"idx": {"answer": 0, "paragraph": 0, "question": 0}, "prediction": 0}, {"idx": {"answer": 1, "paragraph": 2, "question": 3}, "prediction": 1}]
+		references = [1, 0]
+		results = super_glue_metric.compute(predictions=predictions, references=references)
+		print(f"SuperGLUE = {results}.")
+
+		# Partial match for the COLA subset (which outputs matthews_correlation)
+		super_glue_metric = evaluate.load("super_glue", "axb")
+		references = [0, 1]
+		predictions = [1, 1]
+		results = super_glue_metric.compute(predictions=predictions, references=references)
+		print(f"SuperGLUE = {results}.")
+
+	#--------------------
+	if False:
+		# Mean Absolute Scaled Error (MASE)
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/mase
+
+		mase_metric = evaluate.load("mase")
+		predictions = [2.5, 0.0, 2, 8]
+		references = [3, -0.5, 2, 7]
+		training = [5, 0.5, 4, 6, 3, 5, 2]
+		results = mase_metric.compute(predictions=predictions, references=references, training=training)
+		print(f"MASE = {results}.")
+
+		mase_metric = evaluate.load("mase", "multilist")
+		predictions = [[0.5, 1], [-1, 1], [7, -6]]  # (timesteps, #sequences) = (3, 2)
+		references = [[0.1, 2], [-1, 2], [8, -5]]  # (timesteps, #sequences) = (3, 2)
+		training = [[0.5, 1], [-1, 1], [7, -6]]  # (timesteps, #sequences) = (3, 2)
+		results = mase_metric.compute(predictions=predictions, references=references, training=training)
+		#results = mase_metric.compute(predictions=predictions, references=references, training=training, multioutput="uniform_average")
+		print(f"MASE = {results}.")
+		results = mase_metric.compute(predictions=predictions, references=references, training=training, multioutput="raw_values")
+		print(f"MASE = {results}.")
+
+	#--------------------
+	if False:
+		# Mean Absolute Percentage Error (MAPE)
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/mape
+
+		mape_metric = evaluate.load("mape")
+		predictions = [2.5, 0.0, 2, 8]
+		references = [3, -0.5, 2, 7]
+		results = mape_metric.compute(predictions=predictions, references=references)
+		print(f"MAPE = {results}.")
+
+		mape_metric = evaluate.load("mape", "multilist")
+		predictions = [[0.5, 1], [-1, 1], [7, -6]]  # (timesteps, #sequences) = (3, 2)
+		references = [[0.1, 2], [-1, 2], [8, -5]]  # (timesteps, #sequences) = (3, 2)
+		results = mape_metric.compute(predictions=predictions, references=references)
+		#results = mape_metric.compute(predictions=predictions, references=references, multioutput="uniform_average")
+		print(f"MAPE = {results}.")
+		results = mape_metric.compute(predictions=predictions, references=references, multioutput="raw_values")
+		print(f"MAPE = {results}.")
+
+	#--------------------
+	if False:
+		# Symmetric Mean Absolute Percentage Error (sMAPE)
+		# REF [site] >> https://huggingface.co/spaces/evaluate-metric/smape
+
+		smape_metric = evaluate.load("smape")
+		predictions = [2.5, 0.0, 2, 8]
+		references = [3, -0.5, 2, 7]
+		results = smape_metric.compute(predictions=predictions, references=references)
+		print(f"sMAPE = {results}.")
+
+		smape_metric = evaluate.load("smape", "multilist")
+		predictions = [[0.5, 1], [-1, 1], [7, -6]]  # (timesteps, #sequences) = (3, 2)
+		references = [[0.1, 2], [-1, 2], [8, -5]]  # (timesteps, #sequences) = (3, 2)
+		results = smape_metric.compute(predictions=predictions, references=references)
+		#results = smape_metric.compute(predictions=predictions, references=references, multioutput="uniform_average")
+		print(f"sMAPE = {results}.")
+		results = smape_metric.compute(predictions=predictions, references=references, multioutput="raw_values")
+		print(f"sMAPE = {results}.")
+
 # REF [site] >> https://github.com/huggingface/accelerate
 def accelerate_simple_example():
 	import time
@@ -1823,13 +2177,14 @@ def main():
 	#datasets_hugging_face_test()  # Wikipedia, TextVQA, WikiSQL, WikiTQ.
 	#datasets_hugging_face_m4_test()  # VQAv2, VaTeX, TextCaps, NoCaps.
 	#datasets_nielsr_test()  # FUNSD.
-	datasets_naver_clova_test()  # CORD, SynthDoG.
+	#datasets_naver_clova_test()  # CORD, SynthDoG.
 	#datasets_ds4sd_test()  # DocLayNet.
 
 	#--------------------
 	# Evaluate.
 
 	#evaluate_quick_tour()
+	evaluate_test()
 
 	#--------------------
 	# Accelerate.
