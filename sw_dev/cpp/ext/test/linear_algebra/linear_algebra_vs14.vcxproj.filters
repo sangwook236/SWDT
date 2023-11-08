@@ -79,7 +79,13 @@
     <ClCompile Include="eigen\eigen_qr.cpp">
       <Filter>Source Files\eigen</Filter>
     </ClCompile>
+    <ClCompile Include="eigen\eigen_spline.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
     <ClCompile Include="eigen\eigen_svd.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_tensor.cpp">
       <Filter>Source Files\eigen</Filter>
     </ClCompile>
     <ClCompile Include="lapack\lapack_cblas.cpp">
@@ -120,9 +126,6 @@
     </ClCompile>
     <ClCompile Include="superlu\superlu_main.cpp">
       <Filter>Source Files\superlu</Filter>
-    </ClCompile>
-    <ClCompile Include="eigen\eigen_spline.cpp">
-      <Filter>Source Files\eigen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

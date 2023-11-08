@@ -8,11 +8,6 @@
 namespace {
 namespace local {
 
-}  // namespace local
-}  // unnamed namespace
-
-namespace my_eigen {
-
 // REF [site] >> https://eigen.tuxfamily.org/dox/group__TutorialGeometry.html
 void transformation_test()
 {
@@ -216,6 +211,16 @@ void transformation_test()
 
 		std::cout << "M:\n" << M << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_eigen {
+
+void geometry()
+{
+	local::transformation_test();
 }
 
 }  // namespace my_eigen

@@ -112,6 +112,7 @@
 		<Unit filename="eigen/eigen_qr.cpp" />
 		<Unit filename="eigen/eigen_spline.cpp" />
 		<Unit filename="eigen/eigen_svd.cpp" />
+		<Unit filename="eigen/eigen_tensor.cpp" />
 		<Unit filename="lapack/lapack_cblas.cpp" />
 		<Unit filename="lapack/lapack_clapack.cpp" />
 		<Unit filename="lapack/lapack_main.cpp" />

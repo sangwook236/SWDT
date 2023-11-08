@@ -34,7 +34,7 @@ void mpc_example()
 		0, 1;
 
 	// Let's also say there is a small constant acceleration in one direction.
-	// This is the force of gravity in our model. 
+	// This is the force of gravity in our model.
 	dlib::matrix<double, STATES, 1> C;
 	C = 0,
 		0,
@@ -47,10 +47,10 @@ void mpc_example()
 	// control to apply it does it by simulating the process for HORIZON time
 	// steps and selecting the control that leads to the best performance over
 	// the next HORIZON steps.
-	//  
+	//
 	// To be precise, each time you ask it for a control, it solves the
 	// following quadratic program:
-	//   
+	//
 	//     min     sum_i trans(x_i-target_i)*Q*(x_i-target_i) + trans(u_i)*R*u_i
 	//    x_i,u_i
 	//

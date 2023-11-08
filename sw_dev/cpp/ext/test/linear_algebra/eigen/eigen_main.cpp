@@ -50,9 +50,11 @@ int eigen_main(int argc, char *argv[])
 	//my_eigen::nonlinear_least_squares();  // Not yet implemented.
 
 	// Geometry ----------------------------------------------
-	my_eigen::transformation_test();
+	//	- Transformation.
+	my_eigen::geometry();
 
 	// Unsupported -------------------------------------------
+	//my_eigen::tensor();
 	//my_eigen::spline();
 
 	return 0;
