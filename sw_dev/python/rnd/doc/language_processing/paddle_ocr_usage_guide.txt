@@ -2,6 +2,26 @@
 	- Site.
 		https://github.com/PaddlePaddle/PaddleOCR
 
+[-] Usage.
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
+
+	- Chinese and English model.
+		Detection, direction classification and recognition: set the parameter --use_gpu false to disable the gpu device.
+			paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en --use_gpu false
+
+		PDF file is also supported, you can infer the first few pages by using the page_num parameter, the default is 0, which means infer all pages:
+			paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
+
+		Only detection: set --rec to false.
+			paddleocr --image_dir ./imgs_en/img_12.jpg --rec false
+
+		Only recognition: set --det to false.
+			paddleocr --image_dir ./imgs_words_en/word_10.png --det false --lang en
+
+	- Multi-language model.
+		PaddleOCR currently supports 80 languages, which can be switched by modifying the --lang parameter.
+			paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
+
 [-] Installation (Ubuntu).
 	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
 
@@ -13,3 +33,22 @@
 		pip install numpy matplotlib pillow opencv-python fitz
 		pip install paddlepaddle-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
 		pip install paddleocr>=2.0.1
+
+[-] Troubleshooting (Ubuntu).
+	- <error> ImportError: /lib/x86_64-linux-gnu/libssl.so.1.1: version 'OPENSSL_1_1_1' not found
+		<solution>
+			https://stackoverflow.com/questions/72133316/libssl-so-1-1-cannot-open-shared-object-file-no-such-file-or-directory
+
+			It is risky to install openssl-1.1.1o on Ubuntu 22.04 as it supports openssl-3.0.2.
+			A more preferable way would be to build and keep the libssl.so.1.1 and libcrypto.so.1.1 libraries away from root and export LD_LIBRARY_PATH as needed.
+
+			get https://www.openssl.org/source/openssl-1.1.1o.tar.gz
+			tar -zxvf openssl-1.1.1o.tar.gz
+			cd openssl-1.1.1o
+			./config
+			make
+			make test
+			sudo make install
+
+			(Optional) ln -s /usr/local/lib/libssl.so.1.1 /usr/lib/libssl.so.1.1
+			(Optional) ln -s /usr/local/lib/libcrypto.so.1.1 /usr/lib/libcrypto.so.1.1

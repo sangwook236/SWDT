@@ -4,14 +4,15 @@
 import os, time
 from paddleocr import PaddleOCR, draw_ocr
 from PIL import Image
+import matplotlib.pyplot as plt
 
 # REF [site] >> https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
 def quickstart_image():
-	img_path = "./dentist_screen_01.png"
+	img_path = "./sample.png"
 
 	# Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 	# You can set the parameter 'lang' as 'ch', 'en', 'fr', 'german', 'korean', 'japan' to switch the language model in order.
-	ocr = PaddleOCR(use_angle_cls=True, lang='korean')  # Need to run only once to download and load model into memory
+	ocr = PaddleOCR(use_angle_cls=True, lang="korean")  # Need to run only once to download and load model into memory.
 
 	print("Recognizing...")
 	start_time = time.time()
@@ -40,6 +41,12 @@ def quickstart_image():
 	im_show = draw_ocr(image, boxes, txts, scores, font_path=font_filepath)
 	im_show = Image.fromarray(im_show)
 	im_show.save("./result.jpg")
+
+	if False:
+		plt.imshow(im_show)
+		plt.axis("off")
+		plt.tight_layout()
+		plt.show()
 
 # REF [site] >> https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
 def quickstart_pdf():

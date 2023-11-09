@@ -52,9 +52,8 @@ def simple_usage():
 	#input_image = "./english.png"
 	#input_image = "./french.jpg"
 	#input_image = "./japanese.jpg"
-	#input_image = "./korean.png"
+	input_image = "./korean.png"
 	#input_image = "./thai.jpg"
-	input_image = "./dentist_screen_01.png"
 	
 	#reader = easyocr.Reader(["ch_sim", "en"])  # This needs to run only once to load the model into memory
 	reader = easyocr.Reader(["en", "ko"], gpu=True, detect_network="craft", recog_network="standard", download_enabled=True, detector=True, recognizer=True)
