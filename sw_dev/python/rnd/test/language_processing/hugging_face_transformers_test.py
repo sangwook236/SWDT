@@ -2476,6 +2476,37 @@ A: """
 			outputs = model.generate(**inputs, max_new_tokens=100)
 			print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
+# REF [site] >>
+#	https://huggingface.co/01-ai
+#	https://github.com/01-ai/Yi
+def yi_example():
+	# Models:
+	#	01-ai/Yi-6B: ~12.12GB.
+	#	01-ai/Yi-6B-200K: ~12.12GB.
+	#	01-ai/Yi-34B: ~68.79GB.
+	#	01-ai/Yi-34B-200K.
+
+	model_name = "01-ai/Yi-6B"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", torch_dtype="auto", trust_remote_code=True)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+
+	inputs = tokenizer("There's a place where time stands still. A place of breath taking wonder, but also", return_tensors="pt")
+	max_length = 256
+
+	outputs = model.generate(
+		inputs.input_ids.cuda(),
+		max_length=max_length,
+		eos_token_id=tokenizer.eos_token_id,
+		do_sample=True,
+		repetition_penalty=1.3,
+		no_repeat_ngram_size=5,
+		temperature=0.7,
+		top_k=40,
+		top_p=0.8,
+	)
+	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -5579,6 +5610,8 @@ def main():
 	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.
 
+	yi_example()  # Yi-6B & Yi-34B.
+
 	#-----
 	# Code.
 
@@ -5703,7 +5736,7 @@ def main():
 	#--------------------
 	# Sequence.
 
-	time_series_transformer_example()  # Probabilistic time series transformer.
+	#time_series_transformer_example()  # Probabilistic time series transformer.
 
 	#--------------------
 	# Learning theory.
