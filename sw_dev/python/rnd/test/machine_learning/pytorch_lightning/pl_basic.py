@@ -290,7 +290,7 @@ def minimal_example():
 		"""
 		#device_stats_callback = DeviceStatsMonitor()
 		#early_stopping_callback = pl.callbacks.EarlyStopping("val_loss", min_delta=0.0, patience=3, verbose=False, mode="min", strict=True, check_finite=True, stopping_threshold=None, divergence_threshold=None, check_on_train_epoch_end=None)
-		#lr_monitor_callback = pl.callbacks.LearningRateMonitor(logging_interval="step", log_momentum=False)
+		lr_monitor_callback = pl.callbacks.LearningRateMonitor(logging_interval="step", log_momentum=False)
 		#model_pruing_callback = pl.callbacks.ModelPruning(pruning_fn="l1_unstructured", parameters_to_prune=[(model.mlp_1, "weight"), (model.mlp_2, "weight")], parameter_names=None, use_global_unstructured=True, amount=0.5, apply_pruning=True, make_pruning_permanent=True, use_lottery_ticket_hypothesis=True, resample_parameters=False, pruning_dim=None, pruning_norm=None, verbose=0, prune_on_train_epoch_end=True)
 		#model_summary_callback = pl.callbacks.ModelSummary(max_depth=1)
 		#quantization_aware_training_callback = pl.callbacks.QuantizationAwareTraining(qconfig="fbgemm", observer_type="average", collect_quantization=None, modules_to_fuse=None, input_compatible=True, quantize_on_fit_end=True, observer_enabled_stages=("train",))
@@ -306,7 +306,8 @@ def minimal_example():
 		#ddp_plugin = pl.plugins.training_type.DDPPlugin(find_unused_parameters=False)
 		#amp_plugin = pl.plugins.precision.ApexMixedPrecisionPlugin(amp_level="O2")
 
-		callbacks = [checkpoint_callback]
+		#callbacks = [checkpoint_callback]
+		callbacks = [checkpoint_callback, lr_monitor_callback]
 		#callbacks = [checkpoint_callback, swa_callback]
 		#callbacks = None
 

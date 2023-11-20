@@ -2476,6 +2476,99 @@ A: """
 			outputs = model.generate(**inputs, max_new_tokens=100)
 			print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
 
+# REF [site] >> https://huggingface.co/docs/transformers/main/model_doc/falcon
+def falcon_example():
+	model_name = "Rocketknight1/falcon-rw-1b"  # ~2.62GB.
+
+	if True:
+		# Initializing a small (2-layer) Falcon configuration
+		configuration = transformers.FalconConfig(num_hidden_layers=2)
+
+		# Initializing a model from the small configuration
+		model = transformers.FalconModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.FalconModel.from_pretrained(model_name)
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.FalconForCausalLM.from_pretrained(model_name)
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs, labels=inputs["input_ids"])
+		loss = outputs.loss
+		logits = outputs.logits
+
+	if True:
+		# Single-label classification
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.FalconForSequenceClassification.from_pretrained(model_name)
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_class_id = logits.argmax().item()
+
+		# To train a model on `num_labels` classes, you can pass `num_labels=num_labels` to `.from_pretrained(...)`
+		num_labels = len(model.config.id2label)
+		model = transformers.FalconForSequenceClassification.from_pretrained(model_name, num_labels=num_labels)
+
+		labels = torch.tensor([1])
+		loss = model(**inputs, labels=labels).loss
+
+	if True:
+		# Multi-label classification
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.FalconForSequenceClassification.from_pretrained(model_name, problem_type="multi_label_classification")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_class_ids = torch.arange(0, logits.shape[-1])[torch.sigmoid(logits).squeeze(dim=0) > 0.5]
+
+		# To train a model on `num_labels` classes, you can pass `num_labels=num_labels` to `.from_pretrained(...)`
+		num_labels = len(model.config.id2label)
+		model = transformers.FalconForSequenceClassification.from_pretrained(model_name, num_labels=num_labels, problem_type="multi_label_classification")
+
+		labels = torch.sum(
+			torch.nn.functional.one_hot(predicted_class_ids[None, :].clone(), num_classes=num_labels), dim=1
+		).to(torch.float)
+		loss = model(**inputs, labels=labels).loss
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.FalconForTokenClassification.from_pretrained(model_name)
+
+		inputs = tokenizer("HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt")
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that
+		# there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
+
 # REF [site] >>
 #	https://huggingface.co/01-ai
 #	https://github.com/01-ai/Yi
@@ -3001,48 +3094,141 @@ def code_llama_example():
 	for seq in sequences:
 		print(f"Result: {seq['generated_text']}")
 
-# REF [site] >> https://huggingface.co/microsoft/phi-1
-def phi_1_example():
+# REF [site] >> https://huggingface.co/bigcode
+def star_coder_example():
+	# Models:
+	#	bigcode/starcoder.
+
+	checkpoint = "bigcode/starcoder"
+	device = "cuda"  # for GPU usage or "cpu" for CPU usage
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
+	model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+
+	# Generation
+	inputs = tokenizer.encode("def print_hello_world():", return_tensors="pt").to(device)
+	outputs = model.generate(inputs)
+	print(tokenizer.decode(outputs[0]))
+
+	# Fill-in-the-middle
+	# Fill-in-the-middle uses special tokens to identify the prefix/middle/suffix part of the input and output:
+	input_text = "<fim_prefix>def print_hello_world():\n    <fim_suffix>\n    print('Hello world!')<fim_middle>"
+	inputs = tokenizer.encode(input_text, return_tensors="pt").to(device)
+	outputs = model.generate(inputs)
+	print(tokenizer.decode(outputs[0]))
+
+# REF [site] >> https://huggingface.co/replit
+def replit_example():
+	# Models:
+	#	replit/replit-code-v1-3b.
+	#	replit/replit-code-v1_5-3b.
+
+	model_name = "replit/replit-code-v1-3b"
+
+	if True:
+		device = "cuda:0"
+
+		if False:
+			# Load model
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+			model.to(device=device)
+		else:
+			config = transformers.AutoConfig.from_pretrained(model_name, trust_remote_code=True)
+			config.attn_config["attn_impl"] = "triton"
+
+			# Load model
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, config=config, trust_remote_code=True)
+			model.to(device=device, dtype=torch.bfloat16)
+
+		# Forward pass
+		x = torch.tensor([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
+		x = x.to(device=device)
+		y = model(x)
+
+		# Load tokenizer
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+
+		# Single input encoding + generation
+		x = tokenizer.encode('def hello():\n  print("hello world")\n', return_tensors="pt").to(device=device)
+		y = model.generate(x)
+
+		# Decoding, clean_up_tokenization_spaces=False to ensure syntactical correctness
+		generated_code = tokenizer.decode(y[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
+		print(generated_code)
+
+	if True:
+		# Generation
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+		elif False:
+			# Loading in 8-bit
+			model = AutoModelForCausalLM.from_pretrained(
+				model_name, 
+				trust_remote_code=True, 
+				device_map="auto",
+				load_in_8bit=True
+			)
+		elif False:
+			# Loading in 4-bit
+			model = AutoModelForCausalLM.from_pretrained(
+				model_name, 
+				trust_remote_code=True, 
+				device_map="auto",
+				load_in_4bit=True
+			)
+
+		x = tokenizer.encode("def fibonacci(n): ", return_tensors="pt")
+		y = model.generate(x, max_length=100, do_sample=True, top_p=0.95, top_k=4, temperature=0.2, num_return_sequences=1, eos_token_id=tokenizer.eos_token_id)
+
+		# Decoding, clean_up_tokenization_spaces=False to ensure syntactical correctness
+		generated_code = tokenizer.decode(y[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
+		print(generated_code)
+
+# REF [site] >> https://huggingface.co/microsoft
+def phi_example():
+	# Models:
+	#	microsoft/phi-1: ~2.84GB.
+	#	microsoft/phi-1_5: ~2.84GB.
+
 	torch.set_default_device("cuda")
 
-	model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1", trust_remote_code=True)  # ~2.84GB.
-	tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1", trust_remote_code=True)
+	if False:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1", trust_remote_code=True)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1", trust_remote_code=True)
 
-	inputs = tokenizer('''def print_prime(n):
+		inputs = tokenizer('''def print_prime(n):
 	"""
 	Print all primes between 1 and n
 	"""''', return_tensors="pt", return_attention_mask=False)
 
-	if True:
-		outputs = model.generate(**inputs, max_length=200)
-	else:
-		with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
+		if True:
 			outputs = model.generate(**inputs, max_length=200)
+		else:
+			with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
+				outputs = model.generate(**inputs, max_length=200)
 
-	text = tokenizer.batch_decode(outputs)[0]
-	print(text)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
 
-# REF [site] >> https://huggingface.co/microsoft/phi-1_5
-def phi_1_5_example():
-	torch.set_default_device("cuda")
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
 
-	model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)  # ~2.84GB.
-	tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
-
-	inputs = tokenizer('''```python
+		inputs = tokenizer('''```python
 def print_prime(n):
 	"""
 	Print all primes between 1 and n
 	"""''', return_tensors="pt", return_attention_mask=False)
 
-	if True:
-		outputs = model.generate(**inputs, max_length=200)
-	else:
-		with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
+		if True:
 			outputs = model.generate(**inputs, max_length=200)
+		else:
+			with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
+				outputs = model.generate(**inputs, max_length=200)
 
-	text = tokenizer.batch_decode(outputs)[0]
-	print(text)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -5610,7 +5796,8 @@ def main():
 	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.
 
-	yi_example()  # Yi-6B & Yi-34B.
+	falcon_example()  # Falcon.
+	#yi_example()  # Yi-6B & Yi-34B.
 
 	#-----
 	# Code.
@@ -5624,8 +5811,9 @@ def main():
 	#codegen25_example()  # CodeGen2.5.
 	#codeparrot_example()  # CodeParrot.
 	#code_llama_example()  # Code Llama.
-	#phi_1_example()  # phi-1.
-	#phi_1_5_example()  # phi-1.5.
+	#star_coder_example()  # StarCoder. Not yet tested.
+	#replit_example()  # Replit. Not yet tested.
+	#phi_example()  # phi-1 & phi-1.5.
 
 	#--------------------
 	# Vision.
