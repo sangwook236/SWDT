@@ -6,6 +6,22 @@ import torch, torchtext
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/transformer_tutorial.html
 class PositionalEncoding(torch.nn.Module):
+	r"""Inject some information about the relative or absolute position of the tokens
+		in the sequence. The positional encodings have the same dimension as
+		the embeddings, so that the two can be summed. Here, we use sine and cosine
+		functions of different frequencies.
+	.. math::
+		\text{PosEncoder}(pos, 2i) = sin(pos/10000^(2i/d_model))
+		\text{PosEncoder}(pos, 2i+1) = cos(pos/10000^(2i/d_model))
+		\text{where pos is the word position and i is the embed idx)
+	Args:
+		d_model: the embed dim (required).
+		dropout: the dropout value (default=0.1).
+		max_len: the max. length of the incoming sequence (default=5000).
+	Examples:
+		>>> pos_encoder = PositionalEncoding(d_model)
+	"""
+
 	def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
 		super().__init__()
 
@@ -19,10 +35,16 @@ class PositionalEncoding(torch.nn.Module):
 		self.register_buffer("pe", pe)
 
 	def forward(self, x: torch.Tensor) -> torch.Tensor:
-		"""
+		r"""Inputs of forward function
 		Args:
-			x: Tensor, shape [seq_len, batch_size, embedding_dim]
+			x: the sequence fed to the positional encoder model (required).
+		Shape:
+			x: [sequence length, batch size, embedding dim]
+			output: [sequence length, batch size, embedding dim]
+		Examples:
+			>>> output = pos_encoder(x)
 		"""
+
 		x = x + self.pe[:x.size(0)]
 		return self.dropout(x)
 
@@ -64,6 +86,7 @@ class StandardTransformerModel(torch.nn.Module):
 		Returns:
 			output Tensor of shape [seq_len, batch_size, num_tokens]
 		"""
+
 		src = self.src_encoder(src) * math.sqrt(self.d_model)
 		src = self.pos_encoder(src)
 		tgt = self.tgt_encoder(tgt) * math.sqrt(self.d_model)

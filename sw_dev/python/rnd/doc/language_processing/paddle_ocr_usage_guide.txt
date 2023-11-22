@@ -2,7 +2,7 @@
 	- Site.
 		https://github.com/PaddlePaddle/PaddleOCR
 
-[-] Usage.
+[-] Usage (PaddleOCR).
 	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
 
 	- Chinese and English model.
@@ -22,10 +22,237 @@
 		PaddleOCR currently supports 80 languages, which can be switched by modifying the --lang parameter.
 			paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
 
-[-] Installation (Ubuntu).
-	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
+[-] Usage (Python inference for PP-OCR Model Zoo).
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/inference_ppocr_en.md
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/models_list_en.md
 
-	- Install.
+	- Text detection model inference.
+		Download DB text detection inference model:
+			wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
+			tar xf ch_PP-OCRv3_det_infer.tar
+
+		Run inference:
+			python tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/"
+			python tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --det_limit_type=max --det_limit_side_len=1216
+			python tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_gpu=False
+
+	- Text recognition model inference.
+		Lightweight Chinese recognition model inference:
+			Download CRNN text recognition inference model:
+				wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
+				tar xf ch_PP-OCRv3_rec_infer.tar
+
+			Run inference:
+				python tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_10.png" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --rec_image_shape=3,48,320
+
+		English recognition model inference:
+			For English recognition model inference, you can execute the following commands.
+			You need to specify the dictionary path used by --rec_char_dict_path.
+
+			Download en model:
+				wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
+				tar xf en_PP-OCRv3_rec_infer.tar
+
+			Run inference:
+				python tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
+
+		Multilingual model inference:
+			If you need to predict other language models, when using inference model prediction, you need to specify the dictionary path used by --rec_char_dict_path.
+			At the same time, in order to get the correct visualization results, You need to specify the visual font path through --vis_font_path.
+			There are small language fonts provided by default under the doc/fonts path, such as Korean recognition.
+
+			Download model:
+				wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar
+				tar xf korean_mobile_v2.0_rec_infer.tar
+
+				wget https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/korean_PP-OCRv3_rec_infer.tar
+				tar xf korean_PP-OCRv3_rec_infer.tar
+
+			Run inference:
+				python tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./korean_mobile_v2.0_rec_infer/" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
+				python tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./korean_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
+
+	- Angle classification model inference.
+		Download text angle class inference model:
+			wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+			tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
+
+		Run inference:
+			python tools/infer/predict_cls.py --image_dir="./doc/imgs_words_en/word_10.png" --cls_model_dir="./ch_ppocr_mobile_v2.0_cls_infer/"
+
+	- Text detection, angle classification, and recognition inference concatenation.
+		The input shape used by the recognition model of PP-OCRv3 is 3, 48, 320.
+		If you use other recognition models, you need to set the parameter --rec_image_shape according to the model.
+		In addition, the rec_algorithm used by the recognition model of PP-OCRv3 is SVTR_LCNet by default.
+		Note the difference from the original SVTR.
+
+		image_dir: specifies the path of a single image or a folder of images.
+		det_model_dir: specifies the path to detection inference model.
+		cls_model_dir: specifies the path to angle classification inference model.
+		rec_model_dir: specifies the path to identify the inference model.
+		use_angle_cls: controls whether to enable the angle classification model.
+		use_mp: specifies whether to use multi-process to infer.
+		total_process_num: specifies the number of processs when using multi-process.
+		draw_img_save_dir: The saving folder of the system's tandem prediction OCR results. Default: ./inference_results folder.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/inference_args_en.md
+
+		Use direction classifier:
+			python tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true
+		Do not use direction classifier:
+			python tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false
+		Use multi-process:
+			python tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
+			python tools/infer/predict_system.py --image_dir="./doc/imgs/korean_1.jpg" --det_model_dir="./Multilingual_PP-OCRv3_det_infer/" --cls_model_dir="./ch_ppocr_mobile_v2.0_cls_infer/" --rec_model_dir="./korean_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf" --use_angle_cls=true --use_mp=true --total_process_num=6
+		Use PDF files:
+			You can infer the first few pages by using the `page_num` parameter, the default is 0, which means infer all pages
+
+			python tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./ch_ppocr_mobile_v2.0_cls_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true --page_num=2
+
+	- TensorRT inference.
+		Paddle Inference ensembles TensorRT using subgraph mode.
+		For GPU deployment scenarios, TensorRT can optimize some subgraphs, including horizontal and vertical integration of OPs, filter redundant OPs, and automatically select the optimal OP kernels for to speed up inference.
+
+		You need to do the following 2 steps for inference using TRT.
+		(1) Collect the dynamic shape information of the model about a specific dataset and store it in a file.
+		(2) Load the dynamic shape information file for TRT inference.
+
+		python tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+
+[-] Usage (PP-Structure).
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/ppstructure/docs/quickstart_en.md
+
+	- Image orientation + layout analysis + table recognition.
+		paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --image_orientation=true
+
+	- Layout analysis + table recognition.
+		paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure
+
+	- Layout analysis.
+		paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --table=false --ocr=false
+
+	- Table recognition.
+		paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout=false
+
+	- Key information extraction.
+		Recovery by using PDF parse (only support pdf as input):
+			paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+
+		Recovery by using OCR:
+			paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+
+[-] Usage (Python inference for PP-Structure).
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/ppstructure/docs/quickstart_en.md
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/ppstructure/docs/models_list_en.md
+
+	- Layout structured analysis.
+		cd ${PaddleOCR_HOME}/ppstructure
+
+		Download model:
+			mkdir inference && cd inference
+			# Download the PP-StructureV2 layout analysis model and unzip it
+			wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar xf picodet_lcnet_x1_0_layout_infer.tar
+			# Download the PP-OCRv3 text detection model and unzip it
+			wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
+			# Download the PP-OCRv3 text recognition model and unzip it
+			wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
+			# Download the PP-StructureV2 form recognition model and unzip it
+			wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
+			cd ..
+
+		Layout analysis + table recognition:
+			python predict_system.py --det_model_dir=inference/ch_PP-OCRv3_det_infer \
+				--rec_model_dir=inference/ch_PP-OCRv3_rec_infer \
+				--table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+				--layout_model_dir=inference/picodet_lcnet_x1_0_layout_infer \
+				--image_dir=./docs/table/1.png \
+				--rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
+				--table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+				--output=../output \
+				--vis_font_path=../doc/fonts/simfang.ttf
+
+		Layout analysis:
+			python predict_system.py --layout_model_dir=inference/picodet_lcnet_x1_0_layout_infer \
+				--image_dir=./docs/table/1.png \
+				--output=../output \
+				--table=false \
+				--ocr=false
+
+		Table recognition:
+			python predict_system.py --det_model_dir=inference/ch_PP-OCRv3_det_infer \
+				--rec_model_dir=inference/ch_PP-OCRv3_rec_infer \
+				--table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+				--image_dir=./docs/table/table.jpg \
+				--rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
+				--table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+				--output=../output \
+				--vis_font_path=../doc/fonts/simfang.ttf \
+				--layout=false
+
+	- Key information extraction.
+		cd ${PaddleOCR_HOME}/ppstructure
+
+		SER:
+			Download model:
+				mkdir inference && cd inference
+				wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+				cd ..
+
+			python predict_system.py \
+				--kie_algorithm=LayoutXLM \
+				--ser_model_dir=./inference/ser_vi_layoutxlm_xfund_infer \
+				--image_dir=./docs/kie/input/zh_val_42.jpg \
+				--ser_dict_path=../ppocr/utils/dict/kie_dict/xfund_class_list.txt \
+				--vis_font_path=../doc/fonts/simfang.ttf \
+				--ocr_order_method="tb-yx" \
+				--mode=kie
+
+		RE+SER:
+			Download model:
+				mkdir inference && cd inference
+				wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+				wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_infer.tar && tar -xf re_vi_layoutxlm_xfund_infer.tar
+				cd ..
+
+			python predict_system.py \
+				--kie_algorithm=LayoutXLM \
+				--re_model_dir=./inference/re_vi_layoutxlm_xfund_infer \
+				--ser_model_dir=./inference/ser_vi_layoutxlm_xfund_infer \
+				--image_dir=./docs/kie/input/zh_val_42.jpg \
+				--ser_dict_path=../ppocr/utils/dict/kie_dict/xfund_class_list.txt \
+				--vis_font_path=../doc/fonts/simfang.ttf \
+				--ocr_order_method="tb-yx" \
+				--mode=kie
+
+[-] Training.
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/training_en.md
+
+	- Dataset.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/datasets_en.md
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/ocr_datasets_en.md
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/vertical_and_multilingual_datasets_en.md
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/handwritten_datasets_en.md
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/kie_datasets_en.md
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/layout_datasets_en.md
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/dataset/table_datasets_en.md
+
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/config_en.md
+
+	- Detection.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/detection_en.md
+
+	- Recognition.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/recognition_en.md
+
+	- Table recognition.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/table_recognition_en.md
+
+[-] Finetuning.
+	https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/finetune_en.md
+
+[-] Installation (Ubuntu).
+	- Install PaddleOCR.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
+
 		sudo apt install libcudnn8 libcublas11
 
 		conda create --name ppocr python=3.10
@@ -33,6 +260,19 @@
 		pip install numpy matplotlib pillow opencv-python fitz
 		pip install paddlepaddle-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
 		pip install paddleocr>=2.0.1
+
+	- Install PP-Structure.
+		https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/ppstructure/docs/quickstart_en.md
+
+		For CUDA 9 or 10:
+			python -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+		For no GPU:
+			python -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+
+		Install paddleocr:
+			pip install "paddleocr>=2.6.0.3"
+		Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it):
+			pip install paddleclas>=2.4.3
 
 [-] Troubleshooting (Ubuntu).
 	- <error> ImportError: /lib/x86_64-linux-gnu/libssl.so.1.1: version 'OPENSSL_1_1_1' not found

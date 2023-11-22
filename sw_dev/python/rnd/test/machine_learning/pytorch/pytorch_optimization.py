@@ -111,12 +111,23 @@ class CosineAnnealingWarmupLR(torch.optim.lr_scheduler._LRScheduler):
 		super().__init__(optimizer, last_epoch, verbose)
 
 	def get_lr(self):
-		lr_factor = self.get_lr_factor(epoch=self.last_epoch)
+		lr_factor = self._get_lr_factor(epoch=self.last_epoch)
 		#return [base_lr * lr_factor for base_lr in self.base_lrs]
 		#return [self.eta_min + (base_lr - self.eta_min) * lr_factor for base_lr in self.base_lrs]
 		return [((base_lr * lr_factor) if self.last_epoch <= self.T_warmup else (self.eta_min + (base_lr - self.eta_min) * lr_factor)) for base_lr in self.base_lrs]
 
-	def get_lr_factor(self, epoch):
+	def step(self, epoch=None):
+		if epoch is None:
+			self.last_epoch += 1
+		else:
+			self.last_epoch = epoch
+
+		for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
+			param_group['lr'] = lr
+
+		self._last_lr = [param_group['lr'] for param_group in self.optimizer.param_groups]
+
+	def _get_lr_factor(self, epoch):
 		"""
 		lr_factor = 0.5 * (1 + math.cos(math.pi * epoch / self.T_max))
 		if epoch <= self.T_warmup:
@@ -132,17 +143,6 @@ class CosineAnnealingWarmupLR(torch.optim.lr_scheduler._LRScheduler):
 			return 0.5 * (1 + math.cos(math.pi * epoch / self.T_max))
 			#return 0.5 * (1 + math.cos(math.pi * (epoch - self.T_warmup) / self.T_max))
 			#return 0.5 * (1 + math.cos(math.pi * (epoch - self.T_warmup) / (self.T_max - self.T_warmup)))
-
-	def step(self, epoch=None):
-		if epoch is None:
-			self.last_epoch += 1
-		else:
-			self.last_epoch = epoch
-
-		for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
-			param_group['lr'] = lr
-
-		self._last_lr = [param_group['lr'] for param_group in self.optimizer.param_groups]
 
 # REF [site] >> https://gaussian37.github.io/dl-pytorch-lr_scheduler/
 #	Epoch- or step-based learning rate decay policy.

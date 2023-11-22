@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os, time
-from paddleocr import PaddleOCR, draw_ocr
-from PIL import Image
-import matplotlib.pyplot as plt
-
 # REF [site] >> https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
-def quickstart_image():
+def ppocr_quickstart_image():
+	import os, time
+	from paddleocr import PaddleOCR, draw_ocr
+	from PIL import Image
+	import matplotlib.pyplot as plt
+
 	img_path = "./sample.png"
 
 	# Paddleocr supports Chinese, English, French, German, Korean and Japanese.
@@ -49,7 +49,11 @@ def quickstart_image():
 		plt.show()
 
 # REF [site] >> https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_en/quickstart_en.md
-def quickstart_pdf():
+def ppocr_quickstart_pdf():
+	import os, time
+	from paddleocr import PaddleOCR, draw_ocr
+	from PIL import Image
+
 	img_path = "./sample.pdf"
 
 	# Paddleocr supports Chinese, English, French, German, Korean and Japanese.
@@ -102,9 +106,120 @@ def quickstart_pdf():
 		im_show = Image.fromarray(im_show)
 		im_show.save(f"./result_page_{idx}.jpg")
 
+# REF [site] >> https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/ppstructure/docs/quickstart_en.md
+def ppstructure_quickstart():
+	import os
+	import paddleocr
+	import cv2
+	from PIL import Image
+
+	paddleocr_dir_path = "/home/sangwook/my_repo/python/PaddleOCR_github"
+
+	if True:
+		# Image orientation + layout analysis + table recognition
+
+		table_engine = paddleocr.PPStructure(show_log=True, image_orientation=True)
+
+		save_folder = "./output_01"
+		img_path = os.path.join(paddleocr_dir_path, "ppstructure/docs/table/1.png")
+		img = cv2.imread(img_path)
+		result = table_engine(img)
+		paddleocr.save_structure_res(result, save_folder, os.path.basename(img_path).split(".")[0])
+
+		for line in result:
+			line.pop("img")
+			print(line)
+
+		font_path = os.path.join(paddleocr_dir_path, "doc/fonts/simfang.ttf")
+		image = Image.open(img_path).convert("RGB")
+		im_show = paddleocr.draw_structure_result(image, result, font_path=font_path)
+		im_show = Image.fromarray(im_show)
+		im_show.save("./result_01.jpg")
+
+	if True:
+		# Layout analysis + table recognition
+
+		table_engine = paddleocr.PPStructure(show_log=True)
+
+		save_folder = "./output_02"
+		img_path = os.path.join(paddleocr_dir_path, "ppstructure/docs/table/1.png")
+		img = cv2.imread(img_path)
+		result = table_engine(img)
+		paddleocr.save_structure_res(result, save_folder, os.path.basename(img_path).split(".")[0])
+
+		for line in result:
+			line.pop("img")
+			print(line)
+
+		font_path = os.path.join(paddleocr_dir_path, "doc/fonts/simfang.ttf")  # Font provided in PaddleOCR
+		image = Image.open(img_path).convert("RGB")
+		im_show = paddleocr.draw_structure_result(image, result, font_path=font_path)
+		im_show = Image.fromarray(im_show)
+		im_show.save("./result_02.jpg")
+
+	if True:
+		# Layout analysis
+
+		table_engine = paddleocr.PPStructure(table=False, ocr=False, show_log=True)
+
+		save_folder = "./output_03"
+		img_path = os.path.join(paddleocr_dir_path, "ppstructure/docs/table/1.png")
+		img = cv2.imread(img_path)
+		result = table_engine(img)
+		paddleocr.save_structure_res(result, save_folder, os.path.basename(img_path).split(".")[0])
+
+		for line in result:
+			line.pop("img")
+			print(line)
+
+	if True:
+		# Table recognition
+
+		table_engine = paddleocr.PPStructure(layout=False, show_log=True)
+
+		save_folder = "./output_04"
+		img_path = os.path.join(paddleocr_dir_path, "ppstructure/docs/table/table.jpg")
+		img = cv2.imread(img_path)
+		result = table_engine(img)
+		paddleocr.save_structure_res(result, save_folder, os.path.basename(img_path).split(".")[0])
+
+		for line in result:
+			line.pop("img")
+			print(line)
+
+	if True:
+		# Layout recovery
+
+		from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+
+		if True:
+			# Chinese image
+			table_engine = paddleocr.PPStructure(recovery=True)
+		else:
+			# English image
+			table_engine = paddleocr.PPStructure(recovery=True, lang="en")
+
+		save_folder = "./output_05"
+		img_path = os.path.join(paddleocr_dir_path, "ppstructure/docs/table/1.png")
+		img = cv2.imread(img_path)
+		result = table_engine(img)
+		paddleocr.save_structure_res(result, save_folder, os.path.basename(img_path).split(".")[0])
+
+		for line in result:
+			line.pop("img")
+			print(line)
+
+		h, w, _ = img.shape
+		res = sorted_layout_boxes(result, w)
+		convert_info_docx(img, res, save_folder, os.path.basename(img_path).split(".")[0])
+
 def main():
-	quickstart_image()
-	#quickstart_pdf()
+	# PaddleOCR
+	#ppocr_quickstart_image()
+	#ppocr_quickstart_pdf()
+
+	# PP-Structure
+	ppstructure_quickstart()
 
 #--------------------------------------------------------------------
 
