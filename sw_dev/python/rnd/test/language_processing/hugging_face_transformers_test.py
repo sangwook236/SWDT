@@ -1952,6 +1952,7 @@ def bloom_example():
 			logits = model(**inputs).logits
 
 		predicted_class_id = logits.argmax().item()
+		#print(model.config.id2label[predicted_class_id])
 
 		# To train a model on 'num_labels' classes, you can pass 'num_labels=num_labels' to '.from_pretrained(...)'.
 		num_labels = len(model.config.id2label)
@@ -2520,6 +2521,7 @@ def falcon_example():
 			logits = model(**inputs).logits
 
 		predicted_class_id = logits.argmax().item()
+		#print(model.config.id2label[predicted_class_id])
 
 		# To train a model on `num_labels` classes, you can pass `num_labels=num_labels` to `.from_pretrained(...)`
 		num_labels = len(model.config.id2label)
