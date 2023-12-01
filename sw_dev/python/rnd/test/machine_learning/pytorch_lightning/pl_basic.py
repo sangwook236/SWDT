@@ -297,6 +297,7 @@ def minimal_example():
 		#rich_model_summary_callback = pl.callbacks.RichModelSummary(max_depth=1)
 		#rich_progress_bar_callback = pl.callbacks.RichProgressBar(refresh_rate=1, leave=False, theme=RichProgressBarTheme(description="white", progress_bar="#6206E0", progress_bar_finished="#6206E0", progress_bar_pulse="#6206E0", batch_progress="white", time="grey54", processing_speed="grey70", metrics="white"), console_kwargs=None)
 		# Stochastic weight averaging (SWA).
+		#	When SWA gets activated, SWALR (annealing_strategy) is applied from swa_epoch_start (current LRs) to swa_epoch_start + annealing_epochs (swa_lrs). [swa_epoch_start, swa_epoch_start + annealing_epochs).
 		#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=None, swa_epoch_start=0.8, annealing_epochs=10, annealing_strategy="cos", avg_fn=None, device=None)
 		#timer_callback = pl.callbacks.Timer(duration=None, interval=Interval.step, verbose=True)
 		#tqdm_progress_bar_callback = pl.callbacks.TQDMProgressBar(refresh_rate=1, process_position=0)
@@ -522,14 +523,15 @@ def lenet5_mnist_example():
 		save_weights_only=False, save_last=None,
 		every_n_epochs=None, every_n_train_steps=None, train_time_interval=None,
 	)
-	# FIXME [error] >> StochasticWeightAveraging does not work.
+	lr_monitor_callback = pl.callbacks.LearningRateMonitor(logging_interval="step", log_momentum=False)
 	# NOTE [info] >>
 	#	StochasticWeightAveraging is in beta and subject to change.
 	#	StochasticWeightAveraging is currently not supported for multiple optimizers/schedulers.
 	#	StochasticWeightAveraging is currently only supported on every epoch.
-	#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=0.01, swa_epoch_start=0.5, annealing_epochs=5, annealing_strategy="cos", avg_fn=None)
-	swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=0.01, swa_epoch_start=10, annealing_epochs=5, annealing_strategy="cos", avg_fn=None, device=None)
-	callbacks = [checkpoint_callback, swa_callback]
+	#	When SWA gets activated, SWALR (annealing_strategy) is applied from swa_epoch_start (current LRs) to swa_epoch_start + annealing_epochs (swa_lrs). [swa_epoch_start, swa_epoch_start + annealing_epochs).
+	#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=1.0e-5, swa_epoch_start=0.5, annealing_epochs=5, annealing_strategy="cos", avg_fn=None)
+	swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=1.0e-5, swa_epoch_start=10, annealing_epochs=5, annealing_strategy="cos", avg_fn=None, device=None)
+	callbacks = [checkpoint_callback, lr_monitor_callback, swa_callback]
 
 	profiler = "pytorch"  # {None, "simple", "advanced", "pytorch", "xla"}.
 	#profiler = None
