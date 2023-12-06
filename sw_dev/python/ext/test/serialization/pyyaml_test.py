@@ -41,8 +41,11 @@ name: The Set of Gauntlets 'Paurnimmen'
 description: >
   A set of handgear, freezing with unnatural cold.
 """
-	for data in yaml.load_all(documents, Loader=yaml.Loader):
-		print(data)
+	try:
+		for data in yaml.load_all(documents, Loader=yaml.Loader):
+			print(data)
+	except yaml.composer.ComposerError as ex:
+		print(f'yaml.composer.ComposerError: {ex}.')
 
 	ss = yaml.dump({'name': 'Silenthand Olleander', 'race': 'Human', 'traits': ['ONE_HAND', 'ONE_EYE']})  # str.
 	#ss = yaml.dump(range(50))
@@ -112,6 +115,10 @@ sp: 0
 
 # REF [site] >> https://pyyaml.org/wiki/PyYAMLDocumentation
 def alias_test():
+	# Aliases must be unique.
+	# But an alias can be the same as a key in a dictionary.
+	# Keys in a dictionary can be duplicated, but only the last one is kept.
+
 	input_stream = """
 left hand: &A
   name: The Bastard Sword of Eowyn
@@ -121,6 +128,59 @@ right hand: *A
 
 	data = yaml.load(input_stream, Loader=yaml.Loader)
 	print(data)
+
+	# REF [site] >> https://docs.geoserver.org/2.21.x/en/user/styling/ysld/reference/variables.html
+	documents = """
+# 'define' is not a reserved keyword in YAML. 'define' is just a key of a dictionary.
+define: &background_color '#998088'
+define: &text_color '#111122'
+
+feature-styles:
+- rules:
+  - symbolizers:
+    - polygon:
+        stroke-width: 1
+        fill-color: *background_color
+    - text:
+        label: ${name}
+        fill-color: *text_color
+        halo:
+          radius: 2
+          fill-color: *background_color
+          fill-opacity: 0.8
+
+---
+
+stroke_style: &stroke_style
+  stroke: '#FF0000'
+  stroke-width: 2
+  stroke-opacity: 0.5
+
+feature-styles:
+- rules:
+  - filter: ${pop < '200000'}
+    symbolizers:
+    - polygon:
+        <<: *stroke_style
+        fill-color: '#66FF66'
+  - filter: ${pop BETWEEN '200000' AND '500000'}
+    symbolizers:
+    - polygon:
+        <<: *stroke_style
+        fill-color: '#33CC33'
+  - filter: ${pop > '500000'}
+    symbolizers:
+    - polygon:
+        <<: *stroke_style
+        fill-color: '009900'
+"""
+
+	try:
+		#for data in yaml.load(documents, Loader=yaml.Loader):  # yaml.composer.ComposerError: expected a single document in the stream
+		for data in yaml.load_all(documents, Loader=yaml.Loader):
+			print(data)
+	except yaml.composer.ComposerError as ex:
+		print(f'yaml.composer.ComposerError: {ex}.')
 
 # REF [site] >> https://pyyaml.org/wiki/PyYAMLDocumentation
 def tag_test():
@@ -172,10 +232,10 @@ def include_test():
 def main():
 	#simple_example()
 
-	#alias_test()
+	alias_test()
 	#tag_test()
 
-	include_test()
+	#include_test()
 
 #--------------------------------------------------------------------
 
