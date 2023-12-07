@@ -221,6 +221,84 @@ WHERE{
 	except Exception as ex:
 		print(ex)
 
+# REF [site] >>
+#	https://python.plainenglish.io/structured-knowledge-extraction-from-dbpedia-queries-to-llama-index-knowledge-graphs-47899c38e767
+#	https://github.com/maddataanalyst/blogposts_code/blob/main/graph_nns_series/llm_knowledge_extraction/01_classic_approach
+def dbpedia_structured_test():
+	# Prepare SPARQL wrapper
+	sparql = SPARQLWrapper.SPARQLWrapper("http://dbpedia.org/sparql")
+	sparql.addDefaultGraph("http://dbpedia.org")
+
+	# Read the query
+	if False:
+		with open("./dbpedia_query_construct.rq", "r") as fd:
+			query = fd.read()
+	else:
+		query = """
+CONSTRUCT {
+    ?country  rdfs:label         "Member states of the European Union".
+    ?country  dbp:currencyCode   ?currency.
+    ?country  dbo:governmentType ?govtype.
+    ?country  dbo:legislature    ?leg.
+    ?govtype  dcterms:subject    ?subject.
+}
+WHERE {
+    ?entity rdfs:label "Member states of the European Union"@en.
+
+    ?country dcterms:subject ?entity;
+        dbo:governmentType   ?govtype;
+        dbp:currencyCode     ?currency;
+        dbo:legislature      ?leg.
+    ?govtype dcterms:subject ?subject.
+}
+"""
+	sparql.setQuery(query)
+
+	# Get results as RDF
+	sparql.setReturnFormat(SPARQLWrapper.RDF)
+	results = sparql.query()
+
+	# Extract subject-rel-object triplets
+	triplets = results.convert()
+
+	#-----
+	# RDF graph investigation
+
+	import io
+	import rdflib
+	import rdflib.extras.external_graph_libs
+	import rdflib.tools.rdf2dot
+	import networkx as nx
+	import pydotplus
+	import pyvis as pv
+	import IPython
+
+	g = rdflib.Graph()
+	g += triplets
+
+	subject_objects = list(g.subject_objects(predicate=rdflib.URIRef("http://dbpedia.org/property/currencyCode")))
+	print(subject_objects[:5])
+	print(set(g.predicates()))
+
+	if False:
+		def visualize(g):
+			stream = io.StringIO()
+			rdflib.tools.rdf2dot.rdf2dot(g, stream, opts={IPython.display.display})
+			dg = pydotplus.graph_from_dot_data(stream.getvalue())
+			png = dg.create_png()
+			IPython.display.display(IPython.display.Image(png))
+
+		visualize(g)
+
+	nx_graph = rdflib.extras.external_graph_libs.rdflib_to_networkx_multidigraph(g)
+	nx.draw(nx_graph)
+
+	if False:
+		net = pv.network.Network("1000px", "1000px", notebook=True)
+		net.from_nx(nx_graph)
+		net.show("./network_graph.html")
+		IPython.display.HTML(filename="./network_graph.html")
+
 def dbpedia_ko_test():
 	sparql = SPARQLWrapper.SPARQLWrapper("http://ko.dbpedia.org/sparql")
 	sparql.setReturnFormat(SPARQLWrapper.JSON)
@@ -317,8 +395,9 @@ def main():
 	#partial_interpretation_of_results()
 
 	#-----
-	dbpedia_test()
-	dbpedia_ko_test()
+	#dbpedia_test()
+	dbpedia_structured_test()
+	#dbpedia_ko_test()
 
 #--------------------------------------------------------------------
 
