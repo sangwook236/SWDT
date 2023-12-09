@@ -1,0 +1,34 @@
+[-] General.
+	- Site.
+		https://www.tensorflow.org/tensorboard
+		https://github.com/tensorflow/tensorboard
+
+		https://github.com/lanpa/tensorboardX
+
+		https://tensorboardx.readthedocs.io/en/latest/
+
+[-] Usage.
+	- Run.
+		tensorboard --logdir=/path/to/log-directory
+		tensorboard --logdir=/path/to/log-directory --port=6007
+		tensorboard --logdir=/path/to/log-directory --port=6007 --verbosity=0 --bind_all
+
+		Open a web browser:
+			http://localhost:6006/
+
+	- TensorFlow.
+		https://www.tensorflow.org/api_docs/python/tf/summary
+		https://www.tensorflow.org/tensorboard/get_started
+
+	- PyTorch.
+		https://pytorch.org/docs/stable/tensorboard.html
+		https://pytorch.org/tutorials/recipes/recipes/tensorboard_with_pytorch.html
+
+	- PyTorch-Lightning.
+		https://lightning.ai/docs/pytorch/latest/api/lightning.pytorch.loggers.tensorboard.html
+		https://github.com/Lightning-AI/pytorch-lightning/blob/master/src/lightning/pytorch/loggers/tensorboard.py
+		https://learnopencv.com/tensorboard-with-pytorch-lightning/
+
+[-] Installation.
+	- Install.
+		pip install tensorboard

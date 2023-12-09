@@ -1,0 +1,29 @@
+[-] General.
+	- Site.
+		https://lightning.ai/
+		https://github.com/Lightning-AI/pytorch-lightning
+		https://github.com/Lightning-Universe/lightning-bolts
+
+		https://lightning.ai/docs
+		https://lightning-bolts.readthedocs.io/en/stable/
+
+[-] Usage.
+	- TensorBoard.
+		https://learnopencv.com/tensorboard-with-pytorch-lightning/
+		Refer to tensorboard_usage_guide.txt
+
+[-] Installation.
+	- Install.
+		https://github.com/Lightning-AI/pytorch-lightning
+		https://github.com/Lightning-Universe/lightning-bolts
+
+		conda create --name pl python=3 numpy scipy matplotlib pillow
+		conda activate pl
+
+		pip install torch torchvision -f https://download.pytorch.org/whl/torch_stable.html
+			pip install torch==1.12.0+cu116 torchvision==0.13.0+cu116 -f https://download.pytorch.org/whl/torch_stable.html
+		pip install pytorch-lightning lightning-bolts
+
+		conda install pytorch torchvision cudatoolkit=11.7 -c pytorch -c conda-forge
+		conda install opencv -c conda-forge
+		pip install pytorch-lightning lightning-bolts
