@@ -217,11 +217,159 @@ def numpy_bridge():
 	print('a = ', a)
 	print('b = ', b)
 
-def main():
-	basic_operation()
-	cuda_operation()
+def parameter_test():
+	if True:
+		class MyModule(torch.nn.Module):
+			def __init__(self, dim_input: int, dim_output: int):
+				super().__init__()
 
-	numpy_bridge()
+				# NOTE [info] >> self.t1 is not a torch.nn.Parameter.
+				self.t1 = torch.empty((dim_input, dim_output), dtype=torch.float32)  # torch.Tensor.
+
+				self.t2 = torch.FloatTensor(dim_input, dim_output)  # torch.Tensor.
+				self.p2 = torch.nn.Parameter(self.t2, requires_grad=True)  # torch.nn.Parameter.
+
+				t3 = torch.FloatTensor(dim_input, dim_output)  # torch.Tensor.
+				p3 = torch.nn.Parameter(t3, requires_grad=True)  # torch.nn.Parameter.
+				# NOTE [info] >> self.p3 is accessible.
+				self.register_parameter(name="p3", param=p3)
+
+				t4 = torch.FloatTensor(dim_input, dim_output)  # torch.Tensor.
+				# NOTE [info] >> self.b4 is accessible.
+				self.register_buffer(name="b4", tensor=t4, persistent=True)
+
+				# NOTE [info] >> self.l has two parameters, weigth & bias.
+				self.l = torch.nn.Linear(dim_input, dim_output)  # torch.nn.Module.
+
+			def forward(self, x: torch.Tensor) -> torch.Tensor:
+				t1 = torch.matmul(x, self.t1)
+				t2 = torch.matmul(x, self.t2)
+				p2 = torch.matmul(x, self.p2)
+				#t3 = torch.matmul(x, self.t3)  # AttributeError: 'MyModule' object has no attribute 't3'.
+				p3 = torch.matmul(x, self.p3)
+				#t4 = torch.matmul(x, self.t4)  # AttributeError: 'MyModule' object has no attribute 't4'.
+				b4 = torch.matmul(x, self.b4)
+				l = self.l(x)
+				return l
+
+		print(f"{'-' * 20} Model:")
+		dim_input, dim_output = 7, 3
+		batch_size = 6
+
+		model = MyModule(dim_input, dim_output)
+		print(model)
+
+		print(f"{'-' * 20} Parameters:")
+		#for param in model.parameters(recurse=True):
+		#	print(type(param), param.size())
+		for name, param in model.named_parameters(prefix="", recurse=True, remove_duplicate=False):
+		#for name, param in model.named_parameters(prefix="MyModule", recurse=True, remove_duplicate=False):
+			print(f"{name}: {type(param)}, {param.size()}.")
+
+		print(f"{'-' * 20} Buffers:")
+		#for buf in model.buffers(recurse=True):
+		#	print(type(buf), buf.size())
+		for name, buf in model.named_buffers(prefix="", recurse=True, remove_duplicate=False):
+		#for name, buf in model.named_buffers(prefix="MyModule", recurse=True, remove_duplicate=False):
+			print(f"{name}: {type(buf)}, {buf.size()}.")
+
+		print(f"{'-' * 20} Modules:")
+		#for module in model.modules():
+		#	print(type(module))
+		for name, module in model.named_modules(memo=None, prefix="", remove_duplicate=True):
+		#for name, module in model.named_modules(memo=None, prefix="MyModule", remove_duplicate=True):
+			print(f"{name}: {type(module)}.")
+
+		print(f"{'-' * 20} Calling the model:")
+		x = torch.randn(batch_size, dim_input)
+		y = model(x)
+		print(f"{y.shape=}.")
+
+	#--------------------
+	if False:
+		class Embedding(torch.nn.Module):
+			def __init__(self, dim_input: int, dim_output: int):
+				super().__init__()
+
+				self.w = torch.nn.Linear(dim_input, dim_output)
+
+			def forward(self, x: torch.Tensor) -> torch.Tensor:
+				return self.w(x)
+
+		class MLP(torch.nn.Module):
+			def __init__(self, dim_input: int, dim_hidden: int, dim_output: int, dropout: float = 0.1):
+				super().__init__()
+
+				self.w_1 = torch.nn.Linear(dim_input, dim_hidden)
+				self.w_2 = torch.nn.Linear(dim_hidden, dim_output)
+				self.dropout = torch.nn.Dropout(dropout)
+
+			def forward(self, x: torch.Tensor) -> torch.Tensor:
+				return self.w_2(self.dropout(torch.nn.functional.relu(self.w_1(x))))
+
+		class Generator(torch.nn.Module):
+			def __init__(self, dim_input: int, dim_output: int):
+				super().__init__()
+
+				self.w = torch.nn.Linear(dim_input, dim_output)
+
+			def forward(self, x: torch.Tensor) -> torch.Tensor:
+				return self.w(x)
+
+		class MyModule(torch.nn.Module):
+			def __init__(self, dim_input: int, dim_hidden: int, dim_output: int):
+				super().__init__()
+
+				self.embedding = Embedding(dim_input, dim_hidden)
+				self.mlp = MLP(dim_hidden, dim_hidden // 2, dim_hidden)
+				self.generator = Generator(dim_hidden, dim_output)
+
+			def forward(self, x: torch.Tensor) -> torch.Tensor:
+				x = self.embedding(x)
+				x = self.mlp(x)
+				x = self.generator(x)
+				return x
+
+		print(f"{'-' * 20} Model:")
+		dim_input, dim_hidden, dim_output = 10, 20, 5
+		batch_size = 6
+
+		model = MyModule(dim_input, dim_hidden, dim_output)
+		print(model)
+
+		print(f"{'-' * 20} Parameters:")
+		#for param in model.parameters(recurse=True):
+		#	print(type(param), param.size())
+		for name, param in model.named_parameters(prefix="", recurse=True, remove_duplicate=True):
+		#for name, param in model.named_parameters(prefix="MyModule", recurse=True, remove_duplicate=True):
+			print(f"{name}: {type(param)}, {param.size()}.")
+
+		print(f"{'-' * 20} Buffers:")
+		#for buf in model.buffers(recurse=True):
+		#	print(type(buf), buf.size())
+		for name, buf in model.named_buffers(prefix="", recurse=True, remove_duplicate=False):
+		#for name, buf in model.named_buffers(prefix="MyModule", recurse=True, remove_duplicate=False):
+			print(f"{name}: {type(buf)}, {buf.size()}.")
+
+		print(f"{'-' * 20} Modules:")
+		#for module in model.modules():
+		#	print(type(module))
+		for name, module in model.named_modules(memo=None, prefix="", remove_duplicate=True):
+		#for name, module in model.named_modules(memo=None, prefix="MyModule", remove_duplicate=True):
+			print(f"{name}: {type(module)}.")
+
+		print(f"{'-' * 20} Calling the model:")
+		x = torch.randn(batch_size, dim_input)
+		y = model(x)
+		print(f"{y.shape=}.")
+
+def main():
+	#basic_operation()
+	#cuda_operation()
+
+	#numpy_bridge()
+
+	parameter_test()
 
 #--------------------------------------------------------------------
 
