@@ -41,10 +41,13 @@
 			make -j8
 			sudo make install
 			
-		From apt: (X)
+		From apt:
+			curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+
+			sudo apt update
 			sudo apt install nodejs
 			sudo apt install npm
 
-	- Check.
-		node -v
-		npm -v
+		Check.
+			node -v
+			npm -v

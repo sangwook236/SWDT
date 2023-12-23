@@ -22,6 +22,51 @@ def platform_test():
 	platform.linux_distribution()
 	platform.mac_ver()
 
+def typing_test():
+	import typing
+
+	def f(param: None) -> None:
+		print(f"param = {param}.")
+		return 0
+
+	print(f(None))
+	#print(f())  # TypeError: f() missing 1 required positional argument: 'param'.
+	print(f(1))
+
+	def f(param: None = None) -> None:
+		print(f"param = {param}.")
+		return 0
+
+	print(f(None))
+	print(f())
+	print(f(1))
+
+	def f(param: typing.Optional[int]) -> None:
+		print(f"param = {param}.")
+		return 0
+
+	print(f(None))
+	#print(f())  # TypeError: f() missing 1 required positional argument: 'param'.
+	print(f(1))
+
+	def f(param: typing.Optional[int] = None) -> None:
+		print(f"param = {param}.")
+		return 0
+
+	print(f(None))
+	print(f())
+	print(f(1))
+
+	def f(a: int, b: int) -> typing.Dict[str, int]:
+		return {"a": a, "b": b}
+	
+	print(f(1, 2))
+
+	def f(a: int, b: int) -> dict[str, int]:
+		return {"a": a, "b": b}
+	
+	print(f(3, 4))
+
 x = 'global'
 
 def variable_test():
@@ -945,12 +990,13 @@ def IEEE_754_format():
 
 def main():
 	#platform_test()
+	typing_test()
 
 	#variable_test()
 	#control_test()
 	#container_test()
 	#collections_test()
-	dataclass_test()
+	#dataclass_test()
 
 	#iterable_and_iterator_test()
 
