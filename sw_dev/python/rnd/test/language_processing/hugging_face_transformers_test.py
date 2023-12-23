@@ -2602,6 +2602,49 @@ def yi_example():
 	)
 	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
+# REF [site] >> https://huggingface.co/microsoft
+def orca_example():
+	# Models:
+	#	microsoft/Orca-2-7b.
+	#	microsoft/Orca-2-13b.
+
+	if torch.cuda.is_available():
+		torch.set_default_device("cuda")
+	else:
+		torch.set_default_device("cpu")
+
+	model_name = "microsoft/Orca-2-7b"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
+
+	# https://github.com/huggingface/transformers/issues/27132
+	# Please use the slow tokenizer since fast and slow tokenizer produces different tokens
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, use_fast=False)
+
+	system_message = "You are Orca, an AI language model created by Microsoft. You are a cautious assistant. You carefully follow instructions. You are helpful and harmless and you follow ethical guidelines and promote positive behavior."
+	user_message = "How can you determine if a restaurant is popular among locals or mainly attracts tourists, and why might this information be useful?"
+
+	prompt = f"<|im_start|>system\n{system_message}<|im_end|>\n<|im_start|>user\n{user_message}<|im_end|>\n<|im_start|>assistant"
+
+	inputs = tokenizer(prompt, return_tensors="pt")
+	output_ids = model.generate(inputs["input_ids"],)
+	answer = tokenizer.batch_decode(output_ids)[0]
+
+	print(answer)
+
+	# This example continues showing how to add a second turn message by the user to the conversation
+	second_turn_user_message = "Give me a list of the key points of your first answer."
+
+	# We set add_special_tokens=False because we dont want to automatically add a bos_token between messages
+	second_turn_message_in_markup = f"\n<|im_start|>user\n{second_turn_user_message}<|im_end|>\n<|im_start|>assistant"
+	second_turn_tokens = tokenizer(second_turn_message_in_markup, return_tensors="pt", add_special_tokens=False)
+	second_turn_input = torch.cat([output_ids, second_turn_tokens["input_ids"]], dim=1)
+
+	output_ids_2 = model.generate(second_turn_input,)
+	second_turn_answer = tokenizer.batch_decode(output_ids_2)[0]
+
+	print(second_turn_answer)
+
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -3100,6 +3143,7 @@ def code_llama_example():
 def star_coder_example():
 	# Models:
 	#	bigcode/starcoder.
+	#	bigcode/starcoderplus.
 
 	checkpoint = "bigcode/starcoder"
 	device = "cuda"  # for GPU usage or "cpu" for CPU usage
@@ -3234,367 +3278,352 @@ def print_prime(n):
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
-	from transformers import ViTImageProcessor, ViTModel, ViTForMaskedImageModeling
-	from datasets import load_dataset
+	import datasets
 
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
+	if False:
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
 
-	feature_extractor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
-	model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
+		feature_extractor = transformers.ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+		model = transformers.ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
 
-	inputs = feature_extractor(image, return_tensors="pt")
+		inputs = feature_extractor(image, return_tensors="pt")
 
-	model.eval()
-	with torch.no_grad():
-		outputs = model(**inputs)
+		model.eval()
+		with torch.no_grad():
+			outputs = model(**inputs)
 
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
 
-	#-----
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
+		#-----
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
 
-	image_processor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
-	model = ViTForMaskedImageModeling.from_pretrained("google/vit-base-patch16-224-in21k")
+		image_processor = transformers.ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+		model = transformers.ViTForMaskedImageModeling.from_pretrained("google/vit-base-patch16-224-in21k")
 
-	num_patches = (model.config.image_size // model.config.patch_size)**2
-	pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
-	# Create random boolean mask of shape (batch_size, num_patches).
-	bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
+		num_patches = (model.config.image_size // model.config.patch_size)**2
+		pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
+		# Create random boolean mask of shape (batch_size, num_patches).
+		bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
 
-	outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
+		outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
 
-	loss, reconstructed_pixel_values = outputs.loss, outputs.logits
-	print(reconstructed_pixel_values.shape)
+		loss, reconstructed_pixel_values = outputs.loss, outputs.logits
+		print(reconstructed_pixel_values.shape)
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
-def vit_masked_image_modeling_example():
-	from transformers import ViTImageProcessor, ViTForMaskedImageModeling
+	if True:
+		# Masked image modeling.
 
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
 
-	image_processor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
-	model = ViTForMaskedImageModeling.from_pretrained("google/vit-base-patch16-224-in21k")
+		image_processor = transformers.ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+		model = transformers.ViTForMaskedImageModeling.from_pretrained("google/vit-base-patch16-224-in21k")
 
-	num_patches = (model.config.image_size // model.config.patch_size)**2
-	pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
-	# Create random boolean mask of shape (batch_size, num_patches).
-	bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
+		num_patches = (model.config.image_size // model.config.patch_size)**2
+		pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
+		# Create random boolean mask of shape (batch_size, num_patches).
+		bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
 
-	outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
+		outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
 
-	loss, reconstructed_pixel_values = outputs.loss, outputs.logits
-	print(reconstructed_pixel_values.shape)
+		loss, reconstructed_pixel_values = outputs.loss, outputs.logits
+		print(reconstructed_pixel_values.shape)
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
-def vit_image_classification_example():
-	from transformers import ViTImageProcessor, ViTForImageClassification
-	from datasets import load_dataset
+	if True:
+		# Image classification.
 
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
 
-	feature_extractor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224")
-	model = ViTForImageClassification.from_pretrained("google/vit-base-patch16-224")
+		feature_extractor = transformers.ViTImageProcessor.from_pretrained("google/vit-base-patch16-224")
+		model = transformers.ViTForImageClassification.from_pretrained("google/vit-base-patch16-224")
 
-	inputs = feature_extractor(image, return_tensors="pt")
+		inputs = feature_extractor(image, return_tensors="pt")
 
-	model.eval()
-	with torch.no_grad():
-		logits = model(**inputs).logits
+		model.eval()
+		with torch.no_grad():
+			logits = model(**inputs).logits
 
-	# Model predicts one of the 1000 ImageNet classes.
-	predicted_label = logits.argmax(-1).item()
-	print(model.config.id2label[predicted_label])
+		# Model predicts one of the 1000 ImageNet classes.
+		predicted_label = logits.argmax(-1).item()
+		print(model.config.id2label[predicted_label])
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
 def deit_example():
-	from transformers import DeiTImageProcessor, DeiTModel
-	from datasets import load_dataset
+	import datasets
 
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
+	if False:
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
 
-	feature_extractor = DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
-	model = DeiTModel.from_pretrained("facebook/deit-base-distilled-patch16-224")
+		feature_extractor = transformers.DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
+		model = transformers.DeiTModel.from_pretrained("facebook/deit-base-distilled-patch16-224")
 
-	inputs = feature_extractor(image, return_tensors="pt")
+		inputs = feature_extractor(image, return_tensors="pt")
 
-	model.eval()
-	with torch.no_grad():
+		model.eval()
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
+
+	if True:
+		# Masked image modeling.
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		image_processor = transformers.DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
+		model = transformers.DeiTForMaskedImageModeling.from_pretrained("facebook/deit-base-distilled-patch16-224")
+
+		num_patches = (model.config.image_size // model.config.patch_size) ** 2
+		pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
+		# Create random boolean mask of shape (batch_size, num_patches).
+		bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
+
+		outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
+
+		loss, reconstructed_pixel_values = outputs.loss, outputs.logits
+		print(reconstructed_pixel_values.shape)
+
+	if True:
+		# Image classification.
+
+		torch.manual_seed(3)
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		# Note: we are loading a DeiTForImageClassificationWithTeacher from the hub here,
+		# so the head will be randomly initialized, hence the predictions will be random.
+		image_processor = transformers.DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
+		model = transformers.DeiTForImageClassification.from_pretrained("facebook/deit-base-distilled-patch16-224")
+
+		inputs = image_processor(images=image, return_tensors="pt")
 		outputs = model(**inputs)
 
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
+		logits = outputs.logits
+		# Model predicts one of the 1000 ImageNet classes.
+		predicted_class_idx = logits.argmax(-1).item()
+		print("Predicted class: {}.".format(model.config.id2label[predicted_class_idx]))
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
-def deit_masked_image_modeling_example():
-	from transformers import DeiTImageProcessor, DeiTForMaskedImageModeling
+	if True:
+		# Image classification with teacher.
 
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
 
-	image_processor = DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
-	model = DeiTForMaskedImageModeling.from_pretrained("facebook/deit-base-distilled-patch16-224")
+		feature_extractor = transformers.DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
+		model = transformers.DeiTForImageClassificationWithTeacher.from_pretrained("facebook/deit-base-distilled-patch16-224")
 
-	num_patches = (model.config.image_size // model.config.patch_size) ** 2
-	pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
-	# Create random boolean mask of shape (batch_size, num_patches).
-	bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
+		inputs = feature_extractor(image, return_tensors="pt")
 
-	outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
+		model.eval()
+		with torch.no_grad():
+			logits = model(**inputs).logits
 
-	loss, reconstructed_pixel_values = outputs.loss, outputs.logits
-	print(reconstructed_pixel_values.shape)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
-def deit_image_classification_example():
-	from transformers import DeiTImageProcessor, DeiTForImageClassification
-
-	torch.manual_seed(3)
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-
-	# Note: we are loading a DeiTForImageClassificationWithTeacher from the hub here,
-	# so the head will be randomly initialized, hence the predictions will be random.
-	image_processor = DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
-	model = DeiTForImageClassification.from_pretrained("facebook/deit-base-distilled-patch16-224")
-
-	inputs = image_processor(images=image, return_tensors="pt")
-	outputs = model(**inputs)
-
-	logits = outputs.logits
-	# Model predicts one of the 1000 ImageNet classes.
-	predicted_class_idx = logits.argmax(-1).item()
-	print("Predicted class: {}.".format(model.config.id2label[predicted_class_idx]))
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/deit
-def deit_image_classification_with_teacher_example():
-	from transformers import DeiTImageProcessor, DeiTForImageClassificationWithTeacher
-	from datasets import load_dataset
-
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
-
-	feature_extractor = DeiTImageProcessor.from_pretrained("facebook/deit-base-distilled-patch16-224")
-	model = DeiTForImageClassificationWithTeacher.from_pretrained("facebook/deit-base-distilled-patch16-224")
-
-	inputs = feature_extractor(image, return_tensors="pt")
-
-	model.eval()
-	with torch.no_grad():
-		logits = model(**inputs).logits
-
-	# Model predicts one of the 1000 ImageNet classes.
-	predicted_label = logits.argmax(-1).item()
-	print(model.config.id2label[predicted_label])
+		# Model predicts one of the 1000 ImageNet classes.
+		predicted_label = logits.argmax(-1).item()
+		print(model.config.id2label[predicted_label])
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
-	from transformers import ViltProcessor, ViltModel
+	if False:
+		# Prepare image and text.
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		text = "hello world"
 
-	# Prepare image and text.
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-	text = "hello world"
+		processor = transformers.ViltProcessor.from_pretrained("dandelin/vilt-b32-mlm")
+		model = transformers.ViltModel.from_pretrained("dandelin/vilt-b32-mlm")
 
-	processor = ViltProcessor.from_pretrained("dandelin/vilt-b32-mlm")
-	model = ViltModel.from_pretrained("dandelin/vilt-b32-mlm")
+		inputs = processor(image, text, return_tensors="pt")
+		outputs = model(**inputs)
 
-	inputs = processor(image, text, return_tensors="pt")
-	outputs = model(**inputs)
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
 
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
+	if True:
+		# Masked LM.
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
-def vilt_masked_lm_example():
-	import re
-	from transformers import ViltProcessor, ViltForMaskedLM
+		import re
 
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-	text = "a bunch of [MASK] laying on a [MASK]."
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		text = "a bunch of [MASK] laying on a [MASK]."
 
-	processor = ViltProcessor.from_pretrained("dandelin/vilt-b32-mlm")
-	model = ViltForMaskedLM.from_pretrained("dandelin/vilt-b32-mlm")
+		processor = transformers.ViltProcessor.from_pretrained("dandelin/vilt-b32-mlm")
+		model = transformers.ViltForMaskedLM.from_pretrained("dandelin/vilt-b32-mlm")
 
-	# Prepare inputs.
-	encoding = processor(image, text, return_tensors="pt")
-
-	# Forward pass.
-	outputs = model(**encoding)
-
-	tl = len(re.findall("\[MASK\]", text))
-	inferred_token = [text]
-
-	# Gradually fill in the MASK tokens, one by one.
-	model.eval()
-	with torch.no_grad():
-		for i in range(tl):
-			encoded = processor.tokenizer(inferred_token)
-			input_ids = torch.tensor(encoded.input_ids)
-			encoded = encoded["input_ids"][0][1:-1]
-			outputs = model(input_ids=input_ids, pixel_values=encoding.pixel_values)
-			mlm_logits = outputs.logits[0]  # Shape (seq_len, vocab_size).
-			# Only take into account text features (minus CLS and SEP token).
-			mlm_logits = mlm_logits[1 : input_ids.shape[1] - 1, :]
-			mlm_values, mlm_ids = mlm_logits.softmax(dim=-1).max(dim=-1)
-			# Only take into account text.
-			mlm_values[torch.tensor(encoded) != 103] = 0
-			select = mlm_values.argmax().item()
-			encoded[select] = mlm_ids[select].item()
-			inferred_token = [processor.decode(encoded)]
-
-	selected_token = ""
-	encoded = processor.tokenizer(inferred_token)
-	output = processor.decode(encoded.input_ids[0], skip_special_tokens=True)
-	print(output)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
-def vilt_question_answering_example():
-	from transformers import ViltProcessor, ViltForQuestionAnswering
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-	text = "How many cats are there?"
-
-	processor = ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-vqa")
-	model = ViltForQuestionAnswering.from_pretrained("dandelin/vilt-b32-finetuned-vqa")
-
-	# Prepare inputs.
-	encoding = processor(image, text, return_tensors="pt")
-
-	# Forward pass.
-	outputs = model(**encoding)
-
-	logits = outputs.logits
-	idx = logits.argmax(-1).item()
-	print("Predicted answer:", model.config.id2label[idx])
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
-def vilt_images_and_text_classification_example():
-	from transformers import ViltProcessor, ViltForImagesAndTextClassification
-
-	image1 = Image.open(requests.get("https://lil.nlp.cornell.edu/nlvr/exs/ex0_0.jpg", stream=True).raw)
-	image2 = Image.open(requests.get("https://lil.nlp.cornell.edu/nlvr/exs/ex0_1.jpg", stream=True).raw)
-	text = "The left image contains twice the number of dogs as the right image."
-
-	processor = ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-nlvr2")
-	model = ViltForImagesAndTextClassification.from_pretrained("dandelin/vilt-b32-finetuned-nlvr2")
-
-	# Prepare inputs.
-	encoding = processor([image1, image2], text, return_tensors="pt")
-
-	# Forward pass.
-	outputs = model(input_ids=encoding.input_ids, pixel_values=encoding.pixel_values.unsqueeze(0))
-
-	logits = outputs.logits
-	idx = logits.argmax(-1).item()
-	print("Predicted answer: {}.".format(model.config.id2label[idx]))
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
-def vilt_image_and_text_retrieval_example():
-	from transformers import ViltProcessor, ViltForImageAndTextRetrieval
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-	texts = ["An image of two cats chilling on a couch", "A football player scoring a goal"]
-
-	processor = ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-coco")
-	model = ViltForImageAndTextRetrieval.from_pretrained("dandelin/vilt-b32-finetuned-coco")
-
-	# Forward pass.
-	scores = dict()
-	for text in texts:
 		# Prepare inputs.
 		encoding = processor(image, text, return_tensors="pt")
-		outputs = model(**encoding)
-		scores[text] = outputs.logits[0, :].item()
 
-	print(scores)
+		# Forward pass.
+		outputs = model(**encoding)
+
+		tl = len(re.findall("\[MASK\]", text))
+		inferred_token = [text]
+
+		# Gradually fill in the MASK tokens, one by one.
+		model.eval()
+		with torch.no_grad():
+			for i in range(tl):
+				encoded = processor.tokenizer(inferred_token)
+				input_ids = torch.tensor(encoded.input_ids)
+				encoded = encoded["input_ids"][0][1:-1]
+				outputs = model(input_ids=input_ids, pixel_values=encoding.pixel_values)
+				mlm_logits = outputs.logits[0]  # Shape (seq_len, vocab_size).
+				# Only take into account text features (minus CLS and SEP token).
+				mlm_logits = mlm_logits[1 : input_ids.shape[1] - 1, :]
+				mlm_values, mlm_ids = mlm_logits.softmax(dim=-1).max(dim=-1)
+				# Only take into account text.
+				mlm_values[torch.tensor(encoded) != 103] = 0
+				select = mlm_values.argmax().item()
+				encoded[select] = mlm_ids[select].item()
+				inferred_token = [processor.decode(encoded)]
+
+		selected_token = ""
+		encoded = processor.tokenizer(inferred_token)
+		output = processor.decode(encoded.input_ids[0], skip_special_tokens=True)
+		print(output)
+
+	if True:
+		# Question answering.
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		text = "How many cats are there?"
+
+		processor = transformers.ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-vqa")
+		model = transformers.ViltForQuestionAnswering.from_pretrained("dandelin/vilt-b32-finetuned-vqa")
+
+		# Prepare inputs.
+		encoding = processor(image, text, return_tensors="pt")
+
+		# Forward pass.
+		outputs = model(**encoding)
+
+		logits = outputs.logits
+		idx = logits.argmax(-1).item()
+		print("Predicted answer:", model.config.id2label[idx])
+
+	if True:
+		# Images and text classification.
+
+		image1 = Image.open(requests.get("https://lil.nlp.cornell.edu/nlvr/exs/ex0_0.jpg", stream=True).raw)
+		image2 = Image.open(requests.get("https://lil.nlp.cornell.edu/nlvr/exs/ex0_1.jpg", stream=True).raw)
+		text = "The left image contains twice the number of dogs as the right image."
+
+		processor = transformers.ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-nlvr2")
+		model = transformers.ViltForImagesAndTextClassification.from_pretrained("dandelin/vilt-b32-finetuned-nlvr2")
+
+		# Prepare inputs.
+		encoding = processor([image1, image2], text, return_tensors="pt")
+
+		# Forward pass.
+		outputs = model(input_ids=encoding.input_ids, pixel_values=encoding.pixel_values.unsqueeze(0))
+
+		logits = outputs.logits
+		idx = logits.argmax(-1).item()
+		print("Predicted answer: {}.".format(model.config.id2label[idx]))
+
+	if True:
+		# Image and text retrieval.
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+		texts = ["An image of two cats chilling on a couch", "A football player scoring a goal"]
+
+		processor = transformers.ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-coco")
+		model = transformers.ViltForImageAndTextRetrieval.from_pretrained("dandelin/vilt-b32-finetuned-coco")
+
+		# Forward pass.
+		scores = dict()
+		for text in texts:
+			# Prepare inputs.
+			encoding = processor(image, text, return_tensors="pt")
+			outputs = model(**encoding)
+			scores[text] = outputs.logits[0, :].item()
+
+		print(scores)
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
 def beit_example():
-	from transformers import BeitImageProcessor, BeitModel
-	from datasets import load_dataset
+	import datasets
 
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
+	if False:
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
 
-	feature_extractor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-	model = BeitModel.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+		feature_extractor = transformers.BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+		model = transformers.BeitModel.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
 
-	inputs = feature_extractor(image, return_tensors="pt")
+		inputs = feature_extractor(image, return_tensors="pt")
 
-	model.eval()
-	with torch.no_grad():
+		model.eval()
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
+
+	if True:
+		# Masked image modeling.
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		image_processor = transformers.BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+		model = transformers.BeitForMaskedImageModeling.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
+
+		num_patches = (model.config.image_size // model.config.patch_size)**2
+		pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
+		# Create random boolean mask of shape (batch_size, num_patches).
+		bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
+
+		outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
+
+		loss, logits = outputs.loss, outputs.logits
+		print(logits.shape)
+
+	if True:
+		# Image classification.
+
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
+
+		feature_extractor = transformers.BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224")
+		model = transformers.BeitForImageClassification.from_pretrained("microsoft/beit-base-patch16-224")
+
+		inputs = feature_extractor(image, return_tensors="pt")
+
+		model.eval()
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		# Model predicts one of the 1000 ImageNet classes.
+		predicted_label = logits.argmax(-1).item()
+		print(model.config.id2label[predicted_label])
+
+	if True:
+		# Semantic segmentation.
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
+		model = transformers.BeitForSemanticSegmentation.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
+
+		inputs = image_processor(images=image, return_tensors="pt")
 		outputs = model(**inputs)
 
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_masked_image_modeling_example():
-	from transformers import BeitImageProcessor, BeitForMaskedImageModeling
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-
-	image_processor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-	model = BeitForMaskedImageModeling.from_pretrained("microsoft/beit-base-patch16-224-pt22k")
-
-	num_patches = (model.config.image_size // model.config.patch_size)**2
-	pixel_values = image_processor(images=image, return_tensors="pt").pixel_values
-	# Create random boolean mask of shape (batch_size, num_patches).
-	bool_masked_pos = torch.randint(low=0, high=2, size=(1, num_patches)).bool()
-
-	outputs = model(pixel_values, bool_masked_pos=bool_masked_pos)
-
-	loss, logits = outputs.loss, outputs.logits
-	print(logits.shape)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_image_classification_example():
-	from transformers import BeitImageProcessor, BeitForImageClassification
-	from datasets import load_dataset
-
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
-
-	feature_extractor = BeitImageProcessor.from_pretrained("microsoft/beit-base-patch16-224")
-	model = BeitForImageClassification.from_pretrained("microsoft/beit-base-patch16-224")
-
-	inputs = feature_extractor(image, return_tensors="pt")
-
-	model.eval()
-	with torch.no_grad():
-		logits = model(**inputs).logits
-
-	# Model predicts one of the 1000 ImageNet classes.
-	predicted_label = logits.argmax(-1).item()
-	print(model.config.id2label[predicted_label])
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/beit
-def beit_semantic_segmentation_example():
-	from transformers import AutoImageProcessor, BeitForSemanticSegmentation
-
-	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-	image = Image.open(requests.get(url, stream=True).raw)
-
-	image_processor = AutoImageProcessor.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
-	model = BeitForSemanticSegmentation.from_pretrained("microsoft/beit-base-finetuned-ade-640-640")
-
-	inputs = image_processor(images=image, return_tensors="pt")
-	outputs = model(**inputs)
-
-	# Logits are of shape (batch_size, num_labels, height, width).
-	logits = outputs.logits
-	print(logits.shape)
+		# Logits are of shape (batch_size, num_labels, height, width).
+		logits = outputs.logits
+		print(logits.shape)
 
 # REF [site] >>
 #	https://huggingface.co/openai
@@ -4414,365 +4443,339 @@ def kosmos_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
-	from transformers import LayoutLMv2Processor, LayoutLMv2Model, set_seed
 	from datasets import load_dataset
 
-	set_seed(88)
+	if False:
+		transformers.set_seed(88)
 
-	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
-	model = LayoutLMv2Model.from_pretrained("microsoft/layoutlmv2-base-uncased")
+		processor = transformers.LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
+		model = transformers.LayoutLMv2Model.from_pretrained("microsoft/layoutlmv2-base-uncased")
 
-	dataset = load_dataset("hf-internal-testing/fixtures_docvqa")
-	image_path = dataset["test"][0]["file"]
-	image = Image.open(image_path).convert("RGB")
-	encoding = processor(image, return_tensors="pt")
+		dataset = load_dataset("hf-internal-testing/fixtures_docvqa")
+		image_path = dataset["test"][0]["file"]
+		image = Image.open(image_path).convert("RGB")
+		encoding = processor(image, return_tensors="pt")
 
-	outputs = model(**encoding)
+		outputs = model(**encoding)
 
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
-def layoutlmv2_sequence_classification_example():
-	from transformers import LayoutLMv2Processor, LayoutLMv2ForSequenceClassification, set_seed
-	from datasets import load_dataset
+	if True:
+		# Sequence classification.
 
-	set_seed(88)
+		transformers.set_seed(88)
 
-	dataset = load_dataset("rvl_cdip", split="train", streaming=True)
-	data = next(iter(dataset))
-	image = data["image"].convert("RGB")
+		dataset = datasets.load_dataset("rvl_cdip", split="train", streaming=True)
+		data = next(iter(dataset))
+		image = data["image"].convert("RGB")
 
-	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
-	model = LayoutLMv2ForSequenceClassification.from_pretrained("microsoft/layoutlmv2-base-uncased", num_labels=dataset.info.features["label"].num_classes)
+		processor = transformers.LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
+		model = transformers.LayoutLMv2ForSequenceClassification.from_pretrained("microsoft/layoutlmv2-base-uncased", num_labels=dataset.info.features["label"].num_classes)
 
-	encoding = processor(image, return_tensors="pt")
-	sequence_label = torch.tensor([data["label"]])
+		encoding = processor(image, return_tensors="pt")
+		sequence_label = torch.tensor([data["label"]])
 
-	outputs = model(**encoding, labels=sequence_label)
+		outputs = model(**encoding, labels=sequence_label)
 
-	loss, logits = outputs.loss, outputs.logits
-	predicted_idx = logits.argmax(dim=-1).item()
-	predicted_answer = dataset.info.features["label"].names[predicted_idx]
-	print(f"Predicted: index = {predicted_idx}, answer = {predicted_answer}.")
+		loss, logits = outputs.loss, outputs.logits
+		predicted_idx = logits.argmax(dim=-1).item()
+		predicted_answer = dataset.info.features["label"].names[predicted_idx]
+		print(f"Predicted: index = {predicted_idx}, answer = {predicted_answer}.")
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
-def layoutlmv2_token_classification_example():
-	from transformers import LayoutLMv2Processor, LayoutLMv2ForTokenClassification, set_seed
-	from datasets import load_dataset
+	if True:
+		# Token classification.
 
-	set_seed(88)
+		transformers.set_seed(88)
 
-	datasets = load_dataset("nielsr/funsd", split="test")
-	labels = datasets.features["ner_tags"].feature.names
-	id2label = {v: k for v, k in enumerate(labels)}
+		datasets = datasets.load_dataset("nielsr/funsd", split="test")
+		labels = datasets.features["ner_tags"].feature.names
+		id2label = {v: k for v, k in enumerate(labels)}
 
-	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased", revision="no_ocr")
-	model = LayoutLMv2ForTokenClassification.from_pretrained("microsoft/layoutlmv2-base-uncased", num_labels=len(labels))
+		processor = transformers.LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased", revision="no_ocr")
+		model = transformers.LayoutLMv2ForTokenClassification.from_pretrained("microsoft/layoutlmv2-base-uncased", num_labels=len(labels))
 
-	data = datasets[0]
-	image = Image.open(data["image_path"]).convert("RGB")
-	words = data["words"]
-	boxes = data["bboxes"]  # make sure to normalize your bounding boxes
-	word_labels = data["ner_tags"]
-	encoding = processor(
-		image,
-		words,
-		boxes=boxes,
-		word_labels=word_labels,
-		padding="max_length",
-		truncation=True,
-		return_tensors="pt",
-	)
+		data = datasets[0]
+		image = Image.open(data["image_path"]).convert("RGB")
+		words = data["words"]
+		boxes = data["bboxes"]  # make sure to normalize your bounding boxes
+		word_labels = data["ner_tags"]
+		encoding = processor(
+			image,
+			words,
+			boxes=boxes,
+			word_labels=word_labels,
+			padding="max_length",
+			truncation=True,
+			return_tensors="pt",
+		)
 
-	outputs = model(**encoding)
+		outputs = model(**encoding)
 
-	logits, loss = outputs.logits, outputs.loss
-	predicted_token_class_ids = logits.argmax(-1)
-	predicted_tokens_classes = [id2label[t.item()] for t in predicted_token_class_ids[0]]
-	print(f"Predicted token classes: {predicted_tokens_classes[:5]}.")
+		logits, loss = outputs.logits, outputs.loss
+		predicted_token_class_ids = logits.argmax(-1)
+		predicted_tokens_classes = [id2label[t.item()] for t in predicted_token_class_ids[0]]
+		print(f"Predicted token classes: {predicted_tokens_classes[:5]}.")
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
-def layoutlmv2_question_answering_example():
-	from transformers import LayoutLMv2Processor, LayoutLMv2ForQuestionAnswering, set_seed
-	from datasets import load_dataset
+	if True:
+		# Question answering.
 
-	set_seed(88)
+		transformers.set_seed(88)
 
-	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
-	model = LayoutLMv2ForQuestionAnswering.from_pretrained("microsoft/layoutlmv2-base-uncased")
+		processor = transformers.LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
+		model = transformers.LayoutLMv2ForQuestionAnswering.from_pretrained("microsoft/layoutlmv2-base-uncased")
 
-	dataset = load_dataset("hf-internal-testing/fixtures_docvqa")
-	image_path = dataset["test"][0]["file"]
-	image = Image.open(image_path).convert("RGB")
-	question = "When is coffee break?"
-	encoding = processor(image, question, return_tensors="pt")
+		dataset = datasets.load_dataset("hf-internal-testing/fixtures_docvqa")
+		image_path = dataset["test"][0]["file"]
+		image = Image.open(image_path).convert("RGB")
+		question = "When is coffee break?"
+		encoding = processor(image, question, return_tensors="pt")
 
-	outputs = model(**encoding)
+		outputs = model(**encoding)
 
-	predicted_start_idx = outputs.start_logits.argmax(-1).item()
-	predicted_end_idx = outputs.end_logits.argmax(-1).item()
-	print(f"Predicted: start index = {predicted_start_idx}, end index = {predicted_end_idx}.")
+		predicted_start_idx = outputs.start_logits.argmax(-1).item()
+		predicted_end_idx = outputs.end_logits.argmax(-1).item()
+		print(f"Predicted: start index = {predicted_start_idx}, end index = {predicted_end_idx}.")
 
-	predicted_answer_tokens = encoding.input_ids.squeeze()[predicted_start_idx : predicted_end_idx + 1]
-	predicted_answer = processor.tokenizer.decode(predicted_answer_tokens)
-	print(f"Predicted: answer = {predicted_answer}.")  # Results are not very good without further fine-tuning.
+		predicted_answer_tokens = encoding.input_ids.squeeze()[predicted_start_idx : predicted_end_idx + 1]
+		predicted_answer = processor.tokenizer.decode(predicted_answer_tokens)
+		print(f"Predicted: answer = {predicted_answer}.")  # Results are not very good without further fine-tuning.
 
-	#-----
-	target_start_index = torch.tensor([7])
-	target_end_index = torch.tensor([14])
+		#-----
+		target_start_index = torch.tensor([7])
+		target_end_index = torch.tensor([14])
 
-	outputs = model(**encoding, start_positions=target_start_index, end_positions=target_end_index)
+		outputs = model(**encoding, start_positions=target_start_index, end_positions=target_end_index)
 
-	predicted_answer_span_start = outputs.start_logits.argmax(-1).item()
-	predicted_answer_span_end = outputs.end_logits.argmax(-1).item()
-	print(f"Predicted: answer span start = {predicted_answer_span_start}, answer span end = {predicted_answer_span_end}.")
+		predicted_answer_span_start = outputs.start_logits.argmax(-1).item()
+		predicted_answer_span_end = outputs.end_logits.argmax(-1).item()
+		print(f"Predicted: answer span start = {predicted_answer_span_start}, answer span end = {predicted_answer_span_end}.")
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
 def layoutlmv3_example():
-	from transformers import AutoProcessor, AutoModel
-	from datasets import load_dataset
+	import datasets
 
-	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
-	model = AutoModel.from_pretrained("microsoft/layoutlmv3-base")
+	if False:
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+		model = transformers.AutoModel.from_pretrained("microsoft/layoutlmv3-base")
 
-	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
-	example = dataset[0]
-	image = example["image"]
-	words = example["tokens"]
-	boxes = example["bboxes"]
-	encoding = processor(image, words, boxes=boxes, return_tensors="pt")
+		dataset = datasets.load_dataset("nielsr/funsd-layoutlmv3", split="train")
+		example = dataset[0]
+		image = example["image"]
+		words = example["tokens"]
+		boxes = example["bboxes"]
+		encoding = processor(image, words, boxes=boxes, return_tensors="pt")
 
-	outputs = model(**encoding)
+		outputs = model(**encoding)
 
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
-def layoutlmv3_sequence_classification_example():
-	from transformers import AutoProcessor, AutoModelForSequenceClassification
-	from datasets import load_dataset
+	if True:
+		# Sequence classification.
 
-	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
-	model = AutoModelForSequenceClassification.from_pretrained("microsoft/layoutlmv3-base")
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+		model = transformers.AutoModelForSequenceClassification.from_pretrained("microsoft/layoutlmv3-base")
 
-	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
-	example = dataset[10]
-	image = example["image"]
-	words = example["tokens"]
-	boxes = example["bboxes"]
+		dataset = datasets.load_dataset("nielsr/funsd-layoutlmv3", split="train")
+		example = dataset[10]
+		image = example["image"]
+		words = example["tokens"]
+		boxes = example["bboxes"]
 
-	encoding = processor(image, words, boxes=boxes, return_tensors="pt")
-	sequence_label = torch.tensor([1])
+		encoding = processor(image, words, boxes=boxes, return_tensors="pt")
+		sequence_label = torch.tensor([1])
 
-	outputs = model(**encoding, labels=sequence_label)
+		outputs = model(**encoding, labels=sequence_label)
 
-	loss = outputs.loss
-	logits = outputs.logits
-	#predicted_idx = logits.argmax(dim=-1).item()
-	print(f"Loss = {loss}, logits = {logits}.")
+		loss = outputs.loss
+		logits = outputs.logits
+		#predicted_idx = logits.argmax(dim=-1).item()
+		print(f"Loss = {loss}, logits = {logits}.")
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
-def layoutlmv3_token_classification_example():
-	from transformers import AutoProcessor, AutoModelForTokenClassification
-	from datasets import load_dataset
+	if True:
+		# Token classification.
 
-	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
-	model = AutoModelForTokenClassification.from_pretrained("microsoft/layoutlmv3-base", num_labels=7)
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+		model = transformers.AutoModelForTokenClassification.from_pretrained("microsoft/layoutlmv3-base", num_labels=7)
 
-	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
-	example = dataset[0]
-	image = example["image"]
-	words = example["tokens"]
-	boxes = example["bboxes"]
-	word_labels = example["ner_tags"]
+		dataset = datasets.load_dataset("nielsr/funsd-layoutlmv3", split="train")
+		example = dataset[0]
+		image = example["image"]
+		words = example["tokens"]
+		boxes = example["bboxes"]
+		word_labels = example["ner_tags"]
 
-	encoding = processor(image, words, boxes=boxes, word_labels=word_labels, return_tensors="pt")
+		encoding = processor(image, words, boxes=boxes, word_labels=word_labels, return_tensors="pt")
 
-	outputs = model(**encoding)
+		outputs = model(**encoding)
 
-	loss = outputs.loss
-	logits = outputs.logits
-	predicted_idx = logits.argmax(dim=-1)
-	print(f"Predicted indices = {predicted_idx}.")
+		loss = outputs.loss
+		logits = outputs.logits
+		predicted_idx = logits.argmax(dim=-1)
+		print(f"Predicted indices = {predicted_idx}.")
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
-def layoutlmv3_question_answering_example():
-	from transformers import AutoProcessor, AutoModelForQuestionAnswering
-	from datasets import load_dataset
+	if True:
+		# Question answering.
 
-	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
-	model = AutoModelForQuestionAnswering.from_pretrained("microsoft/layoutlmv3-base")
+		processor = transformers.AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+		model = transformers.AutoModelForQuestionAnswering.from_pretrained("microsoft/layoutlmv3-base")
 
-	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
-	example = dataset[0]
-	image = example["image"]
-	question = "what's his name?"
-	words = example["tokens"]
-	boxes = example["bboxes"]
+		dataset = datasets.load_dataset("nielsr/funsd-layoutlmv3", split="train")
+		example = dataset[0]
+		image = example["image"]
+		question = "what's his name?"
+		words = example["tokens"]
+		boxes = example["bboxes"]
 
-	encoding = processor(image, question, words, boxes=boxes, return_tensors="pt")
-	start_positions = torch.tensor([1])
-	end_positions = torch.tensor([3])
+		encoding = processor(image, question, words, boxes=boxes, return_tensors="pt")
+		start_positions = torch.tensor([1])
+		end_positions = torch.tensor([3])
 
-	outputs = model(**encoding, start_positions=start_positions, end_positions=end_positions)
+		outputs = model(**encoding, start_positions=start_positions, end_positions=end_positions)
 
-	loss = outputs.loss
-	start_scores = outputs.start_logits
-	end_scores = outputs.end_logits
+		loss = outputs.loss
+		start_scores = outputs.start_logits
+		end_scores = outputs.end_logits
 
-	predicted_start_idx = start_scores.argmax(-1).item()
-	predicted_end_idx = end_scores.argmax(-1).item()
-	print(f"Predicted: start index = {predicted_start_idx}, end index = {predicted_end_idx}.")
+		predicted_start_idx = start_scores.argmax(-1).item()
+		predicted_end_idx = end_scores.argmax(-1).item()
+		print(f"Predicted: start index = {predicted_start_idx}, end index = {predicted_end_idx}.")
 
-	predicted_answer_tokens = encoding.input_ids.squeeze()[predicted_start_idx : predicted_end_idx + 1]
-	predicted_answer = processor.tokenizer.decode(predicted_answer_tokens)
-	print(f"Predicted: answer = {predicted_answer}.")
+		predicted_answer_tokens = encoding.input_ids.squeeze()[predicted_start_idx : predicted_end_idx + 1]
+		predicted_answer = processor.tokenizer.decode(predicted_answer_tokens)
+		print(f"Predicted: answer = {predicted_answer}.")
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
 def donut_example():
-	from transformers import AutoFeatureExtractor, DonutSwinModel
-	from datasets import load_dataset
-
-	dataset = load_dataset("huggingface/cats-image")
-	image = dataset["test"]["image"][0]
-
-	feature_extractor = AutoFeatureExtractor.from_pretrained("https://huggingface.co/naver-clova-ix/donut-base")
-	model = DonutSwinModel.from_pretrained("https://huggingface.co/naver-clova-ix/donut-base")
-
-	inputs = feature_extractor(image, return_tensors="pt")
-
-	model.eval()
-	with torch.no_grad():
-		outputs = model(**inputs)
-
-	last_hidden_states = outputs.last_hidden_state
-	print(last_hidden_states.shape)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
-def donut_document_image_classification_example():
 	import re
-	from transformers import DonutProcessor, VisionEncoderDecoderModel
-	from datasets import load_dataset
+	import datasets
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
 
-	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
-	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
-	model.to(device)
+	if False:
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
 
-	# Load document image.
-	dataset = load_dataset("hf-internal-testing/example-documents", split="test")
-	image = dataset[1]["image"]
+		feature_extractor = transformers.AutoFeatureExtractor.from_pretrained("https://huggingface.co/naver-clova-ix/donut-base")
+		model = transformers.DonutSwinModel.from_pretrained("https://huggingface.co/naver-clova-ix/donut-base")
 
-	# Prepare decoder inputs.
-	task_prompt = "<s_rvlcdip>"
-	decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
+		inputs = feature_extractor(image, return_tensors="pt")
 
-	pixel_values = processor(image, return_tensors="pt").pixel_values
+		model.eval()
+		with torch.no_grad():
+			outputs = model(**inputs)
 
-	outputs = model.generate(
-		pixel_values.to(device),
-		decoder_input_ids=decoder_input_ids.to(device),
-		max_length=model.decoder.config.max_position_embeddings,
-		early_stopping=True,
-		pad_token_id=processor.tokenizer.pad_token_id,
-		eos_token_id=processor.tokenizer.eos_token_id,
-		use_cache=True,
-		num_beams=1,
-		bad_words_ids=[[processor.tokenizer.unk_token_id]],
-		return_dict_in_generate=True,
-	)
+		last_hidden_states = outputs.last_hidden_state
+		print(last_hidden_states.shape)
 
-	sequence = processor.batch_decode(outputs.sequences)[0]
-	sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
-	sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
-	print(processor.token2json(sequence))
+	if True:
+		# Document image classification.
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
-def donut_document_document_parsing_example():
-	import re
-	from transformers import DonutProcessor, VisionEncoderDecoderModel
-	from datasets import load_dataset
+		processor = transformers.DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
+		model.to(device)
 
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	print(f"Device: {device}.")
+		# Load document image.
+		dataset = datasets.load_dataset("hf-internal-testing/example-documents", split="test")
+		image = dataset[1]["image"]
 
-	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
-	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
-	model.to(device)
+		# Prepare decoder inputs.
+		task_prompt = "<s_rvlcdip>"
+		decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
 
-	# Load document image.
-	dataset = load_dataset("hf-internal-testing/example-documents", split="test")
-	image = dataset[2]["image"]
+		pixel_values = processor(image, return_tensors="pt").pixel_values
 
-	# Prepare decoder inputs.
-	task_prompt = "<s_cord-v2>"
-	decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
+		outputs = model.generate(
+			pixel_values.to(device),
+			decoder_input_ids=decoder_input_ids.to(device),
+			max_length=model.decoder.config.max_position_embeddings,
+			early_stopping=True,
+			pad_token_id=processor.tokenizer.pad_token_id,
+			eos_token_id=processor.tokenizer.eos_token_id,
+			use_cache=True,
+			num_beams=1,
+			bad_words_ids=[[processor.tokenizer.unk_token_id]],
+			return_dict_in_generate=True,
+		)
 
-	pixel_values = processor(image, return_tensors="pt").pixel_values
+		sequence = processor.batch_decode(outputs.sequences)[0]
+		sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
+		sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
+		print(processor.token2json(sequence))
 
-	outputs = model.generate(
-		pixel_values.to(device),
-		decoder_input_ids=decoder_input_ids.to(device),
-		max_length=model.decoder.config.max_position_embeddings,
-		early_stopping=True,
-		pad_token_id=processor.tokenizer.pad_token_id,
-		eos_token_id=processor.tokenizer.eos_token_id,
-		use_cache=True,
-		num_beams=1,
-		bad_words_ids=[[processor.tokenizer.unk_token_id]],
-		return_dict_in_generate=True,
-	)
+	if True:
+		# Document parsing.
 
-	sequence = processor.batch_decode(outputs.sequences)[0]
-	sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
-	sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
-	print(processor.token2json(sequence))
+		processor = transformers.DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
+		model.to(device)
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
-def donut_document_visual_question_answering_example():
-	import re
-	from transformers import DonutProcessor, VisionEncoderDecoderModel
-	from datasets import load_dataset
+		# Load document image.
+		dataset = datasets.load_dataset("hf-internal-testing/example-documents", split="test")
+		image = dataset[2]["image"]
 
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	print(f"Device: {device}.")
+		# Prepare decoder inputs.
+		task_prompt = "<s_cord-v2>"
+		decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
 
-	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
-	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
-	model.to(device)
+		pixel_values = processor(image, return_tensors="pt").pixel_values
 
-	# Load document image from the DocVQA dataset.
-	dataset = load_dataset("hf-internal-testing/example-documents", split="test")
-	image = dataset[0]["image"]
+		outputs = model.generate(
+			pixel_values.to(device),
+			decoder_input_ids=decoder_input_ids.to(device),
+			max_length=model.decoder.config.max_position_embeddings,
+			early_stopping=True,
+			pad_token_id=processor.tokenizer.pad_token_id,
+			eos_token_id=processor.tokenizer.eos_token_id,
+			use_cache=True,
+			num_beams=1,
+			bad_words_ids=[[processor.tokenizer.unk_token_id]],
+			return_dict_in_generate=True,
+		)
 
-	# Prepare decoder inputs.
-	task_prompt = "<s_docvqa><s_question>{user_input}</s_question><s_answer>"
-	question = "When is the coffee break?"
-	prompt = task_prompt.replace("{user_input}", question)
-	decoder_input_ids = processor.tokenizer(prompt, add_special_tokens=False, return_tensors="pt").input_ids
+		sequence = processor.batch_decode(outputs.sequences)[0]
+		sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
+		sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
+		print(processor.token2json(sequence))
 
-	pixel_values = processor(image, return_tensors="pt").pixel_values
+	if True:
+		# Document visual question answering.
 
-	outputs = model.generate(
-		pixel_values.to(device),
-		decoder_input_ids=decoder_input_ids.to(device),
-		max_length=model.decoder.config.max_position_embeddings,
-		early_stopping=True,
-		pad_token_id=processor.tokenizer.pad_token_id,
-		eos_token_id=processor.tokenizer.eos_token_id,
-		use_cache=True,
-		num_beams=1,
-		bad_words_ids=[[processor.tokenizer.unk_token_id]],
-		return_dict_in_generate=True,
-	)
+		processor = transformers.DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
+		model = transformers.VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
+		model.to(device)
 
-	sequence = processor.batch_decode(outputs.sequences)[0]
-	sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
-	sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
-	print(processor.token2json(sequence))
+		# Load document image from the DocVQA dataset.
+		dataset = datasets.load_dataset("hf-internal-testing/example-documents", split="test")
+		image = dataset[0]["image"]
+
+		# Prepare decoder inputs.
+		task_prompt = "<s_docvqa><s_question>{user_input}</s_question><s_answer>"
+		question = "When is the coffee break?"
+		prompt = task_prompt.replace("{user_input}", question)
+		decoder_input_ids = processor.tokenizer(prompt, add_special_tokens=False, return_tensors="pt").input_ids
+
+		pixel_values = processor(image, return_tensors="pt").pixel_values
+
+		outputs = model.generate(
+			pixel_values.to(device),
+			decoder_input_ids=decoder_input_ids.to(device),
+			max_length=model.decoder.config.max_position_embeddings,
+			early_stopping=True,
+			pad_token_id=processor.tokenizer.pad_token_id,
+			eos_token_id=processor.tokenizer.eos_token_id,
+			use_cache=True,
+			num_beams=1,
+			bad_words_ids=[[processor.tokenizer.unk_token_id]],
+			return_dict_in_generate=True,
+		)
+
+		sequence = processor.batch_decode(outputs.sequences)[0]
+		sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
+		sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
+		print(processor.token2json(sequence))
 
 # REF [site] >> https://medium.com/@unstructured-io/an-introduction-to-vision-transformers-for-document-understanding-e8aea045dd84
 def donut_invoice_test():
@@ -5798,8 +5801,10 @@ def main():
 	#megatron_example()  # Megatron-LM.
 	#mpt_example()  # MPT.
 
-	falcon_example()  # Falcon.
+	#falcon_example()  # Falcon.
 	#yi_example()  # Yi-6B & Yi-34B.
+
+	orca_example()  # ORCA-2.
 
 	#-----
 	# Code.
@@ -5822,32 +5827,14 @@ def main():
 
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_vision/vit_test.py
 
-	# ViT.
-	#vit_example()
-	#vit_masked_image_modeling_example()
-	#vit_image_classification_example()
-
-	# DeiT.
-	#deit_example()
-	#deit_masked_image_modeling_example()
-	#deit_image_classification_example()
-	#deit_image_classification_with_teacher_example()
+	#vit_example()  # ViT.
+	#deit_example()  # DeiT.
 
 	#--------------------
 	# Vision and language.
 
-	# ViLT.
-	#vilt_example()
-	#vilt_masked_lm_example()
-	#vilt_question_answering_example()
-	#vilt_images_and_text_classification_example()
-	#vilt_image_and_text_retrieval_example()
-
-	# BEiT.
-	#beit_example()
-	#beit_masked_image_modeling_example()
-	#beit_image_classification_example()
-	#beit_semantic_segmentation_example()
+	#vilt_example()  # ViLT.
+	#beit_example()  # BEiT.
 
 	#clip_example()  # CLIP.
 	#align_example()  # ALIGN
@@ -5870,22 +5857,11 @@ def main():
 
 	# LayoutLM.
 	#	Required libraries: tesseract, detectron2.
-	#layoutlmv2_example()
-	#layoutlmv2_sequence_classification_example()
-	#layoutlmv2_token_classification_example()
-	#layoutlmv2_question_answering_example()
-
-	#layoutlmv3_example()
-	#layoutlmv3_sequence_classification_example()
-	#layoutlmv3_token_classification_example()
-	#layoutlmv3_question_answering_example()
+	#layoutlmv2_example()  # LayoutLMv2.
+	#layoutlmv3_example()  # LayoutLMv3.
 
 	# Donut.
 	#donut_example()
-	#donut_document_image_classification_example()
-	#donut_document_document_parsing_example()
-	#donut_document_visual_question_answering_example()
-
 	#donut_invoice_test()  # Not yet completed.
 
 	#-----
