@@ -2645,6 +2645,142 @@ def orca_example():
 
 	print(second_turn_answer)
 
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/mistral
+#	https://huggingface.co/mistralai
+def mistral_example():
+	# Models:
+	#	mistralai/Mistral-7B-v0.1: ~14.48GB.
+	#	mistralai/Mistral-7B-Instruct-v0.1.
+	#	mistralai/Mistral-7B-Instruct-v0.2.
+
+	device = "cuda"  # The device to load the model onto
+
+	if False:
+		# Initializing a Mistral 7B style configuration
+		configuration = transformers.MistralConfig()
+
+		# Initializing a model from the Mistral 7B style configuration
+		model = transformers.MistralModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model_id = "mistralai/Mistral-7B-v0.1"
+
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		elif False:
+			# Combining Mistral and Flash Attention 2
+			#	pip install -U flash-attn --no-build-isolation
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, attn_implementation="flash_attention_2")
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		else:
+			tokenizer = transformers.LlamaTokenizer.from_pretrained(model_id)
+			model = transformers.MistralForCausalLM.from_pretrained(model_id)
+		model.to(device)
+
+		if True:
+			prompt = "My favourite condiment is"
+			model_inputs = tokenizer([prompt], return_tensors="pt").to(device)
+
+			generated_ids = model.generate(**model_inputs, max_new_tokens=100, do_sample=True)
+			decoded = tokenizer.batch_decode(generated_ids)[0]
+			print(decoded)
+		else:
+			prompt = "Hey, are you conscious? Can you talk to me?"
+			inputs = tokenizer(prompt, return_tensors="pt")
+
+			generate_ids = model.generate(inputs.input_ids, max_length=30)
+			decoded = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+			print(decoded)
+
+	if True:
+		model_id = "mistralai/Mistral-7B-Instruct-v0.2"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model.to(device)
+
+		messages = [
+			{"role": "user", "content": "What is your favourite condiment?"},
+			{"role": "assistant", "content": "Well, I'm quite partial to a good squeeze of fresh lemon juice. It adds just the right amount of zesty flavour to whatever I'm cooking up in the kitchen!"},
+			{"role": "user", "content": "Do you have mayonnaise recipes?"}
+		]
+
+		encodeds = tokenizer.apply_chat_template(messages, return_tensors="pt")
+		model_inputs = encodeds.to(device)
+
+		generated_ids = model.generate(model_inputs, max_new_tokens=1000, do_sample=True)
+		decoded = tokenizer.batch_decode(generated_ids)
+		print(decoded[0])
+
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/mixtral
+#	https://huggingface.co/mistralai
+def mixtral_example():
+	# Models:
+	#	mistralai/Mixtral-8x7B-v0.1.
+	#	mistralai/Mixtral-8x7B-Instruct-v0.1.
+
+	device = "cuda"  # The device to load the model onto
+
+	if False:
+		# Initializing a Mixtral 7B style configuration
+		configuration = transformers.MixtralConfig()
+
+		# Initializing a model from the Mixtral 7B style configuration
+		model = transformers.MixtralModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model_id = "mistralai/Mixtral-8x7B-v0.1"
+
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		elif False:
+			# Combining Mistral and Flash Attention 2
+			#	pip install -U flash-attn --no-build-isolation
+			model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, attn_implementation="flash_attention_2")
+			tokenizer = AutoTokenizer.from_pretrained(model_id)
+		else:
+			tokenizer = transformers.LlamaTokenizer.from_pretrained(model_id)
+			model = transformers.MixtralForCausalLM.from_pretrained(model_id)
+		model.to(device)
+
+		if True:
+			prompt = "My favourite condiment is"
+			model_inputs = tokenizer([prompt], return_tensors="pt").to(device)
+
+			generated_ids = model.generate(**model_inputs, max_new_tokens=100, do_sample=True)
+			decoded = tokenizer.batch_decode(generated_ids)[0]
+			print(decoded)
+		else:
+			prompt = "Hey, are you conscious? Can you talk to me?"
+			inputs = tokenizer(prompt, return_tensors="pt")
+
+			generate_ids = model.generate(inputs.input_ids, max_length=30)
+			decoded = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+			print(decoded)
+
+	if True:
+		model_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		model.to(device)
+
+		text = "Hello my name is"
+		inputs = tokenizer(text, return_tensors="pt")
+
+		outputs = model.generate(**inputs, max_new_tokens=20)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -5804,7 +5940,10 @@ def main():
 	#falcon_example()  # Falcon.
 	#yi_example()  # Yi-6B & Yi-34B.
 
-	orca_example()  # ORCA-2.
+	#orca_example()  # ORCA-2.
+
+	mistral_example()  # Mistral-7B.
+	#mixtral_example()  # Mixtral-8x7B.
 
 	#-----
 	# Code.

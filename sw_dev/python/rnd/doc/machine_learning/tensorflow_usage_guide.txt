@@ -142,13 +142,16 @@
 	- Install (Python).
 		https://www.tensorflow.org/install/pip
 
-		conda install -c conda-forge cudatoolkit=11.8.0
-		pip install nvidia-cudnn-cu11==8.6.0.163
+		GPU setup:
+			nvidia-smi
 
-		CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))
-		export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH
-
-		pip install tensorflow
+		Install TensorFlow:
+			pip install --upgrade pip
+			
+			For GPU users:
+				pip install tensorflow[and-cuda]
+			For CPU users:
+				pip install tensorflow
 
 		Verify the CPU setup:
 			python -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
