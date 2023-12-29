@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://pypi.python.org/pypi/memory_profiler
-# REF [site] >> https://github.com/pythonprofilers/memory_profiler
-
 from memory_profiler import profile
 import gc
 
@@ -15,6 +12,8 @@ def func():
 	return a
 
 def main():
+	# REF [site] >> https://github.com/pythonprofilers/memory_profiler
+
 	func()
 
 #--------------------------------------------------------------------

@@ -69,6 +69,8 @@ def main():
 #
 #		vprof -c cpmh test.py
 #		vprof -c cpmh "test.py --arg1 --arg2"
+#
+#	Refer to ./memory_test.py
 
 if '__main__' == __name__:
 	main()

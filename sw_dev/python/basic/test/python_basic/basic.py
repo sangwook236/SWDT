@@ -1028,9 +1028,9 @@ def main():
 #--------------------------------------------------------------------
 
 # Usage:
-#	python -O
+#	python -O basic.py
 #		__debug__ = False if Python was started with an -O option.
-#	python
+#	python basic.py
 #		__debug__ = True if Python was not started with an -O option.
 
 if '__main__' == __name__:

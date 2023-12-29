@@ -130,69 +130,105 @@ def basic_operation():
 #	https://pytorch.org/docs/stable/cuda.html
 #	https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
 def cuda_operation():
-	print('torch.cuda.device_count() =', torch.cuda.device_count())
+	print(f'{torch.cuda.device_count()=}')
 
-	print('torch.cuda.current_device() =', torch.cuda.current_device())
+	print(f'{torch.cuda.current_device()=}')
 	torch.cuda.set_device(1)
 	#torch.cuda.set_device('cuda:1')
 	#torch.cuda.set_device(torch.device(1))
 	#torch.cuda.set_device(torch.device('cuda:1'))
-	print('torch.cuda.current_device() =', torch.cuda.current_device())
+	print(f'{torch.cuda.current_device()=}')
 
-	print('torch.cuda.is_available() =', torch.cuda.is_available())
-	print('torch.cuda.is_initialized() =', torch.cuda.is_initialized())
+	print(f'{torch.cuda.is_available()=}')
+	print(f'{torch.cuda.is_initialized()=}')
 	if not torch.cuda.is_initialized():
 		torch.cuda.init()
-		print('torch.cuda.is_initialized() =', torch.cuda.is_initialized())
+		print(f'{torch.cuda.is_initialized()=}')
 
 	device = None  # Uses the current device.
 	#device = 1
 	#device = 'cuda:1'
-	print('torch.cuda.get_device_name({}) = {}.'.format(device, torch.cuda.get_device_name(device)))
-	print('torch.cuda.get_device_capability({}) = {}.'.format(device, torch.cuda.get_device_capability(device)))
+	print(f'torch.cuda.get_device_name({device}) = {torch.cuda.get_device_name(device)}.')
+	print(f'torch.cuda.get_device_capability({device}) = {torch.cuda.get_device_capability(device)}.')  # The major and minor cuda capability of the device.
 
 	#--------------------
 	x = torch.tensor([1, 2, 3], dtype=torch.int32, device='cuda:1')
-	#print('torch.cuda.device_of(x).idx =', torch.cuda.device_of(x).idx)
+	#print(f'{torch.cuda.device_of(x).idx=}')
 
-	print('x.device =', x.device)
+	print(f'{x.device=}')
 
 	#--------------------
 	z = torch.FloatTensor([[1, 2, 3], [4, 5, 6]])
-	print('z =', z)
+	print(f'{z=}')
 
-	print('z.cuda() =', z.cuda())
-	print("z.to('cuda') =", z.to('cuda'))
+	print(f'{z.cuda()=}')
+	print(f"{z.to('cuda')=}")
 
 	z_cuda = z.cuda()
-	print('z_cuda.cpu() =', z_cuda.cpu())
-	print("z_cuda.to('cpu') =", z_cuda.to('cpu'))
+	print(f'{z_cuda.cpu()=}')
+	print(f"{z_cuda.to('cpu')=}")
 
 	#--------------------
 	gpu = 0
-	device = torch.device(('cuda:{}'.format(gpu) if gpu in range(torch.cuda.device_count()) else 'cuda') if torch.cuda.is_available() else 'cpu')
+	device = torch.device((f'cuda:{gpu}' if gpu in range(torch.cuda.device_count()) else 'cuda') if torch.cuda.is_available() else 'cpu')
+	print(f'{device=}')
 
-	x = torch.randn(2, 2)
+	x = torch.randn(20000, 20000)
 	y = torch.ones_like(x, device=device)  # Directly create a tensor on GPU.
 	x = x.to(device)  # Or just use strings .to('cuda').
 	z = x + y
-	print('z =', z)
-	print('z =', z.to(device, torch.double))  # .to() can also change dtype together!
+	print(f'{z=}')
+	print(f'{z.to(dtype=torch.double)=}')  # .to() can also change dtype together!
+	print(f"{z.to(device='cuda:1', dtype=torch.double)=}")
 
 	#--------------------
 	# Delete a tensor in a GPU.
-	print(torch.cuda.memory_allocated())
-	print(torch.cuda.memory_reserved())
+	print(f'{torch.cuda.memory_allocated()=}')
+	print(f'{torch.cuda.max_memory_allocated()=}')
+	print(f'{torch.cuda.memory_reserved()=}')
+	print(f'{torch.cuda.max_memory_reserved()=}')
 
 	del x
 
-	print(torch.cuda.memory_allocated())
-	print(torch.cuda.memory_reserved())
+	print(f'{torch.cuda.memory_allocated()=}')
+	print(f'{torch.cuda.max_memory_allocated()=}')
+	print(f'{torch.cuda.memory_reserved()=}')
+	print(f'{torch.cuda.max_memory_reserved()=}')
 
 	torch.cuda.empty_cache()
 
-	print(torch.cuda.memory_allocated())
-	print(torch.cuda.memory_reserved())
+	print(f'{torch.cuda.memory_allocated()=}')
+	print(f'{torch.cuda.max_memory_allocated()=}')
+	print(f'{torch.cuda.memory_reserved()=}')
+	print(f'{torch.cuda.max_memory_reserved()=}')
+
+	#--------------------
+	print('----- torch.cuda.list_gpu_processes(device=None)')
+	print(torch.cuda.list_gpu_processes(device=None))
+	print('----- torch.cuda.mem_get_info(device=None)')
+	print(torch.cuda.mem_get_info(device=None))
+	print('----- torch.cuda.memory_usage(device=None)')
+	print(torch.cuda.memory_usage(device=None))
+	print('----- torch.cuda.memory_stats(device=None)')
+	print(torch.cuda.memory_stats(device=None))
+	print('----- torch.cuda.memory_summary(device=None, abbreviated=False)')
+	print(torch.cuda.memory_summary(device=None, abbreviated=False))
+	print('----- torch.cuda.memory_snapshot()')
+	print(torch.cuda.memory_snapshot())
+
+	#--------------------
+	# CUDA memory usage.
+	# https://pytorch.org/docs/stable/torch_cuda_memory.html
+
+	# Generate a snapshot.
+	"""
+	torch.cuda.memory._record_memory_history()
+	# Do something.
+	torch.cuda.memory._dump_snapshot(filename="./my_snapshot.pickle")
+	"""
+
+	# Use the visualizer.
+	# https://pytorch.org/memory_viz
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
 def numpy_bridge():
@@ -200,22 +236,22 @@ def numpy_bridge():
 
 	#--------------------
 	a = torch.ones(5)
-	print('a = ', a)
+	print(f'{a=}')
 
 	b = a.numpy()
-	print('b = ', b)
+	print(f'{b=}')
 
 	# See how the numpy array changed in value.
 	a.add_(1)
-	print('a = ', a)
-	print('b = ', b)
+	print(f'{a=}')
+	print(f'{b=}')
 
 	#--------------------
 	a = np.ones(5)
 	b = torch.from_numpy(a)
 	np.add(a, 1, out=a)
-	print('a = ', a)
-	print('b = ', b)
+	print(f'{a=}')
+	print(f'{b=}')
 
 def parameter_test():
 	if True:
@@ -365,11 +401,11 @@ def parameter_test():
 
 def main():
 	#basic_operation()
-	#cuda_operation()
+	cuda_operation()
 
 	#numpy_bridge()
 
-	parameter_test()
+	#parameter_test()
 
 #--------------------------------------------------------------------
 
