@@ -304,7 +304,7 @@ def text_sentiment_ngrams_tutorial():
 # REF [site] >>
 #	https://pytorch.org/tutorials/beginner/torchtext_translation_tutorial.html
 #	https://github.com/bentrevett/pytorch-seq2seq/blob/master/3%20-%20Neural%20Machine%20Translation%20by%20Jointly%20Learning%20to%20Align%20and%20Translate.ipynb
-#	"Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015.
+# REF [paper] >> "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015.
 def torchtext_translation_tutorial():
 	import io, typing
 	from collections import Counter
@@ -353,6 +353,8 @@ def torchtext_translation_tutorial():
 	val_dataset = data_process(val_filepaths)
 	test_dataset = data_process(test_filepaths)
 
+	print(f"#train data = {len(train_dataset)}, #validation data = {len(val_dataset)}, #test data = {len(test_dataset)}.")
+
 	PAD_IDX = de_vocab["<pad>"]
 	BOS_IDX = de_vocab["<bos>"]
 	EOS_IDX = de_vocab["<eos>"]
@@ -373,6 +375,8 @@ def torchtext_translation_tutorial():
 	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=generate_batch)
 	valid_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=generate_batch)
 	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=generate_batch)
+
+	print(f"#train steps per epoch = {len(train_dataloader)}, #validation steps per epoch = {len(val_dataloader)}, #test steps per epoch = {len(test_dataloader)}.")
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

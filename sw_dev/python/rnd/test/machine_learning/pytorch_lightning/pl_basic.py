@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import random, re, unicodedata, difflib, time
+import math, random, re, unicodedata, difflib, time
 #from tkinter import Y
 import torch, torchvision
 import pytorch_lightning as pl
@@ -774,7 +774,7 @@ def simple_autoencoder_example():
 class Seq2SeqModule(pl.LightningModule):
 	def __init__(self, encoder: torch.nn.Module, decoder: torch.nn.Module, tgt_pad_idx: int):
 		super().__init__()
-		self.save_hyperparameters()
+		self.save_hyperparameters(ignore=["encoder", "decoder"])
 
 		self.model = torch.nn.Sequential(
 			encoder,
@@ -789,9 +789,10 @@ class Seq2SeqModule(pl.LightningModule):
 			else:
 				torch.nn.init.constant_(param.data, 0)
 
-		print(f"The model has {sum(p.numel() for p in self.model.parameters() if p.requires_grad):,} trainable parameters")
+		print(f"The model has {sum(p.numel() for p in self.model.parameters() if p.requires_grad):,} trainable parameters.")
 
 	def configure_optimizers(self):
+		#optimizer = torch.optim.Adam(self.model.parameters())
 		params = [p for p in self.model.parameters() if p.requires_grad]
 		optimizer = torch.optim.Adam(params)
 		return optimizer
@@ -814,29 +815,29 @@ class Seq2SeqModule(pl.LightningModule):
 
 	def training_step(self, batch, batch_idx):
 		start_time = time.time()
-		loss = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0.5)
+		loss, ppl = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0.5)
 		step_time = time.time() - start_time
 
 		self.log_dict(
-			{"train_loss": loss, "train_time": step_time},
-			on_step=True, on_epoch=True, prog_bar=True, logger=True, rank_zero_only=True
+			{"train_loss": loss, "train_ppl": ppl, "train_time": step_time},
+			on_step=True, on_epoch=True, prog_bar=True, logger=True, rank_zero_only=True, sync_dist=True, batch_size=batch[0].shape[1]
 		)
 
 		return loss
 
 	def validation_step(self, batch, batch_idx):
 		start_time = time.time()
-		loss = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
+		loss, ppl = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
 		step_time = time.time() - start_time
 
-		self.log_dict({"val_loss": loss, "val_time": step_time}, rank_zero_only=True)
+		self.log_dict({"val_loss": loss, "val_ppl": ppl, "val_time": step_time}, rank_zero_only=True, sync_dist=True, batch_size=batch[0].shape[1])
 
 	def test_step(self, batch, batch_idx):
 		start_time = time.time()
-		loss = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
+		loss, ppl = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
 		step_time = time.time() - start_time
 
-		self.log_dict({"test_loss": loss, "test_time": step_time}, rank_zero_only=True)
+		self.log_dict({"test_loss": loss, "test_ppl": ppl, "test_time": step_time}, rank_zero_only=True, sync_dist=True, batch_size=batch[0].shape[1])
 
 	def predict_step(self, batch, batch_idx, dataloader_idx=None):
 		raise NotImplementedError
@@ -863,13 +864,11 @@ class Seq2SeqModule(pl.LightningModule):
 		tgt = tgt[1:].view(-1)
 
 		loss = self.criterion(outputs, tgt)
+		ppl = math.exp(loss)
 
-		return loss
+		return loss, ppl
 
-# REF [site] >>
-#	https://pytorch.org/tutorials/beginner/torchtext_translation_tutorial.html
-#	https://github.com/bentrevett/pytorch-seq2seq/blob/master/3%20-%20Neural%20Machine%20Translation%20by%20Jointly%20Learning%20to%20Align%20and%20Translate.ipynb
-#	"Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015.
+# REF [function] >> torchtext_translation_tutorial() in ../pytorch/pytorch_neural_network.py
 def torchtext_translation_tutorial():
 	import io, typing
 	from collections import Counter
@@ -919,6 +918,8 @@ def torchtext_translation_tutorial():
 	val_dataset = data_process(val_filepaths)
 	test_dataset = data_process(test_filepaths)
 
+	print(f"#train data = {len(train_dataset)}, #validation data = {len(val_dataset)}, #test data = {len(test_dataset)}.")
+
 	PAD_IDX = de_vocab["<pad>"]
 	BOS_IDX = de_vocab["<bos>"]
 	EOS_IDX = de_vocab["<eos>"]
@@ -940,6 +941,8 @@ def torchtext_translation_tutorial():
 	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers, collate_fn=generate_batch)
 	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers, collate_fn=generate_batch)
 	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers, collate_fn=generate_batch)
+
+	print(f"#train steps per epoch = {len(train_dataloader)}, #validation steps per epoch = {len(val_dataloader)}, #test steps per epoch = {len(test_dataloader)}.")
 
 	#--------------------
 	# Defining our module.
@@ -1047,30 +1050,38 @@ def torchtext_translation_tutorial():
 
 	checkpoint_callback = pl.callbacks.ModelCheckpoint(
 		dirpath=None,
-		filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
-		#monitor="val_acc", mode="max",
+		filename="{epoch:03d}-{val_ppl:.2f}-{val_loss:.2f}",
+		#monitor="val_ppl", mode="min",
 		monitor="val_loss", mode="min",
 		save_top_k=-1,
 		save_weights_only=False, save_last=None,
 		every_n_epochs=None, every_n_train_steps=None, train_time_interval=None,
 	)
+	lr_monitor_callback = pl.callbacks.LearningRateMonitor(logging_interval="step", log_momentum=False)
+	pl_callbacks = [checkpoint_callback, lr_monitor_callback]
 
 	num_epochs = 10
 	# RuntimeError: Inplace update to inference tensor outside InferenceMode is not allowed. You can make a clone to get a normal tensor before doing inplace update. See https://github.com/pytorch/rfcs/pull/17 for more details.
-	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=checkpoint_callback)
-	trainer = pl.Trainer(devices=1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=checkpoint_callback)
+	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=pl_callbacks)
+	#trainer = pl.Trainer(devices="auto", accelerator="gpu", strategy="auto", precision="32-true", max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=pl_callbacks)
+	trainer = pl.Trainer(devices=1, accelerator="gpu", strategy="auto", precision="16-mixed", max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=pl_callbacks)
 
 	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
 	model_filepath = trainer.checkpoint_callback.best_model_path
-	print("The best trained model saved to {}.".format(model_filepath))
+	print(f"The best trained model saved to {model_filepath}.")
 
 	#-----
+	# INFO [error] >>
+	#	<error> FileNotFoundError: Checkpoint file not found.
+	#	<env> When using pl.Trainer(devices="auto", accelerator="gpu", strategy="auto", ...)
+	#	<cause> Checkpoint files are overwritten by another process.
+
 	val_metrics = trainer.validate(dataloaders=val_dataloader, ckpt_path="best", verbose=True)
-	print("Validation metrics: {}.".format(val_metrics))
+	print(f"Validation metrics: {val_metrics}.")
 
 	test_metrics = trainer.test(dataloaders=test_dataloader, ckpt_path="best", verbose=True)
-	print("Test metrics: {}.".format(test_metrics))
+	print(f"Test metrics: {test_metrics}.")
 
 	#-----
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -1079,19 +1090,38 @@ def torchtext_translation_tutorial():
 	model.eval()
 	model.freeze()
 
-	num_examples, num_correct_examples = 0, 0
-	with torch.no_grad():
-		for batch_inputs, batch_outputs in test_dataloader:
-			predictions = model(batch_inputs.to(device), max_len=batch_outputs.shape[0], tgt_sos_idx=BOS_IDX, tgt_eos_idx=EOS_IDX)
-			predictions = np.argmax(predictions.cpu().numpy(), axis=-1)  # [time-steps, batch size, #classes] -> [time-steps, batch size].
+	if False:
+		# Not working.
 
-			gts = np.transpose(batch_outputs.numpy(), (1, 0))  # [time-steps, batch size] -> [batch size, time-steps].
-			predictions = np.transpose(predictions, (1, 0))  # [time-steps, batch size] -> [batch size, time-steps].
-			assert len(gts) == len(predictions)
-			num_examples += len(gts)
-			num_correct_examples += sum([np.all(gt == pred) for gt, pred in zip(gts, predictions)])  # TODO [modify] >> Not good.
+		num_examples, num_correct_examples = 0, 0
+		with torch.no_grad():
+			for batch_inputs, batch_outputs in test_dataloader:
+				predictions = model(batch_inputs.to(device), max_len=batch_outputs.shape[0], tgt_sos_idx=BOS_IDX, tgt_eos_idx=EOS_IDX)
+				predictions = np.argmax(predictions.cpu().numpy(), axis=-1)  # [time-steps, batch size, #classes] -> [time-steps, batch size].
 
-	print("Prediction: accuracy = {} / {} = {}.".format(num_correct_examples, num_examples, num_correct_examples / num_examples))
+				gts = np.transpose(batch_outputs.numpy(), (1, 0))  # [time-steps, batch size] -> [batch size, time-steps].
+				predictions = np.transpose(predictions, (1, 0))  # [time-steps, batch size] -> [batch size, time-steps].
+				assert len(gts) == len(predictions)
+				num_examples += len(gts)
+				num_correct_examples += sum([np.all(gt == pred) for gt, pred in zip(gts, predictions)])  # TODO [modify] >> Not good.
+
+		print(f"Prediction: accuracy = {num_correct_examples} / {num_examples} = {num_correct_examples / num_examples}.")
+	else:
+		criterion = torch.nn.CrossEntropyLoss(ignore_index=PAD_IDX)
+		ppl, num_examples = 0.0, 0
+		with torch.no_grad():
+			for batch_inputs, batch_outputs in test_dataloader:
+				predictions = model(batch_inputs.to(device), max_len=batch_outputs.shape[0], tgt_sos_idx=BOS_IDX, tgt_eos_idx=EOS_IDX)
+
+				predictions = predictions.cpu()
+				predictions = predictions[1:].view(-1, predictions.shape[-1])
+				batch_outputs = batch_outputs[1:].view(-1)
+
+				loss = criterion(predictions, batch_outputs)
+				ppl += math.exp(loss.cpu().item()) * predictions.shape[1]
+				num_examples += predictions.shape[1]
+
+		print(f"Prediction: PPL = {ppl / num_examples}.")
 
 class Lang:
 	def __init__(self, name):
@@ -1494,7 +1524,7 @@ def seq2seq_translation_tutorial():
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/03-initialization-and-optimization.html
 def initalization_and_optimization_tutorial():
-	import os, copy, math, json
+	import os, copy, json
 	import urllib.request
 	from urllib.error import HTTPError
 	import numpy as np
