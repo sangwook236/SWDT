@@ -353,7 +353,7 @@ def torchtext_translation_tutorial():
 	val_dataset = data_process(val_filepaths)
 	test_dataset = data_process(test_filepaths)
 
-	print(f"#train data = {len(train_dataset)}, #validation data = {len(val_dataset)}, #test data = {len(test_dataset)}.")
+	print(f"#train data = {len(train_dataset)}, #validation data = {len(val_dataset)}, #test data = {len(test_dataset)}")
 
 	PAD_IDX = de_vocab["<pad>"]
 	BOS_IDX = de_vocab["<bos>"]
@@ -376,9 +376,10 @@ def torchtext_translation_tutorial():
 	valid_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=generate_batch)
 	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=generate_batch)
 
-	print(f"#train steps per epoch = {len(train_dataloader)}, #validation steps per epoch = {len(val_dataloader)}, #test steps per epoch = {len(test_dataloader)}.")
+	print(f"#train steps per epoch = {len(train_dataloader)}, #validation steps per epoch = {len(valid_dataloader)}, #test steps per epoch = {len(test_dataloader)}")
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}")
 
 	#--------------------
 	# Defining our module and optimizer.
@@ -505,7 +506,7 @@ def torchtext_translation_tutorial():
 
 	model = Seq2Seq(enc, dec, device).to(device)
 
-	def init_weights(m: torch.nn.Module):
+	def init_weights(m: torch.nn.Module) -> None:
 		for name, param in m.named_parameters():
 			if "weight" in name:
 				torch.nn.init.normal_(param.data, mean=0, std=0.01)
@@ -514,7 +515,7 @@ def torchtext_translation_tutorial():
 
 	model.apply(init_weights)
 
-	def count_parameters(model: torch.nn.Module):
+	def count_parameters(model: torch.nn.Module) -> int:
 		return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 	print(f"The model has {count_parameters(model):,} trainable parameters")
@@ -527,7 +528,7 @@ def torchtext_translation_tutorial():
 	#PAD_IDX = en_vocab["<pad>"]
 	criterion = torch.nn.CrossEntropyLoss(ignore_index=PAD_IDX)
 
-	def train(model: torch.nn.Module, iterator: torch.utils.data.DataLoader, optimizer: torch.optim.Optimizer, criterion: torch.nn.Module, clip: float):
+	def train(model: torch.nn.Module, iterator: torch.utils.data.DataLoader, optimizer: torch.optim.Optimizer, criterion: torch.nn.Module, clip: float) -> float:
 		model.train()
 
 		epoch_loss = 0
@@ -550,7 +551,7 @@ def torchtext_translation_tutorial():
 
 		return epoch_loss / len(iterator)
 
-	def evaluate(model: torch.nn.Module, iterator: torch.utils.data.DataLoader, criterion: torch.nn.Module):
+	def evaluate(model: torch.nn.Module, iterator: torch.utils.data.DataLoader, criterion: torch.nn.Module) -> float:
 		model.eval()
 
 		epoch_loss = 0
@@ -568,7 +569,7 @@ def torchtext_translation_tutorial():
 
 		return epoch_loss / len(iterator)
 
-	def epoch_time(start_time: float, end_time: float):
+	def epoch_time(start_time: float, end_time: float) -> typing.Tuple[int, int]:
 		elapsed_time = end_time - start_time
 		elapsed_mins = int(elapsed_time / 60)
 		elapsed_secs = int(elapsed_time - (elapsed_mins * 60))

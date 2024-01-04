@@ -170,37 +170,67 @@ def cuda_operation():
 
 	#--------------------
 	gpu = 0
-	device = torch.device((f'cuda:{gpu}' if gpu in range(torch.cuda.device_count()) else 'cuda') if torch.cuda.is_available() else 'cpu')
-	print(f'{device=}')
+	device0 = torch.device((f'cuda:{gpu}' if gpu in range(torch.cuda.device_count()) else 'cuda') if torch.cuda.is_available() else 'cpu')
+	print(f'{device0=}')
+	gpu = 1
+	device1 = torch.device((f'cuda:{gpu}' if gpu in range(torch.cuda.device_count()) else 'cuda') if torch.cuda.is_available() else 'cpu')
+	print(f'{device1=}')
+	print(f'{torch.cuda.current_device()=}')
 
-	x = torch.randn(20000, 20000)
-	y = torch.ones_like(x, device=device)  # Directly create a tensor on GPU.
-	x = x.to(device)  # Or just use strings .to('cuda').
+	x = torch.randn(2000, 2000)
+	y = torch.ones_like(x, device=device0)  # Directly create a tensor on GPU.
+	x = x.to(device0)  # Or just use strings .to('cuda').
 	z = x + y
 	print(f'{z=}')
 	print(f'{z.to(dtype=torch.double)=}')  # .to() can also change dtype together!
 	print(f"{z.to(device='cuda:1', dtype=torch.double)=}")
 
 	#--------------------
-	# Delete a tensor in a GPU.
-	print(f'{torch.cuda.memory_allocated()=}')
-	print(f'{torch.cuda.max_memory_allocated()=}')
-	print(f'{torch.cuda.memory_reserved()=}')
-	print(f'{torch.cuda.max_memory_reserved()=}')
+	import gc
 
-	del x
+	print(f'- {torch.cuda.memory_allocated(device=device0)=}')
+	print(f'- {torch.cuda.max_memory_allocated(device=device0)=}')
+	print(f'- {torch.cuda.memory_reserved(device=device0)=}')  # torch.cuda.memory_cached(device=None).
+	print(f'- {torch.cuda.max_memory_reserved(device=device0)=}')  # torch.cuda.max_memory_cached(device=None).
+	print(f'- {torch.cuda.memory_allocated(device=device1)=}')
+	print(f'- {torch.cuda.max_memory_allocated(device=device1)=}')
+	print(f'- {torch.cuda.memory_allocated(device=None)=}')
+	print(f'- {torch.cuda.max_memory_allocated(device=None)=}')
 
-	print(f'{torch.cuda.memory_allocated()=}')
-	print(f'{torch.cuda.max_memory_allocated()=}')
-	print(f'{torch.cuda.memory_reserved()=}')
-	print(f'{torch.cuda.max_memory_reserved()=}')
+	# Delete tensors on GPU.
+	del x, y
 
+	z.to(device=device1)  # Temporary objects created on GPU are not kept in memory.
+	z1 = z.to(device=device1)
+	z2 = z.to(device=device1)
+
+	print(f'= {torch.cuda.memory_allocated(device=device0)=}')
+	print(f'= {torch.cuda.max_memory_allocated(device=device0)=}')
+	print(f'= {torch.cuda.memory_reserved(device=device0)=}')
+	print(f'= {torch.cuda.max_memory_reserved(device=device0)=}')
+	print(f'= {torch.cuda.memory_allocated(device=device1)=}')
+	print(f'= {torch.cuda.max_memory_allocated(device=device1)=}')
+	print(f'= {torch.cuda.memory_allocated(device=None)=}')
+	print(f'= {torch.cuda.max_memory_allocated(device=None)=}')
+
+	# NOTE [info] >> No effect.
+	gc.collect()
+	# empty_cache() doesn't increase the amount of GPU memory available for PyTorch.
+	# However, it may help reduce fragmentation of GPU memory in certain cases.
 	torch.cuda.empty_cache()
 
-	print(f'{torch.cuda.memory_allocated()=}')
-	print(f'{torch.cuda.max_memory_allocated()=}')
-	print(f'{torch.cuda.memory_reserved()=}')
-	print(f'{torch.cuda.max_memory_reserved()=}')
+	print(f'* {torch.cuda.memory_allocated(device=device0)=}')
+	print(f'* {torch.cuda.max_memory_allocated(device=device0)=}')
+	print(f'* {torch.cuda.memory_reserved(device=device0)=}')
+	print(f'* {torch.cuda.max_memory_reserved(device=device0)=}')
+	print(f'* {torch.cuda.memory_allocated(device=device1)=}')
+	print(f'* {torch.cuda.max_memory_allocated(device=device1)=}')
+	print(f'* {torch.cuda.memory_allocated(device=None)=}')
+	print(f'* {torch.cuda.max_memory_allocated(device=None)=}')
+
+	#torch.cuda.reset_max_memory_allocated(device=None)
+	#torch.cuda.reset_max_memory_cached(device=None)
+	#torch.cuda.reset_peak_memory_stats(device=None)
 
 	#--------------------
 	print('----- torch.cuda.list_gpu_processes(device=None)')
