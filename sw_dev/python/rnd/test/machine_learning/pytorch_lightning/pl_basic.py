@@ -800,13 +800,13 @@ class Seq2SeqModule(pl.LightningModule):
 
 		print(f"The model has {sum(p.numel() for p in self.model.parameters() if p.requires_grad):,} trainable parameters.")
 
-	def configure_optimizers(self):
+	def configure_optimizers(self) -> pl.utilities.types.OptimizerLRScheduler:
 		#optimizer = torch.optim.Adam(self.model.parameters())
 		params = [p for p in self.model.parameters() if p.requires_grad]
 		optimizer = torch.optim.Adam(params)
 		return optimizer
 
-	def forward(self, x, max_len, tgt_sos_idx, tgt_eos_idx):
+	def forward(self, x: torch.Tensor, max_len: int, tgt_sos_idx: int, tgt_eos_idx: int) -> torch.Tensor:
 		encoder, decoder = self.model[0], self.model[1]
 
 		encoder_outputs, hidden = encoder(x)
