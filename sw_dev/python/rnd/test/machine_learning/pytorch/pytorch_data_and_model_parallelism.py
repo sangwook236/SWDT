@@ -2,8 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import datetime
-import numpy as np
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
@@ -148,25 +146,29 @@ def data_parallel_test():
 				))
 	print('Training complete in {}.'.format(datetime.datetime.now() - start_time))
 
-# REF [site] >> https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html
-def FSDP_tutorial():
-	raise NotImplementedError
-
-# REF [site] >> https://pytorch.org/tutorials/intermediate/model_parallel_tutorial.html
-def model_parallel_tutorial():
-	raise NotImplementedError
-
 def main():
+	# Data parallelism (DP).
+
 	#data_parallel_tutorial()
 	data_parallel_test()
-
-	#FSDP_tutorial()  // Fully sharded data parallel (FSDP). Not yet implemented.
 
 	# Distributed data parallelism (DDP).
 	#	Refer to ./pytorch_distributed.py
 
+	# Fully sharded data parallel (FSDP).
+	#	https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html
+	#	https://pytorch.org/tutorials/intermediate/FSDP_adavnced_tutorial.html
+
 	#-----
-	#model_parallel_tutorial()  // Not yet implemented.
+	# Model parallelism.
+	#	https://pytorch.org/tutorials/intermediate/model_parallel_tutorial.html
+
+	# Pipeline parallelism.
+	#	https://pytorch.org/docs/stable/pipeline.html
+	#	https://pytorch.org/tutorials/intermediate/pipeline_tutorial.html
+	#	https://pytorch.org/tutorials/advanced/ddp_pipeline.html
+	#
+	#	"GPipe: Efficient Training of Giant Neural Networks using Pipeline Parallelism", arXiv 2017.
 
 #--------------------------------------------------------------------
 

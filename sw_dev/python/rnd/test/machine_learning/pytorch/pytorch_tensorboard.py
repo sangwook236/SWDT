@@ -27,7 +27,7 @@ def tensorboard_tutorial():
 	# Constant for classes.
 	classes = ('T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle Boot')
 
-	# Helper function to show an image (used in the 'plot_classes_preds' function below)
+	# Helper function to show an image (used in the 'plot_classes_preds' function below).
 	def matplotlib_imshow(img, one_channel=False):
 		if one_channel:
 			img = img.mean(dim=0)

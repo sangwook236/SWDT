@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >>
-#	https://pytorch.org/tutorials/beginner/dist_overview.html
-#	https://pytorch.org/docs/stable/distributed.html
-
-import os, math, random, datetime
+import os, math, random, datetime, tempfile
 import torch
 import torchvision
 
@@ -354,6 +350,157 @@ def mpi_distributed_tutorial():
 
 	init_process(0, 0, use_cuda, run_functor, backend='mpi')
 
+def setup(rank, world_size):
+	# On Windows platform, the torch.distributed package only supports Gloo backend, FileStore and TcpStore.
+	# For FileStore, set init_method parameter in init_process_group to a local file. Example as follow:
+	# init_method="file:///f:/libtmp/some_file"
+	# torch.distributed.init_process_group(
+	#    "gloo",
+	#    rank=rank,
+	#    init_method=init_method,
+	#    world_size=world_size)
+	# For TcpStore, same way as on Linux.
+
+	os.environ["MASTER_ADDR"] = "localhost"
+	os.environ["MASTER_PORT"] = "12355"
+
+	# Initialize the process group
+	#torch.distributed.init_process_group("gloo", rank=rank, world_size=world_size)
+	torch.distributed.init_process_group("nccl", rank=rank, world_size=world_size)
+
+def cleanup():
+	torch.distributed.destroy_process_group()
+
+class ToyModel(torch.nn.Module):
+	def __init__(self):
+		super(ToyModel, self).__init__()
+		self.net1 = torch.nn.Linear(10, 10)
+		self.relu = torch.nn.ReLU()
+		self.net2 = torch.nn.Linear(10, 5)
+
+	def forward(self, x):
+		return self.net2(self.relu(self.net1(x)))
+
+def demo_basic(rank, world_size):
+	print(f"Running basic DDP example on rank {rank}.")
+	setup(rank, world_size)
+
+	# Create model and move it to GPU with id rank
+	model = ToyModel().to(rank)
+	ddp_model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[rank])
+
+	loss_fn = torch.nn.MSELoss()
+	optimizer = torch.optim.SGD(ddp_model.parameters(), lr=0.001)
+
+	optimizer.zero_grad()
+	outputs = ddp_model(torch.randn(20, 10))
+	labels = torch.randn(20, 5).to(rank)
+	loss_fn(outputs, labels).backward()
+	optimizer.step()
+
+	cleanup()
+
+def demo_checkpoint(rank, world_size):
+	print(f"Running DDP checkpoint example on rank {rank}.")
+	setup(rank, world_size)
+
+	model = ToyModel().to(rank)
+	ddp_model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[rank])
+
+	CHECKPOINT_PATH = tempfile.gettempdir() + "/model.checkpoint"
+	if rank == 0:
+		# All processes should see same parameters as they all start from same
+		# random parameters and gradients are synchronized in backward passes.
+		# Therefore, saving it in one process is sufficient.
+		torch.save(ddp_model.state_dict(), CHECKPOINT_PATH)
+
+	# Use a barrier() to make sure that process 1 loads the model after process 0 saves it.
+	torch.distributed.barrier()
+	# Configure map_location properly
+	map_location = {"cuda:%d" % 0: "cuda:%d" % rank}
+	ddp_model.load_state_dict(
+		torch.load(CHECKPOINT_PATH, map_location=map_location))
+
+	loss_fn = torch.nn.MSELoss()
+	optimizer = torch.optim.SGD(ddp_model.parameters(), lr=0.001)
+
+	optimizer.zero_grad()
+	outputs = ddp_model(torch.randn(20, 10))
+	labels = torch.randn(20, 5).to(rank)
+	loss_fn(outputs, labels).backward()
+	optimizer.step()
+
+	# Not necessary to use a torch.distributed.barrier() to guard the file deletion below
+	# as the AllReduce ops in the backward pass of DDP already served as a synchronization.
+
+	if rank == 0:
+		os.remove(CHECKPOINT_PATH)
+
+	cleanup()
+
+# Combining DDP with Model Parallelism
+class ToyMpModel(torch.nn.Module):
+	def __init__(self, dev0, dev1):
+		super(ToyMpModel, self).__init__()
+		self.dev0 = dev0
+		self.dev1 = dev1
+		self.net1 = torch.nn.Linear(10, 10).to(dev0)
+		self.relu = torch.nn.ReLU()
+		self.net2 = torch.nn.Linear(10, 5).to(dev1)
+
+	def forward(self, x):
+		x = x.to(self.dev0)
+		x = self.relu(self.net1(x))
+		x = x.to(self.dev1)
+		return self.net2(x)
+
+def demo_model_parallel(rank, world_size):
+	print(f"Running DDP with model parallel example on rank {rank}.")
+	setup(rank, world_size)
+
+	# Setup mp_model and devices for this process
+	dev0 = rank * 2
+	dev1 = rank * 2 + 1
+	mp_model = ToyMpModel(dev0, dev1)
+	ddp_mp_model = torch.nn.parallel.DistributedDataParallel(mp_model)
+
+	loss_fn = torch.nn.MSELoss()
+	optimizer = torch.optim.SGD(ddp_mp_model.parameters(), lr=0.001)
+
+	optimizer.zero_grad()
+	# Outputs will be on dev1
+	outputs = ddp_mp_model(torch.randn(20, 10))
+	labels = torch.randn(20, 5).to(dev1)
+	loss_fn(outputs, labels).backward()
+	optimizer.step()
+
+	cleanup()
+
+# REF [site] >> https://pytorch.org/tutorials/intermediate/ddp_tutorial.html
+def ddp_tutorial():
+	# Now, let's create a toy module, wrap it with DDP, and feed it some dummy input data.
+	# Please note, as DDP broadcasts model states from rank 0 process to all other processes in the DDP constructor,
+	# you do not need to worry about different DDP processes starting from different initial model parameter values.
+
+	def run_demo(demo_fn, world_size):
+		torch.multiprocessing.spawn(
+			demo_fn,
+			args=(world_size,),
+			nprocs=world_size,
+			join=True
+		)
+
+	#-----
+	n_gpus = torch.cuda.device_count()
+	assert n_gpus >= 2, f"Requires at least 2 GPUs to run, but got {n_gpus}"
+	print(f"Found {n_gpus} GPUs.")
+
+	world_size = n_gpus
+	run_demo(demo_basic, world_size)
+	run_demo(demo_checkpoint, world_size)
+	world_size = n_gpus // 2
+	run_demo(demo_model_parallel, world_size)
+
 class ConvNet(torch.nn.Module):
 	def __init__(self, num_classes=10):
 		super(ConvNet, self).__init__()
@@ -464,18 +611,24 @@ def distributed_data_parallel_example():
 
 	os.environ['MASTER_ADDR'] = '192.168.1.3'
 	os.environ['MASTER_PORT'] = '8888'
-	torch.multiprocessing.spawn(train_distributedly, nprocs=config['gpus'], args=(config,))
+	torch.multiprocessing.spawn(train_distributedly, args=(config,), nprocs=config['gpus'])
 
 def main():
+	# REF [site] >>
+	#	https://pytorch.org/docs/stable/distributed.html
+	#	https://pytorch.org/tutorials/distributed/home.html
+	#	https://pytorch.org/tutorials/beginner/dist_overview.html
+	#	https://pytorch.org/tutorials/intermediate/dist_tuto.html
+
 	if not torch.distributed.is_available():
 		print('PyTorch Distributed not available.')
 		return
 
-	#print('torch.distributed.is_initialized() = {}.'.format(torch.distributed.is_initialized()))  # Check if the default process group has been initialized.
-	#print('torch.distributed.is_mpi_available() = {}.'.format(torch.distributed.is_mpi_available()))
-	#print('torch.distributed.is_nccl_available() = {}.'.format(torch.distributed.is_nccl_available()))
-	#print('torch.distributed.is_gloo_available() = {}.'.format(torch.distributed.is_gloo_available()))
-	#print('torch.distributed.is_torchelastic_launched() = {}.'.format(torch.distributed.is_torchelastic_launched()))
+	#print(f'torch.distributed.is_initialized() = {torch.distributed.is_initialized()}.')  # Check if the default process group has been initialized.
+	#print(f'torch.distributed.is_mpi_available() = {torch.distributed.is_mpi_available()}.')
+	#print(f'torch.distributed.is_nccl_available() = {torch.distributed.is_nccl_available()}.')
+	#print(f'torch.distributed.is_gloo_available() = {torch.distributed.is_gloo_available()}.')
+	#print(f'torch.distributed.is_torchelastic_launched() = {torch.distributed.is_torchelastic_launched()}.')
 
 	#--------------------
 	#distributed_tutorial()
@@ -484,10 +637,14 @@ def main():
 	#mpi_distributed_tutorial()  # Use mpirun to run.
 
 	#--------------------
-	#distributed_data_parallel_example()
-
 	# Data parallelism (DP).
 	#	Refer to ./pytorch_data_and_model_parallelism.py
+
+	# Distributed data parallelism (DDP).
+	#	https://pytorch.org/tutorials/beginner/ddp_series_intro.html
+
+	ddp_tutorial()
+	#distributed_data_parallel_example()
 
 #--------------------------------------------------------------------
 
