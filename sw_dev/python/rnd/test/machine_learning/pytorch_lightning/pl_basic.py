@@ -3029,6 +3029,10 @@ def main():
 
 	#lightning_cli_example()  # Not yet implemented.
 
+	#-----
+	# Port PyTorch Lightning implementation to PyTorch implementation.
+	#	Refer to lenet5_mnist_test() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_neural_network.py
+
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:

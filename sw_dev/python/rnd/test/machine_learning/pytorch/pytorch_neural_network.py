@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import random, math, re, unicodedata, time
-#import numpy as np
+import os, typing, random, math, re, unicodedata, time, datetime
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torchvision
 import matplotlib.pyplot as plt
 #plt.switch_backend('agg')
 import matplotlib.ticker as ticker
@@ -121,6 +122,378 @@ def lenet_example():
 		loss = criterion(output, target)
 		loss.backward()
 		optimizer.step()  # Does the update.
+
+# REF [class] >> LeNet5 class in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch_lightning/pl_basic.py
+class LeNet5(torch.nn.Module):
+	def __init__(self, num_classes: int = 10):
+		super().__init__()
+
+		# 1 input image channel, 6 output channels, 3x3 square convolution kernel.
+		self.conv1 = torch.nn.Conv2d(1, 6, 3)
+		self.conv2 = torch.nn.Conv2d(6, 16, 3)
+		# An affine operation: y = Wx + b.
+		self.fc1 = torch.nn.Linear(16 * 5 * 5, 120)  # For 28x28 input.
+		self.fc2 = torch.nn.Linear(120, 84)
+		self.fc3 = torch.nn.Linear(84, num_classes)
+
+	def forward(self, x: torch.Tensor) -> torch.Tensor:
+		# Max pooling over a (2, 2) window.
+		x = torch.nn.functional.max_pool2d(torch.nn.functional.relu(self.conv1(x)), (2, 2))
+		# If the size is a square you can only specify a single number.
+		x = torch.nn.functional.max_pool2d(torch.nn.functional.relu(self.conv2(x)), 2)
+		x = x.view(-1, self._num_flat_features(x))
+		x = torch.nn.functional.relu(self.fc1(x))
+		x = torch.nn.functional.relu(self.fc2(x))
+		x = self.fc3(x)
+		return x
+
+	"""
+	# NOTE [error] >> AttributeError: 'DataParallel' object has no attribute 'training_step'.
+	#	model = torch.nn.DataParallel(model)
+	#	model_output = model.training_step(batch, batch_idx, criterion, device)
+
+	def training_step(self, batch: typing.Any, batch_idx: typing.Any, criterion: torch.nn.Module, device: torch.device) -> typing.Dict[str, typing.Any]:
+		start_time = time.time()
+		srcs, tgts = batch
+		srcs, tgts = srcs.to(device), tgts.to(device)
+		retval = self._shared_step(srcs, tgts, criterion)
+		step_time = time.time() - start_time
+
+		return {
+			"loss": retval["loss"],
+			"acc": retval["acc"],
+			"time": step_time,
+		}
+
+	def validation_step(self, batch: typing.Any, batch_idx: typing.Any, criterion: torch.nn.Module, device: torch.device) -> typing.Dict[str, typing.Any]:
+		'''
+		start_time = time.time()
+		srcs, tgts = batch
+		srcs, tgts = srcs.to(device), tgts.to(device)
+		retval = self._shared_step(srcs, tgts, criterion)
+		step_time = time.time() - start_time
+
+		return {
+			"loss": retval["loss"],
+			"acc": retval["acc"],
+			"time": step_time,
+		}
+		'''
+		return self.training_step(batch, batch_idx, criterion, device)
+
+	def test_step(self, batch: typing.Any, batch_idx: typing.Any, criterion: torch.nn.Module, device: torch.device) -> typing.Dict[str, typing.Any]:
+		'''
+		start_time = time.time()
+		srcs, tgts = batch
+		srcs, tgts = srcs.to(device), tgts.to(device)
+		retval = self._shared_step(srcs, tgts, criterion)
+		step_time = time.time() - start_time
+
+		return {
+			"loss": retval["loss"],
+			"acc": retval["acc"],
+			"time": step_time,
+		}
+		'''
+		return self.training_step(batch, batch_idx, criterion, device)
+
+	def predict_step(self, batch: typing.Any, batch_idx: typing.Any, dataloader_idx: typing.Any = None, device: torch.device = None) -> typing.Any:
+		return self(batch[0].to(device))
+
+	def _shared_step(self, srcs: torch.Tensor, tgts: torch.Tensor, criterion: torch.nn.Module) -> typing.Dict[str, typing.Any]:
+		model_outputs = self(srcs)
+
+		loss = criterion(model_outputs, tgts)
+
+		# Evaluate performance measures.
+		#acc = (torch.argmax(model_outputs, dim=-1) == tgts).sum().item()
+		acc = (torch.argmax(model_outputs, dim=-1) == tgts).float().mean().item()
+
+		return {
+			"loss": loss,
+			"acc": acc,
+		}
+	"""
+
+	def _num_flat_features(self, x: torch.Tensor) -> int:
+		size = x.size()[1:]  # All dimensions except the batch dimension.
+		num_features = 1
+		for s in size:
+			num_features *= s
+		return num_features
+
+# REF [function] >> lenet5_mnist_example() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch_lightning/pl_basic.py
+def lenet5_mnist_test():
+	def save_model(model_filepath: str, model: torch.nn.Module):
+		#torch.save(model.state_dict(), model_filepath)
+		torch.save({"state_dict": model.state_dict()}, model_filepath)
+		print(f"Saved a model to {model_filepath}.")
+
+	def load_model(model_filepath: str, model: torch.nn.Module, device: torch.device = "cuda"):
+		loaded_data = torch.load(model_filepath, map_location=device)
+		#model.load_state_dict(loaded_data)
+		model.load_state_dict(loaded_data["state_dict"])
+		print(f"Loaded a model from {model_filepath}.")
+		return model
+
+	timestamp = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
+
+	output_dir_path = "./lenet5_mnist_output"
+	if not os.path.exists(output_dir_path):
+		os.makedirs(output_dir_path, exist_ok=True)
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	is_data_parallel_used = True
+	if is_data_parallel_used:
+		if torch.cuda.device_count() > 1:
+			print(f"{torch.cuda.device_count()} GPUs found: data parallelism (DP) applied.")
+		else:
+			print(f"{torch.cuda.device_count()} GPUs found: data parallelism (DP) not applied.")
+			is_data_parallel_used = False
+
+	is_training = True
+	is_training_resumed = False
+	model_filepath_to_load = os.path.join(output_dir_path, "lenet5_mnist_20240117T121448.pth")
+	assert (is_training and not is_training_resumed) or (is_training and is_training_resumed and os.path.isfile(model_filepath_to_load)) or (not is_training and os.path.isfile(model_filepath_to_load)), f"Invalid model file to load, {model_filepath_to_load}"
+
+	#--------------------
+	# Prepare data.
+
+	batch_size = 512
+	num_workers = 4
+
+	train_transform = torchvision.transforms.ToTensor()
+	val_transform = torchvision.transforms.ToTensor()
+	train_dataset = torchvision.datasets.MNIST(root=".", train=True, download=True, transform=train_transform, target_transform=None)
+	val_dataset = torchvision.datasets.MNIST(root=".", train=False, download=True, transform=val_transform, target_transform=None)
+	print(f"#train examples = {len(train_dataset)}, #validation examples = {len(val_dataset)}.")
+
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=True, persistent_workers=False)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False, persistent_workers=False)
+	print(f"#train steps per epoch = {len(train_dataloader)}, #validation steps per epoch = {len(val_dataloader)}.")
+
+	#--------------------
+	# Training.
+
+	if is_training:
+		from torch.utils.tensorboard import SummaryWriter
+
+		def shared_step(model: torch.nn.Module, srcs: torch.Tensor, tgts: torch.Tensor, criterion: torch.nn.Module) -> typing.Dict[str, typing.Any]:
+			model_outputs = model(srcs)
+
+			loss = criterion(model_outputs, tgts)
+
+			# Evaluate performance measures.
+			#acc = (torch.argmax(model_outputs, dim=-1) == tgts).sum().item()
+			acc = (torch.argmax(model_outputs, dim=-1) == tgts).float().mean().item()
+
+			return {
+				"loss": loss,
+				"acc": acc,
+			}
+		def training_step(model: torch.nn.Module, batch: typing.Any, batch_idx: typing.Any, criterion: torch.nn.Module, device: torch.device) -> typing.Dict[str, typing.Any]:
+			start_time = time.time()
+			srcs, tgts = batch
+			srcs, tgts = srcs.to(device), tgts.to(device)
+			retval = shared_step(model, srcs, tgts, criterion)
+			step_time = time.time() - start_time
+
+			return {
+				"loss": retval["loss"],
+				"acc": retval["acc"],
+				"time": step_time,
+			}
+		validation_step = training_step
+		test_step = training_step
+
+		def train_epoch(epoch: int, start_global_step: int, model: torch.nn.Module, criterion: torch.nn.Module, optimizer: torch.optim.Optimizer, scheduler: torch.optim.lr_scheduler.LRScheduler, is_epoch_based_scheduler: bool, dataloader: torch.utils.data.DataLoader, max_gradient_clipping_norm: typing.Optional[float], device: torch.device, writer: typing.Optional[SummaryWriter] = None) -> typing.Dict[str, typing.Any]:
+			model.train()
+
+			global_step = start_global_step
+			loss_epoch, acc_epoch, num_examples_epoch = 0.0, 0.0, 0
+			for batch_idx, batch in enumerate(dataloader):
+				optimizer.zero_grad()
+
+				#model_output = model.training_step(batch, batch_idx, criterion, device)
+				model_output = training_step(model, batch, batch_idx, criterion, device)
+				loss = model_output["loss"]
+				loss.backward()
+
+				if max_gradient_clipping_norm: torch.nn.utils.clip_grad_norm_(model.parameters(), max_gradient_clipping_norm)
+				optimizer.step()
+				if scheduler and not is_epoch_based_scheduler: scheduler.step()  # For step-based scheduler.
+
+				num_examples = len(batch[0])
+				loss = loss.item()
+				acc = model_output["acc"]
+				loss_epoch += loss * num_examples
+				acc_epoch += acc * num_examples
+				num_examples_epoch += num_examples
+
+				if writer:
+					writer.add_scalar("epoch", epoch, global_step)
+					if scheduler:
+						for idx, lr in enumerate(scheduler.get_last_lr()):
+							writer.add_scalar(f"learning_rate[{idx}]", lr, global_step)
+					writer.add_scalar("train_loss_step", loss, global_step)
+					writer.add_scalar("train_acc_step", acc, global_step)
+
+				global_step += 1
+			if scheduler and is_epoch_based_scheduler: scheduler.step()  # For epoch-based scheduler.
+
+			#assert global_step == (epoch + 1) * len(dataloader) - 1, f"{global_step}, {(epoch + 1) * len(dataloader) - 1}"
+			if writer:
+				writer.add_scalar("train_loss_epoch", loss_epoch / num_examples_epoch, global_step - 1)
+				writer.add_scalar("train_acc_epoch", acc_epoch / num_examples_epoch, global_step - 1)
+
+			return {
+				"loss": loss_epoch / num_examples_epoch,
+				"acc": acc_epoch / num_examples_epoch,
+				"global_step": global_step,
+			}
+
+		def evaluate_model(global_step: int, model: torch.nn.Module, criterion: torch.nn.Module, dataloader: torch.utils.data.DataLoader, device: torch.device, writer: typing.Optional[SummaryWriter] = None) -> typing.Dict[str, typing.Any]:
+			model.eval()
+
+			loss_epoch, acc_epoch, num_examples_epoch = 0.0, 0.0, 0
+			with torch.no_grad():
+				for batch_idx, batch in enumerate(dataloader):
+					#model_output = model.validation_step(batch, batch_idx, criterion, device)
+					model_output = validation_step(model, batch, batch_idx, criterion, device)
+					loss = model_output["loss"]
+
+					num_examples = len(batch[0])
+					loss = loss.item()
+					acc = model_output["acc"]
+					loss_epoch += loss * num_examples
+					acc_epoch += acc * num_examples
+					num_examples_epoch += num_examples
+
+				if writer:
+					writer.add_scalar("val_loss", loss_epoch / num_examples_epoch, global_step)
+					writer.add_scalar("val_acc", acc_epoch / num_examples_epoch, global_step)
+
+			return {
+				"loss": loss_epoch / num_examples_epoch,
+				"acc": acc_epoch / num_examples_epoch,
+			}
+
+		def test_model(global_step: int, model: torch.nn.Module, criterion: torch.nn.Module, dataloader: torch.utils.data.DataLoader, device: torch.device, writer: typing.Optional[SummaryWriter] = None) -> typing.Dict[str, typing.Any]:
+			model.eval()
+
+			loss_epoch, acc_epoch, num_examples_epoch = 0.0, 0.0, 0
+			with torch.no_grad():
+				for batch_idx, batch in enumerate(dataloader):
+					#model_output = model.test_step(batch, batch_idx, criterion, device)
+					model_output = test_step(model, batch, batch_idx, criterion, device)
+					loss = model_output["loss"]
+
+					num_examples = len(batch[0])
+					loss = loss.item()
+					acc = model_output["acc"]
+					loss_epoch += loss * num_examples
+					acc_epoch += acc * num_examples
+					num_examples_epoch += num_examples
+
+				if writer:
+					writer.add_scalar("test_loss", loss_epoch / num_examples_epoch, global_step)
+					writer.add_scalar("test_acc", acc_epoch / num_examples_epoch, global_step)
+
+			return {
+				"loss": loss_epoch / num_examples_epoch,
+				"acc": acc_epoch / num_examples_epoch,
+			}
+
+		num_epochs = 10
+		max_gradient_clipping_norm = 1.0
+
+		# Build a model.
+		model = LeNet5(num_classes=10)
+
+		if is_training_resumed:
+			# Load a trained model.
+			model = load_model(model_filepath_to_load, model, device=device)
+		else:
+			# Initialize the model.
+			for param in model.parameters():
+				if param.dim() > 1:
+					torch.nn.init.xavier_uniform_(param)  # Initialize parameters with Glorot / fan_avg.
+
+		# Data parallelism (DP).
+		if is_data_parallel_used:
+			model = torch.nn.DataParallel(model)
+			#model = torch.nn.DataParallel(model, device_ids=[0, 1, 2], output_device=None)
+		model = model.to(device)
+
+		# Define a criterion.
+		criterion = torch.nn.CrossEntropyLoss(reduction="mean")
+
+		# Define an optimizer.
+		params = [p for p in model.parameters() if p.requires_grad]
+		optimizer = torch.optim.Adam(params, lr=1e-2)
+		# Define a scheduler.
+		if False:
+			scheduler = None
+			is_epoch_based_scheduler = True
+		elif False:
+			scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs, eta_min=0.0)
+			is_epoch_based_scheduler = True
+		else:
+			scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs * len(train_dataloader), eta_min=0.0)
+			is_epoch_based_scheduler = False
+
+		# Default 'log_dir' is 'runs' - we'll be more specific here.
+		#writer = SummaryWriter(log_dir=None, comment="", purge_step=None, max_queue=10, flush_secs=120, filename_suffix="")
+		writer = SummaryWriter(log_dir=f"./tensorboard_logs/lenet5_mnist_{timestamp}")
+
+		# Train.
+		global_step = 0
+		for epoch in range(num_epochs):
+			start_time = time.time()
+			train_results = train_epoch(epoch, global_step, model, criterion, optimizer, scheduler, is_epoch_based_scheduler, train_dataloader, max_gradient_clipping_norm, device, writer)
+			global_step = train_results["global_step"]
+			val_results = evaluate_model(global_step - 1, model, criterion, val_dataloader, device, writer)
+			print(f"Epoch {epoch + 1:02}/{num_epochs:02}: {time.time() - start_time} secs.")
+			print(f'\tTrain loss = {train_results["loss"]:.3f}, validation loss = {val_results["loss"]:.3f}.')
+			print(f'\tTrain acc = {train_results["acc"]:.3f}, validation acc = {val_results["acc"]:.3f}.')
+			#print(f'\tTrain time = {train_results["time"]:.3f}, validation time = {val_results["time"]:.3f}.')
+
+		test_results = test_model(global_step - 1, model, criterion, val_dataloader, device, writer)
+		print(f'Test loss = {test_results["loss"]:.3f}, test acc = {test_results["acc"]:.3f}.')
+
+		# Save the trained model.
+		model_filepath = os.path.join(output_dir_path, f"lenet5_mnist_{timestamp}.pth")
+		save_model(model_filepath, model.module if is_data_parallel_used else model)
+	else:
+		# Build a model.
+		model = LeNet5(num_classes=10)
+
+		# Load a pretrained model.
+		model = load_model(model_filepath_to_load, model, device=device)
+
+		model = model.to(device)
+
+	#--------------------
+	# Inference.
+
+	model.eval()
+
+	gts, predictions = list(), list()
+	with torch.no_grad():
+		for batch_inputs, batch_outputs in val_dataloader:
+			gts.append(batch_outputs.numpy())  # [batch size].
+			predictions.append(model(batch_inputs.to(device)).cpu().numpy())  # [batch size, #classes].
+	gts, predictions = np.hstack(gts), np.argmax(np.vstack(predictions), axis=-1)
+	assert len(gts) == len(predictions)
+	num_examples = len(gts)
+
+	results = gts == predictions
+	num_correct_examples = results.sum().item()
+	acc = results.mean().item()
+
+	print("Prediction: accuracy = {} / {} = {}.".format(num_correct_examples, num_examples, acc))
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/text_sentiment_ngrams_tutorial.html
 def text_sentiment_ngrams_tutorial():
@@ -992,6 +1365,8 @@ def seq2seq_translation_tutorial():
 
 def main():
 	#lenet_example()
+	# Port PyTorch Lightning implementation to PyTorch implementation.
+	#lenet5_mnist_test()  # Data parallelism (DP) + tensorboard.
 
 	#text_sentiment_ngrams_tutorial()
 	torchtext_translation_tutorial()  # Seq2seq model.

@@ -152,6 +152,8 @@ def main():
 	#data_parallel_tutorial()
 	data_parallel_test()
 
+	# Refer to lenet5_mnist_test() in ./pytorch_neural_network.py
+
 	# Distributed data parallelism (DDP).
 	#	Refer to ./pytorch_distributed.py
 
