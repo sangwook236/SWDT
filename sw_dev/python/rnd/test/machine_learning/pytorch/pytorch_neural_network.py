@@ -147,7 +147,7 @@ class LeNet5(torch.nn.Module):
 		x = self.fc3(x)
 		return x
 
-	"""
+	'''
 	# NOTE [error] >> AttributeError: 'DataParallel' object has no attribute 'training_step'.
 	#	model = torch.nn.DataParallel(model)
 	#	model_output = model.training_step(batch, batch_idx, criterion, device)
@@ -166,7 +166,7 @@ class LeNet5(torch.nn.Module):
 		}
 
 	def validation_step(self, batch: typing.Any, batch_idx: typing.Any, criterion: torch.nn.Module, device: torch.device) -> typing.Dict[str, typing.Any]:
-		'''
+		"""
 		start_time = time.time()
 		srcs, tgts = batch
 		srcs, tgts = srcs.to(device), tgts.to(device)
@@ -178,11 +178,11 @@ class LeNet5(torch.nn.Module):
 			"acc": retval["acc"],
 			"time": step_time,
 		}
-		'''
+		"""
 		return self.training_step(batch, batch_idx, criterion, device)
 
 	def test_step(self, batch: typing.Any, batch_idx: typing.Any, criterion: torch.nn.Module, device: torch.device) -> typing.Dict[str, typing.Any]:
-		'''
+		"""
 		start_time = time.time()
 		srcs, tgts = batch
 		srcs, tgts = srcs.to(device), tgts.to(device)
@@ -194,11 +194,11 @@ class LeNet5(torch.nn.Module):
 			"acc": retval["acc"],
 			"time": step_time,
 		}
-		'''
+		"""
 		return self.training_step(batch, batch_idx, criterion, device)
 
-	def predict_step(self, batch: typing.Any, batch_idx: typing.Any, dataloader_idx: typing.Any = None, device: torch.device = None) -> typing.Any:
-		return self(batch[0].to(device))
+	#def predict_step(self, batch: typing.Any, batch_idx: typing.Any, dataloader_idx: typing.Any = None, device: torch.device = None) -> typing.Any:
+	#	return self(batch[0].to(device))
 
 	def _shared_step(self, srcs: torch.Tensor, tgts: torch.Tensor, criterion: torch.nn.Module) -> typing.Dict[str, typing.Any]:
 		model_outputs = self(srcs)
@@ -213,7 +213,7 @@ class LeNet5(torch.nn.Module):
 			"loss": loss,
 			"acc": acc,
 		}
-	"""
+	'''
 
 	def _num_flat_features(self, x: torch.Tensor) -> int:
 		size = x.size()[1:]  # All dimensions except the batch dimension.
@@ -407,6 +407,7 @@ def lenet5_mnist_test():
 			}
 
 		num_epochs = 10
+		#max_gradient_clipping_norm = None  # No gradient clipping.
 		max_gradient_clipping_norm = 1.0
 
 		# Build a model.

@@ -149,6 +149,28 @@ def data_parallel_test():
 def main():
 	# Data parallelism (DP).
 
+	# NOTE [info] >>
+	'''
+	class MyModule(torch.nn.Module):
+		def __init__(self):
+			super().__init__()
+			self.w = torch.nn.Linear(10, 5)
+		def forward(self, x):
+			return self.func(x)
+		def func(self, x):
+			return self.w(x)
+
+	model = MyModule()
+	y = model(x)  # OK.
+	y = model.func(x)  # OK.
+
+	model_dp = torch.nn.DataParallel(model)
+	model_dp = model_dp.to("cuda")
+	y = model_dp(x.to("cuda"))  # OK.
+	y = model_dp.func(x.to("cuda"))  # AttributeError: 'DataParallel' object has no attribute 'func'.
+	y = model_dp.module.func(x.to("cuda"))  # OK.
+	'''
+
 	#data_parallel_tutorial()
 	data_parallel_test()
 

@@ -211,6 +211,164 @@ def dataclass_test():
 	assert dataclasses.astuple(p) == (10, 20)
 	assert dataclasses.astuple(c) == ([(0, 0), (10, 4)],)
 
+def class_test():
+	import typing
+
+	class MyClass():
+		def __init__(self) -> None:
+			super().__init__()
+
+			self.b = True
+			self.i = 2
+			self.f = 3.0
+
+			print("MyClass.__init__() is called.")
+
+		def __new__(cls, *args, **kwargs):
+			print("MyClass.__new__() is called.")
+			return super().__new__(cls, *args, **kwargs)
+
+		def __del__(self):
+			print("MyClass.__del__() is called.")
+
+		def __call__(self, *args: typing.Any, **kwargs: typing.Any) -> typing.Any:
+			print("MyClass.__call__() is called.")
+			#return self.b, self.i, self.f
+
+		def __getattribute__(self, name: str):
+			print("MyClass.__getattribute__() is called.")
+			return super().__getattribute__(name)
+
+		def __getattr__(self, name: str):
+			print("MyClass.__getattr__() is called.")
+
+		def __setattr__(self, name: str, value: typing.Any) -> None:
+			super().__setattr__(name, value)
+			#self.__dict__[name] = value
+			print("MyClass.__setattr__() is called.")
+
+		def __delattr__(self, name: str) -> None:
+			return super().__delattr__(name)
+			print("MyClass.__delattr__() is called.")
+
+		def __repr__(self) -> str:
+			print("MyClass.__repr__() is called.")
+			return super().__repr__()
+
+		def __str__(self) -> str:
+			print("MyClass.__str__() is called.")
+			return super().__str__()
+
+		def __bytes__(self) -> bytes:
+			#b = bytes([self.b, self.i, self.f])
+			b = bytes([self.b, self.i])
+			print("MyClass.__bytes__() is called.")
+			return b
+
+		def __format__(self, format_spec: str) -> str:
+			print("MyClass.__format__() is called.")
+			#return super().__format__(format_spec)
+			return format_spec.format(self.b, self.i, self.f)  # format(obj, "{:b}, {:d}, {:0.3f}")
+
+		def __eq__(self, value: object) -> bool:
+			print("MyClass.__eq__() is called.")
+			return super().__eq__(value)  # TypeError: '>=' not supported between instances of 'MyClass' and 'MyClass'.
+			#return self.b == value.b and self.i == value.i and self.f == value.f
+
+		def __ne__(self, value: object) -> bool:
+			print("MyClass.__ne__() is called.")
+			return super().__ne__(value)  # TypeError: '>=' not supported between instances of 'MyClass' and 'MyClass'.
+			#return self.b != value.b and self.i != value.i and self.f != value.f
+
+		def __lt__(self, value: object) -> bool:
+			print("MyClass.__lt__() is called.")
+			#return super().__lt__(value)  # TypeError: '<' not supported between instances of 'MyClass' and 'MyClass'.
+			return self.b < value.b and self.i < value.i and self.f < value.f
+
+		def __le__(self, value: object) -> bool:
+			print("MyClass.__le__() is called.")
+			#return super().__le__(value)  # TypeError: '<=' not supported between instances of 'MyClass' and 'MyClass'.
+			return self.b <= value.b and self.i <= value.i and self.f <= value.f
+
+		def __gt__(self, value: object) -> bool:
+			print("MyClass.__gt__() is called.")
+			return super().__gt__(value)  # TypeError: '>' not supported between instances of 'MyClass' and 'MyClass'.
+			#return self.b > value.b and self.i > value.i and self.f > value.f
+
+		def __ge__(self, value: object) -> bool:
+			print("MyClass.__ge__() is called.")
+			return super().__ge__(value)  # TypeError: '>=' not supported between instances of 'MyClass' and 'MyClass'.
+			#return self.b >= value.b and self.i >= value.i and self.f >= value.f
+
+		def __hash__(self) -> int:
+			print("MyClass.__hash__() is called.")
+			return super().__hash__()
+			#return hash((self.b, self.i, self.f))
+
+		def __bool__(self) -> bool:
+			b = self.b
+			print("MyClass.__bool__() is called.")
+			return b
+
+		def __dir__(self) -> typing.Iterable[str]:
+			print("MyClass.__dir__() is called.")
+			return super().__dir__()
+
+	obj, obj2 = MyClass(), MyClass()
+	print('-----')
+	obj()
+	print('-----')
+	b = obj.b
+	print('-----')
+	obj.i = 12
+	print('-----')
+	obj.d = 12.0
+	print('-----')
+	s = repr(obj)
+	print('-----')
+	s = str(obj)
+	print('-----')
+	print(obj)
+	print('-----')
+	b = bytes(obj)
+	print('-----')
+	print(hash(obj))
+	print('-----')
+	b = bool(obj)
+	print('-----')
+	print(dir(obj))
+	print('-----')
+	#print(format(obj, "*>+10,d"))
+	#print(format(obj, "^-020.3f"))
+	print(format(obj, "{:b}, {:d}, {:0.3f}"))
+	print('-----')
+	obj == obj2
+	print('-----')
+	obj.__eq__(obj2)
+	print('-----')
+	obj != obj2
+	print('-----')
+	obj.__ne__(obj2)
+	print('-----')
+	obj < obj2
+	print('-----')
+	obj.__lt__(obj2)
+	print('-----')
+	obj <= obj2
+	print('-----')
+	obj.__le__(obj2)
+	print('-----')
+	obj > obj2
+	print('-----')
+	obj.__gt__(obj2)
+	print('-----')
+	obj > obj2
+	print('-----')
+	obj.__ge__(obj2)
+	print('-----')
+	del obj.f
+	print('-----')
+
 def iterable_and_iterator_test():
 	# Iterable: an object which one can iterate over.
 	#	Sequence: list, string, and tuple.
@@ -990,13 +1148,14 @@ def IEEE_754_format():
 
 def main():
 	#platform_test()
-	typing_test()
+	#typing_test()
 
 	#variable_test()
 	#control_test()
 	#container_test()
 	#collections_test()
 	#dataclass_test()
+	class_test()
 
 	#iterable_and_iterator_test()
 
