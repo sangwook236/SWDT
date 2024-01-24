@@ -54,26 +54,28 @@ class StandardTransformerModel(torch.nn.Module):
 
 		self.model_type = "Transformer"
 		self.d_model = d_model
+		self.sqrt_d_model = math.sqrt(self.d_model)
+		self.is_individual_modules_used = True
 
-		self.src_encoder = torch.nn.Embedding(num_tokens, d_model)
-		self.tgt_encoder = torch.nn.Embedding(num_tokens, d_model)
+		self.src_emb = torch.nn.Embedding(num_tokens, d_model)
+		self.tgt_emb = torch.nn.Embedding(num_tokens, d_model)
 		self.pos_encoder = PositionalEncoding(d_model, dropout)
-		"""
-		encoder_layer = torch.nn.TransformerEncoderLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
-		transformer_encoder = torch.nn.TransformerEncoder(encoder_layer, num_layers=num_encoder_layers, norm=None, enable_nested_tensor=True)
-		decoder_layer = torch.nn.TransformerDecoderLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
-		transformer_decoder = torch.nn.TransformerDecoder(decoder_layer, num_layers=num_decoder_layers, norm=None)
-		self.transformer = ...
-		"""
-		self.transformer = torch.nn.Transformer(d_model, nhead=num_heads, num_encoder_layers=num_encoder_layers, num_decoder_layers=num_decoder_layers, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, custom_encoder=None, custom_decoder=None, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
+		if self.is_individual_modules_used:
+			# NOTE [info] >> Call self.transformer_encoder & self.transformer_decoder directly to use as a transformer model.
+			encoder_layer = torch.nn.TransformerEncoderLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
+			self.transformer_encoder = torch.nn.TransformerEncoder(encoder_layer, num_layers=num_encoder_layers, norm=None, enable_nested_tensor=True)
+			decoder_layer = torch.nn.TransformerDecoderLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
+			self.transformer_decoder = torch.nn.TransformerDecoder(decoder_layer, num_layers=num_decoder_layers, norm=None)
+		else:
+			self.transformer = torch.nn.Transformer(d_model, nhead=num_heads, num_encoder_layers=num_encoder_layers, num_decoder_layers=num_decoder_layers, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, custom_encoder=None, custom_decoder=None, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
 		self.generator = torch.nn.Linear(d_model, num_tokens)
 
 		self.init_weights()
 
 	def init_weights(self) -> None:
 		initrange = 0.1
-		self.src_encoder.weight.data.uniform_(-initrange, initrange)
-		self.tgt_encoder.weight.data.uniform_(-initrange, initrange)
+		self.src_emb.weight.data.uniform_(-initrange, initrange)
+		self.tgt_emb.weight.data.uniform_(-initrange, initrange)
 		self.generator.bias.data.zero_()
 		self.generator.weight.data.uniform_(-initrange, initrange)
 
@@ -87,11 +89,18 @@ class StandardTransformerModel(torch.nn.Module):
 			output Tensor of shape [seq_len, batch_size, num_tokens]
 		"""
 
-		src = self.src_encoder(src) * math.sqrt(self.d_model)
+		src = self.src_emb(src) * self.sqrt_d_model
 		src = self.pos_encoder(src)
-		tgt = self.tgt_encoder(tgt) * math.sqrt(self.d_model)
+		tgt = self.tgt_emb(tgt) * self.sqrt_d_model
 		tgt = self.pos_encoder(tgt)
-		output = self.transformer(src, tgt, src_mask, tgt_mask, memory_mask=None, src_key_padding_mask=None, tgt_key_padding_mask=None, memory_key_padding_mask=None)
+		if self.is_individual_modules_used:
+			# REF [function] >> torch.nn.Transformer.forward().
+			#memory = self.transformer_encoder(src, mask=src_mask, src_key_padding_mask=None, is_causal=None)
+			memory = self.transformer_encoder(src, src_mask)
+			#output = self.transformer_decoder(tgt, memory, tgt_mask=tgt_mask, memory_mask=None, tgt_key_padding_mask=None, memory_key_padding_mask=None, tgt_is_causal=None, memory_is_causal=False)
+			output = self.transformer_decoder(tgt, memory, tgt_mask)
+		else:
+			output = self.transformer(src, tgt, src_mask, tgt_mask, memory_mask=None, src_key_padding_mask=None, tgt_key_padding_mask=None, memory_key_padding_mask=None)
 		output = self.generator(output)
 		#output = torch.nn.functional.sigmoid(output)
 		#output = torch.nn.functional.logsigmoid(output)
@@ -104,8 +113,9 @@ class TransformerModel(torch.nn.Module):
 
 		self.model_type = "Transformer"
 		self.d_model = d_model
+		self.sqrt_d_model = math.sqrt(self.d_model)
 
-		self.encoder = torch.nn.Embedding(num_tokens, d_model)
+		self.emb = torch.nn.Embedding(num_tokens, d_model)
 		self.pos_encoder = PositionalEncoding(d_model, dropout)
 		encoder_layer = torch.nn.TransformerEncoderLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
 		self.transformer_encoder = torch.nn.TransformerEncoder(encoder_layer, num_layers=num_layers, norm=None, enable_nested_tensor=True)
@@ -115,7 +125,7 @@ class TransformerModel(torch.nn.Module):
 
 	def init_weights(self) -> None:
 		initrange = 0.1
-		self.encoder.weight.data.uniform_(-initrange, initrange)
+		self.emb.weight.data.uniform_(-initrange, initrange)
 		self.decoder.bias.data.zero_()
 		self.decoder.weight.data.uniform_(-initrange, initrange)
 
@@ -128,7 +138,7 @@ class TransformerModel(torch.nn.Module):
 		Returns:
 			output Tensor of shape [seq_len, batch_size, num_tokens]
 		"""
-		src = self.encoder(src) * math.sqrt(self.d_model)
+		src = self.emb(src) * self.sqrt_d_model
 		src = self.pos_encoder(src)
 		output = self.transformer_encoder(src, src_mask)
 		output = self.decoder(output)
@@ -266,15 +276,19 @@ class DecoderOnlyTransformerModel(torch.nn.Module):
 
 		self.model_type = "Transformer"
 		self.d_model = d_model
+		self.sqrt_d_model = math.sqrt(self.d_model)
 
-		self.encoder = torch.nn.Embedding(num_tokens, d_model)
+		self.emb = torch.nn.Embedding(num_tokens, d_model)
 		self.pos_encoder = PositionalEncoding(d_model, dropout)
 		if False:
+			# NOTE [info] >> torch.nn.TransformerDecoder.forward() takes both tgt and memory as arguments. 
 			#decoder_layer = torch.nn.TransformerDecoderLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
 			#self.transformer_decoder = torch.nn.TransformerDecoder(decoder_layer, num_layers=num_layers, norm=None)
+			# NOTE [info] >> DecoderOnlyTransformerDecoder.forward() is modifed to take tgt only as an argument. 
 			decoder_layer = DecoderOnlyTransformerLayer(d_model, nhead=num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
 			self.transformer_decoder = DecoderOnlyTransformerDecoder(decoder_layer, num_layers=num_layers, norm=None)
 		else:
+			# NOTE [info] >> torch.nn.TransformerEncoder.forward() takes src only as an argument. 
 			encoder_layer = torch.nn.TransformerEncoderLayer(d_model, num_heads, dim_feedforward=dim_ff, dropout=dropout, activation=torch.nn.functional.relu, layer_norm_eps=1e-05, batch_first=False, norm_first=False, device=None, dtype=None)
 			self.transformer_decoder = torch.nn.TransformerEncoder(encoder_layer, num_layers=num_layers, norm=None, enable_nested_tensor=True)
 		self.generator = torch.nn.Linear(d_model, num_tokens)
@@ -283,12 +297,12 @@ class DecoderOnlyTransformerModel(torch.nn.Module):
 
 	def init_weights(self) -> None:
 		initrange = 0.1
-		self.encoder.weight.data.uniform_(-initrange, initrange)
+		self.emb.weight.data.uniform_(-initrange, initrange)
 		self.generator.bias.data.zero_()
 		self.generator.weight.data.uniform_(-initrange, initrange)
 
 	def forward(self, src: torch.Tensor, src_mask: torch.Tensor) -> torch.Tensor:
-		src = self.encoder(src) * math.sqrt(self.d_model)
+		src = self.emb(src) * self.sqrt_d_model
 		src = self.pos_encoder(src)
 		output = self.transformer_decoder(src, src_mask)
 		output = self.generator(output)
@@ -296,12 +310,16 @@ class DecoderOnlyTransformerModel(torch.nn.Module):
 		#output = torch.nn.functional.logsigmoid(output)
 		return output
 
+# REF [function] >> transformer_tutorial().
 def standard_transformer_test():
 	# Load and batch data.
 	train_iter = torchtext.datasets.WikiText2(split="train")
 	tokenizer = torchtext.data.utils.get_tokenizer("basic_english")
-	vocab = torchtext.vocab.build_vocab_from_iterator(map(tokenizer, train_iter), specials=["<unk>"])
+	#vocab = torchtext.vocab.build_vocab_from_iterator(map(tokenizer, train_iter), specials=["<unk>"])
+	vocab = torchtext.vocab.build_vocab_from_iterator(map(tokenizer, train_iter), specials=["<unk>", "<sos>", "<eos>"])
 	vocab.set_default_index(vocab["<unk>"])
+	sos_id, eos_id = vocab(["<sos>", "<eos>"])
+	num_affixes = 2  # SOS & EOS.
 
 	def data_process(raw_text_iter: torch.utils.data.IterableDataset) -> torch.Tensor:
 		"""Converts raw text into a flat Tensor."""
@@ -329,7 +347,7 @@ def standard_transformer_test():
 		seq_len = data.size(0) // bsz
 		data = data[:seq_len * bsz]
 		data = data.view(bsz, seq_len).t().contiguous()
-		return data.to(device)
+		return data.to(device)  # [len(data) // batch size, batch size].
 
 	batch_size = 20
 	eval_batch_size = 10
@@ -349,19 +367,22 @@ def standard_transformer_test():
 			tuple (data, target), where data has shape [seq_len, batch_size] and target has shape [seq_len * batch_size]
 		"""
 		seq_len = min(bptt, len(source) - 1 - i)
-		encoder_input = source[i:i+seq_len]
-		# FIXME [fix] >> decoder_input & decoder_output have to be properly assigned.
-		decoder_input = source[i+1:i+1+seq_len]
-		decoder_output = source[i+1:i+1+seq_len]
-		return encoder_input, decoder_input, decoder_output
+		batch_size = source.shape[1]
+		# Add SOS & EOS.
+		def decorate(x):
+			return torch.cat([torch.full((1, batch_size), fill_value=sos_id, device=device), x, torch.full((1, batch_size), fill_value=eos_id, device=device)])
+		# NOTE [info] >> Not-so-good example for encoder-decoder transformer models.
+		srcs = decorate(source[i:i + seq_len])
+		tgts = decorate(source[i + 1:i + 1 + seq_len])  # One-step lookahead.
+		return srcs, tgts  # [seq_len, batch size], [seq_len, batch size].
 
 	# Initiate an instance.
 	num_tokens = len(vocab)  # Size of vocabulary.
 	dim_model = 200  # Embedding dimension.
-	dim_ff = 200  # Dimension of the feedforward network model in torch.nn.TransformerEncoder & torch.nn.TransformerDecoder.
-	num_encoder_layers = 2  # Number of torch.nn.TransformerEncoderLayer in torch.nn.TransformerEncoder.
-	num_decoder_layers = 2  # Number of torch.nn.TransformerDecoderLayer in torch.nn.TransformerDecoder.
-	num_heads = 2  # Number of heads in torch.nn.MultiheadAttention.
+	dim_ff = 200  # Dimension of the feedforward network model.
+	num_encoder_layers = 2  # Number of transformer encoder layers.
+	num_decoder_layers = 2  # Number of transformer decoder layers.
+	num_heads = 2  # Number of heads in multi-head attention.
 	dropout = 0.2  # Dropout probability.
 	model = StandardTransformerModel(num_tokens, dim_model, num_heads, dim_ff, num_encoder_layers, num_decoder_layers, dropout).to(device)
 
@@ -379,30 +400,36 @@ def standard_transformer_test():
 	#	If a ByteTensor is provided, the non-zero positions are not allowed to attend while the zero positions will be unchanged.
 	#	If a BoolTensor is provided, positions with "True" are not allowed to attend while "False" values will be unchanged.
 	#	If a FloatTensor is provided, it will be added to the attention weight.
-	# A square attention mask is required because the self-attention layers in nn.TransformerEncoder are only allowed to attend the earlier positions in the sequence.
+	# A square attention mask is required because the self-attention layers in transformer encoders or decoders are only allowed to attend the earlier positions in the sequence.
+	# REF [function] >> torch.nn.Transformer.generate_square_subsequent_mask().
 	def generate_square_subsequent_mask(sz: int) -> torch.Tensor:
+	#def generate_square_subsequent_mask(sz: int, device: torch.device = torch.get_default_device(), dtype: torch.dtype = torch.get_default_dtype()) -> torch.Tensor:
 		"""Generates an upper-triangular matrix of -inf, with zeros on diag."""
 		return torch.triu(torch.ones(sz, sz) * float("-inf"), diagonal=1)
+		#return torch.triu(torch.full((sz, sz), float('-inf'), dtype=dtype, device=device), diagonal=1)
 
 	def train(model: torch.nn.Module) -> None:
 		model.train()  # Turn on train mode.
-		total_loss = 0.
+		total_loss = 0.0
 		log_interval = 200
 		start_time = time.time()
 		src_mask = None
 		#src_mask = torch.zeros(bptt, bptt).to(device)
-		tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		#tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		tgt_mask = generate_square_subsequent_mask(bptt + num_affixes).to(device)
 
 		num_batches = len(train_data) // bptt
-		for batch, i in enumerate(range(0, train_data.size(0) - 1, bptt)):
-			encoder_input, decoder_input, decoder_output = get_batch(train_data, i)
-			seq_len = encoder_input.size(0)
-			if src_mask is not None and seq_len != bptt:  # Only on last batch.
+		for batch_idx, i in enumerate(range(0, train_data.size(0) - 1, bptt)):
+			srcs, tgts = get_batch(train_data, i)
+			seq_len = srcs.size(0)
+			#if src_mask is not None and seq_len != bptt:  # Only on last batch.
+			if src_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
 				src_mask = src_mask[:seq_len, :seq_len]
-			if tgt_mask is not None and seq_len != bptt:  # Only on last batch.
+			#if tgt_mask is not None and seq_len != bptt:  # Only on last batch.
+			if tgt_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
 				tgt_mask = tgt_mask[:seq_len, :seq_len]
-			output = model(encoder_input, decoder_input, src_mask, tgt_mask)
-			loss = criterion(output.view(-1, num_tokens), decoder_output.reshape(-1))
+			output = model(srcs, tgts[:-1], src_mask, tgt_mask[:-1,:-1])
+			loss = criterion(output.view(-1, num_tokens), tgts[1:].reshape(-1))
 
 			optimizer.zero_grad()
 			loss.backward()
@@ -410,12 +437,12 @@ def standard_transformer_test():
 			optimizer.step()
 
 			total_loss += loss.item()
-			if batch % log_interval == 0 and batch > 0:
+			if batch_idx % log_interval == 0 and batch_idx > 0:
 				lr = scheduler.get_last_lr()[0]
 				ms_per_batch = (time.time() - start_time) * 1000 / log_interval
 				cur_loss = total_loss / log_interval
 				ppl = math.exp(cur_loss)
-				print(f"| epoch {epoch:3d} | {batch:5d}/{num_batches:5d} batches | "
+				print(f"| epoch {epoch:3d} | {batch_idx:5d}/{num_batches:5d} batches | "
 					f"lr {lr:02.2f} | ms/batch {ms_per_batch:5.2f} | "
 					f"loss {cur_loss:5.2f} | ppl {ppl:8.2f}")
 				total_loss = 0
@@ -426,17 +453,20 @@ def standard_transformer_test():
 		total_loss = 0.0
 		src_mask = None
 		#src_mask = torch.zeros(bptt, bptt).to(device)
-		tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		#tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		tgt_mask = generate_square_subsequent_mask(bptt + num_affixes).to(device)
 		with torch.no_grad():
 			for i in range(0, eval_data.size(0) - 1, bptt):
-				encoder_input, decoder_input, decoder_output = get_batch(eval_data, i)
-				seq_len = encoder_input.size(0)
-				if src_mask is not None and seq_len != bptt:
+				srcs, tgts = get_batch(eval_data, i)
+				seq_len = srcs.size(0)
+				#if src_mask is not None and seq_len != bptt:  # Only on last batch.
+				if src_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
 					src_mask = src_mask[:seq_len, :seq_len]
-				if tgt_mask is not None and seq_len != bptt:  # Only on last batch.
+				#if tgt_mask is not None and seq_len != bptt:  # Only on last batch.
+				if tgt_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
 					tgt_mask = tgt_mask[:seq_len, :seq_len]
-				output = model(encoder_input, decoder_input, src_mask, tgt_mask)
-				total_loss += seq_len * criterion(output.view(-1, num_tokens), decoder_output.reshape(-1)).item()
+				output = model(srcs, tgts[:-1], src_mask, tgt_mask[:-1,:-1])
+				total_loss += seq_len * criterion(output.view(-1, num_tokens), tgts[1:].reshape(-1)).item()
 		return total_loss / (len(eval_data) - 1)
 
 	# Loop over epochs.
@@ -468,6 +498,84 @@ def standard_transformer_test():
 	print("=" * 89)
 	print(f"| End of training | test loss {test_loss:5.2f} | test ppl {test_ppl:8.2f}")
 	print("=" * 89)
+
+	#-----
+	# Inference.
+
+	if True:
+		# Infer in the autoregressive way.
+
+		assert model.is_individual_modules_used
+
+		model.eval()  # Turn on evaluation mode.
+		src_mask = None
+		#src_mask = torch.zeros(bptt, bptt).to(device)
+		sources, targets, predictions = [], [], []
+		with torch.no_grad():
+			for batch_idx, i in enumerate(range(0, test_data.size(0) - 1, bptt)):
+				srcs, tgts = get_batch(test_data, i)
+				seq_len, batch_size = srcs.shape[:2]
+				#if src_mask is not None and seq_len != bptt:  # Only on last batch.
+				if src_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
+					src_mask = src_mask[:seq_len, :seq_len]
+
+				x = model.src_emb(srcs) * model.sqrt_d_model
+				x = model.pos_encoder(x)
+				memory = model.transformer_encoder(src=x, mask=src_mask)  # [seq_len, batch_size, dim_model].
+
+				# Initialize the input of the decoder with SOS.
+				outputs = torch.full((1, batch_size), fill_value=sos_id, dtype=torch.long, device=device)
+				for t in range(1, seq_len):
+					x = model.tgt_emb(outputs) * model.sqrt_d_model
+					x = model.pos_encoder(x)
+					tgt_mask = generate_square_subsequent_mask(t).to(device)
+					#tgt_mask = torch.nn.Transformer.generate_square_subsequent_mask(t, device=device)
+					x = model.transformer_decoder(tgt=x, memory=memory, tgt_mask=tgt_mask)
+					x = model.generator(x[-1:])  # The last item in time steps.
+
+					outputs = torch.cat([outputs, x.argmax(dim=-1)], dim=0)  # [current step + 1, batch_size].
+
+				sources.append(srcs.cpu())
+				targets.append(tgts.cpu())
+				predictions.append(outputs.cpu())
+				if batch_idx >= 2:
+					break
+			sources = torch.hstack(sources)  # [seq_len, batch_size].
+			targets = torch.hstack(targets)  # [seq_len, batch_size].
+			predictions = torch.hstack(predictions)  # [seq_len, batch_size].
+			print("The first result of inference:")
+			print(vocab.lookup_tokens(sources[:,0].tolist()), vocab.lookup_tokens(targets[:,0].tolist()), vocab.lookup_tokens(predictions[:,0].tolist()))
+	else:
+		model.eval()  # Turn on evaluation mode.
+		src_mask = None
+		#src_mask = torch.zeros(bptt, bptt).to(device)
+		#tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		tgt_mask = generate_square_subsequent_mask(bptt + num_affixes).to(device)
+		#tgt_mask = torch.nn.Transformer.generate_square_subsequent_mask(bptt + num_affixes, device=device)
+		sources, targets, predictions = [], [], []
+		with torch.no_grad():
+			for batch_idx, i in enumerate(range(0, test_data.size(0) - 1, bptt)):
+				srcs, tgts = get_batch(test_data, i)
+				seq_len = srcs.size(0)
+				#if src_mask is not None and seq_len != bptt:  # Only on last batch.
+				if src_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
+					src_mask = src_mask[:seq_len, :seq_len]
+				#if tgt_mask is not None and seq_len != bptt:  # Only on last batch.
+				if tgt_mask is not None and seq_len != bptt + num_affixes:  # Only on last batch.
+					tgt_mask = tgt_mask[:seq_len, :seq_len]
+
+				outputs = model(src=srcs, tgt=tgts[:-1], src_mask=src_mask, tgt_mask=tgt_mask[:-1,:-1])
+
+				sources.append(srcs.cpu())
+				targets.append(tgts.cpu())
+				predictions.append(outputs.argmax(dim=-1).cpu())
+				if batch_idx >= 2:
+					break
+			sources = torch.hstack(sources)  # [seq_len, batch_size].
+			targets = torch.hstack(targets)  # [seq_len, batch_size].
+			predictions = torch.hstack(predictions)  # [seq_len - 1, batch_size].
+			print("The first result of inference:")
+			print(vocab.lookup_tokens(sources[:,0].tolist()), vocab.lookup_tokens(targets[:,0].tolist()), vocab.lookup_tokens(predictions[:,0].tolist()))
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/transformer_tutorial.html
 def transformer_tutorial():
@@ -503,7 +611,7 @@ def transformer_tutorial():
 		seq_len = data.size(0) // bsz
 		data = data[:seq_len * bsz]
 		data = data.view(bsz, seq_len).t().contiguous()
-		return data.to(device)
+		return data.to(device)  # [len(data) // batch size, batch size].
 
 	batch_size = 20
 	eval_batch_size = 10
@@ -523,16 +631,16 @@ def transformer_tutorial():
 			tuple (data, target), where data has shape [seq_len, batch_size] and target has shape [seq_len * batch_size]
 		"""
 		seq_len = min(bptt, len(source) - 1 - i)
-		data = source[i:i+seq_len]
-		target = source[i+1:i+1+seq_len]
-		return data, target
+		data = source[i:i + seq_len]
+		target = source[i + 1:i + 1 + seq_len]  # One-step lookahead.
+		return data, target  # [seq_len, batch size], [seq_len, batch size].
 
 	# Initiate an instance.
 	num_tokens = len(vocab)  # Size of vocabulary.
 	dim_model = 200  # Embedding dimension.
-	dim_ff = 200  # Dimension of the feedforward network model in torch.nn.TransformerEncoder.
-	num_layers = 2  # Number of torch.nn.TransformerEncoderLayer in torch.nn.TransformerEncoder.
-	num_heads = 2  # Number of heads in torch.nn.MultiheadAttention.
+	dim_ff = 200  # Dimension of the feedforward network model.
+	num_layers = 2  # Number of transformer encoder layers.
+	num_heads = 2  # Number of heads in multi-head attention.
 	dropout = 0.2  # Dropout probability.
 	model = TransformerModel(num_tokens, dim_model, num_heads, dim_ff, num_layers, dropout).to(device)
 
@@ -550,7 +658,8 @@ def transformer_tutorial():
 	#	If a ByteTensor is provided, the non-zero positions are not allowed to attend while the zero positions will be unchanged.
 	#	If a BoolTensor is provided, positions with "True" are not allowed to attend while "False" values will be unchanged.
 	#	If a FloatTensor is provided, it will be added to the attention weight.
-	# A square attention mask is required because the self-attention layers in nn.TransformerEncoder are only allowed to attend the earlier positions in the sequence.
+	# A square attention mask is required because the self-attention layers in transformer encoders are only allowed to attend the earlier positions in the sequence.
+	# REF [function] >> torch.nn.Transformer.generate_square_subsequent_mask().
 	def generate_square_subsequent_mask(sz: int) -> torch.Tensor:
 		"""Generates an upper-triangular matrix of -inf, with zeros on diag."""
 		return torch.triu(torch.ones(sz, sz) * float("-inf"), diagonal=1)
@@ -569,7 +678,7 @@ def transformer_tutorial():
 			#src_mask = torch.zeros(bptt, bptt).to(device)
 
 		num_batches = len(train_data) // bptt
-		for batch, i in enumerate(range(0, train_data.size(0) - 1, bptt)):
+		for batch_idx, i in enumerate(range(0, train_data.size(0) - 1, bptt)):
 			data, targets = get_batch(train_data, i)
 			seq_len = data.size(0)
 			if src_mask is not None and seq_len != bptt:  # Only on last batch.
@@ -583,12 +692,12 @@ def transformer_tutorial():
 			optimizer.step()
 
 			total_loss += loss.item()
-			if batch % log_interval == 0 and batch > 0:
+			if batch_idx % log_interval == 0 and batch_idx > 0:
 				lr = scheduler.get_last_lr()[0]
 				ms_per_batch = (time.time() - start_time) * 1000 / log_interval
 				cur_loss = total_loss / log_interval
 				ppl = math.exp(cur_loss)
-				print(f"| epoch {epoch:3d} | {batch:5d}/{num_batches:5d} batches | "
+				print(f"| epoch {epoch:3d} | {batch_idx:5d}/{num_batches:5d} batches | "
 					f"lr {lr:02.2f} | ms/batch {ms_per_batch:5.2f} | "
 					f"loss {cur_loss:5.2f} | ppl {ppl:8.2f}")
 				total_loss = 0
@@ -608,7 +717,7 @@ def transformer_tutorial():
 			for i in range(0, eval_data.size(0) - 1, bptt):
 				data, targets = get_batch(eval_data, i)
 				seq_len = data.size(0)
-				if src_mask is not None and seq_len != bptt:
+				if src_mask is not None and seq_len != bptt:  # Only on last batch.
 					src_mask = src_mask[:seq_len, :seq_len]
 				output = model(data, src_mask)
 				total_loss += seq_len * criterion(output.view(-1, num_tokens), targets.reshape(-1)).item()
@@ -645,6 +754,7 @@ def transformer_tutorial():
 	print(f"| End of training | test loss {test_loss:5.2f} | test ppl {test_ppl:8.2f}")
 	print("=" * 89)
 
+# REF [function] >> transformer_tutorial().
 def decoder_based_transformer_test():
 	# Load and batch data.
 	train_iter = torchtext.datasets.WikiText2(split="train")
@@ -678,7 +788,7 @@ def decoder_based_transformer_test():
 		seq_len = data.size(0) // bsz
 		data = data[:seq_len * bsz]
 		data = data.view(bsz, seq_len).t().contiguous()
-		return data.to(device)
+		return data.to(device)  # [len(data) // batch size, batch size].
 
 	batch_size = 20
 	eval_batch_size = 10
@@ -698,16 +808,16 @@ def decoder_based_transformer_test():
 			tuple (data, target), where data has shape [seq_len, batch_size] and target has shape [seq_len * batch_size]
 		"""
 		seq_len = min(bptt, len(source) - 1 - i)
-		data = source[i:i+seq_len]
-		target = source[i+1:i+1+seq_len]
-		return data, target
+		data = source[i:i + seq_len]
+		target = source[i + 1:i + 1 + seq_len]  # One-step lookahead.
+		return data, target  # [seq_len, batch size], [seq_len, batch size].
 
 	# Initiate an instance.
 	num_tokens = len(vocab)  # Size of vocabulary.
 	dim_model = 200  # Embedding dimension.
-	dim_ff = 200  # Dimension of the feedforward network model in torch.nn.TransformerDecoder.
-	num_layers = 2  # Number of torch.nn.TransformerDecoderLayer in torch.nn.TransformerDecoder.
-	num_heads = 2  # Number of heads in torch.nn.MultiheadAttention.
+	dim_ff = 200  # Dimension of the feedforward network model.
+	num_layers = 2  # Number of transformer decoder layers.
+	num_heads = 2  # Number of heads in multi-head attention.
 	dropout = 0.2  # Dropout probability.
 	model = DecoderOnlyTransformerModel(num_tokens, dim_model, num_heads, dim_ff, num_layers, dropout).to(device)
 
@@ -725,7 +835,8 @@ def decoder_based_transformer_test():
 	#	If a ByteTensor is provided, the non-zero positions are not allowed to attend while the zero positions will be unchanged.
 	#	If a BoolTensor is provided, positions with "True" are not allowed to attend while "False" values will be unchanged.
 	#	If a FloatTensor is provided, it will be added to the attention weight.
-	# A square attention mask is required because the self-attention layers in nn.TransformerEncoder are only allowed to attend the earlier positions in the sequence.
+	# A square attention mask is required because the self-attention layers in transformer decoders are only allowed to attend the earlier positions in the sequence.
+	# REF [function] >> torch.nn.Transformer.generate_square_subsequent_mask().
 	def generate_square_subsequent_mask(sz: int) -> torch.Tensor:
 		"""Generates an upper-triangular matrix of -inf, with zeros on diag."""
 		return torch.triu(torch.ones(sz, sz) * float("-inf"), diagonal=1)
@@ -744,10 +855,10 @@ def decoder_based_transformer_test():
 			#src_mask = torch.zeros(bptt, bptt).to(device)
 
 		num_batches = len(train_data) // bptt
-		for batch, i in enumerate(range(0, train_data.size(0) - 1, bptt)):
+		for batch_idx, i in enumerate(range(0, train_data.size(0) - 1, bptt)):
 			data, targets = get_batch(train_data, i)
 			seq_len = data.size(0)
-			if seq_len != bptt:  # Only on last batch.
+			if src_mask is not None and seq_len != bptt:  # Only on last batch.
 				src_mask = src_mask[:seq_len, :seq_len]
 			output = model(data, src_mask)
 			loss = criterion(output.view(-1, num_tokens), targets.reshape(-1))
@@ -758,12 +869,12 @@ def decoder_based_transformer_test():
 			optimizer.step()
 
 			total_loss += loss.item()
-			if batch % log_interval == 0 and batch > 0:
+			if batch_idx % log_interval == 0 and batch_idx > 0:
 				lr = scheduler.get_last_lr()[0]
 				ms_per_batch = (time.time() - start_time) * 1000 / log_interval
 				cur_loss = total_loss / log_interval
 				ppl = math.exp(cur_loss)
-				print(f"| epoch {epoch:3d} | {batch:5d}/{num_batches:5d} batches | "
+				print(f"| epoch {epoch:3d} | {batch_idx:5d}/{num_batches:5d} batches | "
 					f"lr {lr:02.2f} | ms/batch {ms_per_batch:5.2f} | "
 					f"loss {cur_loss:5.2f} | ppl {ppl:8.2f}")
 				total_loss = 0
@@ -783,7 +894,7 @@ def decoder_based_transformer_test():
 			for i in range(0, eval_data.size(0) - 1, bptt):
 				data, targets = get_batch(eval_data, i)
 				seq_len = data.size(0)
-				if seq_len != bptt:
+				if src_mask is not None and seq_len != bptt:  # Only on last batch.
 					src_mask = src_mask[:seq_len, :seq_len]
 				output = model(data, src_mask)
 				total_loss += seq_len * criterion(output.view(-1, num_tokens), targets.reshape(-1)).item()
