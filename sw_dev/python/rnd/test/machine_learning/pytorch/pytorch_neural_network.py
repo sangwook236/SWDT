@@ -238,7 +238,7 @@ def lenet5_mnist_test():
 
 	timestamp = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
 
-	output_dir_path = "./lenet5_mnist_output"
+	output_dir_path = f"./lenet5_mnist_output_{timestamp}"
 	if not os.path.exists(output_dir_path):
 		os.makedirs(output_dir_path, exist_ok=True)
 
@@ -261,6 +261,7 @@ def lenet5_mnist_test():
 	#--------------------
 	# Prepare data.
 
+	num_classes = 10
 	batch_size = 512
 	num_workers = 4
 
@@ -411,7 +412,9 @@ def lenet5_mnist_test():
 		max_gradient_clipping_norm = 1.0
 
 		# Build a model.
-		model = LeNet5(num_classes=10)
+		model = LeNet5(num_classes)
+		print("Model:", model, sep="\n")
+		print(f"#model parameters = {sum(p.numel() for p in model.parameters())}.")
 
 		if is_training_resumed:
 			# Load a trained model.
@@ -447,7 +450,7 @@ def lenet5_mnist_test():
 
 		# Default 'log_dir' is 'runs' - we'll be more specific here.
 		#writer = SummaryWriter(log_dir=None, comment="", purge_step=None, max_queue=10, flush_secs=120, filename_suffix="")
-		writer = SummaryWriter(log_dir=f"./tensorboard_logs/lenet5_mnist_{timestamp}")
+		writer = SummaryWriter(log_dir=os.path.join(output_dir_path, "tensorboard_logs"))
 
 		# Train.
 		global_step = 0
@@ -457,19 +460,18 @@ def lenet5_mnist_test():
 			global_step = train_results["global_step"]
 			val_results = evaluate_model(global_step - 1, model, criterion, val_dataloader, device, writer)
 			print(f"Epoch {epoch + 1:02}/{num_epochs:02}: {time.time() - start_time} secs.")
-			print(f'\tTrain loss = {train_results["loss"]:.3f}, validation loss = {val_results["loss"]:.3f}.')
-			print(f'\tTrain acc = {train_results["acc"]:.3f}, validation acc = {val_results["acc"]:.3f}.')
-			#print(f'\tTrain time = {train_results["time"]:.3f}, validation time = {val_results["time"]:.3f}.')
+			print(f'\tTrain:      loss = {train_results["loss"]:.3f}, acc = {train_results["acc"]:.3f}.')
+			print(f'\tValidation: loss = {val_results["loss"]:.3f},  acc = {val_results["acc"]:.3f}.')
 
 		test_results = test_model(global_step - 1, model, criterion, val_dataloader, device, writer)
-		print(f'Test loss = {test_results["loss"]:.3f}, test acc = {test_results["acc"]:.3f}.')
+		print(f'Test: loss = {test_results["loss"]:.3f}, acc = {test_results["acc"]:.3f}.')
 
 		# Save the trained model.
-		model_filepath = os.path.join(output_dir_path, f"lenet5_mnist_{timestamp}.pth")
+		model_filepath = os.path.join(output_dir_path, "lenet5_mnist.pth")
 		save_model(model_filepath, model.module if is_data_parallel_used else model)
 	else:
 		# Build a model.
-		model = LeNet5(num_classes=10)
+		model = LeNet5(num_classes)
 
 		# Load a pretrained model.
 		model = load_model(model_filepath_to_load, model, device=device)
@@ -1374,6 +1376,9 @@ def main():
 	#char_rnn_classification_tutorial()  # Not yet implemented.
 	#char_rnn_generation_tutorial()  # Not yet implemented.
 	#seq2seq_translation_tutorial()
+
+	# Fine-tuning.
+	# 	Refer to ./pytorch_transfer_learning()
 
 #--------------------------------------------------------------------
 

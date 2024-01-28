@@ -2781,6 +2781,40 @@ def mixtral_example():
 		outputs = model.generate(**inputs, max_new_tokens=20)
 		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
+# REF [site] >> https://huggingface.co/HuggingFaceH4
+def zephyr_example():
+	# Models:
+	#	HuggingFaceH4/zephyr-7b-alpha.
+	#	HuggingFaceH4/zephyr-7b-beta.
+
+	# Install:
+	#	Install transformers from source - only needed for versions <= v4.34
+	#	pip install git+https://github.com/huggingface/transformers.git
+	#	pip install accelerate
+
+	pipe = transformers.pipeline("text-generation", model="HuggingFaceH4/zephyr-7b-alpha", torch_dtype=torch.bfloat16, device_map="auto")
+
+	# We use the tokenizer's chat template to format each message - see https://huggingface.co/docs/transformers/main/en/chat_templating
+	messages = [
+		{
+			"role": "system",
+			"content": "You are a friendly chatbot who always responds in the style of a pirate",
+		},
+		{
+			"role": "user",
+			"content": "How many helicopters can a human eat in one sitting?"
+		},
+	]
+	prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+	outputs = pipe(prompt, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+	print(outputs[0]["generated_text"])
+	# <|system|>
+	# You are a friendly chatbot who always responds in the style of a pirate.</s>
+	# <|user|>
+	# How many helicopters can a human eat in one sitting?</s>
+	# <|assistant|>
+	# Ah, me hearty matey! But yer question be a puzzler! A human cannot eat a helicopter in one sitting, as helicopters are not edible. They be made of metal, plastic, and other materials, not food!
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -6053,8 +6087,9 @@ def main():
 
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
+	zephyr_example()  # Zephyr-7B = Mistral-7B + DPO.
 
-	rag_example()  # Retrieval-augmented generation (RAG).
+	#rag_example()  # Retrieval-augmented generation (RAG).
 
 	#-----
 	# Code.
