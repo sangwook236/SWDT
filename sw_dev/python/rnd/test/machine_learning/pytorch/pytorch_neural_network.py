@@ -414,7 +414,7 @@ def lenet5_mnist_test():
 		# Build a model.
 		model = LeNet5(num_classes)
 		print("Model:", model, sep="\n")
-		print(f"#model parameters = {sum(p.numel() for p in model.parameters())}.")
+		print(f"#model parameters = {sum(p.numel() for p in model.parameters())}, #trainable model parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}.")
 
 		if is_training_resumed:
 			# Load a trained model.

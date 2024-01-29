@@ -4713,7 +4713,7 @@ def kosmos_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
-	from datasets import load_dataset
+	import datasets
 
 	if False:
 		transformers.set_seed(88)
@@ -4721,7 +4721,7 @@ def layoutlmv2_example():
 		processor = transformers.LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
 		model = transformers.LayoutLMv2Model.from_pretrained("microsoft/layoutlmv2-base-uncased")
 
-		dataset = load_dataset("hf-internal-testing/fixtures_docvqa")
+		dataset = datasets.load_dataset("hf-internal-testing/fixtures_docvqa")
 		image_path = dataset["test"][0]["file"]
 		image = Image.open(image_path).convert("RGB")
 		encoding = processor(image, return_tensors="pt")

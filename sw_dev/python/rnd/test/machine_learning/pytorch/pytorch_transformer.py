@@ -414,8 +414,9 @@ def standard_transformer_test():
 		log_interval = 200
 		start_time = time.time()
 		src_mask = None
-		#src_mask = torch.zeros(bptt, bptt).to(device)
+		#src_mask = torch.zeros(bptt, bptt, device=device)
 		#tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		#tgt_mask = torch.nn.Transformer.generate_square_subsequent_mask(bptt, device=device)
 		tgt_mask = generate_square_subsequent_mask(bptt + num_affixes).to(device)
 
 		num_batches = len(train_data) // bptt
@@ -452,8 +453,9 @@ def standard_transformer_test():
 		model.eval()  # Turn on evaluation mode.
 		total_loss = 0.0
 		src_mask = None
-		#src_mask = torch.zeros(bptt, bptt).to(device)
+		#src_mask = torch.zeros(bptt, bptt, device=device)
 		#tgt_mask = generate_square_subsequent_mask(bptt).to(device)
+		#tgt_mask = torch.nn.Transformer.generate_square_subsequent_mask(bptt, device=device)
 		tgt_mask = generate_square_subsequent_mask(bptt + num_affixes).to(device)
 		with torch.no_grad():
 			for i in range(0, eval_data.size(0) - 1, bptt):

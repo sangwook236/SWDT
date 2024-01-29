@@ -17,6 +17,7 @@
 		https://varhowto.com/install-pytorch-ubuntu-20-04/
 
 		Using conda:
+			https://pytorch.org/get-started/locally/
 			Install with GPU support:
 				conda install pytorch torchvision torchaudio torchtext
 				conda install pytorch torchvision torchaudio torchtext pytorch-cuda=11.7 -c pytorch -c nvidia

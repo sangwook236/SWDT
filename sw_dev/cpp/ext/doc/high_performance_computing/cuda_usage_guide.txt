@@ -30,6 +30,8 @@
 
 		cudatoolkit version (Python):
 			conda list
+				cudatoolkit
+				pytorch-cuda
 
 	- Driver version.
 		Install driver. (Ubuntu)
