@@ -260,6 +260,13 @@ def diffusers_intro():
 def diffusers_training_example():
 	raise NotImplementedError
 
+# REF [site] >>
+#	https://github.com/huggingface/diffusers/blob/main/examples/dreambooth/train_dreambooth.py
+#	https://github.com/huggingface/diffusers/tree/main/examples/dreambooth
+#	https://huggingface.co/docs/diffusers/training/dreambooth
+def diffusers_dreambooth_training_example():
+	raise NotImplementedError
+
 # REF [site] >> https://huggingface.co/CompVis
 def compvis_example():
 	# Models:
@@ -290,37 +297,292 @@ def stabilityai_example():
 	# Models:
 	#	stabilityai/stable-diffusion-2.
 	#	stabilityai/stable-diffusion-2-base.
+	#	stabilityai/stable-diffusion-2-depth.
+	#	stabilityai/stable-diffusion-2-inpainting.
 	#	stabilityai/stable-diffusion-2-1.
 	#	stabilityai/stable-diffusion-2-1-base.
+	#	stabilityai/stable-diffusion-2-1-unclip.
+	#	stabilityai/stable-diffusion-2-1-unclip-small.
+	#	stabilityai/stable-diffusion-xl-base-0.9.
+	#	stabilityai/stable-diffusion-xl-refiner-0.9.
+	#	stabilityai/stable-diffusion-xl-base-1.0.
+	#	stabilityai/stable-diffusion-xl-refiner-1.0.
+	#	stabilityai/stable-diffusion-xl-1.0-tensorrt.
+	#	stabilityai/sd-vae.
+	#	stabilityai/sd-x2-latent-upscaler.
+	#	stabilityai/sd-turbo.
+	#	stabilityai/sdxl-vae.
+	#	stabilityai/sdxl-turbo.
+	#	stabilityai/sdxl-turbo-tensorrt.
+	#	stabilityai/stable-video-diffusion-img2vid-xt-1-1.
+
+	# REF [document] >>
+	#	https://huggingface.co/docs/diffusers/using-diffusers/sdxl
+	#	https://huggingface.co/docs/diffusers/using-diffusers/sdxl_turbo
 
 	import torch
 	import diffusers
 
 	# Install.
-	#	pip install diffusers transformers accelerate scipy safetensors
+	#	pip install diffusers transformers accelerate scipy safetensors invisible_watermark
 
-	model_id = "stabilityai/stable-diffusion-2-1"
+	if False:
+		#model_id = "stabilityai/stable-diffusion-2"
+		model_id = "stabilityai/stable-diffusion-2-base"
 
-	# Use the DPMSolverMultistepScheduler (DPM-Solver++) scheduler here instead.
-	pipe = diffusers.StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
-	pipe.scheduler = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
-	pipe = pipe.to("cuda")
+		# Use the Euler scheduler here instead.
+		scheduler = diffusers.EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
+		pipe = diffusers.StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)
+		pipe = pipe.to("cuda")
 
-	prompt = "a photo of an astronaut riding a horse on mars"
-	image = pipe(prompt).images[0]
+		prompt = "a photo of an astronaut riding a horse on mars"
+		image = pipe(prompt).images[0]
+			
+		image.save("./astronaut_rides_horse.png")
 
-	image.save("./astronaut_rides_horse.png")
+	if True:
+		import requests
+
+		pipe = diffusers.StableDiffusionDepth2ImgPipeline.from_pretrained("stabilityai/stable-diffusion-2-depth", torch_dtype=torch.float16).to("cuda")
+
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		init_image = PIL.Image.open(requests.get(url, stream=True).raw)
+
+		prompt = "two tigers"
+		n_propmt = "bad, deformed, ugly, bad anotomy"
+		image = pipe(prompt=prompt, image=init_image, negative_prompt=n_propmt, strength=0.7).images[0]
+
+	if True:
+		pipe = diffusers.StableDiffusionInpaintPipeline.from_pretrained("stabilityai/stable-diffusion-2-inpainting", torch_dtype=torch.float16)
+		pipe.to("cuda")
+
+		prompt = "Face of a yellow cat, high resolution, sitting on a park bench"
+		# image and mask_image should be PIL images.
+		# The mask structure is white for inpainting and black for keeping as is
+		image = pipe(prompt=prompt, image=image, mask_image=mask_image).images[0]
+
+		image.save("./yellow_cat_on_park_bench.png")
+
+	if True:
+		model_id = "stabilityai/stable-diffusion-2-1"
+
+		# Use the DPMSolverMultistepScheduler (DPM-Solver++) scheduler here instead.
+		pipe = diffusers.StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+		pipe.scheduler = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
+		pipe = pipe.to("cuda")
+
+		prompt = "a photo of an astronaut riding a horse on mars"
+		image = pipe(prompt).images[0]
+
+		image.save("./astronaut_rides_horse.png")
+
+	if False:
+		pipe = diffusers.DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-0.9", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+		pipe.to("cuda")
+		# If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda").
+		#pipe.enable_model_cpu_offload()
+
+		# If using torch < 2.0.
+		#pipe.enable_xformers_memory_efficient_attention()
+
+		# When using torch >= 2.0, you can improve the inference speed by 20-30% with torch.compile.
+		# Simple wrap the unet with torch compile before running the pipeline.
+		#pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
+
+		prompt = "An astronaut riding a green horse"
+
+		images = pipe(prompt=prompt).images[0]
+
+	if False:
+		pipe = diffusers.DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-0.9", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+		pipe.to("cuda")
+		# If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda").
+		#pipe.enable_model_cpu_offload()
+
+		# If using torch < 2.0.
+		#pipe.enable_xformers_memory_efficient_attention()
+
+		prompt = "An astronaut riding a green horse"
+
+		image = pipe(prompt=prompt, output_type="latent").images
+
+		pipe = diffusers.DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-0.9", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+		pipe.to("cuda")
+		# If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda").
+		#pipe.enable_model_cpu_offload()
+
+		# If using torch < 2.0.
+		#pipe.enable_xformers_memory_efficient_attention()
+
+		# When using torch >= 2.0, you can improve the inference speed by 20-30% with torch.compile.
+		# Simple wrap the unet with torch compile before running the pipeline.
+		#pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
+
+		images = pipe(prompt=prompt, image=image).images
+
+	if True:
+		pipe = diffusers.DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+		pipe.to("cuda")
+		# If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda").
+		#pipe.enable_model_cpu_offload()
+
+		# If using torch < 2.0.
+		#pipe.enable_xformers_memory_efficient_attention()
+
+		# When using torch >= 2.0, you can improve the inference speed by 20-30% with torch.compile.
+		# Simple wrap the unet with torch compile before running the pipeline.
+		#pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
+
+		prompt = "An astronaut riding a green horse"
+
+		images = pipe(prompt=prompt).images[0]
+
+	if True:
+		pipe = diffusers.StableDiffusionXLImg2ImgPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-1.0", torch_dtype=torch.float16, variant="fp16", use_safetensors=True)
+		pipe = pipe.to("cuda")
+		# If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda").
+		#pipe.enable_model_cpu_offload()
+
+		# When using torch >= 2.0, you can improve the inference speed by 20-30% with torch.compile.
+		# Simple wrap the unet with torch compile before running the pipeline
+		#pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
+
+		url = "https://huggingface.co/datasets/patrickvonplaten/images/resolve/main/aa_xl/000000009.png"
+		init_image = diffusers.utils.load_image(url).convert("RGB")
+		prompt = "a photo of an astronaut riding a horse on mars"
+
+		image = pipe(prompt, image=init_image).images
+
+	if True:
+		# Load both base & refiner.
+		base = diffusers.DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, variant="fp16", use_safetensors=True)
+		base.to("cuda")
+		refiner = diffusers.DiffusionPipeline.from_pretrained(
+			"stabilityai/stable-diffusion-xl-refiner-1.0",
+			text_encoder_2=base.text_encoder_2,
+			vae=base.vae,
+			torch_dtype=torch.float16,
+			use_safetensors=True,
+			variant="fp16",
+		)
+		refiner.to("cuda")
+
+		# Define how many steps and what % of steps to be run on each experts (80/20) here.
+		n_steps = 40
+		high_noise_frac = 0.8
+
+		prompt = "A majestic lion jumping from a big stone at night"
+
+		# Run both experts.
+		image = base(
+			prompt=prompt,
+			num_inference_steps=n_steps,
+			denoising_end=high_noise_frac,
+			output_type="latent",
+		).images
+		image = refiner(
+			prompt=prompt,
+			num_inference_steps=n_steps,
+			denoising_start=high_noise_frac,
+			image=image,
+		).images[0]
+
+	if False:
+		model = "CompVis/stable-diffusion-v1-4"
+		vae = diffusers.models.AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse")
+		#vae = diffusers.models.AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-ema")
+		pipe = diffusers.StableDiffusionPipeline.from_pretrained(model, vae=vae)
+
+	if False:
+		pipeline = diffusers.StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16)
+		pipeline.to("cuda")
+
+		upscaler = diffusers.StableDiffusionLatentUpscalePipeline.from_pretrained("stabilityai/sd-x2-latent-upscaler", torch_dtype=torch.float16)
+		upscaler.to("cuda")
+
+		prompt = "a photo of an astronaut high resolution, unreal engine, ultra realistic"
+		generator = torch.manual_seed(33)
+
+		# We stay in latent space! Let's make sure that Stable Diffusion returns the image in latent space.
+		low_res_latents = pipeline(prompt, generator=generator, output_type="latent").images
+
+		upscaled_image = upscaler(
+			prompt=prompt,
+			image=low_res_latents,
+			num_inference_steps=20,
+			guidance_scale=0,
+			generator=generator,
+		).images[0]
+
+		# Let's save the upscaled image under "upscaled_astronaut.png".
+		upscaled_image.save("./astronaut_1024.png")
+
+		# As a comparison: Let's also save the low-res image.
+		with torch.no_grad():
+			image = pipeline.decode_latents(low_res_latents)
+		image = pipeline.numpy_to_pil(image)[0]
+
+		image.save("./astronaut_512.png")
+
+	if False:
+		# Text-to-image.
+
+		pipe = diffusers.AutoPipelineForText2Image.from_pretrained("stabilityai/sd-turbo", torch_dtype=torch.float16, variant="fp16")
+		pipe.to("cuda")
+
+		prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
+		image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+
+		#-----
+		# Image-to-image.
+
+		pipe = diffusers.AutoPipelineForImage2Image.from_pretrained("stabilityai/sd-turbo", torch_dtype=torch.float16, variant="fp16")
+		pipe.to("cuda")
+
+		init_image = diffusers.utils.load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+		prompt = "cat wizard, gandalf, lord of the rings, detailed, fantasy, cute, adorable, Pixar, Disney, 8k"
+
+		image = pipe(prompt, image=init_image, num_inference_steps=2, strength=0.5, guidance_scale=0.0).images[0]
+
+	if False:
+		model = "stabilityai/your-stable-diffusion-model"
+		vae = diffusers.models.AutoencoderKL.from_pretrained("stabilityai/sdxl-vae")
+		pipe = diffusers.StableDiffusionPipeline.from_pretrained(model, vae=vae)
+
+	if True:
+		# Text-to-image.
+
+		pipe = diffusers.AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+		pipe.to("cuda")
+
+		prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
+
+		image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+
+		#-----
+		# Image-to-image.
+
+		pipe = diffusers.AutoPipelineForImage2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+		pipe.to("cuda")
+
+		init_image = diffusers.utils.load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+
+		prompt = "cat wizard, gandalf, lord of the rings, detailed, fantasy, cute, adorable, Pixar, Disney, 8k"
+
+		image = pipe(prompt, image=init_image, num_inference_steps=2, strength=0.5, guidance_scale=0.0).images[0]
 
 def main():
 	# Hugging Face Diffusers.
-	#	REF [site] >> https://github.com/huggingface/diffusers
+	#	https://github.com/huggingface/diffusers
+	#	https://huggingface.co/docs/diffusers
 
 	#diffusers_quickstart()
 	#diffusers_intro()
 	#diffusers_training_example()  # Not yet implemented.
+	#diffusers_dreambooth_training_example()  # DreamBooth. Not yet implemented.
 
-	#compvis_example()
-	stabilityai_example()
+	#compvis_example()  # Stable diffusion.
+	stabilityai_example()  # Stable diffusion.
 
 #--------------------------------------------------------------------
 

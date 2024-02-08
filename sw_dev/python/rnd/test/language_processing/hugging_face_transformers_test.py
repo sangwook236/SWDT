@@ -6196,6 +6196,14 @@ def main():
 	#trajectory_transformer_example()  # Trajectory transformer. Not yet tested.
 
 	#--------------------
+	# Transformer Reinforcement Learning (TRL).
+	#	Supervised Fine-tuning (SFT).
+	#	Reward Modeling (RM).
+	#	Proximal Policy Optimization (PPO).
+
+	#trl_test()  # Not yet implemented.
+
+	#--------------------
 	# Inference engine.
 	#	https://betterprogramming.pub/frameworks-for-serving-llms-60b7f7b23407
 

@@ -1065,8 +1065,8 @@ def main():
 	# Value-function-based algorithm
 
 	# Deep Q-Network (DQN)
-	#dqn_cart_pole_tutorial()  # More structured implementation.
-	#dqn_atari_breakout_test()  # Naive low-level implementation.
+	#dqn_cart_pole_tutorial()  # More structured implementation
+	#dqn_atari_breakout_test()  # Naive low-level implementation
 
 	#-----
 	# Policy gradient algorithm

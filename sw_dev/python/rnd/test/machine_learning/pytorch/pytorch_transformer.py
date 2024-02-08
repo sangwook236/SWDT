@@ -312,6 +312,8 @@ class DecoderOnlyTransformerModel(torch.nn.Module):
 
 # REF [function] >> transformer_tutorial().
 def standard_transformer_test():
+	# NOTE [info] >> Not-so-good example for encoder-decoder transformer models.
+
 	# Load and batch data.
 	train_iter = torchtext.datasets.WikiText2(split="train")
 	tokenizer = torchtext.data.utils.get_tokenizer("basic_english")
@@ -371,10 +373,9 @@ def standard_transformer_test():
 		# Add SOS & EOS.
 		def decorate(x):
 			return torch.cat([torch.full((1, batch_size), fill_value=sos_id, device=device), x, torch.full((1, batch_size), fill_value=eos_id, device=device)])
-		# NOTE [info] >> Not-so-good example for encoder-decoder transformer models.
 		srcs = decorate(source[i:i + seq_len])
 		tgts = decorate(source[i + 1:i + 1 + seq_len])  # One-step lookahead.
-		return srcs, tgts  # [seq_len, batch size], [seq_len, batch size].
+		return srcs, tgts  # [seq_len, batch_size], [seq_len, batch_size]. seq_len = bptt + num_affixes.
 
 	# Initiate an instance.
 	num_tokens = len(vocab)  # Size of vocabulary.
@@ -403,10 +404,10 @@ def standard_transformer_test():
 	# A square attention mask is required because the self-attention layers in transformer encoders or decoders are only allowed to attend the earlier positions in the sequence.
 	# REF [function] >> torch.nn.Transformer.generate_square_subsequent_mask().
 	def generate_square_subsequent_mask(sz: int) -> torch.Tensor:
-	#def generate_square_subsequent_mask(sz: int, device: torch.device = torch.get_default_device(), dtype: torch.dtype = torch.get_default_dtype()) -> torch.Tensor:
+	#def generate_square_subsequent_mask(sz: int, device: torch.device = torch.get_default_device()) -> torch.Tensor:
 		"""Generates an upper-triangular matrix of -inf, with zeros on diag."""
 		return torch.triu(torch.ones(sz, sz) * float("-inf"), diagonal=1)
-		#return torch.triu(torch.full((sz, sz), float('-inf'), dtype=dtype, device=device), diagonal=1)
+		#return torch.triu(torch.full((sz, sz), float("-inf"), device=device), diagonal=1)
 
 	def train(model: torch.nn.Module) -> None:
 		model.train()  # Turn on train mode.
@@ -635,7 +636,7 @@ def transformer_tutorial():
 		seq_len = min(bptt, len(source) - 1 - i)
 		data = source[i:i + seq_len]
 		target = source[i + 1:i + 1 + seq_len]  # One-step lookahead.
-		return data, target  # [seq_len, batch size], [seq_len, batch size].
+		return data, target  # [seq_len, batch_size], [seq_len, batch_size].
 
 	# Initiate an instance.
 	num_tokens = len(vocab)  # Size of vocabulary.
@@ -812,7 +813,7 @@ def decoder_based_transformer_test():
 		seq_len = min(bptt, len(source) - 1 - i)
 		data = source[i:i + seq_len]
 		target = source[i + 1:i + 1 + seq_len]  # One-step lookahead.
-		return data, target  # [seq_len, batch size], [seq_len, batch size].
+		return data, target  # [seq_len, batch_size], [seq_len, batch_size].
 
 	# Initiate an instance.
 	num_tokens = len(vocab)  # Size of vocabulary.

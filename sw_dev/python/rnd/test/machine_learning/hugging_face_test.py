@@ -2240,14 +2240,6 @@ def main():
 	#	Refer to ./hugging_face_peft_test.py.
 
 	#--------------------
-	# Transformer Reinforcement Learning (TRL).
-	#	Supervised Fine-tuning (SFT).
-	#	Reward Modeling (RM).
-	#	Proximal Policy Optimization (PPO).
-
-	#trl_test()  # Not yet implemented.
-
-	#--------------------
 	# Inference.
 	#	Efficient Inference on CPU:
 	#		https://huggingface.co/docs/transformers/perf_infer_cpu
