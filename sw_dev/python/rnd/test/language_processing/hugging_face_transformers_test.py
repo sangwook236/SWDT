@@ -5978,6 +5978,18 @@ def trajectory_transformer_example():
 			return_dict=True,
 		)
 
+# REF [site] >> https://github.com/huggingface/trl/tree/main/examples/research_projects/stack_llama/scripts
+def stack_llama_example():
+	raise NotImplementedError
+
+# REF [site] >> https://github.com/huggingface/trl/blob/main/examples/research_projects/stack_llama_2/scripts/sft_llama2.py
+def stack_llama_2_sft_llama2_example():
+	raise NotImplementedError
+
+# REF [site] >> https://github.com/huggingface/trl/blob/main/examples/research_projects/stack_llama_2/scripts/dpo_llama2.py
+def stack_llama_2_dpo_llama2_example():
+	raise NotImplementedError
+
 def main():
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
 
@@ -6197,11 +6209,17 @@ def main():
 
 	#--------------------
 	# Transformer Reinforcement Learning (TRL).
+	#	https://github.com/huggingface/trl
+	#	https://huggingface.co/docs/trl/index
+	#
 	#	Supervised Fine-tuning (SFT).
 	#	Reward Modeling (RM).
 	#	Proximal Policy Optimization (PPO).
+	#	Direct Preference Optimization (DPO).
 
-	#trl_test()  # Not yet implemented.
+	#stack_llama_example()  # Reinforcement Learning from Human Feedback (RLHF). Not yet implemented.
+	#stack_llama_2_sft_llama2_example()  # Not yet implemented.
+	#stack_llama_2_dpo_llama2_example()  # Not yet implemented.
 
 	#--------------------
 	# Inference engine.
