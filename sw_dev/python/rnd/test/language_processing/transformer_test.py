@@ -8,12 +8,6 @@ def detr_positional_encoding_test():
 	#pe = PositionEmbeddingSine(num_pos_feats=64, temperature=10000, normalize=False, scale=None)
 	#pe = PositionEmbeddingLearned(num_pos_feats=256)
 
-# REF [site] >>
-#	https://nlp.seas.harvard.edu/2018/04/03/attention.html
-#	https://github.com/fengxinjie/Transformer-OCR
-def harvard_nlp_transformer_test():
-	raise NotImplementedError
-
 # REF [site] >> https://github.com/microsoft/torchscale
 def torchscale_test():
 	# Install.
@@ -63,15 +57,16 @@ def main():
 	detr_positional_encoding_test()  # Not yet implemented.
 
 	#--------------------
-	#harvard_nlp_transformer_test()  # Not yet implemented.
 	torchscale_test()
+
+	# Harvard NLP transformer.
+	#	REF [file] >> ./harvard_nlp_transformer_test.py
 
 	# PyTorch.
 	#	REF [file] >> ../machine_learning/pytorch/pytorch_transformer.py
 	# PyTorch Lightning.
 	#	REF [file] >> ../machine_learning/pytorch_lightning/pl_transformer.py
 
-	#--------------------
 	# Hugging Face Transformers.
 	#	REF [file] >> ./hugging_face_transformers_test.py
 
