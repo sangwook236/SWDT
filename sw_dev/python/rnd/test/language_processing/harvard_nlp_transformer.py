@@ -25,14 +25,14 @@ class EncoderDecoder(torch.nn.Module):
 	def decode(self, memory, src_mask, tgt, tgt_mask):
 		return self.decoder(self.tgt_embed(tgt), memory, src_mask, tgt_mask)
 
-class EncoderDecoderWithSeparateEmbedding(torch.nn.Module):
+class EncoderDecoderWithoutEmbedding(torch.nn.Module):
 	"""
 	A standard Encoder-Decoder architecture. Base for this and many
 	other models.
 	"""
 
 	def __init__(self, encoder, decoder, generator):
-		super(EncoderDecoderWithSeparateEmbedding, self).__init__()
+		super(EncoderDecoderWithoutEmbedding, self).__init__()
 		self.encoder = encoder
 		self.decoder = decoder
 		self.generator = generator
@@ -164,7 +164,7 @@ def attention(query, key, value, mask=None, dropout=None):  # query: [batch_size
 	scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)  # [batch_size, num_heads, query_seq_len, key_seq_len]
 	if mask is not None:
 		#scores = scores.masked_fill(mask == 0, -1e9)
-		scores = scores.masked_fill(mask == 0, float("-inf"))
+		scores = scores.masked_fill(mask == False, float("-inf"))
 	p_attn = scores.softmax(dim=-1)
 	if dropout is not None:
 		p_attn = dropout(p_attn)
@@ -228,9 +228,26 @@ class Embeddings(torch.nn.Module):
 		super(Embeddings, self).__init__()
 		self.lut = torch.nn.Embedding(vocab, d_model)
 		self.d_model = d_model
+		self.sqrt_d_model = math.sqrt(d_model)
 
 	def forward(self, x):
-		return self.lut(x) * math.sqrt(self.d_model)
+		#return self.lut(x) * math.sqrt(self.d_model)  # [batch_size, seq_len, d_model]
+		return self.lut(x) * self.sqrt_d_model  # [batch_size, seq_len, d_model]
+
+class EmbeddingsWithTokenSpan(torch.nn.Module):
+	def __init__(self, token_span, d_model, vocab):
+		super(EmbeddingsWithTokenSpan, self).__init__()
+		assert token_span > 1
+
+		self.lut = torch.nn.Embedding(vocab, d_model)
+		self.token_span = token_span
+		self.d_model = d_model
+		self.sqrt_d_model = math.sqrt(d_model)
+
+	def forward(self, x):
+		# Construct embeddings with multiple tokens (token span) at a timestep
+		#return self.lut(x).repeat_interleave(self.token_span, dim=1) * math.sqrt(self.d_model)  # [batch_size, seq_len * token_span, d_model]
+		return self.lut(x).repeat_interleave(self.token_span, dim=1) * self.sqrt_d_model  # [batch_size, seq_len * token_span, d_model]
 
 class PositionalEncoding(torch.nn.Module):
 	"Implement the PE function."
@@ -255,16 +272,16 @@ class PositionalEncoding(torch.nn.Module):
 		return self.dropout(x)
 
 def make_model(
-	src_vocab, tgt_vocab, N=6, d_model=512, d_ff=2048, h=8, dropout=0.1
+	src_vocab, tgt_vocab, d_model=512, d_ff=2048, n_head=8, n_enc_layers=6, n_dec_layers=6, dropout=0.1
 ):
 	"Helper: Construct a model from hyperparameters."
 	c = copy.deepcopy
-	attn = MultiHeadedAttention(h, d_model)
+	attn = MultiHeadedAttention(n_head, d_model)
 	ff = PositionwiseFeedForward(d_model, d_ff, dropout)
 	position = PositionalEncoding(d_model, dropout)
 	model = EncoderDecoder(
-		Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), N),
-		Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), N),
+		Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), n_enc_layers),
+		Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), n_dec_layers),
 		torch.nn.Sequential(Embeddings(d_model, src_vocab), c(position)),
 		torch.nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
 		Generator(d_model, tgt_vocab),
@@ -277,42 +294,89 @@ def make_model(
 			torch.nn.init.xavier_uniform_(p)
 	return model
 
-def make_model_without_embedding(
-	src_vocab, tgt_vocab, N=6, d_model=512, d_ff=2048, h=8, dropout=0.1
+def make_model_using_external_modules(
+	src_embedding, tgt_embedding, generator, d_model=512, n_head=8, d_ff=2048, n_enc_layers=6, n_dec_layers=6, dropout=0.1
 ):
 	"Helper: Construct a model from hyperparameters."
 	c = copy.deepcopy
-	attn = MultiHeadedAttention(h, d_model)
+	attn = MultiHeadedAttention(n_head, d_model)
 	ff = PositionwiseFeedForward(d_model, d_ff, dropout)
-	model = EncoderDecoderWithSeparateEmbedding(
-		Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), N),
-		Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), N),
-		Generator(d_model, tgt_vocab),
+	model = EncoderDecoder(
+		Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), n_enc_layers),
+		Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), n_dec_layers),
+		src_embedding,
+		tgt_embedding,
+		generator,
 	)
-
-	position = PositionalEncoding(d_model, dropout)
-	src_emb = torch.nn.Sequential(Embeddings(d_model, src_vocab), c(position))
-	tgt_emb = torch.nn.Sequential(Embeddings(d_model, tgt_vocab), c(position))
 
 	# This was important from their code.
 	# Initialize parameters with Glorot / fan_avg.
-	for m in [model, src_emb, tgt_emb]:
-		for p in m.parameters():
-			if p.dim() > 1:
-				torch.nn.init.xavier_uniform_(p)
-	return model, src_emb, tgt_emb
+	for p in model.parameters():
+		if p.dim() > 1:
+			torch.nn.init.xavier_uniform_(p)
+	return model
+
+def make_model_without_embeddings(
+	generator, d_model=512, n_head=8, d_ff=2048, n_enc_layers=6, n_dec_layers=6, dropout=0.1
+):
+	"Helper: Construct a model from hyperparameters."
+	c = copy.deepcopy
+	attn = MultiHeadedAttention(n_head, d_model)
+	ff = PositionwiseFeedForward(d_model, d_ff, dropout)
+	model = EncoderDecoderWithoutEmbedding(
+		Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), n_enc_layers),
+		Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), n_dec_layers),
+		generator,
+	)
+
+	# This was important from their code.
+	# Initialize parameters with Glorot / fan_avg.
+	for p in model.parameters():
+		if p.dim() > 1:
+			torch.nn.init.xavier_uniform_(p)
+	return model
 
 class Batch:
 	"""Object for holding a batch of data with mask during training."""
 
 	def __init__(self, src, tgt=None, pad=2):  # 2 = <blank>
-		self.src = src
-		self.src_mask = (src != pad).unsqueeze(-2)
+		self.src = src  # [batch_size, src_seq_len]
+		self.src_mask = (src != pad).unsqueeze(-2)  # [batch_size, 1, src_seq_len]
 		if tgt is not None:
-			self.tgt = tgt[:, :-1]
-			self.tgt_y = tgt[:, 1:]
-			self.tgt_mask = self.make_std_mask(self.tgt, pad)
+			self.tgt = tgt[:, :-1]  # [batch_size, tgt_seq_len - 1]
+			self.tgt_y = tgt[:, 1:]  # [batch_size, tgt_seq_len - 1]
+			self.tgt_mask = self.make_std_mask(self.tgt, pad)  # [batch_size, tgt_seq_len - 1, tgt_seq_len - 1]
 			self.ntokens = (self.tgt_y != pad).data.sum()
+
+	@staticmethod
+	def make_std_mask(tgt, pad):
+		"Create a mask to hide padding and future words."
+		tgt_mask = (tgt != pad).unsqueeze(-2)
+		tgt_mask = tgt_mask & subsequent_mask(tgt.size(-1)).type_as(
+			tgt_mask.data
+		)
+		return tgt_mask
+
+# REF [paper] >> "Decision Transformer; Reinforcement Learning via Sequence Modeling", NIPS 2021
+class BatchWithTokenSpan:
+	"""Object for holding a batch of data with mask during training."""
+
+	def __init__(self, token_span, src, tgt=None, pad=2):  # 2 = <blank>
+		assert token_span > 1
+
+		self.src = src  # [batch_size, src_seq_len]
+		self.src_mask = (src != pad).unsqueeze(-2)  # [batch_size, 1, src_seq_len]
+		# Construct the mask for embeddings with multiple tokens (token span) at a timestep
+		self.src_mask = self.src_mask.repeat_interleave(token_span, dim=-1)  # [batch_size, 1, src_seq_len * token_span]
+		if tgt is not None:
+			self.tgt = tgt[:, :-1]  # [batch_size, tgt_seq_len - 1]
+			self.tgt_y = tgt[:, 1:]  # [batch_size, tgt_seq_len - 1]
+			self.tgt_mask = self.make_std_mask(self.tgt, pad)  # [batch_size, tgt_seq_len - 1, tgt_seq_len - 1]
+			self.ntokens = (self.tgt_y != pad).data.sum()
+
+			# Construct the mask for embeddings with multiple tokens (token span) at a timestep
+			self.tgt_mask = self.tgt_mask.repeat_interleave(token_span, dim=1)
+			self.tgt_mask = self.tgt_mask.repeat_interleave(token_span, dim=-1)  # [batch_size, (tgt_seq_len - 1) * token_span, (tgt_seq_len - 1) * token_span]
 
 	@staticmethod
 	def make_std_mask(tgt, pad):
