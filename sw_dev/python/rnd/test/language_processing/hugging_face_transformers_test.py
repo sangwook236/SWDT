@@ -435,8 +435,18 @@ def encoder_decoder_example():
 	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
 	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
 
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/perceiver
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/perceiver
+#	https://huggingface.co/deepmind
 def perceiver_example():
+	# Models:
+	#	deepmind/language-perceiver: ~805MB.
+	#	deepmind/vision-perceiver-learned: ~249MB.
+	#	deepmind/vision-perceiver-fourier: ~194MB.
+	#	deepmind/vision-perceiver-conv: ~195MB.
+	#	deepmind/optical-flow-perceiver: ~164MB.
+	#	deepmind/multimodal-perceiver: ~79.5MB.
+
 	if True:
 		# EXAMPLE 1: using the Perceiver to classify texts
 		# - we define a TextPreprocessor, which can be used to embed tokens
@@ -516,7 +526,7 @@ def perceiver_example():
 
 	if False:
 		tokenizer = transformers.AutoTokenizer.from_pretrained("deepmind/language-perceiver")
-		model = transformers.PerceiverForMaskedLM.from_pretrained("deepmind/language-perceiver")  # ~805MB.
+		model = transformers.PerceiverForMaskedLM.from_pretrained("deepmind/language-perceiver")
 
 		# Training
 		text = "This is an incomplete sentence where some words are missing."
@@ -551,7 +561,7 @@ def perceiver_example():
 
 	if False:
 		tokenizer = transformers.AutoTokenizer.from_pretrained("deepmind/language-perceiver")
-		model = transformers.PerceiverForSequenceClassification.from_pretrained("deepmind/language-perceiver")  # ~805MB.
+		model = transformers.PerceiverForSequenceClassification.from_pretrained("deepmind/language-perceiver")
 
 		text = "hello world"
 		inputs = tokenizer(text, return_tensors="pt").input_ids
@@ -564,7 +574,7 @@ def perceiver_example():
 		image = Image.open(requests.get(url, stream=True).raw)
 
 		image_processor = transformers.AutoImageProcessor.from_pretrained("deepmind/vision-perceiver-learned")
-		model = transformers. PerceiverForImageClassificationLearned.from_pretrained("deepmind/vision-perceiver-learned")  # ~249MB.
+		model = transformers. PerceiverForImageClassificationLearned.from_pretrained("deepmind/vision-perceiver-learned")
 
 		inputs = image_processor(images=image, return_tensors="pt").pixel_values
 		outputs = model(inputs=inputs)
@@ -580,7 +590,7 @@ def perceiver_example():
 		image = Image.open(requests.get(url, stream=True).raw)
 
 		image_processor = transformers.AutoImageProcessor.from_pretrained("deepmind/vision-perceiver-fourier")
-		model = transformers.PerceiverForImageClassificationFourier.from_pretrained("deepmind/vision-perceiver-fourier")  # ~194MB.
+		model = transformers.PerceiverForImageClassificationFourier.from_pretrained("deepmind/vision-perceiver-fourier")
 
 		inputs = image_processor(images=image, return_tensors="pt").pixel_values
 		outputs = model(inputs=inputs)
@@ -596,7 +606,7 @@ def perceiver_example():
 		image = Image.open(requests.get(url, stream=True).raw)
 
 		image_processor = transformers.AutoImageProcessor.from_pretrained("deepmind/vision-perceiver-conv")
-		model = transformers.PerceiverForImageClassificationConvProcessing.from_pretrained("deepmind/vision-perceiver-conv")  # ~195MB.
+		model = transformers.PerceiverForImageClassificationConvProcessing.from_pretrained("deepmind/vision-perceiver-conv")
 
 		inputs = image_processor(images=image, return_tensors="pt").pixel_values
 		outputs = model(inputs=inputs)
@@ -608,7 +618,7 @@ def perceiver_example():
 		print("Predicted class:", model.config.id2label[predicted_class_idx])
 
 	if False:
-		model = transformers.PerceiverForOpticalFlow.from_pretrained("deepmind/optical-flow-perceiver")  # ~164MB.
+		model = transformers.PerceiverForOpticalFlow.from_pretrained("deepmind/optical-flow-perceiver")
 
 		# In the Perceiver IO paper, the authors extract a 3 x 3 patch around each pixel,
 		# leading to 3 x 3 x 3 = 27 values for each pixel (as each pixel also has 3 color channels)
@@ -627,7 +637,7 @@ def perceiver_example():
 		audio = torch.randn((1, 30720, 1))
 		inputs = dict(image=images, audio=audio, label=torch.zeros((images.shape[0], 700)))
 
-		model = transformers.PerceiverForMultimodalAutoencoding.from_pretrained("deepmind/multimodal-perceiver")  # ~79.5MB.
+		model = transformers.PerceiverForMultimodalAutoencoding.from_pretrained("deepmind/multimodal-perceiver")
 
 		# In the Perceiver IO paper, videos are auto-encoded in chunks
 		# each chunk subsamples different index dimensions of the image and audio modality decoder queries
@@ -3700,6 +3710,140 @@ def deit_example():
 		predicted_label = logits.argmax(-1).item()
 		print(model.config.id2label[predicted_label])
 
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/main/en/model_doc/dinov2
+#	https://huggingface.co/facebook
+def dino_example():
+	# Models:
+	#	facebook/dino-vits8.
+	#	facebook/dino-vits16.
+	#	facebook/dino-vitb8.
+	#	facebook/dino-vitb16.
+	#	facebook/dinov2-small.
+	#	facebook/dinov2-base.
+	#	facebook/dinov2-large.
+	#	facebook/dinov2-giant.
+	#	facebook/dinov2-small-imagenet1k-1-layer.
+	#	facebook/dinov2-base-imagenet1k-1-layer.
+	#	facebook/dinov2-large-imagenet1k-1-layer.
+	#	facebook/dinov2-giant-imagenet1k-1-layer.
+
+	if False:
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		processor = transformers.ViTImageProcessor.from_pretrained("facebook/dino-vitb16")
+		model = transformers.ViTModel.from_pretrained("facebook/dino-vitb16")
+
+		inputs = processor(images=image, return_tensors="pt")
+		outputs = model(**inputs)
+		last_hidden_states = outputs.last_hidden_state
+
+	if False:
+		# Initializing a Dinov2 dinov2-base-patch16-224 style configuration
+		configuration = transformers.Dinov2Config()
+
+		# Initializing a model (with random weights) from the dinov2-base-patch16-224 style configuration
+		model = transformers.Dinov2Model(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if False:
+		import datasets
+
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("facebook/dinov2-base")
+		model = transformers.Dinov2Model.from_pretrained("facebook/dinov2-base")
+
+		inputs = image_processor(image, return_tensors="pt")
+
+		with torch.no_grad():
+			outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+		list(last_hidden_states.shape)
+
+	if True:
+		url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		processor = transformers.AutoImageProcessor.from_pretrained("facebook/dinov2-base")
+		model = transformers.AutoModel.from_pretrained("facebook/dinov2-base")
+
+		inputs = processor(images=image, return_tensors="pt")
+		outputs = model(**inputs)
+		last_hidden_states = outputs[0]
+
+		# We have to force return_dict=False for tracing
+		model.config.return_dict = False
+
+		with torch.no_grad():
+			traced_model = torch.jit.trace(model, [inputs.pixel_values])
+			traced_outputs = traced_model(inputs.pixel_values)
+
+		print((last_hidden_states - traced_outputs[0]).abs().max())
+
+	if True:
+		import datasets
+
+		dataset = datasets.load_dataset("huggingface/cats-image")
+		image = dataset["test"]["image"][0]
+
+		image_processor = transformers.AutoImageProcessor.from_pretrained("facebook/dinov2-small-imagenet1k-1-layer")
+		model = transformers.Dinov2ForImageClassification.from_pretrained("facebook/dinov2-small-imagenet1k-1-layer")
+
+		inputs = image_processor(image, return_tensors="pt")
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		# Model predicts one of the 1000 ImageNet classes
+		predicted_label = logits.argmax(-1).item()
+		print(model.config.id2label[predicted_label])
+
+# REF [site] >> https://huggingface.co/facebook
+def dpt_example():
+	# Models:
+	#	facebook/dpt-dinov2-small-kitti.
+	#	facebook/dpt-dinov2-small-nyu.
+	#	facebook/dpt-dinov2-base-kitti.
+	#	facebook/dpt-dinov2-base-nyu.
+	#	facebook/dpt-dinov2-large-kitti.
+	#	facebook/dpt-dinov2-large-nyu.
+	#	facebook/dpt-dinov2-giant-kitti.
+	#	facebook/dpt-dinov2-giant-nyu.
+
+	import numpy as np
+
+	url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+	image = Image.open(requests.get(url, stream=True).raw)
+
+	image_processor = transformers.AutoImageProcessor.from_pretrained("facebook/dpt-dinov2-base-nyu")
+	model = transformers.DPTForDepthEstimation.from_pretrained("facebook/dpt-dinov2-base-nyu")
+
+	# Prepare image for the model
+	inputs = image_processor(images=image, return_tensors="pt")
+
+	with torch.no_grad():
+		outputs = model(**inputs)
+		predicted_depth = outputs.predicted_depth
+
+	# Interpolate to original size
+	prediction = torch.nn.functional.interpolate(
+		predicted_depth.unsqueeze(1),
+		size=image.size[::-1],
+		mode="bicubic",
+		align_corners=False,
+	)
+
+	# Visualize the prediction
+	output = prediction.squeeze().cpu().numpy()
+	formatted = (output * 255 / np.max(output)).astype("uint8")
+	depth = Image.fromarray(formatted)
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
 	if False:
@@ -6099,7 +6243,7 @@ def main():
 
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
-	zephyr_example()  # Zephyr-7B = Mistral-7B + DPO.
+	zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
 
 	#rag_example()  # Retrieval-augmented generation (RAG).
 
@@ -6127,6 +6271,9 @@ def main():
 	#vit_example()  # ViT.
 	#deit_example()  # DeiT.
 
+	#dino_example()  # DINO & DINOv2. Not yet tested.
+	#dpt_example()  # Dense Prediction Transformer (DPT). Not yet tested.
+
 	#--------------------
 	# Vision and language.
 
@@ -6134,7 +6281,7 @@ def main():
 	#beit_example()  # BEiT.
 
 	#clip_example()  # CLIP.
-	#align_example()  # ALIGN
+	#align_example()  # ALIGN.
 	#git_example()  # GIT.
 	#blip_example()  # BLIP.
 	#openflamingo_example()  # OpenFlamingo.
