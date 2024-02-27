@@ -2825,6 +2825,80 @@ def zephyr_example():
 	# <|assistant|>
 	# Ah, me hearty matey! But yer question be a puzzler! A human cannot eat a helicopter in one sitting, as helicopters are not edible. They be made of metal, plastic, and other materials, not food!
 
+# REF [site] >> https://huggingface.co/google
+def gemma_example():
+	# Models:
+	#	google/gemma-2b.
+	#	google/gemma-2b-it.
+	#	google/gemma-7b.
+	#	google/gemma-7b-it.
+
+	model_id = "google/gemma-2b"
+
+	if True:
+		# Running the model on a CPU
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+
+		input_text = "Write me a poem about Machine Learning."
+		input_ids = tokenizer(**input_text, return_tensors="pt")
+
+		outputs = model.generate(input_ids)
+		print(tokenizer.decode(outputs[0]))
+
+	if True:
+		# Running the model on a single / multi GPU
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="auto")
+		elif False:
+			# Using torch.float16
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype=torch.float16)
+		elif False:
+			# Using torch.bfloat16
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype=torch.bfloat16)
+		elif False:
+			# Using 8-bit precision (int8)
+			# pip install bitsandbytes
+			quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, quantization_config=quantization_config)
+		elif False:
+			# Using 4-bit precision
+			# pip install bitsandbytes
+			quantization_config = transformers.BitsAndBytesConfig(load_in_4bit=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, quantization_config=quantization_config)
+		elif False:
+			# Flash Attention 2
+			# pip install flash-attn
+			model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, attn_implementation="flash_attention_2").to(0)
+
+		input_text = "Write me a poem about Machine Learning."
+		input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+		outputs = model.generate(**input_ids)
+		print(tokenizer.decode(outputs[0]))
+
+	if True:
+		# Chat template
+
+		model_id = "gg-hf/gemma-2b-it"
+		#model_id = "gg-hf/gemma-7b-it"
+		dtype = torch.bfloat16
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="cuda",
+			torch_dtype=dtype,
+		)
+
+		chat = [
+			{ "role": "user", "content": "Write a hello world program" },
+		]
+		prompt = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -6134,6 +6208,100 @@ def stack_llama_2_sft_llama2_example():
 def stack_llama_2_dpo_llama2_example():
 	raise NotImplementedError
 
+# REF [site] >> https://github.com/keitazoumana/Medium-Articles-Notebooks/blob/main/Train_your_LLM.ipynb
+def trl_train_small_llm_example():
+	import trl
+	import peft
+	import datasets
+	import textwrap
+	import matplotlib.pyplot as plt
+
+	#-----
+	# Prepare data
+
+	train_dataset = datasets.load_dataset("tatsu-lab/alpaca", split="train")
+
+	print(train_dataset)
+
+	# We can get the first five rows as follows
+	pandas_format = train_dataset.to_pandas()
+	print(pandas_format.head())
+
+	for index in range(3):
+		print("---" * 15)
+		print("Instruction: {}".format(textwrap.fill(pandas_format.iloc[index]["instruction"], width=50)))
+		print("Output: {}".format(textwrap.fill(pandas_format.iloc[index]["output"], width=50)))
+		print("Text: {}".format(textwrap.fill(pandas_format.iloc[index]["text"], width=50)))
+
+	pandas_format["text_length"] = pandas_format["text"].apply(len)
+	max_length = pandas_format["text_length"].max()
+
+	plt.figure(figsize=(10, 6))
+	plt.hist(pandas_format["text_length"], bins=50, alpha=0.5, color="g")
+	plt.annotate("Max length: {}".format(max_length), xy=(max_length, 0), xytext=(max_length, 50), arrowprops=dict(facecolor="red", shrink=0.05))
+	plt.title("Distribution of Length of Text")
+	plt.xlabel("Length of Text")
+	plt.ylabel("Frequency")
+	plt.grid(True)
+	plt.show()
+
+	mask = pandas_format["text_length"] > 1024
+	percentage = (mask.sum() / pandas_format["text_length"].count()) * 100
+
+	print(f"The percentage of text documents with a length greater than 1024 is: {percentage}%")
+
+	#-----
+	# Build a model
+	pretrained_model_name = "Salesforce/xgen-7b-8k-base"
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(pretrained_model_name, trust_remote_code=True)
+	model = transformers.AutoModelForCausalLM.from_pretrained(pretrained_model_name, torch_dtype=torch.bfloat16)  # ~27.6GB
+
+	#-----
+	# Training
+
+	training_args = transformers.TrainingArguments(
+		output_dir="xgen-7b-8k-base-fine-tuned",
+		per_device_train_batch_size=4,
+		optim="adamw_torch",
+		logging_steps=80,
+		learning_rate=2e-4,
+		warmup_ratio=0.1,
+		lr_scheduler_type="linear",
+		num_train_epochs=1,
+		save_strategy="epoch",
+	)
+
+	lora_peft_config = peft.LoraConfig(
+		r=16,
+		lora_alpha=32,
+		lora_dropout=0.05,
+		task_type="CAUSAL_LM",
+	)
+
+	sft_trainer = trl.SFTTrainer(
+		model=model,
+		train_dataset=train_dataset,
+		dataset_text_field="text",
+		max_seq_length=1024,
+		tokenizer=tokenizer,
+		args=training_args,
+		packing=True,
+		peft_config=lora_peft_config,
+	)
+
+	tokenizer.pad_token = tokenizer.eos_token
+	model.resize_token_embeddings(len(tokenizer))
+	model = peft.prepare_model_for_int8_training(model)
+	model = peft.get_peft_model(model, lora_peft_config)
+
+	sft_trainer.train()
+
+	sft_trainer.save_model(training_args.output_dir)
+	sft_trainer.save_state()
+	output_dir = os.path.join(training_args.output_dir, "final_checkpoint")
+	sft_trainer.model.save_pretrained(output_dir)
+
 def main():
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
 
@@ -6244,6 +6412,7 @@ def main():
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
 	zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
+	#gemma_example()  # Gemma. Not yet tested.
 
 	#rag_example()  # Retrieval-augmented generation (RAG).
 
@@ -6367,6 +6536,8 @@ def main():
 	#stack_llama_example()  # Reinforcement Learning from Human Feedback (RLHF). Not yet implemented.
 	#stack_llama_2_sft_llama2_example()  # Not yet implemented.
 	#stack_llama_2_dpo_llama2_example()  # Not yet implemented.
+
+	#trl_train_small_llm_example()  # Not yet tested.
 
 	#--------------------
 	# Inference engine.
