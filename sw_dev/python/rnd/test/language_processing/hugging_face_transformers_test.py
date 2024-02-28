@@ -6272,7 +6272,7 @@ def trl_train_small_llm_example():
 		save_strategy="epoch",
 	)
 
-	lora_peft_config = peft.LoraConfig(
+	peft_lora_config = peft.LoraConfig(
 		r=16,
 		lora_alpha=32,
 		lora_dropout=0.05,
@@ -6287,7 +6287,7 @@ def trl_train_small_llm_example():
 		tokenizer=tokenizer,
 		args=training_args,
 		packing=True,
-		peft_config=lora_peft_config,
+		peft_config=peft_lora_config,
 	)
 
 	tokenizer.pad_token = tokenizer.eos_token
@@ -6301,6 +6301,185 @@ def trl_train_small_llm_example():
 	sft_trainer.save_state()
 	output_dir = os.path.join(training_args.output_dir, "final_checkpoint")
 	sft_trainer.model.save_pretrained(output_dir)
+
+# REF [site] >> https://github.com/davidkim205/komt/blob/main/dpo_train.py
+def dpo_train_example():
+	import os, typing
+	import peft
+	import trl
+	import datasets
+
+	def get_stack_exchange_paired(
+		dataset_name: str = "",
+		sanity_check: bool = False,
+		cache_dir: str = None,
+		num_proc=24,
+	) -> datasets.Dataset:
+		"""Load the stack-exchange-paired dataset from Hugging Face and convert it to the necessary format.
+
+		The dataset is converted to a dictionary with the following structure:
+		{
+			"prompt": List[str],
+			"chosen": List[str],
+			"rejected": List[str],
+		}
+
+		"""
+		dataset = datasets.load_dataset(
+			dataset_name,
+			split="train",
+			cache_dir=cache_dir,
+			#data_dir=data_dir,
+		)
+		original_columns = dataset.column_names
+
+		if sanity_check:
+			dataset = dataset.select(range(min(len(dataset), 100)))
+
+		print("dataset length =", len(dataset))
+		def return_prompt_and_responses(samples) -> typing.Dict[str, str]:
+			return {
+				"prompt": ["[INST]" + question + "[/INST]" for question in samples["prompt"]],
+				"chosen": samples["chosen"],
+				"rejected": samples["rejected"],
+			}
+
+		return dataset.map(
+			return_prompt_and_responses,
+			batched=True,
+			num_proc=num_proc,
+			remove_columns=original_columns,
+		)
+
+	model_name_or_path: typing.Optional[str] = "davidkim205/komt-mistral-7b-v1"
+	dataset_name: typing.Optional[str] = "maywell/ko_Ultrafeedback_binarized"
+	learning_rate: typing.Optional[float] = 5e-4  # Optimizer learning rate
+	lr_scheduler_type: typing.Optional[str] = "cosine"  # The lr scheduler type
+	warmup_steps: typing.Optional[int] = 100  # The number of warmup steps
+	#weight_decay: typing.Optional[float] = 0.05  # The weight decay
+	optimizer_type: typing.Optional[str] = "paged_adamw_32bit"  # The optimizer type
+	per_device_train_batch_size: typing.Optional[int] = 8  # Train batch size per device
+	per_device_eval_batch_size: typing.Optional[int] = 2  # Eval batch size per device
+	gradient_accumulation_steps: typing.Optional[int] = 4  # The number of gradient accumulation steps
+	gradient_checkpointing: typing.Optional[bool] = True  # Whether to use gradient checkpointing
+	max_prompt_length: typing.Optional[int] = 512  # The maximum prompt length
+	max_length: typing.Optional[int] = 1024  # The maximum sequence length
+	max_steps: typing.Optional[int] = 1000  # Max number of training steps
+	logging_steps: typing.Optional[int] = 10  # The logging frequency
+	save_steps: typing.Optional[int] = 300  # The saving frequency
+	eval_steps: typing.Optional[int] = 300  # The evaluation frequency
+	output_dir: typing.Optional[str] = ""  # The output directory
+	sanity_check: typing.Optional[bool] = False
+	report_to: typing.Optional[str] = None  # The list of integrations to report the results and logs to. Supported platforms are `"azure_ml"`, `"comet_ml"`, `"mlflow"`, `"neptune"`, `"tensorboard"`,`"clearml"` and `"wandb"`. Use `"all"` to report to all integrations installed, `"none"` for no integrations
+	ignore_bias_buffers: typing.Optional[bool] = False  # Debug argument for distributed training
+
+	# Load a pretrained model
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name_or_path,
+		#low_cpu_mem_usage=True,
+		torch_dtype=torch.float16,
+		load_in_4bit=True,
+	)
+	model.config.use_cache = False
+
+	if ignore_bias_buffers:
+		# torch distributed hack
+		model._ddp_params_and_buffers_to_ignore = [
+			name for name, buffer in model.named_buffers() if buffer.dtype == torch.bool
+		]
+
+	model_ref = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name_or_path,
+		#low_cpu_mem_usage=True,
+		torch_dtype=torch.float16,
+		load_in_4bit=True,
+	)
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name_or_path)
+	tokenizer.pad_token = tokenizer.eos_token
+
+	# Load the Stack-exchange paired dataset
+	train_dataset = get_stack_exchange_paired(dataset_name=dataset_name, sanity_check=sanity_check)
+	train_dataset = train_dataset.filter(
+		lambda x: len(x["prompt"]) + max(len(x["chosen"]), len(x["rejected"])) <= max_length
+	)
+
+	# Load evaluation dataset
+	eval_dataset = get_stack_exchange_paired(dataset_name=dataset_name, sanity_check=True)
+	eval_dataset = eval_dataset.filter(
+		lambda x: len(x["prompt"]) + max(len(x["chosen"]), len(x["rejected"])) <= max_length
+	)
+
+	if len(output_dir) <= 1:
+		model_name = model_name_or_path.replace("../", "")
+		model_name = model_name.replace("..", "").replace("/", "_")
+		dataset_name = dataset_name.replace("/", "_")
+		batch = per_device_train_batch_size
+		output_dir = f"{model_name}_{dataset_name}_lr{learning_rate}_{lr_scheduler_type}_b{batch}_step{max_steps}"
+		print("Output dir:", output_dir)
+
+	# Initialize training arguments
+	training_args = transformers.TrainingArguments(
+		per_device_train_batch_size=per_device_train_batch_size,
+		per_device_eval_batch_size=per_device_eval_batch_size,
+		max_steps=max_steps,
+		logging_steps=logging_steps,
+		save_steps=save_steps,
+		gradient_accumulation_steps=gradient_accumulation_steps,
+		gradient_checkpointing=gradient_checkpointing,
+		learning_rate=learning_rate,
+		evaluation_strategy="steps",
+		eval_steps=eval_steps,
+		output_dir=output_dir,
+		report_to=report_to,
+		lr_scheduler_type=lr_scheduler_type,
+		warmup_steps=warmup_steps,
+		optim=optimizer_type,
+		bf16=True,
+		remove_unused_columns=False,
+		run_name="dpo_llama2",
+	)
+
+	peft_lora_config = peft.LoraConfig(
+		r=8,  # The lora r parameter
+		lora_alpha=16,  # The lora alpha parameter
+		lora_dropout=0.05,  # The lora dropout parameter
+		target_modules=[
+			"q_proj",
+			"v_proj",
+			"k_proj",
+			"out_proj",
+			"fc_in",
+			"fc_out",
+			"wte",
+		],
+		bias="none",
+		task_type="CAUSAL_LM",
+	)
+
+	# Initialize the DPO trainer
+	dpo_trainer = trl.DPOTrainer(
+		model,
+		#ref_model=model_ref,  # ValueError: You passed both a ref_model and a peft_config. For training PEFT adapters with DPO there is no need to pass a reference model. Please pass `ref_model=None` in case you want to train PEFT adapters.
+		ref_model=None,
+		args=training_args,
+		beta=0.1,  # The beta parameter for DPO loss
+		train_dataset=train_dataset,
+		eval_dataset=eval_dataset,
+		tokenizer=tokenizer,
+		peft_config=peft_lora_config,
+		max_prompt_length=max_prompt_length,
+		max_length=max_length,
+	)
+
+	# Train
+	dpo_trainer.train()
+	dpo_trainer.save_model(training_args.output_dir)
+	dpo_trainer.save_state()
+
+	# Save
+	output_dir = os.path.join(training_args.output_dir, "final_checkpoint")
+	dpo_trainer.model.save_pretrained(output_dir)
 
 def main():
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/language_processing/transformer_test.py
@@ -6537,11 +6716,16 @@ def main():
 	#stack_llama_2_sft_llama2_example()  # Not yet implemented.
 	#stack_llama_2_dpo_llama2_example()  # Not yet implemented.
 
-	#trl_train_small_llm_example()  # Not yet tested.
+	#trl_train_small_llm_example()  # XGen-7B + SFT. Not yet tested.
+	#dpo_train_example()  # Mistral-7B + DPO.
 
 	#--------------------
 	# Inference engine.
 	#	https://betterprogramming.pub/frameworks-for-serving-llms-60b7f7b23407
+
+	#--------------------
+	# Fine-tune LLMs.
+	#	${SWR_HOME}/test/language_processing/llm_fine_tuning_test.py
 
 #--------------------------------------------------------------------
 
