@@ -36,20 +36,26 @@ def gemma_example():
 	import keras_nlp
 
 	if True:
-		# Use generate() to do text generation.
+		# Use generate() to do text generation
 
-		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_instruct_7b_en")
+		# INFO [error] >>
+		#	You don't have permission to access resource at URL: https://www.kaggle.com/models/keras/gemma/frameworks/keras/variations/gemma_instruct_7b_en/versions/2
+		#	Please make sure you are authenticated if you are trying to access a private resource or a resource requiring consent.
+		#gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_instruct_7b_en")
+		# REF [site] >> https://www.kaggle.com/models/google/gemma
+		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("./gemma_instruct_2b_en")  # A path to a local preset directory
 		generated = gemma_lm.generate("Keras is a", max_length=30)
 		print(generated)
 
-		# Generate with batched prompts.
+		# Generate with batched prompts
 		generated = gemma_lm.generate(["Keras is a", "I want to say"], max_length=30)
 		print(generated)
 
 	if True:
-		# Compile the generate() function with a custom sampler.
+		# Compile the generate() function with a custom sampler
 
-		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_instruct_7b_en")
+		#gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_instruct_7b_en")
+		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("./gemma_instruct_2b_en")  # A path to a local preset directory
 		gemma_lm.compile(sampler="top_k")
 		generated = gemma_lm.generate("I want to say", max_length=30)
 		print(generated)
@@ -59,31 +65,37 @@ def gemma_example():
 		print(generated)
 
 	if True:
-		# Use generate() without preprocessing.
+		# Use generate() without preprocessing
 
 		prompt = {
-			# `2, 214064, 603` maps to the start token followed by "Keras is".
+			# `2, 214064, 603` maps to the start token followed by "Keras is"
 			"token_ids": np.array([[2, 214064, 603, 0, 0, 0, 0]] * 2),
-			# Use `"padding_mask"` to indicate values that should not be overridden.
+			# Use `"padding_mask"` to indicate values that should not be overridden
 			"padding_mask": np.array([[1, 1, 1, 0, 0, 0, 0]] * 2),
 		}
 
 		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset(
-			"gemma_instruct_7b_en",
+			#"gemma_instruct_7b_en",
+			"./gemma_instruct_2b_en",  # A path to a local preset directory
 			preprocessor=None,
 		)
 		generated = gemma_lm.generate(prompt)
 		print(generated)
 
 	if True:
-		# Call fit() on a single batch.
+		# NOTE [error] >> out-of-memory
+
+		# Call fit() on a single batch
 
 		features = ["The quick brown fox jumped.", "I forgot my homework."]
-		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_instruct_7b_en")
+		#gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_instruct_7b_en")
+		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("./gemma_instruct_2b_en")  # A path to a local preset directory
 		gemma_lm.fit(x=features, batch_size=2)
 
 	if True:
-		# Call fit() without preprocessing.
+		# NOTE [error] >> out-of-memory
+
+		# Call fit() without preprocessing
 
 		x = {
 			"token_ids": np.array([[2, 214064, 603, 5271, 6044, 9581, 3, 0]] * 2),
@@ -93,7 +105,8 @@ def gemma_example():
 		sw = np.array([[1, 1, 1, 1, 1, 1, 0, 0]] * 2)
 
 		gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset(
-			"gemma_instruct_7b_en",
+			#"gemma_instruct_7b_en",
+			"./gemma_instruct_2b_en",  # A path to a local preset directory
 			preprocessor=None,
 		)
 		gemma_lm.fit(x=x, y=y, sample_weight=sw, batch_size=2)
@@ -107,7 +120,8 @@ def get_started_with_gemma_example():
 	os.environ["KERAS_BACKEND"] = "jax"  # Or "tensorflow" or "torch"
 
 	# Create a model
-	gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_2b_en")
+	#gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_2b_en")
+	gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("./gemma_2b_en")  # A path to a local preset directory
 
 	print(gemma_lm.summary())
 
@@ -173,7 +187,8 @@ def gemma_distributed_finetuning_and_inference_example():
 	model_parallel = keras.distribution.ModelParallel(device_mesh, layout_map, batch_dim_name="batch")
 
 	keras.distribution.set_distribution(model_parallel)
-	gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_7b_en")
+	#gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_7b_en")
+	gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("./gemma_2b_en")  # A path to a local preset directory
 
 	# Verify that the model has been partitioned correctly. Let's take decoder_block_1 as an example
 	decoder_block_1 = gemma_lm.backbone.get_layer("decoder_block_1")
@@ -259,7 +274,8 @@ def fine_tune_gemma_models_using_lora_example():
 
 	#-----
 	# Load model
-	gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_2b_en")
+	#gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("gemma_2b_en")
+	gemma_lm = keras_nlp.models.GemmaCausalLM.from_preset("./gemma_2b_en")  # A path to a local preset directory
 	print(gemma_lm.summary())
 
 	# Inference before fine tuning
@@ -324,10 +340,10 @@ def fine_tune_gemma_models_using_lora_example():
 	print(generated)
 
 def main():
-	quickstart()
+	#quickstart()
 
 	# Gemma
-	#gemma_example()
+	gemma_example()
 
 	#get_started_with_gemma_example()
 	#gemma_distributed_finetuning_and_inference_example()
