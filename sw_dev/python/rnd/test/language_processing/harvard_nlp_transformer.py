@@ -1,3 +1,7 @@
+# Harvard NLP transformer:
+#	https://nlp.seas.harvard.edu/annotated-transformer/
+#	https://github.com/harvardnlp/annotated-transformer
+
 import math, copy
 import torch
 

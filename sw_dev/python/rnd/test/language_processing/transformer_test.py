@@ -57,11 +57,6 @@ def main():
 	detr_positional_encoding_test()  # Not yet implemented.
 
 	#--------------------
-	torchscale_test()
-
-	# Harvard NLP transformer.
-	#	REF [file] >> ./harvard_nlp_transformer_test.py
-
 	# PyTorch.
 	#	REF [file] >> ../machine_learning/pytorch/pytorch_transformer.py
 	# PyTorch Lightning.
@@ -69,6 +64,11 @@ def main():
 
 	# Hugging Face Transformers.
 	#	REF [file] >> ./hugging_face_transformers_test.py
+
+	# Harvard NLP transformer.
+	#	REF [file] >> ./harvard_nlp_transformer_test.py
+
+	torchscale_test()
 
 	#--------------------
 	# GPT.
