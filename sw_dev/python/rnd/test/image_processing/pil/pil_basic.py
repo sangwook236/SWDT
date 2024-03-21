@@ -13,7 +13,7 @@ def image_example():
 	try:
 		img = Image.open(image_filename)
 	except IOError as ex:
-		print('Failed to load an image, {}: {}.'.format(image_filename, ex))
+		print(f'Failed to load an image, {image_filename}: {ex}.')
 		return
 
 	print(f'{type(img)=}.')
@@ -93,7 +93,7 @@ def text_example():
 	try:
 		font = ImageFont.truetype(font=font_filepath, size=50, index=0)
 	except Exception as ex:
-		print('Invalid font, {}: {}.'.format(font_filepath, ex))
+		print(f'Invalid font, {font_filepath}: {ex}.')
 		raise
 
 	img = Image.new(mode='RGB', size=(200, 100), color=(128, 128, 128))
@@ -126,7 +126,7 @@ def exif_example():
 
 	if img._getexif():
 		exif_data = {PIL.ExifTags.TAGS[i]: j for i, j in img._getexif().items() if i in PIL.ExifTags.TAGS}
-		print('EXIF: {}.'.format(exif_data))
+		print(f'EXIF: {exif_data}.')
 	else:
 		print('No EXIF data.')
 
@@ -210,7 +210,7 @@ def image_processing_test():
 	plt.axis('off')
 	plt.tight_layout()
 
-	rgb1 = img1.convert(mode="RGB")
+	rgb1 = img1.convert(mode='RGB')
 	result = Image.eval(rgb1, lambda x: 255 - x)
 
 	plt.figure()
@@ -333,7 +333,7 @@ def image_processing_test():
 	plt.show()
 
 def main():
-	# Model:
+	# Modes:
 	#	"1": bilevel
 	#	"L": greyscale
 	#	"RGB": RGB

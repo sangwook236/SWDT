@@ -48,11 +48,11 @@ void normal_estimation_tutorial()
 	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 	ne.setSearchMethod(tree);
 
-	// Output datasets.
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
-
 	// Use all neighbors in a sphere of radius 3cm.
 	ne.setRadiusSearch(0.03);
+
+	// Output datasets.
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
 
 	// Compute the features.
 	ne.compute(*cloud_normals);

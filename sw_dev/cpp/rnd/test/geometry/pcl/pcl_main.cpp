@@ -286,6 +286,7 @@ void greedy_projection();
 void ransac();
 void registration();
 void segmentation();
+void reconstruction();
 void visualization(int argc, char **argv);
 
 }  // namespace my_pcl
@@ -305,6 +306,7 @@ int pcl_main(int argc, char *argv[])
 
 	//my_pcl::registration();
 	//my_pcl::segmentation();
+	//my_pcl::reconstruction();
 
 	//my_pcl::visualization(argc, argv);
 

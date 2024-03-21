@@ -7,10 +7,31 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pcl\pcl_feature.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_filtering.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
     <ClCompile Include="pcl\pcl_greedy_projection.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
+    <ClCompile Include="pcl\pcl_keypoint.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
     <ClCompile Include="pcl\pcl_main.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_octree.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_ransac.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_reconstruction.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_registration.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
     <ClCompile Include="pcl\pcl_resampling.cpp">
@@ -24,9 +45,6 @@
     </ClCompile>
     <ClCompile Include="3dtk\3dtk_main.cpp">
       <Filter>Source Files\3dtk</Filter>
-    </ClCompile>
-    <ClCompile Include="pcl\pcl_ransac.cpp">
-      <Filter>Source Files\pcl</Filter>
     </ClCompile>
     <ClCompile Include="elsd\elsd_main.cpp">
       <Filter>Source Files\elsd</Filter>
