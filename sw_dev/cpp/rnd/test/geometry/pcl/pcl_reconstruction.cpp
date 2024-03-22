@@ -13,6 +13,9 @@
 #include <pcl/surface/marching_cubes_rbf.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/vtk_io.h>
+#include <pcl/visualization/cloud_viewer.h>
+#include <pcl/visualization/point_cloud_geometry_handlers.h>
+#include <pcl/visualization/point_cloud_color_handlers.h>
 
 
 namespace {
@@ -34,7 +37,9 @@ void marching_cubes_reconstruction_example()
 	{
 		std::cout << "Loading a point cloud from " << pcd_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		if (pcl::io::loadPCDFile(pcd_filepath, *cloud) < 0)
+		//if (pcl::io::loadPCDFile(pcd_filepath, *cloud) < 0)
+		pcl::PCDReader reader;
+		if (reader.read(pcd_filepath, *cloud) != 0)
 		{
 			std::cerr << "A point cloud file not found, " << pcd_filepath << std::endl;
 			return;
@@ -47,6 +52,11 @@ void marching_cubes_reconstruction_example()
 
 	pcl::PolygonMesh polygon_mesh;
 	{
+		// Bilateral filtering
+		//	Refer to KinectFusion
+		// Mean least squres (MLS) smoothing.
+		//	Refer to mls_smoothing_example()
+
 #if 1
 		pcl::MarchingCubes<pcl::PointNormal> *mc = nullptr;
 		if (0 == hoppe_or_rbf)
@@ -76,8 +86,9 @@ void marching_cubes_reconstruction_example()
 
 		//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
-		ne.setInputCloud(cloud_xyz);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+		ne.setInputCloud(cloud_xyz);
+		//ne.setNumberOfThreads(8);
 		ne.setSearchMethod(tree);
 		ne.setRadiusSearch(0.03);
 
@@ -107,10 +118,28 @@ void marching_cubes_reconstruction_example()
 	{
 		std::cout << "Saving the reconstructed surface to " << vtk_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		pcl::io::saveVTKFile(vtk_filepath, polygon_mesh);
+		if (pcl::io::saveVTKFile(vtk_filepath, polygon_mesh, /*precision =*/ 5) < 0)
+		{
+			std::cerr << "The reconstructed surface not saved to " << vtk_filepath << std::endl;
+			return;
+		}
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "The reconstructed surface saved: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 	}
+
+
+#if 0
+	// Not working
+
+	// Visualize.
+	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+	viewer.setBackgroundColor(0.0, 0.0, 0.5);
+	viewer.addPolygonMesh(polygon_mesh, "polygon mesh");
+	while (!viewer.wasStopped())
+	{
+		viewer.spinOnce();
+	}
+#endif
 }
 
 // REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/tools/poisson_reconstruction.cpp
@@ -128,7 +157,9 @@ void poisson_reconstruction_example()
 	{
 		std::cout << "Loading a point cloud from " << pcd_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		if (pcl::io::loadPCDFile(pcd_filepath, *cloud) < 0)
+		//if (pcl::io::loadPCDFile(pcd_filepath, *cloud) < 0)
+		pcl::PCDReader reader;
+		if (reader.read(pcd_filepath, *cloud) != 0)
 		{
 			std::cerr << "A point cloud file not found, " << pcd_filepath << std::endl;
 			return;
@@ -143,6 +174,11 @@ void poisson_reconstruction_example()
 	{
 		std::cout << "Using parameters: depth " << depth <<", solverDivide " << solver_divide << ", isoDivide " << iso_divide << std::endl;
 
+		// Bilateral filtering
+		//	Refer to KinectFusion
+		// Mean least squres (MLS) smoothing.
+		//	Refer to mls_smoothing_example()
+
 		pcl::PointCloud<pcl::PointNormal>::Ptr xyz_cloud(new pcl::PointCloud<pcl::PointNormal>());
 #if 0
 		pcl::fromPCLPointCloud2(*cloud, *xyz_cloud);
@@ -152,8 +188,9 @@ void poisson_reconstruction_example()
 
 		//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
-		ne.setInputCloud(cloud_xyz);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+		ne.setInputCloud(cloud_xyz);
+		//ne.setNumberOfThreads(8);
 		ne.setSearchMethod(tree);
 		ne.setRadiusSearch(0.03);
 
@@ -180,16 +217,33 @@ void poisson_reconstruction_example()
 	{
 		std::cout << "Saving the reconstructed surface to " << vtk_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		pcl::io::saveVTKFile(vtk_filepath, polygon_mesh);
+		if (pcl::io::saveVTKFile(vtk_filepath, polygon_mesh, /*precision =*/ 5) < 0)
+		{
+			std::cerr << "The reconstructed surface not saved to " << vtk_filepath << std::endl;
+			return;
+		}
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "The reconstructed surface saved: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 	}
+
+#if 0
+	// Not working
+
+	// Visualize.
+	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+	viewer.setBackgroundColor(0.0, 0.0, 0.5);
+	viewer.addPolygonMesh(polygon_mesh, "polygon mesh");
+	while (!viewer.wasStopped())
+	{
+		viewer.spinOnce();
+	}
+#endif
 }
 
 // REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/tools/mls_smoothing.cpp
 void mls_smoothing_example()
 {
-	const double search_radius = 1.0;  // Sphere radius to be used for finding the k-nearest neighbors used for fitting
+	const double search_radius = 0.01;  // Sphere radius to be used for finding the k-nearest neighbors used for fitting
 	const double sqr_gauss_param = search_radius * search_radius;  // Parameter used for the distance based weighting of neighbors (recommended = search_radius^2)
 	const bool sqr_gauss_param_set = true;
 	const int polynomial_order = 2;  // Order of the polynomial to be fit (polynomial_order > 1, indicates using a polynomial fit)
@@ -201,7 +255,9 @@ void mls_smoothing_example()
 	{
 		std::cout << "Loading a point cloud from " << input_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		if (pcl::io::loadPCDFile(input_filepath, *cloud) < 0)
+		//if (pcl::io::loadPCDFile(input_filepath, *cloud) < 0)
+		pcl::PCDReader reader;
+		if (reader.read(input_filepath, *cloud) != 0)
 		{
 			std::cerr << "A point cloud file not found, " << input_filepath << std::endl;
 			return;
@@ -254,18 +310,44 @@ void mls_smoothing_example()
 		mls.process(*xyz_cloud_smoothed);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Smoothed surface and normals computed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
-		std::cout << xyz_cloud_smoothed->width * xyz_cloud_smoothed->height << " points." << std::endl;
+		std::cout << xyz_cloud_smoothed->width * xyz_cloud_smoothed->height << " points smoothed." << std::endl;
 
 		pcl::toPCLPointCloud2(*xyz_cloud_smoothed, cloud_smoothed);
 	}
 
 	{
-		std::cout << "Saving the smoothed surface to " << output_filepath << "..." << std::endl;
+		std::cout << "Saving the smoothed point cloud to " << output_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		pcl::io::savePCDFile(output_filepath, cloud_smoothed, Eigen::Vector4f::Zero(), Eigen::Quaternionf::Identity(), true);
+		//if (pcl::io::savePCDFile(output_filepath, cloud_smoothed, Eigen::Vector4f::Zero(), Eigen::Quaternionf::Identity(), true) < 0)
+		pcl::PCDWriter writer;
+		if (writer.write(output_filepath, cloud_smoothed) != 0)
+		{
+			std::cerr << "The smoothed point cloud not saved." << std::endl;
+			return;
+		}
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
-		std::cout << "The smoothed surface saved: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+		std::cout << "The smoothed point cloud saved: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 	}
+
+#if 0
+	// Not working
+
+	// Visualize.
+	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+	viewer.setBackgroundColor(0.0, 0.0, 0.5);
+	pcl::visualization::PointCloudGeometryHandlerCustom<pcl::PCLPointCloud2> geometry_handler(pcl::PCLPointCloud2::Ptr(&cloud_smoothed), "x", "y", "z");
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PCLPointCloud2> color_handler(pcl::PCLPointCloud2::Ptr(&cloud_smoothed), 150, 150, 150);
+	viewer.addPointCloud(
+		pcl::PCLPointCloud2::Ptr(&cloud_smoothed),
+		pcl::visualization::PointCloudGeometryHandler<pcl::PCLPointCloud2>::Ptr(&geometry_handler), pcl::visualization::PointCloudColorHandler<pcl::PCLPointCloud2>::Ptr(&color_handler),
+		Eigen::Vector4f::Zero(), Eigen::Quaternionf::Identity(),
+		"point cloud"
+	);
+	while (!viewer.wasStopped())
+	{
+		viewer.spinOnce();
+	}
+#endif
 }
 
 }  // namespace local

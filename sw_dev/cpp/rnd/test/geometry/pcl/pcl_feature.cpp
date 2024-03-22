@@ -42,6 +42,11 @@ void normal_estimation_tutorial()
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 	ne.setInputCloud(cloud);
+	//ne.setNumberOfThreads(8);
+
+	//Eigen::Vector4f centroid;
+	//pcl::compute3DCentroid(*cloud, centroid);
+	//ne.setViewPoint(centroid[0], centroid[1], centroid[2]);
 
 	// Create an empty kdtree representation, and pass it to the normal estimation object.
 	// Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).
@@ -63,6 +68,7 @@ void normal_estimation_tutorial()
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 	ne.setInputCloud(cloud);
+	//ne.setNumberOfThreads(8);
 
 	// Create a set of indices to be used. For simplicity, we're going to be using the first 10% of the points in cloud.
 	std::vector<int> indices(std::floor(cloud->size() / 10));
@@ -104,6 +110,7 @@ void normal_estimation_tutorial()
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 	ne.setInputCloud(cloud_downsampled);
+	//ne.setNumberOfThreads(8);
 
 	// Pass the original data (before downsampling) as the search surface.
 	ne.setSearchSurface(cloud);
