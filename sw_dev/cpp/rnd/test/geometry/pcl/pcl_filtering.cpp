@@ -95,18 +95,11 @@ void voxel_grid_covariance_filter_test()
 #if 0
 void bilateral_filter_test()
 {
-#if 1
-	const float sigma_s = 2.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
-	const float sigma_r = 0.01f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
-#else
-	const float sigma_s = 20.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
-	const float sigma_r = 0.1f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
-#endif
-
 	//const std::string input_filepath("./milk_cartoon_all_small_clorox.pcd");
 	const std::string input_filepath("./input.pcd");
 	const std::string output_filepath("./bf_output.pcd");
 
+	// Load a point cloud
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	{
 		std::cout << "Loading a point cloud from " << input_filepath << "..." << std::endl;
@@ -124,8 +117,17 @@ void bilateral_filter_test()
 		std::cout << "Available dimensions: " << pcl::getFieldsList(*cloud).c_str() << std::endl;
 	}
 
+	// Filtering
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>());
 	{
+#if 1
+		const float sigma_s = 2.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
+		const float sigma_r = 0.01f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
+#else
+		const float sigma_s = 20.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
+		const float sigma_r = 0.1f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
+#endif
+
 		pcl::BilateralFilter<pcl::PointXYZ> bf;
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		bf.setInputCloud(cloud);
@@ -142,6 +144,7 @@ void bilateral_filter_test()
 		std::cout << cloud_filtered->width * cloud_filtered->height << " points filtered." << std::endl;
 	}
 
+	// Save the filtered point cloud
 	{
 		std::cout << "Saving the filtered point cloud to " << output_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
@@ -157,7 +160,7 @@ void bilateral_filter_test()
 	}
 
 #if 1
-	// Visualize.
+	// Visualize
 	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
 	viewer.setBackgroundColor(0.0, 0.0, 0.5);
 	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> handler_cloud(cloud, 255, 0, 0);
@@ -176,18 +179,11 @@ void bilateral_filter_test()
 
 void fast_bilateral_filter_test()
 {
-#if 1
-	const float sigma_s = 2.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
-	const float sigma_r = 0.01f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
-#else
-	const float sigma_s = 20.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
-	const float sigma_r = 0.1f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
-#endif
-
 	//const std::string input_filepath("./milk_cartoon_all_small_clorox.pcd");
 	const std::string input_filepath("./input.pcd");
 	const std::string output_filepath("./fbf_output.pcd");
 
+	// Load a point cloud
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	{
 		std::cout << "Loading a point cloud from " << input_filepath << "..." << std::endl;
@@ -205,10 +201,24 @@ void fast_bilateral_filter_test()
 		std::cout << "Available dimensions: " << pcl::getFieldsList(*cloud).c_str() << std::endl;
 	}
 
+	// Filtering
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>());
+	if (cloud->isOrganized())  // cloud->height != 1
 	{
-		pcl::FastBilateralFilter<pcl::PointXYZ> fbf;
-		//pcl::FastBilateralFilterOMP<pcl::PointXYZ> fbf;
+		// NOTE [info] >> a fast bilateral filter for smoothing depth information in organized point clouds
+		//	An organized or unorganizedpoint cloud dataset:
+		//		REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/basic_structures.html
+
+#if 1
+		const float sigma_s = 2.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
+		const float sigma_r = 0.01f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
+#else
+		const float sigma_s = 20.0f;  // The standard deviation of the Gaussian used by the bilateral filter for the spatial neighborhood/window
+		const float sigma_r = 0.1f;  // The standard deviation of the Gaussian used to control how much an adjacent pixel is downweighted because of the intensity difference (depth in our case)
+#endif
+
+		//pcl::FastBilateralFilter<pcl::PointXYZ> fbf;
+		pcl::FastBilateralFilterOMP<pcl::PointXYZ> fbf;
 		fbf.setInputCloud(cloud);
 		fbf.setSigmaS(sigma_s);
 		fbf.setSigmaR(sigma_r);
@@ -220,7 +230,13 @@ void fast_bilateral_filter_test()
 		std::cout << "Filtered: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 		std::cout << cloud_filtered->width * cloud_filtered->height << " points filtered." << std::endl;
 	}
+	else
+	{
+		std::cerr << "The point cloud is unorganized: width = " << cloud->width << ", height = " << cloud->height << std::endl;
+		return;
+	}
 
+	// Save the filtered point cloud
 	{
 		std::cout << "Saving the filtered point cloud to " << output_filepath << "..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
@@ -236,7 +252,7 @@ void fast_bilateral_filter_test()
 	}
 
 #if 1
-	// Visualize.
+	// Visualize
 	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
 	viewer.setBackgroundColor(0.0, 0.0, 0.5);
 	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> handler_cloud(cloud, 255, 0, 0);

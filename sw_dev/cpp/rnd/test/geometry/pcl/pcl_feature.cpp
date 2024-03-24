@@ -57,12 +57,12 @@ void normal_estimation_tutorial()
 	ne.setRadiusSearch(0.03);
 
 	// Output datasets.
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal(new pcl::PointCloud<pcl::Normal>);
 
 	// Compute the features.
-	ne.compute(*cloud_normals);
+	ne.compute(*cloud_normal);
 
-	// cloud_normals->size() should have the same size as the input cloud->size().
+	// cloud_normal->size() should have the same size as the input cloud->size().
 #elif 0
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
@@ -84,15 +84,15 @@ void normal_estimation_tutorial()
 	ne.setSearchMethod(tree);
 
 	// Output datasets.
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal(new pcl::PointCloud<pcl::Normal>);
 
 	// Use all neighbors in a sphere of radius 3cm.
 	ne.setRadiusSearch(0.03);
 
 	// Compute the features.
-	ne.compute(*cloud_normals);
+	ne.compute(*cloud_normal);
 
-	// cloud_normals->size() should have the same size as the input indicesptr->size().
+	// cloud_normal->size() should have the same size as the input indicesptr->size().
 #else
 	const std::string filename_downsampled("./sample_downsampled.pcd");
 
@@ -121,15 +121,15 @@ void normal_estimation_tutorial()
 	ne.setSearchMethod(tree);
 
 	// Output datasets.
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal(new pcl::PointCloud<pcl::Normal>);
 
 	// Use all neighbors in a sphere of radius 3cm.
 	ne.setRadiusSearch(0.03);
 
 	// Compute the features.
-	ne.compute(*cloud_normals);
+	ne.compute(*cloud_normal);
 
-	// cloud_normals->size() should have the same size as the input cloud_downsampled->size().
+	// cloud_normal->size() should have the same size as the input cloud_downsampled->size().
 #endif
 }
 
@@ -198,7 +198,7 @@ void principal_curvature_estimation_example()
 
 	// Compute the normals.
 	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_with_normal(new pcl::PointCloud<pcl::Normal>);
 	{
 		const auto start_time(std::chrono::high_resolution_clock::now());
 
@@ -206,7 +206,7 @@ void principal_curvature_estimation_example()
 		normal_estimation.setInputCloud(cloud);
 		normal_estimation.setSearchMethod(tree);
 		normal_estimation.setRadiusSearch(0.03);
-		normal_estimation.compute(*cloud_with_normals);
+		normal_estimation.compute(*cloud_with_normal);
 
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Normals computed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
@@ -222,7 +222,7 @@ void principal_curvature_estimation_example()
 		// Provide the original point cloud (without normals).
 		principal_curvatures_estimation.setInputCloud(cloud);
 		// Provide the point cloud with normals.
-		principal_curvatures_estimation.setInputNormals(cloud_with_normals);
+		principal_curvatures_estimation.setInputNormals(cloud_with_normal);
 		// Use the same KdTree from the normal estimation.
 		principal_curvatures_estimation.setSearchMethod(tree);
 		principal_curvatures_estimation.setRadiusSearch(0.01);
@@ -276,15 +276,15 @@ void principal_curvature_estimation_example()
 
 #if 0
 	// Save files.
-	//pcl::io::savePCDFile("./cloud_normals.pcd", *cloud_with_normals, false);
+	//pcl::io::savePCDFile("./cloud_normals.pcd", *cloud_with_normal, false);
 	//pcl::io::savePCDFile("./principal_curvatures.pcd", *principal_curvatures, false);
 
 	// Save point a point cloud, normals, and principal curvatures to a single PCD file.
-	pcl::PCLPointCloud2 cloud2, cloud2_normals, cloud2_principal_curvatures;
+	pcl::PCLPointCloud2 cloud2, cloud2_normal, cloud2_principal_curvatures;
 	pcl::toPCLPointCloud2(*cloud, cloud2);
-	pcl::toPCLPointCloud2(*cloud_with_normals, cloud2_normals);
+	pcl::toPCLPointCloud2(*cloud_with_normal, cloud2_normal);
 	pcl::toPCLPointCloud2(*principal_curvatures, cloud2_principal_curvatures);
-	pcl::concatenate(cloud2, cloud2_normals);
+	pcl::concatenate(cloud2, cloud2_normal);
 	pcl::concatenate(cloud2, cloud2_principal_curvatures);
 	pcl::io::savePCDFile("./cloud2.pcd", cloud2, Eigen::Vector4f::Zero(), Eigen::Quaternionf::Identity(), false);
 #endif
@@ -292,19 +292,19 @@ void principal_curvature_estimation_example()
 	std::cout << "#valid principal curvatures = " << valid_point_indices.size() << std::endl;
 
 	cloud.reset(new pcl::PointCloud<pcl::PointXYZ>(*cloud, valid_point_indices));
-	cloud_with_normals.reset(new pcl::PointCloud<pcl::Normal>(*cloud_with_normals, valid_point_indices));
+	cloud_with_normal.reset(new pcl::PointCloud<pcl::Normal>(*cloud_with_normal, valid_point_indices));
 	principal_curvatures.reset(new pcl::PointCloud<pcl::PrincipalCurvatures>(*principal_curvatures, valid_point_indices));
 
 	std::cout << "Valid points: " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << ")." << std::endl;
-	std::cout << "Valid normals: " << cloud_with_normals->size() << " data points (" << pcl::getFieldsList(*cloud_with_normals) << ")." << std::endl;
+	std::cout << "Valid normals: " << cloud_with_normal->size() << " data points (" << pcl::getFieldsList(*cloud_with_normal) << ")." << std::endl;
 	std::cout << "Valid principal curvatures: " << principal_curvatures->size() << " data points (" << pcl::getFieldsList(*principal_curvatures) << ")." << std::endl;
 #endif
 
 	// Visualize.
 	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
 	viewer.addPointCloud<pcl::PointXYZ>(cloud, "cloud");
-	//viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, cloud_with_normals, 5, 0.01f, "cloud_normals");
-	viewer.addPointCloudPrincipalCurvatures<pcl::PointXYZ, pcl::Normal>(cloud, cloud_with_normals, principal_curvatures, 5, 0.01f, "cloud_curvatures");
+	//viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, cloud_with_normal, 5, 0.01f, "cloud_normals");
+	viewer.addPointCloudPrincipalCurvatures<pcl::PointXYZ, pcl::Normal>(cloud, cloud_with_normal, principal_curvatures, 5, 0.01f, "cloud_curvatures");
 	//viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "cloud");
 	//viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, "cloud");
 	//viewer.setRepresentationToSurfaceForAllActors();
