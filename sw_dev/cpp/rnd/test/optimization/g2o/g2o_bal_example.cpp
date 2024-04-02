@@ -270,7 +270,7 @@ void bal_example()
 		int numCameras, numPoints, numObservations;
 		ifs >> numCameras >> numPoints >> numObservations;
 
-		std::cerr << PVAR(numCameras) << " " << PVAR(numPoints) << " " << PVAR(numObservations) << std::endl;
+		std::cout << PVAR(numCameras) << " " << PVAR(numPoints) << " " << PVAR(numObservations) << std::endl;
 
 		int id = 0;
 		cameras.reserve(numCameras);
@@ -349,11 +349,11 @@ void bal_example()
 
 	if (statsFilename != "")
 	{
-		std::cerr << "writing stats to file \"" << statsFilename << "\" ... ";
+		std::cout << "writing stats to file \"" << statsFilename << "\" ... ";
 		std::ofstream fout(statsFilename.c_str());
 		const g2o::BatchStatisticsContainer& bsc = optimizer.batchStatistics();
 		for (size_t i = 0; i < bsc.size(); i++) fout << bsc[i] << std::endl;
-		std::cerr << "done." << std::endl;
+		std::cout << "done." << std::endl;
 	}
 
 	// Dump the points.

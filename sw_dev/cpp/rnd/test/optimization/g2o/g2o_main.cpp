@@ -61,34 +61,40 @@ int g2o_main(int argc, char *argv[])
 	//	g2o::BlockSolverX (g2o::BlockSolver<g2o::BlockSolverTraits<Eigen::Dynamic, Eigen::Dynamic> >):
 	//		Variable-size solver.
 
+	// g2o::OptimizableGraph::Vertex::setMarginalize().
+	//	The setMarginalize() option allows you to make use of the Schur Complement trick to speedup the Bundle Adjustment optimization.
+	//	By separating the camera poses and the landmarks in your optimization problem you can take advantage of the problem's matrix structure.
+	//	Usually you have many more landmarks than camera poses in Bundle Adjustment problems so, by setting every landmarks as setMarginalize(true), g2o will first estimate the camera poses in a forward pass and then use the resulting poses to optimize the landmarks in a backward pass.
+	//	The Schur Complement uses the problem sparsity to speedup its computation and implicitly computes the approximated Hessian to solve the optimization problem.
+	//	It is this approximated Hessian that is given and computed by computeMarginals().
+
 	//my_g2o::basic_operation();
 
 	//-----
-	// Examples.
-
 	// Data fitting.
+
 	//my_g2o::circle_fit_example();
 	//my_g2o::curve_fit_example();
 
-	// GICP.
+	//-----
+	// Generalized ICP (GICP).
+
 	//my_g2o::gicp_example();
 	//my_g2o::gicp_sba_example();  // Sparse bundle adjustment (SBA).
 
+	//-----
 	// Bundle adjustment (BA).
 	//	The problem of jointly solving the 3D structures (i.e., location of landmarks or feature points) and camera poses.
-	//my_g2o::ba_example();
-	// Sparse bundle adjustment (SBA).
-	//my_g2o::sba_example();
-	// Bundle Adjustment in the Large (BAL).
-	//my_g2o::bal_example();
 
-	// 2D SLAM.
-	// REF [site] >> https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/slam2d
-	//my_g2o::slam2d_example();  // Not yet implemented.
+	//my_g2o::ba_example();
+	//my_g2o::sba_example();  // Sparse bundle adjustment (SBA).
+	//my_g2o::bal_example();  // Bundle Adjustment in the Large (BAL).
 
 	//-----
 	// Pose graph optimization (PGO).
 	//	The problem of estimating a set of camera poses from pairwise relative measurements.
+
+	// Refer to my_g2o::slam2d_tutorial(), my_g2o::slam3d_se3_test(), or my_g2o::slam3d_se3_pointxyz_test().
 
 	// REF [site] >> https://github.com/uoip/g2opy
 	//my_g2o::pgo_test();  // Not yet implemented.
@@ -96,8 +102,10 @@ int g2o_main(int argc, char *argv[])
 	//-----
 	// 2D SLAM.
 
-	// Tutorial.
 	//my_g2o::slam2d_tutorial();
+
+	// REF [site] >> https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/slam2d
+	//my_g2o::slam2d_example();  // Not yet implemented.
 
 	//-----
 	// 3D SLAM.

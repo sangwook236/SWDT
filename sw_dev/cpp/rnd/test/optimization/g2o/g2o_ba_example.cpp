@@ -73,14 +73,16 @@ void ba_example()
 	g2o::OptimizationAlgorithmProperty solverProperty;
 	optimizer.setAlgorithm(g2o::OptimizationAlgorithmFactory::instance()->construct(solverName, solverProperty));
 #else
-	g2o::BlockSolver_6_3::LinearSolverType* linearSolver;
+	std::unique_ptr<g2o::BlockSolver_6_3::LinearSolverType> linearSolver;
 	if (DENSE)
 	{
-		linearSolver= new g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType>();
+		linearSolver= g2o::make_unique<g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType> >();
+		std::cout << "Using DENSE" << std::endl;
 	}
 	else
 	{
-		linearSolver= new g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType>();
+		linearSolver= g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType> >();
+		std::cout << "Using CHOLMOD" << std::endl;
 	}
 	auto solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
 	optimizer.setAlgorithm(solver);
@@ -93,7 +95,7 @@ void ba_example()
 	}
 
 	const double focal_length = 1000.0;
-	const Eigen::Vector2d principal_point(320.0, 240.0);
+	const Eigen::Vector2d principal_point(320.0, 240.0);  // For 640x480 images.
 
 	std::vector<g2o::SE3Quat, Eigen::aligned_allocator<g2o::SE3Quat> > true_poses;
 	auto cam_params = new g2o::CameraParameters(focal_length, principal_point, 0.0);

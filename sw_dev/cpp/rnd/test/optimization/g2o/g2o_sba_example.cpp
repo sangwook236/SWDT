@@ -70,16 +70,16 @@ void sba_example()
 	if (DENSE)
 	{
 		linearSolver = g2o::make_unique<g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType>>();
-		std::cerr << "Using DENSE" << std::endl;
+		std::cout << "Using DENSE" << std::endl;
 	}
 	else
 	{
 #ifdef G2O_HAVE_CHOLMOD
-		std::cerr << "Using CHOLMOD" << std::endl;
+		std::cout << "Using CHOLMOD" << std::endl;
 		linearSolver = g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType>>();
 #else
 		linearSolver = g2o::make_unique<g2o::LinearSolverEigen<g2o::BlockSolver_6_3::PoseMatrixType>>();
-		std::cerr << "Using CSPARSE" << std::endl;
+		std::cout << "Using CSPARSE" << std::endl;
 #endif
 	}
 	auto solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
@@ -97,7 +97,7 @@ void sba_example()
 	const double baseline = 0.075;  // 7.5 cm baseline.
 
 	// Set up camera params.
-	g2o::VertexSCam::setKcam(focal_length[0], focal_length[1], principal_point[0], principal_point[1], baseline);
+	g2o::VertexSCam::setKcam(focal_length[0], focal_length[1], principal_point[0], principal_point[1], baseline);  // Stereo camera vertex.
 
 	// Set up 5 vertices, first 2 fixed.
 	std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d>> true_poses;
