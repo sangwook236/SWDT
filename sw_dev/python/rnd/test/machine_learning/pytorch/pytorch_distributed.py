@@ -487,7 +487,7 @@ def ddp_tutorial():
 			demo_fn,
 			args=(world_size,),
 			nprocs=world_size,
-			join=True
+			join=True,
 		)
 
 	#-----
@@ -508,13 +508,13 @@ class ConvNet(torch.nn.Module):
 			torch.nn.Conv2d(1, 16, kernel_size=5, stride=1, padding=2),
 			torch.nn.BatchNorm2d(16),
 			torch.nn.ReLU(),
-			torch.nn.MaxPool2d(kernel_size=2, stride=2)
+			torch.nn.MaxPool2d(kernel_size=2, stride=2),
 		)
 		self.layer2 = torch.nn.Sequential(
 			torch.nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=2),
 			torch.nn.BatchNorm2d(32),
 			torch.nn.ReLU(),
-			torch.nn.MaxPool2d(kernel_size=2, stride=2)
+			torch.nn.MaxPool2d(kernel_size=2, stride=2),
 		)
 		self.fc = torch.nn.Linear(7 * 7 * 32, num_classes)
 
@@ -531,7 +531,7 @@ def train_distributedly(gpu, config):
 		backend='nccl',
 		init_method='env://',
 		world_size=config['world_size'],
-		rank=rank
+		rank=rank,
 	)
 
 	torch.manual_seed(0)
@@ -552,7 +552,7 @@ def train_distributedly(gpu, config):
 		root='./',
 		train=True,
 		transform=torchvision.transforms.ToTensor(),
-		download=True
+		download=True,
 	)
 	
 	# Sampler that takes care of the distribution of the batches such that
@@ -560,7 +560,7 @@ def train_distributedly(gpu, config):
 	train_sampler = torch.utils.data.distributed.DistributedSampler(
 		train_dataset,
 		num_replicas=config['world_size'],
-		rank=rank
+		rank=rank,
 	)
 	
 	# We pass in the train_sampler which can be used by the DataLoader.
@@ -570,7 +570,7 @@ def train_distributedly(gpu, config):
 		shuffle=False,
 		num_workers=0,
 		pin_memory=True,
-		sampler=train_sampler
+		sampler=train_sampler,
 	)
 
 	start_time = datetime.datetime.now()
@@ -589,13 +589,7 @@ def train_distributedly(gpu, config):
 			loss.backward()
 			optimizer.step()
 			if (i + 1) % 100 == 0 and gpu == 0:
-				print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}.'.format(
-					epoch + 1,
-					config['epochs'],
-					i + 1,
-					total_step,
-					loss.item()
-				))
+				print(f"Epoch [{epoch + 1}/{config['epochs']}], Step [{i + 1}/{total_step}], Loss: {loss.item():.4f}.")
 	if gpu == 0:
 		print('Training complete in: ' + str(datetime.datetime.now() - start_time))
 
@@ -633,15 +627,25 @@ def main():
 	#--------------------
 	#distributed_tutorial()
 
-	# RuntimeError: Distributed package doesn't have MPI built in. MPI is only included if you build PyTorch from source on a host that has MPI installed.
-	#mpi_distributed_tutorial()  # Use mpirun to run.
+	# When using mpirun.
+	# NOTE [error] >> RuntimeError: Distributed package doesn't have MPI built in. MPI is only included if you build PyTorch from source on a host that has MPI installed.
+	#mpi_distributed_tutorial()
 
 	#--------------------
 	# Data parallelism (DP).
 	#	Refer to ./pytorch_data_and_model_parallelism.py
 
+	#--------------------
 	# Distributed data parallelism (DDP).
 	#	https://pytorch.org/tutorials/beginner/ddp_series_intro.html
+	#	https://github.com/pytorch/examples/tree/main/distributed/ddp
+	#	https://github.com/pytorch/examples/tree/main/distributed/ddp-tutorial-series
+
+	# https://github.com/pytorch/examples/tree/main/distributed/ddp
+	#	(global) world size.
+	#	Local world size.
+	#	(global) rank.
+	#	Local rank.
 
 	ddp_tutorial()
 	#distributed_data_parallel_example()

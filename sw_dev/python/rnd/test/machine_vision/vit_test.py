@@ -232,6 +232,8 @@ def main():
 	#	${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_transformer.py
 	#	${SWDT_PYTHON_HOME}/rnd/test/language_processing/hugging_face_transformers_test.py
 
+	# https://github.com/pytorch/examples/tree/main/vision_transformer
+
 	vit_pytorch_test()
 
 #--------------------------------------------------------------------

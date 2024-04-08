@@ -182,6 +182,7 @@ def main():
 	# Fully sharded data parallel (FSDP).
 	#	https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html
 	#	https://pytorch.org/tutorials/intermediate/FSDP_adavnced_tutorial.html
+	#	https://github.com/pytorch/examples/tree/main/distributed/FSDP
 
 	#-----
 	# Model parallelism.

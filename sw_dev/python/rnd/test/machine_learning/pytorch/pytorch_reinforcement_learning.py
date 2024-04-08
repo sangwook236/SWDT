@@ -1072,8 +1072,13 @@ def main():
 	# Policy gradient algorithm
 
 	# REINFORCE
+	#	https://github.com/pytorch/examples/blob/main/reinforcement_learning/reinforce.py
+	#
 	#	Training using REINFORCE for Mujoco
 	#		https://gymnasium.farama.org/tutorials/training_agents/reinforce_invpend_gym_v26/
+
+	# Actor-critic
+	#	https://github.com/pytorch/examples/blob/main/reinforcement_learning/actor_critic.py
 
 	# Advantage actor-critic (A2C)
 	#	Training A2C with Vector Envs and Domain Randomization

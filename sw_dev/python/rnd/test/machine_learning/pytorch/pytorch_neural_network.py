@@ -1380,6 +1380,30 @@ def main():
 	# Fine-tuning.
 	# 	Refer to ./pytorch_transfer_learning()
 
+	# Super-resolution.
+	#	https://github.com/pytorch/examples/tree/main/super_resolution
+
+	#-----
+	# Autoencoder.
+	#	https://github.com/pytorch/examples/tree/main/vae
+
+	#-----
+	# Generative adversarial network (GAN).
+	#	https://github.com/pytorch/examples/tree/main/dcgan
+
+	#-----
+	# Graph neural network (GNN).
+	# 	Refer to ./pytorch_graph_neural_network()
+
+	#-----
+	# Sequence.
+	#	https://github.com/pytorch/examples/tree/main/mnist_rnn
+	#	https://github.com/pytorch/examples/tree/main/time_sequence_prediction
+
+	#-----
+	# C++.
+	#	https://github.com/pytorch/examples/tree/main/cpp
+
 #--------------------------------------------------------------------
 
 if '__main__' == __name__:

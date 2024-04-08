@@ -61,12 +61,13 @@ int g2o_main(int argc, char *argv[])
 	//	g2o::BlockSolverX (g2o::BlockSolver<g2o::BlockSolverTraits<Eigen::Dynamic, Eigen::Dynamic> >):
 	//		Variable-size solver.
 
-	// g2o::OptimizableGraph::Vertex::setMarginalize().
-	//	The setMarginalize() option allows you to make use of the Schur Complement trick to speedup the Bundle Adjustment optimization.
+	// g2o::OptimizableGraph::Vertex::setMarginalized().
+	//	The setMarginalized() option allows you to make use of the Schur Complement trick to speedup the Bundle Adjustment optimization.
 	//	By separating the camera poses and the landmarks in your optimization problem you can take advantage of the problem's matrix structure.
-	//	Usually you have many more landmarks than camera poses in Bundle Adjustment problems so, by setting every landmarks as setMarginalize(true), g2o will first estimate the camera poses in a forward pass and then use the resulting poses to optimize the landmarks in a backward pass.
+	//	Usually you have many more landmarks than camera poses in Bundle Adjustment problems so, by setting every landmarks as setMarginalized(true), g2o will first estimate the camera poses in a forward pass and then use the resulting poses to optimize the landmarks in a backward pass.
 	//	The Schur Complement uses the problem sparsity to speedup its computation and implicitly computes the approximated Hessian to solve the optimization problem.
 	//	It is this approximated Hessian that is given and computed by computeMarginals().
+	//	==> setMarginalized(true) for points(landmarks), setMarginalized(false) for poses.
 
 	//my_g2o::basic_operation();
 
