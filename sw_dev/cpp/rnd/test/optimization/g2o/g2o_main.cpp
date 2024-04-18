@@ -21,12 +21,15 @@ void gicp_sba_example();
 void ba_example();
 void sba_example();
 void bal_example();
+void ba_test();
+
+void pgo_test();
 
 void slam2d_tutorial();
 
 void simple_slam3d_test();
-void slam3d_se3_test();
 void slam3d_se3_pointxyz_test();
+void slam3d_se3_test();
 
 }  // namespace my_g2o
 
@@ -91,19 +94,23 @@ int g2o_main(int argc, char *argv[])
 	//my_g2o::sba_example();  // Sparse bundle adjustment (SBA).
 	//my_g2o::bal_example();  // Bundle Adjustment in the Large (BAL).
 
+	//my_g2o::ba_test();  // Not yet implemented.
+
 	//-----
 	// Pose graph optimization (PGO).
 	//	The problem of estimating a set of camera poses from pairwise relative measurements.
 
-	// Refer to my_g2o::slam2d_tutorial(), my_g2o::slam3d_se3_test(), or my_g2o::slam3d_se3_pointxyz_test().
+	// Refer to my_g2o::slam2d_tutorial(), my_g2o::slam3d_se3_pointxyz_test(), or my_g2o::slam3d_se3_test().
 
 	// REF [site] >> https://github.com/uoip/g2opy
-	//my_g2o::pgo_test();  // Not yet implemented.
+	//my_g2o::g2opy_test();  // Not yet implemented.
+
+	my_g2o::pgo_test();
 
 	//-----
 	// 2D SLAM.
 
-	//my_g2o::slam2d_tutorial();
+	//my_g2o::slam2d_tutorial();  // Uses PGO.
 
 	// REF [site] >> https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/slam2d
 	//my_g2o::slam2d_example();  // Not yet implemented.
@@ -111,9 +118,9 @@ int g2o_main(int argc, char *argv[])
 	//-----
 	// 3D SLAM.
 
-	//my_g2o::simple_slam3d_test();
-	my_g2o::slam3d_se3_test();
-	//my_g2o::slam3d_se3_pointxyz_test();
+	//my_g2o::simple_slam3d_test();  // Uses PGO.
+	//my_g2o::slam3d_se3_pointxyz_test();  // Uses PGO. Robots: VertexSE3, landmarks: VertexPointXYZ.
+	//my_g2o::slam3d_se3_test();  // Uses PGO. Robots: VertexSE3, landmarks: VertexSE3. Sensor offset parameters not required.
 
 	return 0;
 }

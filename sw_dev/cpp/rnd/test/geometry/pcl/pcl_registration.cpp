@@ -231,6 +231,9 @@ void icp_registration_example()
 	std::cout << "Converged = " << icp.hasConverged() << ", score = " << icp.getFitnessScore() << std::endl;
 	std::cout << "Transformation:\n" << icp.getFinalTransformation() << std::endl;
 
+	// Correspondences.
+	//icp.correspondences_
+
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src_proxy(&src_registered);
 #else
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src_proxy = cloud_src_transformed;
@@ -1118,7 +1121,7 @@ void registration()
 	//local::icp_registration_tutorial();
 	//local::icp_registration_example();
 	local::ndt_example();  // Not yet tested.
-	local::sample_consensus_prerejective_example();  // Not yet tested.
+	//local::sample_consensus_prerejective_example();  // Not yet tested.
 
 	//local::correspondence_estimation_test();  // Not yet implemented.
 	//local::transformation_estimation_test();  // Not yet implemented.

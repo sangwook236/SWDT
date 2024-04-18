@@ -10,8 +10,8 @@
 #include <g2o/core/optimization_algorithm_factory.h>
 #include <g2o/core/robust_kernel_impl.h>
 #include <g2o/core/sparse_optimizer.h>
-#include <g2o/types/sba/types_six_dof_expmap.h>
 #include <g2o/solvers/structure_only/structure_only_solver.h>
+#include <g2o/types/sba/types_six_dof_expmap.h>
 #include <g2o/stuff/sampler.h>
 
 
@@ -64,7 +64,7 @@ void ba_example()
 	}
 	else
 	{
-#ifdef G2O_HAVE_CHOLMOD
+#if defined(G2O_HAVE_CHOLMOD)
 		solverName = "lm_fix6_3_cholmod";
 #else
 		solverName = "lm_fix6_3";

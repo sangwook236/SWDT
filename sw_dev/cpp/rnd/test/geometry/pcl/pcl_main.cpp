@@ -310,5 +310,12 @@ int pcl_main(int argc, char *argv[])
 
 	//my_pcl::visualization(argc, argv);
 
+	//-----
+	// Pose graph optimization (PGO).
+	//	Refer to ${SWDT_CPP_HOME}/rnd/test/optimization/g2o/g2o_pgo_test.cpp
+
+	// Bundle adjustment (BA).
+	//	Refer to ${SWDT_CPP_HOME}/rnd/test/optimization/g2o/g2o_ba_test.cpp
+
 	return 0;
 }
