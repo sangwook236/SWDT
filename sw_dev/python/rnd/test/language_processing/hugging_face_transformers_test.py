@@ -5563,18 +5563,108 @@ def nvidia_asr_example():
 	#	nvidia/stt_en_citrinet_512_ls.
 	#	nvidia/stt_en_citrinet_768_ls.
 	#	nvidia/stt_en_citrinet_1024_ls.
-	#	nvidia/stt_en_citrinet_1024_gamma_0_25,
+	#	nvidia/stt_en_citrinet_1024_gamma_0_25.
+	#
+	#	nvidia/parakeet-rnnt-0.6b.
+	#	nvidia/parakeet-rnnt-1.1b.
+	#	nvidia/parakeet-ctc-0.6b.
+	#	nvidia/parakeet-ctc-1.1b.
+	#	nvidia/parakeet-tdt-1.1b.
+	#
+	#	nvidia/canary-1b.
 
-	# Install:
-	#	pip install nemo_toolkit['all']
+	if False:
+		# Install:
+		#	pip install nemo_toolkit['all']
 
-	import nemo.collections.asr as nemo_asr
-	asr_model = nemo_asr.models.EncDecRNNTBPEModel.from_pretrained(model_name="nvidia/stt_en_fastconformer_transducer_large")
+		#model_name = "nvidia/stt_en_fastconformer_transducer_large"
+		model_name = "nvidia/parakeet-rnnt-1.1b"
+		#model_name = "nvidia/parakeet-tdt-1.1b"
 
-	# Get a sample file.
-	#	wget https://dldata-public.s3.us-east-2.amazonaws.com/2086-149220-0033.wav
-	transcribed = asr_model.transcribe(["./2086-149220-0033.wav"])
-	print(transcribed)
+		import nemo.collections.asr as nemo_asr
+		asr_model = nemo_asr.models.EncDecRNNTBPEModel.from_pretrained(model_name=model_name)
+
+		# Get a sample file.
+		#	wget https://dldata-public.s3.us-east-2.amazonaws.com/2086-149220-0033.wav
+		transcribed = asr_model.transcribe(["./2086-149220-0033.wav"])
+		print(transcribed)
+
+	if False:
+		# Install:
+		#	pip install nemo_toolkit['all']
+
+		model_name = "nvidia/parakeet-ctc-1.1b"
+
+		import nemo.collections.asr as nemo_asr
+		asr_model = nemo_asr.models.EncDecCTCModelBPE.from_pretrained(model_name=model_name)
+
+		# Get a sample file.
+		#	wget https://dldata-public.s3.us-east-2.amazonaws.com/2086-149220-0033.wav
+		transcribed = asr_model.transcribe(["./2086-149220-0033.wav"])
+		print(transcribed)
+
+	if True:
+		# Install:
+		#	pip install git+https://github.com/NVIDIA/NeMo.git@r1.23.0#egg=nemo_toolkit[asr]
+
+		from nemo.collections.asr.models import EncDecMultiTaskModel
+
+		# Load model
+		canary_model = EncDecMultiTaskModel.from_pretrained("nvidia/canary-1b")
+
+		# Update dcode params
+		decode_cfg = canary_model.cfg.decoding
+		decode_cfg.beam.beam_size = 1
+		canary_model.change_decoding_strategy(decode_cfg)
+
+		if True:
+			predicted_text = canary_model.transcribe(
+				paths2audio_files=["path1.wav", "path2.wav"],
+				batch_size=16,  # Batch size to run the inference with
+			)
+			print(predicted_text)
+
+		if True:
+			# Automatic speech-to-text recognition (ASR)
+			'''
+			# Example of a line in input_manifest.json
+			{
+				"audio_filepath": "/path/to/audio.wav",  # Path to the audio file
+				"duration": 1000,  # Duration of the audio, can be set to `None` if using NeMo main branch
+				"taskname": "asr",  # Use "s2t_translation" for speech-to-text translation with r1.23, or "ast" if using the NeMo main branch
+				"source_lang": "en",  # Language of the audio input, set `source_lang`==`target_lang` for ASR, choices=['en','de','es','fr']
+				"target_lang": "en",  # Language of the text output, choices=['en','de','es','fr']
+				"pnc": "yes",  # Whether to have PnC output, choices=['yes', 'no']
+				"answer": "na", 
+			}
+			'''
+
+			predicted_text = canary_model.transcribe(
+				"/path/to/input_manifest.json",
+				batch_size=16,  # Batch size to run the inference with
+			)
+			print(predicted_text)
+
+		if True:
+			# Automatic speech-to-text translation (AST)
+			'''
+			# Example of a line in input_manifest.json
+			{
+				"audio_filepath": "/path/to/audio.wav",  # Path to the audio file
+				"duration": 1000,  # Duration of the audio, can be set to `None` if using NeMo main branch
+				"taskname": "s2t_translation", # r1.23 only recognizes "s2t_translation", but "ast" is supported if using the NeMo main branch
+				"source_lang": "en", # Language of the audio input, choices=['en','de','es','fr']
+				"target_lang": "de", # Language of the text output, choices=['en','de','es','fr']
+				"pnc": "yes",  # Whether to have PnC output, choices=['yes', 'no']
+				"answer": "na" 
+			}
+			'''
+
+			predicted_text = canary_model.transcribe(
+				"/path/to/input_manifest.json",
+				batch_size=16,  # Batch size to run the inference with
+			)
+			print(predicted_text)
 
 def openai_asr_example():
 	# Models:
@@ -6674,7 +6764,7 @@ def main():
 	# Speech recognition.
 
 	#microsoft_asr_example()  # SpeechT5.
-	#nvidia_asr_example()  # Conformer & Citrinet.
+	#nvidia_asr_example()  # Conformer, Citrinet, Parakeet, Canary.
 	#openai_asr_example()  # Whisper.
 	#speech_brain_asr_example()  # Whisper. Error.
 
