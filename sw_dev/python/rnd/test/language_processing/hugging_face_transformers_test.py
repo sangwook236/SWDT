@@ -2320,6 +2320,104 @@ A: """
 		for seq in sequences:
 			print(f"Result: {seq['generated_text']}")
 
+# REF [site] >> https://huggingface.co/meta-llama
+def llama3_example():
+	# Models:
+	#	meta-llama/Meta-Llama-3-8B.
+	#	meta-llama/Meta-Llama-3-8B-Instruct.
+	#	meta-llama/Meta-Llama-3-70B.
+	#	meta-llama/Meta-Llama-3-70B-Instruct.
+
+	if True:
+		# To download original checkpoints, see the example command below leveraging huggingface-cli:
+		#	huggingface-cli download meta-llama/Meta-Llama-3-8B --include "original/*" --local-dir Meta-Llama-3-8B
+
+		model_id = "meta-llama/Meta-Llama-3-8B"
+		#model_id = "meta-llama/Meta-Llama-3-70B"
+
+		pipeline = transformers.pipeline("text-generation", model=model_id, model_kwargs={"torch_dtype": torch.bfloat16}, device_map="auto")
+
+		outputs = pipeline("Hey how are you doing today?")
+		print(outputs[0]["generated_text"])
+
+	if True:
+		# To download original checkpoints, see the example command below leveraging huggingface-cli:
+		#	huggingface-cli download meta-llama/Meta-Llama-3-70B-Instruct --include "original/*" --local-dir Meta-Llama-3-8B-Instruct
+
+		model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+		#model_id = "meta-llama/Meta-Llama-3-70B-Instruct"
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device="auto",
+		)
+
+		messages = [
+			{"role": "system", "content": "You are a pirate chatbot who always responds in pirate speak!"},
+			{"role": "user", "content": "Who are you?"},
+		]
+
+		prompt = pipeline.tokenizer.apply_chat_template(
+			messages, 
+			tokenize=False, 
+			add_generation_prompt=True,
+		)
+
+		terminators = [
+			pipeline.tokenizer.eos_token_id,
+			pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+		]
+
+		outputs = pipeline(
+			prompt,
+			max_new_tokens=256,
+			eos_token_id=terminators,
+			do_sample=True,
+			temperature=0.6,
+			top_p=0.9,
+		)
+		print(outputs[0]["generated_text"][len(prompt):])
+
+	if True:
+		model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+		#model_id = "meta-llama/Meta-Llama-3-70B-Instruct"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			torch_dtype=torch.bfloat16,
+			device_map="auto",
+		)
+
+		messages = [
+			{"role": "system", "content": "You are a pirate chatbot who always responds in pirate speak!"},
+			{"role": "user", "content": "Who are you?"},
+		]
+
+		input_ids = tokenizer.apply_chat_template(
+			messages,
+			add_generation_prompt=True,
+			return_tensors="pt",
+		).to(model.device)
+
+		terminators = [
+			tokenizer.eos_token_id,
+			tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+		]
+
+		outputs = model.generate(
+			input_ids,
+			max_new_tokens=256,
+			eos_token_id=terminators,
+			do_sample=True,
+			temperature=0.6,
+			top_p=0.9,
+		)
+		response = outputs[0][input_ids.shape[-1]:]
+		print(tokenizer.decode(response, skip_special_tokens=True))
+
 # REF [site] >> https://huggingface.co/openlm-research
 def open_llama_example():
 	# Models:
@@ -6667,7 +6765,8 @@ def main():
 	#galactica_example()  # Galactica.
 
 	#llama_example()  # LLaMA.
-	#llama2_example()  # Llama 2. Model parallelism
+	#llama2_example()  # Llama 2. Model parallelism.
+	#llama3_example()  # Llama 3.
 	#open_llama_example()  # OpenLLaMA.
 
 	#megatron_example()  # Megatron-LM.
@@ -6680,7 +6779,7 @@ def main():
 
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
-	zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
+	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
 	#gemma_example()  # Gemma. Not yet tested.
 
 	#rag_example()  # Retrieval-augmented generation (RAG).
