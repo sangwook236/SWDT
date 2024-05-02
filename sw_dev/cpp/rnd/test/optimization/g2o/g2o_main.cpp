@@ -70,7 +70,7 @@ int g2o_main(int argc, char *argv[])
 	//	Usually you have many more landmarks than camera poses in Bundle Adjustment problems so, by setting every landmarks as setMarginalized(true), g2o will first estimate the camera poses in a forward pass and then use the resulting poses to optimize the landmarks in a backward pass.
 	//	The Schur Complement uses the problem sparsity to speedup its computation and implicitly computes the approximated Hessian to solve the optimization problem.
 	//	It is this approximated Hessian that is given and computed by computeMarginals().
-	//	==> setMarginalized(true) for points(landmarks), setMarginalized(false) for poses.
+	//	==> setMarginalized(true) for landmarks, setMarginalized(false) for robots or cameras.
 
 	//my_g2o::basic_operation();
 
@@ -92,7 +92,7 @@ int g2o_main(int argc, char *argv[])
 
 	//my_g2o::ba_example();
 	//my_g2o::sba_example();  // Sparse bundle adjustment (SBA).
-	//my_g2o::bal_example();  // Bundle Adjustment in the Large (BAL).
+	//my_g2o::bal_example();  // Bundle adjustment in the large (BAL).
 
 	//my_g2o::ba_test();  // Not yet implemented.
 

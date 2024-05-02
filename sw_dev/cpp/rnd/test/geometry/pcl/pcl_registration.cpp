@@ -202,16 +202,15 @@ void icp_registration_example()
 	//icp.setEuclideanFitnessEpsilon(1);
 
 #if 0
-	// This part is not yet tested.
-
-	pcl::registration::CorrespondenceEstimationBackProjection<pcl::PointXYZ, pcl::PointXYZ>::Ptr correspodence_est(new pcl::registration::CorrespondenceEstimationBackProjection<pcl::PointXYZ, pcl::PointXYZ>());
-	correspodence_est->setVoxelRepresentationTarget(dt);
+	pcl::registration::CorrespondenceEstimationBackProjection<pcl::PointXYZ, pcl::PointXYZ, pcl::Normal>::Ptr correspodence_est(new pcl::registration::CorrespondenceEstimationBackProjection<pcl::PointXYZ, pcl::PointXYZ, pcl::Normal>());
+	//correspodence_est->setVoxelRepresentationTarget(dt);  // Not supported.
 	correspodence_est->setInputSource(cloud_src_transformed);
 	correspodence_est->setInputTarget(cloud_tgt);
 	//correspodence_est->setMaxCorrespondenceDistance(max_corr_distance);
 	icp.setCorrespondenceEstimation(correspodence_est);
 
 	pcl::registration::CorrespondenceRejectorSampleConsensus<pcl::PointXYZ>::Ptr correspodence_rej(new pcl::registration::CorrespondenceRejectorSampleConsensus<pcl::PointXYZ>());
+	//pcl::registration::make_shared::Ptr correspodence_rej(std::make_shared<pcl::registration::CorrespondenceRejectorOneToOne>());
 	correspodence_rej->setInputSource(cloud_src_transformed);
 	correspodence_rej->setInputTarget(cloud_tgt);
 	//correspodence_rej->setMaximumIterations(max_iterations);

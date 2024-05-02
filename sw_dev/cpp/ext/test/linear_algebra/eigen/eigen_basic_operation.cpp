@@ -325,6 +325,7 @@ void matrix_arithmetic_1()
 		std::cout << "m.lpNorm<Eigen::Infinity>() = " << m.lpNorm<Eigen::Infinity>() << std::endl;
 	}
 }
+
 void matrix_arithmetic_2()
 {
 	// Coefficient-wise operation.
