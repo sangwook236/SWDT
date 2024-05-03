@@ -3683,11 +3683,14 @@ def replit_example():
 		generated_code = tokenizer.decode(y[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
 		print(generated_code)
 
-# REF [site] >> https://huggingface.co/microsoft
+# REF [site] >>
+#	https://huggingface.co/microsoft
+#	https://huggingface.co/docs/transformers/main/en/model_doc/phi
 def phi_example():
 	# Models:
 	#	microsoft/phi-1: ~2.84GB.
 	#	microsoft/phi-1_5: ~2.84GB.
+	#	microsoft/phi-2.
 
 	torch.set_default_device("cuda")
 
@@ -3727,6 +3730,236 @@ def print_prime(n):
 
 		text = tokenizer.batch_decode(outputs)[0]
 		print(text)
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-2", torch_dtype="auto", trust_remote_code=True)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=True)
+
+		inputs = tokenizer('''def print_prime(n):
+	"""
+	Print all primes between 1 and n
+	"""''', return_tensors="pt", return_attention_mask=False)
+
+		outputs = model.generate(**inputs, max_length=200)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if False:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-2")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-2")
+
+		inputs = tokenizer("Can you help me write a formal email to a potential business partner proposing a joint venture?", return_tensors="pt", return_attention_mask=False)
+
+		outputs = model.generate(**inputs, max_length=30)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if True:
+		# Define the model and tokenizer.
+		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1_5")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5")
+
+		# Feel free to change the prompt to your liking.
+		prompt = "If I were an AI that had just achieved"
+
+		# Apply the tokenizer.
+		tokens = tokenizer(prompt, return_tensors="pt")
+
+		# Use the model to generate new tokens.
+		generated_output = model.generate(**tokens, use_cache=True, max_new_tokens=10)
+		text = tokenizer.batch_decode(generated_output)[0]
+		print(text)
+
+	if True:
+		# Install:
+		#	pip install -U flash-attn --no-build-isolation
+
+		# Define the model and tokenizer and push the model and tokens to the GPU.
+		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1_5", torch_dtype=torch.float16, attn_implementation="flash_attention_2").to("cuda")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5")
+
+		# Feel free to change the prompt to your liking.
+		prompt = "If I were an AI that had just achieved"
+
+		# Apply the tokenizer.
+		tokens = tokenizer(prompt, return_tensors="pt").to("cuda")
+
+		# Use the model to generate new tokens.
+		generated_output = model.generate(**tokens, use_cache=True, max_new_tokens=10)
+		text = tokenizer.batch_decode(generated_output)[0]
+		print(text)
+
+	if False:
+		# Initializing a Phi-1 style configuration
+		configuration = transformers.PhiConfig.from_pretrained("microsoft/phi-1")
+
+		# Initializing a model from the configuration
+		model = transformers.PhiModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1")
+
+		prompt = "This is an example script ."
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+		text = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(text)
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1")
+		model = transformers.PhiForTokenClassification.from_pretrained("microsoft/phi-1")
+
+		inputs = tokenizer(
+			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
+		)
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that
+		# there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
+
+# REF [site] >>
+#	https://huggingface.co/microsoft
+#	https://huggingface.co/docs/transformers/main/en/model_doc/phi3
+def phi_3_example():
+	# Models:
+	#	microsoft/Phi-3-mini-4k-instruct.
+	#	microsoft/Phi-3-mini-128k-instruct.
+	#	microsoft/Phi-3-mini-4k-instruct-onnx.
+	#	microsoft/Phi-3-mini-128k-instruct-onnx.
+ 
+	"""
+	Chat Format:
+
+	Given the nature of the training data, the Phi-3 Mini-4K-Instruct model is best suited for prompts using the chat format as follows. You can provide the prompt as a question with a generic template as follow:
+
+		<|user|>\nQuestion <|end|>\n<|assistant|>
+
+	For example:
+
+		<|system|>
+		You are a helpful AI assistant.<|end|>
+		<|user|>
+		How to explain Internet for a medieval knight?<|end|>
+		<|assistant|>
+
+	where the model generates the text after <|assistant|> . In case of few-shots prompt, the prompt can be formatted as the following:
+
+		<|system|>
+		You are a helpful AI assistant.<|end|>
+		<|user|>
+		I am going to Paris, what should I see?<|end|>
+		<|assistant|>
+		Paris, the capital of France, is known for its stunning architecture, art museums, historical landmarks, and romantic atmosphere. Here are some of the top attractions to see in Paris:\n\n1. The Eiffel Tower: The iconic Eiffel Tower is one of the most recognizable landmarks in the world and offers breathtaking views of the city.\n2. The Louvre Museum: The Louvre is one of the world's largest and most famous museums, housing an impressive collection of art and artifacts, including the Mona Lisa.\n3. Notre-Dame Cathedral: This beautiful cathedral is one of the most famous landmarks in Paris and is known for its Gothic architecture and stunning stained glass windows.\n\nThese are just a few of the many attractions that Paris has to offer. With so much to see and do, it's no wonder that Paris is one of the most popular tourist destinations in the world."<|end|>
+		<|user|>
+		What is so great about #1?<|end|>
+		<|assistant|>
+	"""
+
+	torch.random.manual_seed(0)
+
+	if True:
+		model_id = "microsoft/Phi-3-mini-4k-instruct"
+		#model_id = "microsoft/Phi-3-mini-128k-instruct"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="cuda",
+			torch_dtype="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		messages = [
+			{"role": "system", "content": "You are a helpful digital assistant. Please provide safe, ethical and accurate information to the user."},
+			{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"},
+			{"role": "assistant", "content": "Sure! Here are some ways to eat bananas and dragonfruits together: 1. Banana and dragonfruit smoothie: Blend bananas and dragonfruits together with some milk and honey. 2. Banana and dragonfruit salad: Mix sliced bananas and dragonfruits together with some lemon juice and honey."},
+			{"role": "user", "content": "What about solving an 2x + 3 = 7 equation?"},
+		]
+
+		pipe = transformers.pipeline(
+			"text-generation",
+			model=model,
+			tokenizer=tokenizer,
+		)
+
+		generation_args = {
+			"max_new_tokens": 500,
+			"return_full_text": False,
+			"temperature": 0.0,
+			"do_sample": False,
+		}
+
+		output = pipe(messages, **generation_args)
+		print(output[0]["generated_text"])
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+
+		messages = [{"role": "system", "content": "You are a helpful digital assistant. Please provide safe, ethical and accurate information to the user."},{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"}]
+		inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+
+		outputs = model.generate(inputs, max_new_tokens=32)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if False:
+		# Initializing a Phi-3 style configuration
+		configuration = f.Phi3Config.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+
+		# Initializing a model from the configuration
+		model = f.Phi3Model(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = transformers.Phi3ForCausalLM.from_pretrained("microsoft/phi-3-mini-4k-instruct")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-3-mini-4k-instruct")
+
+		prompt = "This is an example script ."
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+		text = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(text)
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+		model = transformers.Phi3ForTokenClassification.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+
+		inputs = tokenizer(
+			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
+		)
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that
+		# there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -6798,7 +7031,8 @@ def main():
 	#code_llama_example()  # Code Llama.
 	#star_coder_example()  # StarCoder. Not yet tested.
 	#replit_example()  # Replit. Not yet tested.
-	#phi_example()  # phi-1 & phi-1.5.
+	#phi_example()  # phi-1, phi-1.5, & phi-2.
+	#phi_3_example()  # phi-3.
 
 	#--------------------
 	# Vision.
