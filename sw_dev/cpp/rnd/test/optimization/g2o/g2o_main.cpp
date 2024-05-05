@@ -94,7 +94,7 @@ int g2o_main(int argc, char *argv[])
 	//my_g2o::sba_example();  // Sparse bundle adjustment (SBA).
 	//my_g2o::bal_example();  // Bundle adjustment in the large (BAL).
 
-	//my_g2o::ba_test();  // Not yet implemented.
+	//my_g2o::ba_test();
 
 	//-----
 	// Pose graph optimization (PGO).

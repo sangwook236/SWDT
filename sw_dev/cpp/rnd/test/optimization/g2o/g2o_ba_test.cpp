@@ -96,7 +96,7 @@ bool load_filenames(const std::string &dir_path, std::list<std::string> &input_f
 
 namespace my_g2o {
 
-void pgo_test()
+void ba_test()
 {
 	using point_type = pcl::PointXYZ;
 	using points_type = pcl::PointCloud<point_type>;
@@ -439,7 +439,7 @@ void pgo_test()
 			{
 				// Visualize ICP correspondences.
 
-				pcl::visualization::PCLVisualizer viewer("ICP Correspondence Viewer before PGO");
+				pcl::visualization::PCLVisualizer viewer("ICP Correspondence Viewer before BA");
 				viewer.addCoordinateSystem(100.0);
 				viewer.setBackgroundColor(0, 0, 0);
 				viewer.initCameraParameters();
@@ -515,7 +515,7 @@ void pgo_test()
 	// Visualize.
 	if (visualize)
 	{
-		pcl::visualization::PCLVisualizer viewer("ICP Viewer before PGO");
+		pcl::visualization::PCLVisualizer viewer("ICP Viewer before BA");
 		viewer.addCoordinateSystem(100.0);
 		viewer.setBackgroundColor(0, 0, 0);
 		viewer.initCameraParameters();
@@ -558,7 +558,7 @@ void pgo_test()
 
 	if (visualize)
 	{
-		pcl::visualization::PCLVisualizer viewer("Camera & Landmark Viewer before PGO");
+		pcl::visualization::PCLVisualizer viewer("Camera & Landmark Viewer before BA");
 		viewer.addCoordinateSystem(100.0);
 		viewer.setBackgroundColor(0, 0, 0);
 		viewer.initCameraParameters();
@@ -599,12 +599,13 @@ void pgo_test()
 		}
 	}
 
-	// Pose graph optimization (PGO).
+	// Bundle adjustment (BA).
 	// Refer to slam2d_tutorial(), ba_example(), slam3d_se3_pointxyz_test(), & slam3d_se3_test().
 	{
-		std::cout << "Performing PGO (total)..." << std::endl;
+		std::cout << "Performing BA (total)..." << std::endl;
 		const auto start_time_total(std::chrono::high_resolution_clock::now());
 
+		const bool STRUCTURE_ONLY = false;
 		const bool ROBUST_KERNEL = false;
 		const bool DENSE = false;
 
@@ -705,31 +706,6 @@ void pgo_test()
 			std::cout << "Done." << std::endl;
 			assert(optimizer.vertices().size() == point_sets.size() + pg_landmarks.size());
 
-			// Add the odometry constraints (edges).
-			{
-				std::cout << "Adding odometry measurements..." << std::endl;
-				// FIXME [check] >> Information matrix.
-				const auto information_matrix(Eigen::Matrix<double, 6, 6>::Identity());
-				//const auto information_matrix(Eigen::DiagonalMatrix<double, 6>(0.25, 0.25, 0.25, 0.25, 0.25, 0.25));
-				for (const auto &res: icp_results)
-				{
-					const auto &sidx = res.first;
-					const auto &tidx = std::get<0>(res.second);
-					//const auto &is_converged = std::get<1>(res.second);
-					//const auto &fitness_score = std::get<2>(res.second);
-					const auto &Trel = std::get<3>(res.second);
-
-					auto odometry = new g2o::EdgeSE3;
-					odometry->vertices()[0] = optimizer.vertex(int(tidx));  // Camera ID.
-					odometry->vertices()[1] = optimizer.vertex(int(sidx));  // Camera ID.
-					odometry->setMeasurement(g2o::Isometry3(Trel.cast<double>()));  // Relative transformation.
-					odometry->setInformation(information_matrix);
-
-					optimizer.addEdge(odometry);
-				}
-				std::cout << "Done." << std::endl;
-			}
-
 			// Add the landmark constraints (edges).
 			{
 				std::cout << "Adding landmark observations..." << std::endl;
@@ -780,8 +756,8 @@ void pgo_test()
 		// Optimization.
 		{
 			// Dump initial state to the disk.
-			//if (!optimizer.save("../pgo_before.g2o"))
-			//	std::cerr << "Failed to save to " << "../pgo_before.g2o" << std::endl;
+			//if (!optimizer.save("../ba_before.g2o"))
+			//	std::cerr << "Failed to save to " << "../ba_before.g2o" << std::endl;
 
 			// Prepare and run the optimization.
 			// Fix the first camera pose to account for gauge freedom.
@@ -791,18 +767,39 @@ void pgo_test()
 			const int num_iterations = 1000;
 			const bool verbose = true;
 
-			std::cout << "Optimizing..." << std::endl;
-			const auto start_time(std::chrono::high_resolution_clock::now());
 			optimizer.initializeOptimization();
 			optimizer.setVerbose(verbose);
-			optimizer.optimize(num_iterations);
-			std::cout << "Optimized: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
 
-			//if (!optimizer.save("../pgo_after.g2o"))
-			//	std::cerr << "Failed to save to " << "../pgo_after.g2o" << std::endl;
+			if (STRUCTURE_ONLY)
+			{
+				std::cout << "Performing structure-only BA:" << std::endl;
+				const auto start_time(std::chrono::high_resolution_clock::now());
+				g2o::StructureOnlySolver<3> structure_only_ba;
+				g2o::OptimizableGraph::VertexContainer points;
+				for (g2o::OptimizableGraph::VertexIDMap::const_iterator it = optimizer.vertices().begin(); it != optimizer.vertices().end(); ++it)
+				{
+					auto v = static_cast<g2o::OptimizableGraph::Vertex *>(it->second);
+					if (v->dimension() == 3)  points.push_back(v);
+				}
+				structure_only_ba.calc(points, 10);
+				std::cout << "Structure-only BA Performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+			}
+
+			//if (!optimizer.save("../structure_only_ba_after.g2o"))
+			//	std::cerr << "Failed to save to " << "../ba_after_structure_only.g2o" << std::endl;
+
+			{
+				std::cout << "Performing full BA..." << std::endl;
+				const auto start_time(std::chrono::high_resolution_clock::now());
+				optimizer.optimize(num_iterations);
+				std::cout << "Full BA Performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+			}
+
+			//if (!optimizer.save("../ba_after.g2o"))
+			//	std::cerr << "Failed to save to " << "../ba_after.g2o" << std::endl;
 		}
 
-		// Show PGO results.
+		// Show BA results.
 		{
 			// Cameras.
 			const size_t num_cameras_sampled = 10;
@@ -828,8 +825,6 @@ void pgo_test()
 			std::sample(pg_landmarks.begin(), pg_landmarks.end(), std::inserter(pg_landmarks_sampled, pg_landmarks_sampled.end()), num_landmarks_sampled, std::mt19937 { std::random_device{}() });
 			for (const auto &l: pg_landmarks_sampled)
 			{
-				//const auto &point_id_to_landmark_id_mapper = point_id_to_pg_landmark_id_mappers[idx]
-
 				const auto &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
 
 				std::cout << "Landmark ID #" << l.first << " ----------" << std::endl;
@@ -841,7 +836,7 @@ void pgo_test()
 		// Visualize.
 		if (visualize)
 		{
-			pcl::visualization::PCLVisualizer viewer("Point Cloud Viewer after PGO");
+			pcl::visualization::PCLVisualizer viewer("Point Cloud Viewer after BA");
 			viewer.addCoordinateSystem(100.0);
 			viewer.setBackgroundColor(0, 0, 0);
 			viewer.initCameraParameters();
@@ -888,7 +883,7 @@ void pgo_test()
 
 		if (visualize)
 		{
-			pcl::visualization::PCLVisualizer viewer("Camera & Landmark Viewer after PGO");
+			pcl::visualization::PCLVisualizer viewer("Camera & Landmark Viewer after BA");
 			viewer.addCoordinateSystem(100.0);
 			viewer.setBackgroundColor(0, 0, 0);
 			viewer.initCameraParameters();
@@ -933,7 +928,7 @@ void pgo_test()
 		// Free the graph memory.
 		optimizer.clear();
 
-		std::cout << "PGO performed (total): " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time_total).count() << " msecs." << std::endl;
+		std::cout << "BA performed (total): " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time_total).count() << " msecs." << std::endl;
 	}
 }
 
