@@ -641,6 +641,46 @@ def main():
 	#	https://github.com/pytorch/examples/tree/main/distributed/ddp
 	#	https://github.com/pytorch/examples/tree/main/distributed/ddp-tutorial-series
 
+	'''
+	class MyModule(torch.nn.Module):
+		def __init__(self):
+			super().__init__()
+			self.w = torch.nn.Linear(10, 5)
+		def forward(self, x):
+			return self.func(x)
+		def func(self, x):
+			return self.w(x)
+
+	model = MyModule().to("cuda")
+	x = torch.randn(128, 10).to("cuda")
+	y = model(x)  # OK.
+	y = model.func(x)  # OK.
+
+	os.environ["MASTER_ADDR"] = "127.0.0.1"
+	os.environ["MASTER_PORT"] = "29500"
+	if torch.distributed.is_gloo_available():
+		os.environ["GLOO_SOCKET_IFNAME"] = "lo"
+		torch.distributed.init_process_group("gloo", rank=0, world_size=1)
+		print("GLOO backend initialized.")
+	elif torch.distributed.is_nccl_available():
+		os.environ["NCCL_SOCKET_IFNAME"] = "lo"
+		os.environ["NCCL_DEBUG"] = "INFO"
+		torch.distributed.init_process_group("nccl", rank=0, world_size=1)
+		print("NCCL backend initialized.")
+	elif torch.distributed.is_mpi_available():
+		torch.distributed.init_process_group("mpi")
+		print("MPI backend initialized.")
+	else:
+		raise RuntimeError("No distributed backend available.")
+	if not torch.distributed.is_initialized():
+		raise RuntimeError("Distributed backend not initialized.")
+
+	model_ddp = torch.nn.parallel.DistributedDataParallel(model).to("cuda")
+	y = model_ddp(x)  # OK.
+	y = model_ddp.func(x)  # AttributeError: 'DistributedDataParallel' object has no attribute 'func'.
+	y = model_ddp.module.func(x)  # OK.
+	'''
+
 	# https://github.com/pytorch/examples/tree/main/distributed/ddp
 	#	(global) world size.
 	#	Local world size.

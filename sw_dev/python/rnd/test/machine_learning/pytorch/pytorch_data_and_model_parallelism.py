@@ -160,15 +160,15 @@ def main():
 		def func(self, x):
 			return self.w(x)
 
-	model = MyModule()
+	model = MyModule().to("cuda")
+	x = torch.randn(128, 10).to("cuda")
 	y = model(x)  # OK.
 	y = model.func(x)  # OK.
 
-	model_dp = torch.nn.DataParallel(model)
-	model_dp = model_dp.to("cuda")
-	y = model_dp(x.to("cuda"))  # OK.
-	y = model_dp.func(x.to("cuda"))  # AttributeError: 'DataParallel' object has no attribute 'func'.
-	y = model_dp.module.func(x.to("cuda"))  # OK.
+	model_dp = torch.nn.DataParallel(model).to("cuda")
+	y = model_dp(x)  # OK.
+	y = model_dp.func(x)  # AttributeError: 'DataParallel' object has no attribute 'func'.
+	y = model_dp.module.func(x)  # OK.
 	'''
 
 	#data_parallel_tutorial()
