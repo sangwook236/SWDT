@@ -29,6 +29,7 @@
 #include <g2o/core/robust_kernel_impl.h>
 #include <g2o/core/sparse_optimizer.h>
 #include <g2o/core/solver.h>
+#include <g2o/core/block_solver.h>
 #include <g2o/solvers/dense/linear_solver_dense.h>
 #if defined(G2O_HAVE_CHOLMOD)
 #include <g2o/solvers/cholmod/linear_solver_cholmod.h>
@@ -629,14 +630,20 @@ void pgo_test()
 		std::unique_ptr<g2o::BlockSolver_6_3::LinearSolverType> linearSolver;
 		if (DENSE)
 		{
-			linearSolver= g2o::make_unique<g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType> >();
+			linearSolver = g2o::make_unique<g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType> >();
 			std::cout << "Using DENSE" << std::endl;
 		}
 		else
 		{
-			linearSolver= g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType> >();
+#if defined(G2O_HAVE_CHOLMOD)
+			linearSolver = g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType> >();
 			std::cout << "Using CHOLMOD" << std::endl;
+#else
+			linearSolver = g2o::make_unique<g2o::LinearSolverEigen<g2o::BlockSolver_6_3::PoseMatrixType> >();
+			std::cout << "Using Eigen" << std::endl;
+#endif
 		}
+		//auto solver = new g2o::OptimizationAlgorithmGaussNewton(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
 		auto solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
 		optimizer.setAlgorithm(solver);
 #endif
@@ -645,15 +652,17 @@ void pgo_test()
 		// FIXME [check] >> Camera parameters.
 #if 0
 		const double focal_length = 1000.0;
-		const Eigen::Vector2d principal_point(150.0, 225.0);  // For 300x450 images.
-		auto camera_param = new g2o::CameraParameters(focal_length, principal_point, 0.0);
+		const g2o::Vector2 principal_point(150.0, 225.0);  // For 300x450 images.
+		const double baseline = 0.0;
+		auto camera_param = new g2o::CameraParameters(focal_length, principal_point, baseline);
 #elif 0
 		const double fx = 1000.0, fy = 1000.0;
 		const double cx = 150.0, cy = 225.0;  // For 300x450 images.
 		auto camera_param = new g2o::ParameterCamera();
 		camera_param->setKcam(fx, fy, cx, cy);
 #else
-		g2o::Isometry3 sensorOffsetTransf;
+		g2o::Isometry3 sensorOffsetTransf(g2o::Isometry3::Identity());
+		//sensorOffsetTransf(3, 3) = 100.0;
 		auto camera_param = new g2o::ParameterSE3Offset;
 		camera_param->setOffset(sensorOffsetTransf);
 #endif
@@ -678,7 +687,7 @@ void pgo_test()
 				const auto &Tcaminit = std::get<3>(point_set);
 				// FIXME [check] >> Camera pose.
 				const auto Tcam(Eigen::Affine3f(T) * Tcaminit);
-				//const auto &Tcam = Eigen::Affine3f(T);
+				//const auto Tcam(Eigen::Affine3f(T));
 
 				auto camera = new g2o::VertexSE3;
 				camera->setId(int(nid));
@@ -709,8 +718,8 @@ void pgo_test()
 			{
 				std::cout << "Adding odometry measurements..." << std::endl;
 				// FIXME [check] >> Information matrix.
-				const auto information_matrix(Eigen::Matrix<double, 6, 6>::Identity());
-				//const auto information_matrix(Eigen::DiagonalMatrix<double, 6>(0.25, 0.25, 0.25, 0.25, 0.25, 0.25));
+				const auto information_matrix(Eigen::Matrix<double, 6, 6>::Identity() * 0.001);
+				//const auto information_matrix(Eigen::DiagonalMatrix<double, 6>(0.1, 0.1, 0.1, 0.1, 0.1, 0.1));
 				for (const auto &res: icp_results)
 				{
 					const auto &sidx = res.first;
@@ -734,8 +743,8 @@ void pgo_test()
 			{
 				std::cout << "Adding landmark observations..." << std::endl;
 				// FIXME [check] >> Information matrix.
-				const auto information_matrix(Eigen::Matrix3d::Identity());
-				//const auto information_matrix(Eigen::DiagonalMatrix<double, 3>(0.5, 0.5, 0.5));
+				const auto information_matrix(Eigen::Matrix3d::Identity() * 0.001);
+				//const auto information_matrix(Eigen::DiagonalMatrix<double, 3>(0.2, 0.2, 0.2));
 				for (const auto &nid: pose_graph)
 				{
 					const auto &T = absolute_transforms[nid];
@@ -745,8 +754,8 @@ void pgo_test()
 					const auto &Tcaminit = std::get<3>(point_set);
 					// FIXME [check] >> Camera pose.
 					const auto Tcam(Eigen::Affine3f(T) * Tcaminit);
-					//const auto &Tcam = Eigen::Affine3f(T);
-					const auto &cam_pos = Tcam.translation();
+					//const auto Tcam(Eigen::Affine3f(T));
+					const auto &cam_pos = Tcam.translation();  // Global coordinates.
 					const auto &point_id_to_landmark_id_mapper = point_id_to_pg_landmark_id_mappers[nid];
 
 					for (size_t pidx = 0; pidx < cloud->size(); ++pidx)
@@ -754,15 +763,22 @@ void pgo_test()
 						auto observation = new g2o::EdgeSE3PointXYZ;
 						observation->vertices()[0] = optimizer.vertex(int(nid));  // Camera ID.
 						observation->vertices()[1] = optimizer.vertex(int(point_id_to_landmark_id_mapper[pidx]));  // Landmark ID.
-						const auto &pt = cloud->points[pidx];
-						observation->setMeasurement(g2o::Vector3(pt.x - cam_pos[0], pt.y - cam_pos[1], pt.z - cam_pos[2]));  // Relative measurement.
+						const auto &pt = cloud->points[pidx];  // Global coordinates.
+#if 0
+						observation->setMeasurement(g2o::Vector3(pt[0], pt[1], pt[2]));  // Relative measurement.
+#elif 0
+						observation->setMeasurement(g2o::Vector3(pt[0] - Tcaminit(3, 0), pt[1] - Tcaminit(3, 1), pt[2] - Tcaminit(3, 2)));  // Relative measurement.
+#else
+						const auto pt_g(T * Eigen::Vector4f(pt.x, pt.y, pt.z, 1.0f));  // Global coordinates.
+						observation->setMeasurement(g2o::Vector3(pt_g[0] - cam_pos[0], pt_g[1] - cam_pos[1], pt_g[2] - cam_pos[2]));  // Relative measurement.
+#endif
 						observation->setInformation(information_matrix);
+						observation->setParameterId(0, camera_param->id());
 						if (ROBUST_KERNEL)
 						{
 							auto rk = new g2o::RobustKernelHuber;
 							observation->setRobustKernel(rk);
 						}
-						observation->setParameterId(0, camera_param->id());
 
 						optimizer.addEdge(observation);
 					}
@@ -774,7 +790,7 @@ void pgo_test()
 			std::cout << "Pose graph:" << std::endl;
 			std::cout << "\t#vertices = " << optimizer.vertices().size() << ", #edges = " << optimizer.edges().size() << ", #parameters = " << optimizer.parameters().size() << std::endl;
 			std::cout << "\tMax dimension = " << optimizer.maxDimension() << std::endl;
-			std::cout << "\tchi2 = " << optimizer.chi2() << std::endl;
+			std::cout << "\tChi2 = " << optimizer.chi2() << std::endl;
 		}
 
 		// Optimization.
@@ -788,7 +804,7 @@ void pgo_test()
 			auto firstCameraPose = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(pose_graph[0]));
 			firstCameraPose->setFixed(true);
 
-			const int num_iterations = 1000;
+			const int num_iterations = 100;
 			const bool verbose = true;
 
 			std::cout << "Optimizing..." << std::endl;
@@ -828,8 +844,6 @@ void pgo_test()
 			std::sample(pg_landmarks.begin(), pg_landmarks.end(), std::inserter(pg_landmarks_sampled, pg_landmarks_sampled.end()), num_landmarks_sampled, std::mt19937 { std::random_device{}() });
 			for (const auto &l: pg_landmarks_sampled)
 			{
-				//const auto &point_id_to_landmark_id_mapper = point_id_to_pg_landmark_id_mappers[idx]
-
 				const auto &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
 
 				std::cout << "Landmark ID #" << l.first << " ----------" << std::endl;

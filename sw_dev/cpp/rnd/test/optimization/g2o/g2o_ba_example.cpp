@@ -76,14 +76,20 @@ void ba_example()
 	std::unique_ptr<g2o::BlockSolver_6_3::LinearSolverType> linearSolver;
 	if (DENSE)
 	{
-		linearSolver= g2o::make_unique<g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType> >();
+		linearSolver = g2o::make_unique<g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType> >();
 		std::cout << "Using DENSE" << std::endl;
 	}
 	else
 	{
-		linearSolver= g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType> >();
+#if defined(G2O_HAVE_CHOLMOD)
+		linearSolver = g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType> >();
 		std::cout << "Using CHOLMOD" << std::endl;
+#else
+		linearSolver = g2o::make_unique<g2o::LinearSolverEigen<g2o::BlockSolver_6_3::PoseMatrixType> >();
+			std::cout << "Using Eigen" << std::endl;
+#endif
 	}
+	//auto solver = new g2o::OptimizationAlgorithmGaussNewton(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
 	auto solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
 	optimizer.setAlgorithm(solver);
 #endif
