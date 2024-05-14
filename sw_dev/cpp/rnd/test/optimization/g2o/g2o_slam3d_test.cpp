@@ -190,6 +190,7 @@ void slam3d_se3_pointxyz_test()
 	};
 
 	// Coordinate frames: (x, y, z, theta z (deg)).
+	//	Camera frames wrt the world frame (T^W_C).
 	const std::vector<std::pair<Eigen::Vector3d, double> > coord_frames = {
 		/*
 		std::make_pair(Eigen::Vector3d(-8, 8, 0), -60 * M_PI / 180.0),
@@ -205,20 +206,22 @@ void slam3d_se3_pointxyz_test()
 		std::make_pair(Eigen::Vector3d(0, -16, 0), 80 * M_PI / 180.0)
 	};
 
+	// Relative coordinates of the cube vertices wrt each robot frame.
 	std::vector<std::vector<Eigen::Vector3d> > cubes_relative;
 	for (auto fit = coord_frames.begin(); fit != coord_frames.end(); ++fit)
 	{
 		const Eigen::Transform<double, 3, Eigen::Affine> T = Eigen::Translation3d(fit->first) * Eigen::AngleAxisd(fit->second, Eigen::Vector3d(0, 0, 1));
+		const auto Tinv(T.inverse());
 
 		std::vector<Eigen::Vector3d> cube_relative;
 		for (auto vit = cube_vertices.begin(); vit != cube_vertices.end(); ++vit)
-			cube_relative.push_back(T.inverse() * *vit);
+			cube_relative.push_back(Tinv * *vit);
 
 		cubes_relative.push_back(cube_relative);
 	}
 
+	//const double noise = 1.8;
 	const double noise = 0.15;
-	//const double noise = 1.5;
 	std::default_random_engine generator;
 	std::normal_distribution<double> distribution(0.0, noise);
 
@@ -244,6 +247,7 @@ void slam3d_se3_pointxyz_test()
 		Eigen::Vector2i(7, 7),
 	};
 
+	// Relative transformations of the i-th robot frame wrt the (i-1)-th robot frame.
 	std::vector<Eigen::Matrix4d> transformations_relative;
 	open3d::pipelines::registration::TransformationEstimationPointToPoint p2p;
 	for (size_t idx = 1; idx < noisy_cubes_relative.size(); ++idx)
@@ -254,11 +258,11 @@ void slam3d_se3_pointxyz_test()
 		transformations_relative.push_back(p2p.ComputeTransformation(targets, sources, correspondences));
 
 #if 0
-		const Eigen::Matrix4d transformation = p2p.ComputeTransformation(targets, sources, correspondences);
-		std::cout << "Transformation (estimated):\n" << transformation << std::endl;
+		const Eigen::Matrix4d T_est(p2p.ComputeTransformation(targets, sources, correspondences));
+		std::cout << "Transformation (estimated):\n" << T_est << std::endl;
 
-		Eigen::Transform<double, 3, Eigen::Affine> T1 = Eigen::Translation3d(coord_frames[idx - 1].first) * Eigen::AngleAxisd(coord_frames[idx - 1].second, Eigen::Vector3d(0, 0, 1));
-		Eigen::Transform<double, 3, Eigen::Affine> T2 = Eigen::Translation3d(coord_frames[idx].first) * Eigen::AngleAxisd(coord_frames[idx].second, Eigen::Vector3d(0, 0, 1));
+		const Eigen::Transform<double, 3, Eigen::Affine> T1(Eigen::Translation3d(coord_frames[idx - 1].first) * Eigen::AngleAxisd(coord_frames[idx - 1].second, Eigen::Vector3d(0, 0, 1)));
+		const Eigen::Transform<double, 3, Eigen::Affine> T2(Eigen::Translation3d(coord_frames[idx].first) * Eigen::AngleAxisd(coord_frames[idx].second, Eigen::Vector3d(0, 0, 1)));
 		std::cout << "Transformation (G/T):\n" << (T1.inverse() * T2).matrix() << std::endl;
 #endif
 	}
@@ -288,14 +292,15 @@ void slam3d_se3_pointxyz_test()
 
 	//-----
 	// Initial frame: (x, y, z, theta z (deg)).
-	const std::pair<Eigen::Vector3d, double> init_frame = std::make_pair(Eigen::Vector3d(-12, 0, 0), 0.0);
-	const Eigen::Transform<double, 3, Eigen::Affine> &T0 = Eigen::Translation3d(init_frame.first) * Eigen::AngleAxisd(init_frame.second, Eigen::Vector3d(0, 0, 1));
+	//const std::pair<Eigen::Vector3d, double> init_frame = std::make_pair(Eigen::Vector3d(-12, 0, 0), 0.0);
+	const std::pair<Eigen::Vector3d, double> &init_frame = coord_frames[0];
+	const Eigen::Transform<double, 3, Eigen::Affine> &Tw1 = Eigen::Translation3d(init_frame.first) * Eigen::AngleAxisd(init_frame.second, Eigen::Vector3d(0, 0, 1));
 
-	const Eigen::Matrix4d &T01 = T0.matrix();
-	const Eigen::Matrix4d &T02 = T01 * transformations_relative[0];
-	const Eigen::Matrix4d &T03 = T02 * transformations_relative[1];
-	const Eigen::Matrix4d &T04 = T03 * transformations_relative[2];
-	const Eigen::Matrix4d &T05 = T04 * transformations_relative[3];
+	const Eigen::Matrix4d T01(Tw1.matrix());
+	const Eigen::Matrix4d T02(T01 * transformations_relative[0]);
+	const Eigen::Matrix4d T03(T02 * transformations_relative[1]);
+	const Eigen::Matrix4d T04(T03 * transformations_relative[2]);
+	const Eigen::Matrix4d T05(T04 * transformations_relative[3]);
 	const std::vector<Eigen::Matrix4d> Ts = {T01, T02, T03, T04, T05};
 
 	int vertex_id = 1;
@@ -314,7 +319,7 @@ void slam3d_se3_pointxyz_test()
 	{
 		auto robot = new g2o::VertexSE3;
 		robot->setId(vertex_id++);
-		robot->setEstimate(g2o::Isometry3(*it));
+		robot->setEstimate(g2o::Isometry3(*it));  // Robot pose wrt the world frame.
 		//robot->setMarginalized(true);
 		if (is_first)
 		{
@@ -327,12 +332,14 @@ void slam3d_se3_pointxyz_test()
 
 	// Landmark(cube) vertices.
 	const std::vector<Eigen::Vector3d> &noisy_cube = noisy_cubes_relative.front();
+	const auto &TT = Ts.front();
 	for (auto it = noisy_cube.begin(); it != noisy_cube.end(); ++it)
 	{
 		auto landmark = new g2o::VertexPointXYZ;
 		landmark->setId(vertex_id++);
-		auto t = T01 * Eigen::Vector4d(it->x(), it->y(), it->z(), 1.0);
-		landmark->setEstimate(t.head<3>());
+		//const auto t(TT * Eigen::Vector4d(it->x(), it->y(), it->z(), 1.0));  // Error.
+		const Eigen::Vector4d t(TT * Eigen::Vector4d(it->x(), it->y(), it->z(), 1.0));
+		landmark->setEstimate(t.head<3>());  // Vertex coordinates wrt the world frame.
 		//landmark->setMarginalized(true);
 
 		optimizer.addVertex(landmark);
@@ -341,22 +348,22 @@ void slam3d_se3_pointxyz_test()
 	// Odometry constraint edges.
 	for (size_t idx = 0; idx < transformations_relative.size(); ++idx)
 	{
-		const Eigen::Matrix6d information_matrix(Eigen::DiagonalMatrix<double, 6>(20.0, 20.0, 20.0, 20.0, 20.0, 20.0));
+		const Eigen::Matrix<double, 6, 6> information_matrix(Eigen::DiagonalMatrix<double, 6>(20.0, 20.0, 20.0, 20.0, 20.0, 20.0));
 
 		auto odometry = new g2o::EdgeSE3;
 		//odometry->setVertex(0, optimizer.vertex(int(idx + 1)));  // Robot ID.
 		//odometry->setVertex(0, optimizer.vertex(int(idx + 2)));  // Robot ID.
 		odometry->vertices()[0] = optimizer.vertex(int(idx + 1));  // Robot ID.
 		odometry->vertices()[1] = optimizer.vertex(int(idx + 2));  // Robot ID.
-		odometry->setMeasurement(g2o::Isometry3(transformations_relative[idx]));
+		odometry->setMeasurement(g2o::Isometry3(transformations_relative[idx]));  // Relative pose of the i-th robot frame wrt the (i-1)-th robot frame.
 		odometry->setInformation(information_matrix);
 
-		/*
+#if 0
 		//auto robust_kernel = g2o::RobustKernelFactory::instance()->construct("Huber");
 		auto robust_kernel = new g2o::RobustKernelHuber;
 		robust_kernel->setDelta(std::sqrt(5.991));  // 95% CI.
 		odometry->setRobustKernel(robust_kernel);
-		*/
+#endif
 
 		optimizer.addEdge(odometry);
 	}
@@ -373,16 +380,16 @@ void slam3d_se3_pointxyz_test()
 			//observation->setVertex(1, optimizer.vertex(int(vidx + 6)));  // Landmark ID.
 			observation->vertices()[0] = optimizer.vertex(int(idx + 1));  // Robot ID.
 			observation->vertices()[1] = optimizer.vertex(int(vidx + 6));  // Landmark ID.
-			observation->setMeasurement(noisy_cubes_relative[idx][vidx]);
+			observation->setMeasurement(noisy_cubes_relative[idx][vidx]);  // Relative coordinates of each vertex wrt the robot frame.
 			observation->setInformation(information_matrix);
 			observation->setParameterId(0, sensor_id);  // Required.
 
-			/*
+#if 0
 			//auto robust_kernel = g2o::RobustKernelFactory::instance()->construct("Huber");
 			auto robust_kernel = new g2o::RobustKernelHuber;
 			robust_kernel->setDelta(std::sqrt(5.991));  // 95% CI.
 			observation->setRobustKernel(robust_kernel);
-			*/
+#endif
 
 			optimizer.addEdge(observation);
 		}
@@ -390,15 +397,15 @@ void slam3d_se3_pointxyz_test()
 
 	std::cout << "#vertices = " << optimizer.vertices().size() << std::endl;
 	std::cout << "#edges = " << optimizer.edges().size() << std::endl;
-	std::cout << "chi2 = " << optimizer.chi2() << std::endl;
+	std::cout << "Chi2 = " << optimizer.chi2() << std::endl;
 	std::cout << "Max dimension = " << optimizer.maxDimension() << std::endl;
-	/*
+#if 0
 	std::cout << "Dimensions = ";
 	std::copy(optimizer.dimensions().begin(), optimizer.dimensions().end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl;
-	*/
+#endif
 
-	const std::string output_before_filename("../slam3d_se3_pointxyz_before_optimzation.g2o");
+	const std::string output_before_filename("../slam3d_se3_pointxyz_before_pgo.g2o");
 	if (!optimizer.save(output_before_filename.c_str()))
 	{
 		std::cerr << "Failed to save to " << output_before_filename << std::endl;
@@ -419,15 +426,30 @@ void slam3d_se3_pointxyz_test()
 	optimizer.setVerbose(verbose);
 
 	std::cout << "Optimizing..." << std::endl;
-	optimizer.optimize(max_iterations, online);
-	std::cout << "Optimized." << std::endl;
+	const auto start_time(std::chrono::high_resolution_clock::now());
+	const auto num_iterations = optimizer.optimize(max_iterations, online);
+	std::cout << "Optimized: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+	std::cout << "#iterations = " << num_iterations << std::endl;
 
 	//-----
-	const std::string output_filename("../slam3d_se3_pointxyz_after_optimzation.g2o");
+	const std::string output_filename("../slam3d_se3_pointxyz_after_pgo.g2o");
 	if (!optimizer.save(output_filename.c_str()))
 	{
 		std::cerr << "Failed to save to " << output_filename << std::endl;
 		return;
+	}
+
+	// Show results.
+	for (int vid = 1; vid <= 5; ++vid)
+	{
+		const auto &T_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(vid))->estimate();
+		std::cout << "Vertex #" << vid << std::endl;
+		std::cout << T_est.matrix() << std::endl;
+	}
+	for (int vid = 6; vid <= 13; ++vid)
+	{
+		const auto &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(vid))->estimate();
+		std::cout << "Vertex #" << vid << ": " << l_est.transpose() << std::endl;
 	}
 
 	// Free the graph memory.
@@ -452,6 +474,7 @@ void slam3d_se3_test()
 	};
 
 	// Coordinate frames: (x, y, z, theta z (deg)).
+	//	Camera frames wrt the world frame (T^W_C).
 	const std::vector<std::pair<Eigen::Vector3d, double> > coord_frames = {
 		/*
 		std::make_pair(Eigen::Vector3d(-8, 8, 0), -60 * M_PI / 180.0),
@@ -467,20 +490,22 @@ void slam3d_se3_test()
 		std::make_pair(Eigen::Vector3d(0, -16, 0), 80 * M_PI / 180.0)
 	};
 
+	// Relative coordinates of the cube vertices wrt each robot frame.
 	std::vector<std::vector<Eigen::Vector3d> > cubes_relative;
 	for (auto fit = coord_frames.begin(); fit != coord_frames.end(); ++fit)
 	{
 		const Eigen::Transform<double, 3, Eigen::Affine> T = Eigen::Translation3d(fit->first) * Eigen::AngleAxisd(fit->second, Eigen::Vector3d(0, 0, 1));
+		const auto Tinv(T.inverse());
 
 		std::vector<Eigen::Vector3d> cube_relative;
 		for (auto vit = cube_vertices.begin(); vit != cube_vertices.end(); ++vit)
-			cube_relative.push_back(T.inverse() * *vit);
+			cube_relative.push_back(Tinv * *vit);
 
 		cubes_relative.push_back(cube_relative);
 	}
 
+	//const double noise = 1.8;
 	const double noise = 0.15;
-	//const double noise = 1.5;
 	std::default_random_engine generator;
 	std::normal_distribution<double> distribution(0.0, noise);
 
@@ -506,6 +531,7 @@ void slam3d_se3_test()
 		Eigen::Vector2i(7, 7),
 	};
 
+	// Relative transformations of the i-th robot frame wrt the (i-1)-th robot frame.
 	std::vector<Eigen::Matrix4d> transformations_relative;
 	open3d::pipelines::registration::TransformationEstimationPointToPoint p2p;
 	for (size_t idx = 1; idx < noisy_cubes_relative.size(); ++idx)
@@ -516,11 +542,11 @@ void slam3d_se3_test()
 		transformations_relative.push_back(p2p.ComputeTransformation(targets, sources, correspondences));
 
 #if 0
-		const Eigen::Matrix4d transformation = p2p.ComputeTransformation(targets, sources, correspondences);
-		std::cout << "Transformation (estimated):\n" << transformation << std::endl;
+		const Eigen::Matrix4d T_est(p2p.ComputeTransformation(targets, sources, correspondences));
+		std::cout << "Transformation (estimated):\n" << T_est << std::endl;
 
-		Eigen::Transform<double, 3, Eigen::Affine> T1 = Eigen::Translation3d(coord_frames[idx - 1].first) * Eigen::AngleAxisd(coord_frames[idx - 1].second, Eigen::Vector3d(0, 0, 1));
-		Eigen::Transform<double, 3, Eigen::Affine> T2 = Eigen::Translation3d(coord_frames[idx].first) * Eigen::AngleAxisd(coord_frames[idx].second, Eigen::Vector3d(0, 0, 1));
+		const Eigen::Transform<double, 3, Eigen::Affine> T1(Eigen::Translation3d(coord_frames[idx - 1].first) * Eigen::AngleAxisd(coord_frames[idx - 1].second, Eigen::Vector3d(0, 0, 1)));
+		const Eigen::Transform<double, 3, Eigen::Affine> T2(Eigen::Translation3d(coord_frames[idx].first) * Eigen::AngleAxisd(coord_frames[idx].second, Eigen::Vector3d(0, 0, 1)));
 		std::cout << "Transformation (G/T):\n" << (T1.inverse() * T2).matrix() << std::endl;
 #endif
 	}
@@ -550,14 +576,15 @@ void slam3d_se3_test()
 
 	//-----
 	// Initial frame: (x, y, z, theta z (deg)).
-	const std::pair<Eigen::Vector3d, double> init_frame = std::make_pair(Eigen::Vector3d(-12, 0, 0), 0.0);
-	const Eigen::Transform<double, 3, Eigen::Affine> &T0 = Eigen::Translation3d(init_frame.first) * Eigen::AngleAxisd(init_frame.second, Eigen::Vector3d(0, 0, 1));
+	//const std::pair<Eigen::Vector3d, double> init_frame = std::make_pair(Eigen::Vector3d(-12, 0, 0), 0.0);
+	const std::pair<Eigen::Vector3d, double> &init_frame = coord_frames[0];
+	const Eigen::Transform<double, 3, Eigen::Affine> &Tw1 = Eigen::Translation3d(init_frame.first) * Eigen::AngleAxisd(init_frame.second, Eigen::Vector3d(0, 0, 1));
 
-	const Eigen::Matrix4d &T01 = T0.matrix();
-	const Eigen::Matrix4d &T02 = T01 * transformations_relative[0];
-	const Eigen::Matrix4d &T03 = T02 * transformations_relative[1];
-	const Eigen::Matrix4d &T04 = T03 * transformations_relative[2];
-	const Eigen::Matrix4d &T05 = T04 * transformations_relative[3];
+	const Eigen::Matrix4d T01(Tw1.matrix());
+	const Eigen::Matrix4d T02(T01 * transformations_relative[0]);
+	const Eigen::Matrix4d T03(T02 * transformations_relative[1]);
+	const Eigen::Matrix4d T04(T03 * transformations_relative[2]);
+	const Eigen::Matrix4d T05(T04 * transformations_relative[3]);
 	const std::vector<Eigen::Matrix4d> Ts = {T01, T02, T03, T04, T05};
 
 	int vertex_id = 1;
@@ -568,7 +595,7 @@ void slam3d_se3_test()
 	{
 		auto robot = new g2o::VertexSE3;
 		robot->setId(vertex_id++);
-		robot->setEstimate(g2o::Isometry3(*it));
+		robot->setEstimate(g2o::Isometry3(*it));  // Robot pose wrt the world frame.
 		//robot->setMarginalized(true);
 		if (is_first)
 		{
@@ -581,12 +608,14 @@ void slam3d_se3_test()
 
 	// Landmark(cube) vertices.
 	const std::vector<Eigen::Vector3d> &noisy_cube = noisy_cubes_relative.front();
+	const auto &TT = Ts.front();
 	for (auto it = noisy_cube.begin(); it != noisy_cube.end(); ++it)
 	{
 		auto landmark = new g2o::VertexSE3;
 		landmark->setId(vertex_id++);
-		auto t = T01 * Eigen::Vector4d(it->x(), it->y(), it->z(), 1.0);
-		landmark->setEstimate(g2o::Isometry3(Eigen::Translation3d(t.head<3>()) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0)));
+		//const auto t(TT * Eigen::Vector4d(it->x(), it->y(), it->z(), 1.0));  // Error.
+		const Eigen::Vector4d t(TT * Eigen::Vector4d(it->x(), it->y(), it->z(), 1.0));
+		landmark->setEstimate(g2o::Isometry3(Eigen::Translation3d(t.head<3>()) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0)));  // Vertex pose wrt the world frame.
 		//landmark->setMarginalized(true);
 
 		optimizer.addVertex(landmark);
@@ -595,22 +624,22 @@ void slam3d_se3_test()
 	// Odometry constraint edges.
 	for (size_t idx = 0; idx < transformations_relative.size(); ++idx)
 	{
-		const Eigen::Matrix6d information_matrix(Eigen::DiagonalMatrix<double, 6>(20.0, 20.0, 20.0, 20.0, 20.0, 20.0));
+		const Eigen::Matrix<double, 6, 6> information_matrix(Eigen::DiagonalMatrix<double, 6>(20.0, 20.0, 20.0, 20.0, 20.0, 20.0));
 
 		auto odometry = new g2o::EdgeSE3;
 		//odometry->setVertex(0, optimizer.vertex(int(idx + 1)));  // Robot ID.
 		//odometry->setVertex(0, optimizer.vertex(int(idx + 2)));  // Robot ID.
 		odometry->vertices()[0] = optimizer.vertex(int(idx + 1));  // Robot ID.
 		odometry->vertices()[1] = optimizer.vertex(int(idx + 2));  // Robot ID.
-		odometry->setMeasurement(g2o::Isometry3(transformations_relative[idx]));
+		odometry->setMeasurement(g2o::Isometry3(transformations_relative[idx]));  // Relative pose of the i-th robot frame wrt the (i-1)-th robot frame.
 		odometry->setInformation(information_matrix);
 
-		/*
+#if 0
 		//auto robust_kernel = g2o::RobustKernelFactory::instance()->construct("Huber");
 		auto robust_kernel = new g2o::RobustKernelHuber;
 		robust_kernel->setDelta(std::sqrt(5.991));  // 95% CI.
 		odometry->setRobustKernel(robust_kernel);
-		*/
+#endif
 
 		optimizer.addEdge(odometry);
 	}
@@ -618,7 +647,7 @@ void slam3d_se3_test()
 	// Landmark(cube) observation edges.
 	for (size_t idx = 0; idx < noisy_cubes_relative.size(); ++idx)
 	{
-		const Eigen::Matrix6d information_matrix(Eigen::DiagonalMatrix<double, 6>(40.0, 40.0, 40.0, 0.000001, 0.000001, 0.000001));
+		const Eigen::Matrix<double, 6, 6> information_matrix(Eigen::DiagonalMatrix<double, 6>(40.0, 40.0, 40.0, 0.000001, 0.000001, 0.000001));
 
 		for (size_t vidx = 0; vidx < noisy_cubes_relative[idx].size(); ++vidx)
 		{
@@ -627,16 +656,16 @@ void slam3d_se3_test()
 			//observation->setVertex(1, optimizer.vertex(int(vidx + 6)));  // Landmark ID.
 			observation->vertices()[0] = optimizer.vertex(int(idx + 1));  // Robot ID.
 			observation->vertices()[1] = optimizer.vertex(int(vidx + 6));  // Landmark ID.
-			observation->setMeasurement(g2o::Isometry3(Eigen::Translation3d(noisy_cubes_relative[idx][vidx]) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0)));
+			observation->setMeasurement(g2o::Isometry3(Eigen::Translation3d(noisy_cubes_relative[idx][vidx]) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0)));  // Relative pose of each vertex wrt the robot frame.
 			observation->setInformation(information_matrix);
-			//observation->setParameterId(0, sensor_id);
+			//observation->setParameterId(0, sensor_id);  // Not required.
 
-			/*
+#if 0
 			//auto robust_kernel = g2o::RobustKernelFactory::instance()->construct("Huber");
 			auto robust_kernel = new g2o::RobustKernelHuber;
 			robust_kernel->setDelta(std::sqrt(5.991));  // 95% CI.
 			observation->setRobustKernel(robust_kernel);
-			*/
+#endif
 
 			optimizer.addEdge(observation);
 		}
@@ -644,15 +673,15 @@ void slam3d_se3_test()
 
 	std::cout << "#vertices = " << optimizer.vertices().size() << std::endl;
 	std::cout << "#edges = " << optimizer.edges().size() << std::endl;
-	std::cout << "chi2 = " << optimizer.chi2() << std::endl;
+	std::cout << "Chi2 = " << optimizer.chi2() << std::endl;
 	std::cout << "Max dimension = " << optimizer.maxDimension() << std::endl;
-	/*
+#if 0
 	std::cout << "Dimensions = ";
 	std::copy(optimizer.dimensions().begin(), optimizer.dimensions().end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl;
-	*/
+#endif
 
-	const std::string output_before_filename("../slam3d_se3_before_optimzation.g2o");
+	const std::string output_before_filename("../slam3d_se3_before_pgo.g2o");
 	if (!optimizer.save(output_before_filename.c_str()))
 	{
 		std::cerr << "Failed to save to " << output_before_filename << std::endl;
@@ -673,15 +702,25 @@ void slam3d_se3_test()
 	optimizer.setVerbose(verbose);
 
 	std::cout << "Optimizing..." << std::endl;
-	optimizer.optimize(max_iterations, online);
-	std::cout << "Optimized." << std::endl;
+	const auto start_time(std::chrono::high_resolution_clock::now());
+	const auto num_iterations = optimizer.optimize(max_iterations, online);
+	std::cout << "Optimized: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+	std::cout << "#iterations = " << num_iterations << std::endl;
 
 	//-----
-	const std::string output_filename("../slam3d_se3_after_optimzation.g2o");
+	const std::string output_filename("../slam3d_se3_after_pgo.g2o");
 	if (!optimizer.save(output_filename.c_str()))
 	{
 		std::cerr << "Failed to save to " << output_filename << std::endl;
 		return;
+	}
+
+	// Show results.
+	for (int vid = 1; vid <= 13; ++vid)
+	{
+		const auto &T_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(vid))->estimate();
+		std::cout << "Vertex #" << vid << std::endl;
+		std::cout << T_est.matrix() << std::endl;
 	}
 
 	// Free the graph memory.

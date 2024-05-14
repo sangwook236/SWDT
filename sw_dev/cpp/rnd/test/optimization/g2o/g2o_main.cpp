@@ -119,6 +119,8 @@ int g2o_main(int argc, char *argv[])
 	// 3D SLAM.
 
 	//my_g2o::simple_slam3d_test();  // Uses PGO.
+
+	// Cube examples.
 	//my_g2o::slam3d_se3_pointxyz_test();  // Uses PGO. Robots: VertexSE3, landmarks: VertexPointXYZ.
 	//my_g2o::slam3d_se3_test();  // Uses PGO. Robots: VertexSE3, landmarks: VertexSE3. Sensor offset parameters not required.
 
