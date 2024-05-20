@@ -45,6 +45,8 @@
 #include <g2o/types/slam3d/edge_se3.h>
 #include <g2o/types/sba/types_six_dof_expmap.h>
 
+//#define __USE_SE3_AS_LANDMARKS 1
+
 
 namespace {
 namespace local {
@@ -331,7 +333,7 @@ void pgo_test()
 			{
 				const auto &src_cloud = std::get<0>(src_point_set);  // Raw point cloud.
 				//const auto &src_cloud = std::get<1>(src_point_set);  // Downsampled point cloud.
-				const auto &T = absolute_transforms[sidx];
+				const Eigen::Affine3f T(absolute_transforms[sidx]);
 				const auto &tgt_point_id_to_landmark_id_mapper = point_id_to_pg_landmark_id_mappers[tidx];
 
 				std::vector<size_t> src_point_id_to_landmark_id_mapper(src_cloud->size(), size_t(-1));  // Point index in point cloud -> landmark ID in pose graph.
@@ -373,20 +375,20 @@ void pgo_test()
 					if (size_t(-1) == src_point_id_to_landmark_id_mapper[idx])
 					{
 						const auto &pt = src_cloud->points[idx];
-						//const auto t(Td * Eigen::Vector4d(pt.x, pt.y, pt.z, 1.0));  // NOTE [error] >> t = (0, 0, 0, 0) in release build. Why?
-						const Eigen::Vector4d t(Td * Eigen::Vector4d(pt.x, pt.y, pt.z, 1.0));
-						pg_landmarks.insert(std::make_pair(pg_landmark_vertex_id, t.head<3>()));
+						//const auto t(Td * Eigen::Vector3d(pt.x, pt.y, pt.z));  // NOTE [error] >> t = (0, 0, 0) in release build. Why?
+						const Eigen::Vector3d t(Td * Eigen::Vector3d(pt.x, pt.y, pt.z));
+						pg_landmarks.insert(std::make_pair(pg_landmark_vertex_id, t));
 						src_point_id_to_landmark_id_mapper[idx] = pg_landmark_vertex_id;
 						++pg_landmark_vertex_id;
 					}
 #else
-				for_each(src_point_id_to_landmark_id_mapper.begin(), src_point_id_to_landmark_id_mapper.end(), [&pg_landmarks, &pg_landmark_vertex_id, &src_cloud, &T](size_t &id) {
+				for_each(src_point_id_to_landmark_id_mapper.begin(), src_point_id_to_landmark_id_mapper.end(), [&pg_landmarks, &pg_landmark_vertex_id, &src_cloud, &Td](size_t &id) {
 					if (size_t(-1) == id)
 					{
 						const auto &pt = src_cloud->points[?];
-						//const auto t(Td * Eigen::Vector4d(pt.x, pt.y, pt.z, 1.0));  // NOTE [error] >> t = (0, 0, 0, 0) in release build. Why?
-						const Eigen::Vector4d t(Td * Eigen::Vector4d(pt.x, pt.y, pt.z, 1.0));
-						pg_landmarks.insert(std::make_pair(pg_landmark_vertex_id, t.head<3>()));
+						//const auto t(Td * Eigen::Vector3d(pt.x, pt.y, pt.z));  // NOTE [error] >> t = (0, 0, 0) in release build. Why?
+						const Eigen::Vector3d t(Td * Eigen::Vector3d(pt.x, pt.y, pt.z));
+						pg_landmarks.insert(std::make_pair(pg_landmark_vertex_id, t));
 						id = pg_landmark_vertex_id;
 						++pg_landmark_vertex_id;
 					}
@@ -530,7 +532,7 @@ void pgo_test()
 
 		for (const auto &nid: pose_graph)
 		{
-			const auto &T = absolute_transforms[nid];
+			const Eigen::Affine3f T(absolute_transforms[nid]);
 			const auto &point_set = point_sets[nid];
 			const auto &Tcaminit = std::get<3>(point_set);
 
@@ -544,7 +546,7 @@ void pgo_test()
 			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, cloud_id);
 			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, (std::rand() % 101) * 0.01, (std::rand() % 101) * 0.01, (std::rand() % 101) * 0.01, cloud_id);
 			//viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, cloud_id);
-			viewer.addCoordinateSystem(50.0, Eigen::Affine3f(T) * Tcaminit, camera_id);
+			viewer.addCoordinateSystem(50.0, T * Tcaminit, camera_id);
 		}
 
 		//viewer.setRepresentationToSurfaceForAllActors();
@@ -583,11 +585,11 @@ void pgo_test()
 
 		for (const auto &nid: pose_graph)
 		{
-			const auto &T = absolute_transforms[nid];
+			const Eigen::Affine3f T(absolute_transforms[nid]);
 			const auto &point_set = point_sets[nid];
 			const auto &Tcaminit = std::get<3>(point_set);
 
-			viewer.addCoordinateSystem(50.0, Eigen::Affine3f(T) * Tcaminit, "Camera #" + std::to_string(nid));
+			viewer.addCoordinateSystem(50.0, T * Tcaminit, "Camera #" + std::to_string(nid));
 		}
 
 		//viewer.setRepresentationToSurfaceForAllActors();
@@ -648,6 +650,7 @@ void pgo_test()
 		optimizer.setAlgorithm(solver);
 #endif
 
+#if !defined(__USE_SE3_AS_LANDMARKS)
 		// Add the parameter representing the sensor offset.
 		// FIXME [check] >> Camera parameters.
 #if 0
@@ -661,7 +664,7 @@ void pgo_test()
 		auto camera_param = new g2o::ParameterCamera();
 		camera_param->setKcam(fx, fy, cx, cy);
 #else
-		g2o::Isometry3 sensorOffsetTransf(g2o::Isometry3::Identity());
+		auto sensorOffsetTransf(g2o::Isometry3::Identity());
 		//sensorOffsetTransf(3, 3) = 100.0;
 		auto camera_param = new g2o::ParameterSE3Offset;
 		camera_param->setOffset(sensorOffsetTransf);
@@ -672,6 +675,7 @@ void pgo_test()
 		{
 			assert(false);
 		}
+#endif
 
 		// Construct a pose graph.
 		{
@@ -682,21 +686,22 @@ void pgo_test()
 			std::cout << "Adding camera poses..." << std::endl;
 			for (const auto &nid: pose_graph)
 			{
-				const auto &T = absolute_transforms[nid];
+				const Eigen::Affine3f T(absolute_transforms[nid]);
 				const auto &point_set = point_sets[nid];
 				const auto &Tcaminit = std::get<3>(point_set);
 				// FIXME [check] >> Camera pose.
-				const auto Tcam(Eigen::Affine3f(T) * Tcaminit);
-				//const auto Tcam(Eigen::Affine3f(T));
+				const auto Tcam(T * Tcaminit);
+				//const auto &Tcam = T;
 
 				auto camera = new g2o::VertexSE3;
 				camera->setId(int(nid));
-				//camera->setEstimate(g2o::SE3Quat(Tcam.rotation().cast<double>(), Tcam.translation().cast<double>()));  // Global pose.
-				camera->setEstimate(g2o::Isometry3(Tcam.matrix().cast<double>()));  // Global pose.
+				//camera->setEstimate(g2o::SE3Quat(Tcam.rotation().cast<double>(), Tcam.translation().cast<double>()));  // Camera pose wrt the world frame.
+				camera->setEstimate(g2o::Isometry3(Tcam.matrix().cast<double>()));  // Camera pose wrt the world frame.
 				//camera->setMarginalized(true);
 				//camera->setFixed(true);
 
-				optimizer.addVertex(camera);
+				if (!optimizer.addVertex(camera))
+					std::cerr << "Camera vertex #" << nid << " not added." << std::endl;
 			}
 			std::cout << "Done." << std::endl;
 
@@ -704,12 +709,19 @@ void pgo_test()
 			std::cout << "Adding landmarks..." << std::endl;
 			for (const auto &l: pg_landmarks)
 			{
+#if defined(__USE_SE3_AS_LANDMARKS)
+				auto landmark = new g2o::VertexSE3;
+				landmark->setId(int(l.first));
+				landmark->setEstimate(g2o::Isometry3(Eigen::Translation3d(l.second) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0)));  // Vertex pose wrt the world frame.
+#else
 				auto landmark = new g2o::VertexPointXYZ;
 				landmark->setId(int(l.first));
-				landmark->setEstimate(l.second);  // Global coordinates.
+				landmark->setEstimate(l.second);  // Vertex coordinates wrt the world frame.
+#endif
 				landmark->setMarginalized(true);  // If true, faster.
 
-				optimizer.addVertex(landmark);
+				if (!optimizer.addVertex(landmark))
+					std::cerr << "Landmark vertex #" << l.first << " not added." << std::endl;
 			}
 			std::cout << "Done." << std::endl;
 			assert(optimizer.vertices().size() == point_sets.size() + pg_landmarks.size());
@@ -719,7 +731,7 @@ void pgo_test()
 				std::cout << "Adding odometry measurements..." << std::endl;
 				// FIXME [check] >> Information matrix.
 				const auto information_matrix(Eigen::Matrix<double, 6, 6>::Identity() * 0.001);
-				//const auto information_matrix(Eigen::DiagonalMatrix<double, 6>(0.1, 0.1, 0.1, 0.1, 0.1, 0.1));
+				//const Eigen::DiagonalMatrix<double, 6> information_matrix(0.1, 0.1, 0.1, 0.1, 0.1, 0.1);
 				for (const auto &res: icp_results)
 				{
 					const auto &sidx = res.first;
@@ -731,10 +743,11 @@ void pgo_test()
 					auto odometry = new g2o::EdgeSE3;
 					odometry->vertices()[0] = optimizer.vertex(int(tidx));  // Camera ID.
 					odometry->vertices()[1] = optimizer.vertex(int(sidx));  // Camera ID.
-					odometry->setMeasurement(g2o::Isometry3(Trel.cast<double>()));  // Relative transformation.
+					odometry->setMeasurement(g2o::Isometry3(Trel.cast<double>()));  // Relative pose of the i-th camera frame wrt the (i-1)-th camera frame.
 					odometry->setInformation(information_matrix);
 
-					optimizer.addEdge(odometry);
+					if (!optimizer.addEdge(odometry))
+						std::cerr << "Camera odometry edge(" << tidx << " - " << sidx << ") not added." << std::endl;
 				}
 				std::cout << "Done." << std::endl;
 			}
@@ -743,44 +756,65 @@ void pgo_test()
 			{
 				std::cout << "Adding landmark observations..." << std::endl;
 				// FIXME [check] >> Information matrix.
-				const auto information_matrix(Eigen::Matrix3d::Identity() * 0.001);
-				//const auto information_matrix(Eigen::DiagonalMatrix<double, 3>(0.2, 0.2, 0.2));
+#if defined(__USE_SE3_AS_LANDMARKS)
+				const Eigen::Matrix<double, 6, 6> information_matrix(Eigen::DiagonalMatrix<double, 6>(0.2, 0.2, 0.2, 0.000001, 0.000001, 0.000001));
+#else
+				const auto information_matrix(Eigen::Matrix3d::Identity() * 0.2);
+				//const Eigen::DiagonalMatrix<double, 3> information_matrix(0.2, 0.2, 0.2);
+#endif
 				for (const auto &nid: pose_graph)
 				{
-					const auto &T = absolute_transforms[nid];
+					const Eigen::Affine3f T(absolute_transforms[nid]);
 					const auto &point_set = point_sets[nid];
 					const auto &cloud = std::get<0>(point_set);  // Raw point cloud.
 					//const auto &cloud = std::get<1>(point_set);  // Downsampled point cloud.
-					const auto &Tcaminit = std::get<3>(point_set);
-					// FIXME [check] >> Camera pose.
-					const auto Tcam(Eigen::Affine3f(T) * Tcaminit);
-					//const auto Tcam(Eigen::Affine3f(T));
-					const auto &cam_pos = Tcam.translation();  // Global coordinates.
+					const auto &Tcaminit = std::get<3>(point_set);  // The initial camera pose wrt the world frame.
 					const auto &point_id_to_landmark_id_mapper = point_id_to_pg_landmark_id_mappers[nid];
+					// FIXME [check] >> Camera pose.
+					const auto Tcam(T * Tcaminit);  // The transformed camera pose wrt the world frame.
+					//const auto &Tcam = T;
+					const auto &cam_pos = Tcam.translation();  // Coordinates wrt the world frame.
 
 					for (size_t pidx = 0; pidx < cloud->size(); ++pidx)
 					{
+						const auto &pt = cloud->points[pidx];  // Initial coordinates wrt the world frame.
+						// FIXME [fix] >> Measurements wrt the world frame -> measurements wrt the camera frame.
+#if defined(__USE_SE3_AS_LANDMARKS)
+						//const auto pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Error. Coordinates wrt the world frame.
+						const Eigen::Vector3f pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Coordinates wrt the world frame.
+						const g2o::Isometry3 measurement(Eigen::Translation3d(pt_w[0] - cam_pos[0], pt_w[1] - cam_pos[1], pt_w[2] - cam_pos[2]) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0));  // Relative pose of each vertex wrt the world frame.
+
+						auto observation = new g2o::EdgeSE3;
+#else
+#if 0
+						const g2o::Vector3 measurement(pt.x, pt.y, pt.z);  // Relative coordinates of each landmark wrt the world frame.
+#elif 0
+						const g2o::Vector3 measurement(pt.x - Tcaminit(0, 3), pt.y - Tcaminit(1, 3), pt.z - Tcaminit(2, 3));  // Relative coordinates of each landmark wrt the world frame.
+#else
+						//const auto pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Error. Coordinates wrt the world frame.
+						const Eigen::Vector3f pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Coordinates wrt the world frame.
+						const g2o::Vector3 measurement(pt_w[0] - cam_pos[0], pt_w[1] - cam_pos[1], pt_w[2] - cam_pos[2]);  // Relative coordinates of each landmark wrt the world frame.
+#endif
+
 						auto observation = new g2o::EdgeSE3PointXYZ;
+#endif
 						observation->vertices()[0] = optimizer.vertex(int(nid));  // Camera ID.
 						observation->vertices()[1] = optimizer.vertex(int(point_id_to_landmark_id_mapper[pidx]));  // Landmark ID.
-						const auto &pt = cloud->points[pidx];  // Global coordinates.
-#if 0
-						observation->setMeasurement(g2o::Vector3(pt[0], pt[1], pt[2]));  // Relative measurement.
-#elif 0
-						observation->setMeasurement(g2o::Vector3(pt[0] - Tcaminit(3, 0), pt[1] - Tcaminit(3, 1), pt[2] - Tcaminit(3, 2)));  // Relative measurement.
-#else
-						const auto pt_g(T * Eigen::Vector4f(pt.x, pt.y, pt.z, 1.0f));  // Global coordinates.
-						observation->setMeasurement(g2o::Vector3(pt_g[0] - cam_pos[0], pt_g[1] - cam_pos[1], pt_g[2] - cam_pos[2]));  // Relative measurement.
-#endif
+						observation->setMeasurement(measurement);
 						observation->setInformation(information_matrix);
+#if !defined(__USE_SE3_AS_LANDMARKS)
 						observation->setParameterId(0, camera_param->id());
+#endif
 						if (ROBUST_KERNEL)
 						{
-							auto rk = new g2o::RobustKernelHuber;
-							observation->setRobustKernel(rk);
+							//auto robust_kernel = g2o::RobustKernelFactory::instance()->construct("Huber");
+							auto robust_kernel = new g2o::RobustKernelHuber;
+							robust_kernel->setDelta(std::sqrt(5.991));  // 95% CI.
+							observation->setRobustKernel(robust_kernel);
 						}
 
-						optimizer.addEdge(observation);
+						if (!optimizer.addEdge(observation))
+							std::cerr << "Landmark observation edge(" << nid << " - " << point_id_to_landmark_id_mapper[pidx] << ") not added." << std::endl;
 					}
 				}
 				std::cout << "Done." << std::endl;
@@ -795,27 +829,35 @@ void pgo_test()
 
 		// Optimization.
 		{
-			// Dump initial state to the disk.
-			//if (!optimizer.save("../pgo_before.g2o"))
-			//	std::cerr << "Failed to save to " << "../pgo_before.g2o" << std::endl;
-
 			// Prepare and run the optimization.
 			// Fix the first camera pose to account for gauge freedom.
 			auto firstCameraPose = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(pose_graph[0]));
 			firstCameraPose->setFixed(true);
 
-			const int num_iterations = 100;
+			const int max_iterations = 100;
+			const bool online = false;
 			const bool verbose = true;
 
-			std::cout << "Optimizing..." << std::endl;
-			const auto start_time(std::chrono::high_resolution_clock::now());
-			optimizer.initializeOptimization();
 			optimizer.setVerbose(verbose);
-			optimizer.optimize(num_iterations);
-			std::cout << "Optimized: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+			if (optimizer.initializeOptimization())
+			{
+				// Dump initial state to the disk.
+				//if (!optimizer.save("../pgo_before.g2o"))
+				//	std::cerr << "Failed to save to " << "../pgo_before.g2o" << std::endl;
 
-			//if (!optimizer.save("../pgo_after.g2o"))
-			//	std::cerr << "Failed to save to " << "../pgo_after.g2o" << std::endl;
+				std::cout << "Optimizing..." << std::endl;
+				const auto start_time(std::chrono::high_resolution_clock::now());
+				const auto num_iterations = optimizer.optimize(max_iterations, online);
+				if (num_iterations > 0)
+					std::cout << "Optimized (#iterations = " << num_iterations << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+				else
+					std::cout << "Optimization failed." << std::endl;
+
+				//if (!optimizer.save("../pgo_after.g2o"))
+				//	std::cerr << "Failed to save to " << "../pgo_after.g2o" << std::endl;
+			}
+			else
+				std::cerr << "Optimization not initialized." << std::endl;
 		}
 
 		// Show PGO results.
@@ -826,10 +868,10 @@ void pgo_test()
 			std::sample(pose_graph.begin(), pose_graph.end(), std::back_inserter(pose_graph_sampled), num_cameras_sampled, std::mt19937 { std::random_device{}() });
 			for (const auto &nid: pose_graph_sampled)
 			{
-				const auto &T = absolute_transforms[nid];
+				const Eigen::Affine3f T(absolute_transforms[nid]);
 				const auto &point_set = point_sets[nid];
 				const auto &Tcaminit = std::get<3>(point_set);
-				const auto Tcam(Eigen::Affine3f(T) * Tcaminit);
+				const auto Tcam(T * Tcaminit);
 
 				const auto &Tcam_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate();
 
@@ -869,11 +911,11 @@ void pgo_test()
 
 			for (const auto &nid: pose_graph)
 			{
-				//const auto &T = absolute_transforms[nid];
+				//const Eigen::Affine3f T(absolute_transforms[nid]);
 				const auto &point_set = point_sets[nid];
 				const auto &Tcaminit = std::get<3>(point_set);
 
-				//const auto Tcam(Eigen::Affine3f(T) * Tcaminit);
+				//const auto Tcam(T * Tcaminit);
 				const auto &Tcam_est = Eigen::Affine3f(dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate().matrix().cast<float>());
 				const auto T(Tcam_est * Tcaminit.inverse());
 

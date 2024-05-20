@@ -127,7 +127,7 @@ set(SRCS
 	sub.cpp
 )
 set(LIBS
-#	${OpenMP_CXX_FLAGS}
+#	${OpenMP_CXX_LIBRARIES}
 #	OpenMP::OpenMP_CXX
 #	${LOG4CXX_LIBRARIES}
 #	${GLOG_LIBRARIES}

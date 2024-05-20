@@ -327,7 +327,8 @@ void slam3d_se3_pointxyz_test()
 			is_first = false;
 		}
 
-		optimizer.addVertex(robot);
+		if (!optimizer.addVertex(robot))
+			std::cerr << "Robot vertex #" << (vertex_id - 1) << " not added." << std::endl;
 	}
 
 	// Landmark(cube) vertices.
@@ -342,7 +343,8 @@ void slam3d_se3_pointxyz_test()
 		landmark->setEstimate(t.head<3>());  // Vertex coordinates wrt the world frame.
 		//landmark->setMarginalized(true);
 
-		optimizer.addVertex(landmark);
+		if (!optimizer.addVertex(landmark))
+			std::cerr << "Landmark vertex #" << (vertex_id - 1) << " not added." << std::endl;
 	}
 
 	// Odometry constraint edges.
@@ -365,7 +367,8 @@ void slam3d_se3_pointxyz_test()
 		odometry->setRobustKernel(robust_kernel);
 #endif
 
-		optimizer.addEdge(odometry);
+		if (!optimizer.addEdge(odometry))
+			std::cerr << "Robot odometry edge(" << (idx + 1) << " - " << (idx + 2) << ") not added." << std::endl;
 	}
 
 	// Landmark(cube) observation edges.
@@ -391,7 +394,8 @@ void slam3d_se3_pointxyz_test()
 			observation->setRobustKernel(robust_kernel);
 #endif
 
-			optimizer.addEdge(observation);
+			if (!optimizer.addEdge(observation))
+				std::cerr << "Landmark observation edge(" << (idx + 1) << " - " << (vidx + 6) << ") not added." << std::endl;
 		}
 	}
 
@@ -428,8 +432,10 @@ void slam3d_se3_pointxyz_test()
 	std::cout << "Optimizing..." << std::endl;
 	const auto start_time(std::chrono::high_resolution_clock::now());
 	const auto num_iterations = optimizer.optimize(max_iterations, online);
-	std::cout << "Optimized: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
-	std::cout << "#iterations = " << num_iterations << std::endl;
+	if (num_iterations > 0)
+		std::cout << "Optimized (#iterations = " << num_iterations << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+	else
+		std::cout << "Optimization failed." << std::endl;
 
 	//-----
 	const std::string output_filename("../slam3d_se3_pointxyz_after_pgo.g2o");
@@ -603,7 +609,8 @@ void slam3d_se3_test()
 			is_first = false;
 		}
 
-		optimizer.addVertex(robot);
+		if (!optimizer.addVertex(robot))
+			std::cerr << "Robot vertex #" << (vertex_id - 1) << " not added." << std::endl;
 	}
 
 	// Landmark(cube) vertices.
@@ -618,7 +625,8 @@ void slam3d_se3_test()
 		landmark->setEstimate(g2o::Isometry3(Eigen::Translation3d(t.head<3>()) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0)));  // Vertex pose wrt the world frame.
 		//landmark->setMarginalized(true);
 
-		optimizer.addVertex(landmark);
+		if (!optimizer.addVertex(landmark))
+			std::cerr << "Landmark vertex #" << (vertex_id - 1) << " not added." << std::endl;
 	}
 
 	// Odometry constraint edges.
@@ -641,7 +649,8 @@ void slam3d_se3_test()
 		odometry->setRobustKernel(robust_kernel);
 #endif
 
-		optimizer.addEdge(odometry);
+		if (!optimizer.addEdge(odometry))
+			std::cerr << "Robot odometry edge(" << (idx + 1) << " - " << (idx + 2) << ") not added." << std::endl;
 	}
 
 	// Landmark(cube) observation edges.
@@ -667,7 +676,8 @@ void slam3d_se3_test()
 			observation->setRobustKernel(robust_kernel);
 #endif
 
-			optimizer.addEdge(observation);
+			if (!optimizer.addEdge(observation))
+				std::cerr << "Landmark observation edge(" << (idx + 1) << " - " << (vidx + 6) << ") not added." << std::endl;
 		}
 	}
 
@@ -704,8 +714,10 @@ void slam3d_se3_test()
 	std::cout << "Optimizing..." << std::endl;
 	const auto start_time(std::chrono::high_resolution_clock::now());
 	const auto num_iterations = optimizer.optimize(max_iterations, online);
-	std::cout << "Optimized: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
-	std::cout << "#iterations = " << num_iterations << std::endl;
+	if (num_iterations > 0)
+		std::cout << "Optimized (#iterations = " << num_iterations << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+	else
+		std::cout << "Optimization failed." << std::endl;
 
 	//-----
 	const std::string output_filename("../slam3d_se3_after_pgo.g2o");
