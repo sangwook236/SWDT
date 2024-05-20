@@ -770,31 +770,19 @@ void pgo_test()
 					//const auto &cloud = std::get<1>(point_set);  // Downsampled point cloud.
 					const auto &Tcaminit = std::get<3>(point_set);  // The initial camera pose wrt the world frame.
 					const auto &point_id_to_landmark_id_mapper = point_id_to_pg_landmark_id_mappers[nid];
-					// FIXME [check] >> Camera pose.
-					const auto Tcam(T * Tcaminit);  // The transformed camera pose wrt the world frame.
-					//const auto &Tcam = T;
-					const auto &cam_pos = Tcam.translation();  // Coordinates wrt the world frame.
 
 					for (size_t pidx = 0; pidx < cloud->size(); ++pidx)
 					{
 						const auto &pt = cloud->points[pidx];  // Initial coordinates wrt the world frame.
-						// FIXME [fix] >> Measurements wrt the world frame -> measurements wrt the camera frame.
+						const Eigen::Vector3f pt_w(pt.x, pt.y, pt.z);  // Relative coordinates of each landmark wrt the world frame.
+						//const auto pt_c(Tcaminit.inverse() * pt_w);  // Error. Relative coordinates of each landmark wrt the camera frame.
+						const Eigen::Vector3f pt_c(Tcaminit.inverse() * pt_w);  // Relative coordinates of each landmark wrt the camera frame.
 #if defined(__USE_SE3_AS_LANDMARKS)
-						//const auto pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Error. Coordinates wrt the world frame.
-						const Eigen::Vector3f pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Coordinates wrt the world frame.
-						const g2o::Isometry3 measurement(Eigen::Translation3d(pt_w[0] - cam_pos[0], pt_w[1] - cam_pos[1], pt_w[2] - cam_pos[2]) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0));  // Relative pose of each vertex wrt the world frame.
+						const g2o::Isometry3 measurement(Eigen::Translation3d(pt_c.cast<double>()) * Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0));  // Relative pose of each vertex wrt the world frame.
 
 						auto observation = new g2o::EdgeSE3;
 #else
-#if 0
-						const g2o::Vector3 measurement(pt.x, pt.y, pt.z);  // Relative coordinates of each landmark wrt the world frame.
-#elif 0
-						const g2o::Vector3 measurement(pt.x - Tcaminit(0, 3), pt.y - Tcaminit(1, 3), pt.z - Tcaminit(2, 3));  // Relative coordinates of each landmark wrt the world frame.
-#else
-						//const auto pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Error. Coordinates wrt the world frame.
-						const Eigen::Vector3f pt_w(T * Eigen::Vector3f(pt.x, pt.y, pt.z));  // Coordinates wrt the world frame.
-						const g2o::Vector3 measurement(pt_w[0] - cam_pos[0], pt_w[1] - cam_pos[1], pt_w[2] - cam_pos[2]);  // Relative coordinates of each landmark wrt the world frame.
-#endif
+						const auto measurement(pt_c.cast<double>());  // Relative coordinates of each landmark wrt the camera frame.
 
 						auto observation = new g2o::EdgeSE3PointXYZ;
 #endif
@@ -873,7 +861,7 @@ void pgo_test()
 				const auto &Tcaminit = std::get<3>(point_set);
 				const auto Tcam(T * Tcaminit);
 
-				const auto &Tcam_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate();
+				const g2o::Isometry3 &Tcam_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate();
 
 				std::cout << "Camera ID #" << nid << " ----------" << std::endl;
 				std::cout << Tcam.matrix() << std::endl;
@@ -886,7 +874,7 @@ void pgo_test()
 			std::sample(pg_landmarks.begin(), pg_landmarks.end(), std::inserter(pg_landmarks_sampled, pg_landmarks_sampled.end()), num_landmarks_sampled, std::mt19937 { std::random_device{}() });
 			for (const auto &l: pg_landmarks_sampled)
 			{
-				const auto &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
+				const g2o::Vector3 &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
 
 				std::cout << "Landmark ID #" << l.first << " ----------" << std::endl;
 				std::cout << l.second.transpose() << std::endl;
@@ -916,7 +904,7 @@ void pgo_test()
 				const auto &Tcaminit = std::get<3>(point_set);
 
 				//const auto Tcam(T * Tcaminit);
-				const auto &Tcam_est = Eigen::Affine3f(dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate().matrix().cast<float>());
+				const Eigen::Affine3f Tcam_est(dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate().cast<float>());
 				const auto T(Tcam_est * Tcaminit.inverse());
 
 				auto points_viz(std::make_shared<points_type>());
@@ -960,7 +948,7 @@ void pgo_test()
 			cloud->reserve(pg_landmarks.size());
 			for (const auto &l: pg_landmarks)
 			{
-				const auto &vtx_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
+				const g2o::Vector3 &vtx_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
 				cloud->push_back(point_type(float(vtx_est.x()), float(vtx_est.y()), float(vtx_est.z())));
 			}
 
@@ -972,7 +960,7 @@ void pgo_test()
 
 			for (const auto &nid: pose_graph)
 			{
-				const auto &Tcam_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate();
+				const g2o::Isometry3 &Tcam_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(nid)))->estimate();
 				viewer.addCoordinateSystem(50.0, Eigen::Affine3f(Tcam_est.matrix().cast<float>()), "Camera #" + std::to_string(nid));
 			}
 
