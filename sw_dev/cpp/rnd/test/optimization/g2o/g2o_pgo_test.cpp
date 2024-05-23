@@ -874,11 +874,19 @@ void pgo_test()
 			std::sample(pg_landmarks.begin(), pg_landmarks.end(), std::inserter(pg_landmarks_sampled, pg_landmarks_sampled.end()), num_landmarks_sampled, std::mt19937 { std::random_device{}() });
 			for (const auto &l: pg_landmarks_sampled)
 			{
-				const g2o::Vector3 &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
+#if defined(__USE_SE3_AS_LANDMARKS)
+				const auto &l_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(l.first)))->estimate();
+
+				std::cout << "Landmark ID #" << l.first << " ----------" << std::endl;
+				std::cout << l.second.transpose() << std::endl;
+				std::cout << l_est.matrix() << std::endl;
+#else
+				const auto &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
 
 				std::cout << "Landmark ID #" << l.first << " ----------" << std::endl;
 				std::cout << l.second.transpose() << std::endl;
 				std::cout << l_est.transpose() << std::endl;
+#endif
 			}
 		}
 
@@ -948,8 +956,13 @@ void pgo_test()
 			cloud->reserve(pg_landmarks.size());
 			for (const auto &l: pg_landmarks)
 			{
-				const g2o::Vector3 &vtx_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
-				cloud->push_back(point_type(float(vtx_est.x()), float(vtx_est.y()), float(vtx_est.z())));
+#if defined(__USE_SE3_AS_LANDMARKS)
+				//const auto &l_est = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(l.first)))->estimate();
+				const g2o::Vector3 l_est(dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(int(l.first)))->estimate().translation());
+#else
+				const auto &l_est = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(int(l.first)))->estimate();
+#endif
+				cloud->push_back(point_type(float(l_est.x()), float(l_est.y()), float(l_est.z())));
 			}
 
 			viewer.addPointCloud<point_type>(cloud, "Point Cloud");
