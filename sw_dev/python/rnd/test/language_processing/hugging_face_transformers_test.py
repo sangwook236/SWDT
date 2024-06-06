@@ -2758,9 +2758,11 @@ def orca_example():
 #	https://huggingface.co/mistralai
 def mistral_example():
 	# Models:
-	#	mistralai/Mistral-7B-v0.1: ~14.48GB.
-	#	mistralai/Mistral-7B-Instruct-v0.1.
-	#	mistralai/Mistral-7B-Instruct-v0.2.
+	#	mistralai/Mistral-7B-v0.1: ~14.48GB
+	#	mistralai/Mistral-7B-Instruct-v0.1
+	#	mistralai/Mistral-7B-Instruct-v0.2
+	#	mistralai/Mistral-7B-v0.3
+	#	mistralai/Mistral-7B-Instruct-v0.3
 
 	device = "cuda"  # The device to load the model onto
 
@@ -2830,8 +2832,10 @@ def mistral_example():
 #	https://huggingface.co/mistralai
 def mixtral_example():
 	# Models:
-	#	mistralai/Mixtral-8x7B-v0.1.
-	#	mistralai/Mixtral-8x7B-Instruct-v0.1.
+	#	mistralai/Mixtral-8x7B-v0.1
+	#	mistralai/Mixtral-8x7B-Instruct-v0.1
+	#	mistralai/Mixtral-8x22B-v0.1
+	#	mistralai/Mixtral-8x22B-Instruct-v0.1
 
 	device = "cuda"  # The device to load the model onto
 
@@ -3067,6 +3071,155 @@ def aya_example():
 
 		gen_text = tokenizer.decode(gen_tokens[0])
 		print(gen_text)
+
+# REF [site] >>
+#	https://huggingface.co/microsoft
+#	https://huggingface.co/docs/transformers/main/en/model_doc/phi3
+def phi_3_example():
+	# Models:
+	#	microsoft/Phi-3-mini-4k-instruct
+	#	microsoft/Phi-3-mini-128k-instruct
+	#	microsoft/Phi-3-mini-4k-instruct-onnx
+	#	microsoft/Phi-3-mini-128k-instruct-onnx
+	#	microsoft/Phi-3-small-8k-instruct
+	#	microsoft/Phi-3-small-128k-instruct
+	#	microsoft/Phi-3-small-8k-instruct-onnx-cuda
+	#	microsoft/Phi-3-small-128k-instruct-onnx-cuda
+	#	microsoft/Phi-3-medium-4k-instruct
+	#	microsoft/Phi-3-medium-128k-instruct
+	#	microsoft/Phi-3-medium-4k-instruct-onnx-cpu
+	#	microsoft/Phi-3-medium-128k-instruct-onnx-cpu
+	#	microsoft/Phi-3-medium-4k-instruct-onnx-cuda
+	#	microsoft/Phi-3-medium-128k-instruct-onnx-cuda
+	#	microsoft/Phi-3-medium-4k-instruct-onnx-directml
+	#	microsoft/Phi-3-medium-128k-instruct-onnx-directml
+
+	"""
+	Chat Format:
+
+	Given the nature of the training data, the Phi-3 Mini-4K-Instruct model is best suited for prompts using the chat format as follows. You can provide the prompt as a question with a generic template as follow:
+
+		<|user|>\nQuestion <|end|>\n<|assistant|>
+
+	For example:
+
+		<|system|>
+		You are a helpful AI assistant.<|end|>
+		<|user|>
+		How to explain Internet for a medieval knight?<|end|>
+		<|assistant|>
+
+	where the model generates the text after <|assistant|> . In case of few-shots prompt, the prompt can be formatted as the following:
+
+		<|system|>
+		You are a helpful AI assistant.<|end|>
+		<|user|>
+		I am going to Paris, what should I see?<|end|>
+		<|assistant|>
+		Paris, the capital of France, is known for its stunning architecture, art museums, historical landmarks, and romantic atmosphere. Here are some of the top attractions to see in Paris:\n\n1. The Eiffel Tower: The iconic Eiffel Tower is one of the most recognizable landmarks in the world and offers breathtaking views of the city.\n2. The Louvre Museum: The Louvre is one of the world's largest and most famous museums, housing an impressive collection of art and artifacts, including the Mona Lisa.\n3. Notre-Dame Cathedral: This beautiful cathedral is one of the most famous landmarks in Paris and is known for its Gothic architecture and stunning stained glass windows.\n\nThese are just a few of the many attractions that Paris has to offer. With so much to see and do, it's no wonder that Paris is one of the most popular tourist destinations in the world."<|end|>
+		<|user|>
+		What is so great about #1?<|end|>
+		<|assistant|>
+	"""
+
+	torch.random.manual_seed(0)
+	device = torch.cuda.current_device() if torch.cuda.is_available() else torch.device("cpu")
+	#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if True:
+		model_id = "microsoft/Phi-3-mini-4k-instruct"
+		#model_id = "microsoft/Phi-3-mini-128k-instruct"
+		#model_id = "microsoft/Phi-3-small-8k-instruct"
+		#model_id = "microsoft/Phi-3-small-128k-instruct"
+		#model_id = "microsoft/Phi-3-medium-4k-instruct"
+		#model_id = "microsoft/Phi-3-medium-128k-instruct"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="cuda",
+			torch_dtype="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		messages = [
+			{"role": "system", "content": "You are a helpful digital assistant. Please provide safe, ethical and accurate information to the user."},
+			{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"},
+			{"role": "assistant", "content": "Sure! Here are some ways to eat bananas and dragonfruits together: 1. Banana and dragonfruit smoothie: Blend bananas and dragonfruits together with some milk and honey. 2. Banana and dragonfruit salad: Mix sliced bananas and dragonfruits together with some lemon juice and honey."},
+			{"role": "user", "content": "What about solving an 2x + 3 = 7 equation?"},
+		]
+
+		pipe = transformers.pipeline(
+			"text-generation",
+			model=model,
+			tokenizer=tokenizer,
+			#device=device,
+		)
+
+		generation_args = {
+			"max_new_tokens": 500,
+			"return_full_text": False,
+			"temperature": 0.0,
+			"do_sample": False,
+		}
+
+		output = pipe(messages, **generation_args)
+		print(output[0]["generated_text"])
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+
+		messages = [{"role": "system", "content": "You are a helpful digital assistant. Please provide safe, ethical and accurate information to the user."},{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"}]
+		inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+
+		outputs = model.generate(inputs, max_new_tokens=32)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if False:
+		# Initializing a Phi-3 style configuration
+		configuration = f.Phi3Config.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+
+		# Initializing a model from the configuration
+		model = f.Phi3Model(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = transformers.Phi3ForCausalLM.from_pretrained("microsoft/phi-3-mini-4k-instruct")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-3-mini-4k-instruct")
+
+		prompt = "This is an example script ."
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+		text = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(text)
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+		model = transformers.Phi3ForTokenClassification.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+
+		inputs = tokenizer(
+			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
+		)
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that
+		# there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
@@ -3632,12 +3785,15 @@ def code_llama_example():
 	#	codellama/CodeLlama-7b-hf: ~13.48GB.
 	#	codellama/CodeLlama-13b-hf.
 	#	codellama/CodeLlama-34b-hf.
+	#	codellama/CodeLlama-70b-hf.
 	#	codellama/CodeLlama-7b-Python-hf.
 	#	codellama/CodeLlama-13b-Python-hf.
 	#	codellama/CodeLlama-34b-Python-hf.
+	#	codellama/CodeLlama-70b-Python-hf.
 	#	codellama/CodeLlama-7b-Instruct-hf.
 	#	codellama/CodeLlama-13b-Instruct-hf.
 	#	codellama/CodeLlama-34b-Instruct-hf.
+	#	codellama/CodeLlama-70b-Instruct-hf.
 
 	model = "codellama/CodeLlama-7b-hf"
 
@@ -3903,134 +4059,62 @@ def print_prime(n):
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
-# REF [site] >>
-#	https://huggingface.co/microsoft
-#	https://huggingface.co/docs/transformers/main/en/model_doc/phi3
-def phi_3_example():
+# REF [site] >> https://huggingface.co/mistralai
+def codestral_example():
 	# Models:
-	#	microsoft/Phi-3-mini-4k-instruct.
-	#	microsoft/Phi-3-mini-128k-instruct.
-	#	microsoft/Phi-3-mini-4k-instruct-onnx.
-	#	microsoft/Phi-3-mini-128k-instruct-onnx.
- 
+	#	mistralai/Codestral-22B-v0.1
+
 	"""
-	Chat Format:
+	# Download
 
-	Given the nature of the training data, the Phi-3 Mini-4K-Instruct model is best suited for prompts using the chat format as follows. You can provide the prompt as a question with a generic template as follow:
+	from huggingface_hub import snapshot_download
+	from pathlib import Path
 
-		<|user|>\nQuestion <|end|>\n<|assistant|>
+	mistral_models_path = Path.home().joinpath("mistral_models", "Codestral-22B-v0.1")
+	mistral_models_path.mkdir(parents=True, exist_ok=True)
 
-	For example:
-
-		<|system|>
-		You are a helpful AI assistant.<|end|>
-		<|user|>
-		How to explain Internet for a medieval knight?<|end|>
-		<|assistant|>
-
-	where the model generates the text after <|assistant|> . In case of few-shots prompt, the prompt can be formatted as the following:
-
-		<|system|>
-		You are a helpful AI assistant.<|end|>
-		<|user|>
-		I am going to Paris, what should I see?<|end|>
-		<|assistant|>
-		Paris, the capital of France, is known for its stunning architecture, art museums, historical landmarks, and romantic atmosphere. Here are some of the top attractions to see in Paris:\n\n1. The Eiffel Tower: The iconic Eiffel Tower is one of the most recognizable landmarks in the world and offers breathtaking views of the city.\n2. The Louvre Museum: The Louvre is one of the world's largest and most famous museums, housing an impressive collection of art and artifacts, including the Mona Lisa.\n3. Notre-Dame Cathedral: This beautiful cathedral is one of the most famous landmarks in Paris and is known for its Gothic architecture and stunning stained glass windows.\n\nThese are just a few of the many attractions that Paris has to offer. With so much to see and do, it's no wonder that Paris is one of the most popular tourist destinations in the world."<|end|>
-		<|user|>
-		What is so great about #1?<|end|>
-		<|assistant|>
+	snapshot_download(repo_id="mistralai/Codestral-22B-v0.1", allow_patterns=["params.json", "consolidated.safetensors", "tokenizer.model.v3"], local_dir=mistral_models_path)
 	"""
 
-	torch.random.manual_seed(0)
+	'''
+	# Fill-in-the-middle (FIM)
 
-	if True:
-		model_id = "microsoft/Phi-3-mini-4k-instruct"
-		#model_id = "microsoft/Phi-3-mini-128k-instruct"
+	# Install:
+	#	pip install mistral_inference
+	#	pip install mistral_common
 
-		model = transformers.AutoModelForCausalLM.from_pretrained(
-			model_id,
-			device_map="cuda",
-			torch_dtype="auto",
-			trust_remote_code=True,
-		)
-		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+	from mistral_inference.model import Transformer
+	from mistral_inference.generate import generate
+	from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+	from mistral_common.tokens.instruct.request import FIMRequest
 
-		messages = [
-			{"role": "system", "content": "You are a helpful digital assistant. Please provide safe, ethical and accurate information to the user."},
-			{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"},
-			{"role": "assistant", "content": "Sure! Here are some ways to eat bananas and dragonfruits together: 1. Banana and dragonfruit smoothie: Blend bananas and dragonfruits together with some milk and honey. 2. Banana and dragonfruit salad: Mix sliced bananas and dragonfruits together with some lemon juice and honey."},
-			{"role": "user", "content": "What about solving an 2x + 3 = 7 equation?"},
-		]
+	tokenizer = MistralTokenizer.v3()
+	model = Transformer.from_folder("~/codestral-22B-240529")
 
-		pipe = transformers.pipeline(
-			"text-generation",
-			model=model,
-			tokenizer=tokenizer,
-		)
+	prefix = """def add("""
+	suffix = """    return sum"""
 
-		generation_args = {
-			"max_new_tokens": 500,
-			"return_full_text": False,
-			"temperature": 0.0,
-			"do_sample": False,
-		}
+	request = FIMRequest(prompt=prefix, suffix=suffix)
 
-		output = pipe(messages, **generation_args)
-		print(output[0]["generated_text"])
+	tokens = tokenizer.encode_fim(request).tokens
 
-	if True:
-		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+	out_tokens, _ = generate([tokens], model, max_tokens=256, temperature=0.0, eos_id=tokenizer.instruct_tokenizer.tokenizer.eos_id)
+	result = tokenizer.decode(out_tokens[0])
 
-		messages = [{"role": "system", "content": "You are a helpful digital assistant. Please provide safe, ethical and accurate information to the user."},{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"}]
-		inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+	middle = result.split(suffix)[0].strip()
+	print(middle)
+	'''
 
-		outputs = model.generate(inputs, max_new_tokens=32)
-		text = tokenizer.batch_decode(outputs)[0]
-		print(text)
+	model_id = "mistralai/Codestral-22B-v0.1"
+	tokenizer = transformers.ALBERT_PRETRAINED_MODEL_ARCHIVE_LISTAutoTokenizer.from_pretrained(model_id)
 
-	if False:
-		# Initializing a Phi-3 style configuration
-		configuration = f.Phi3Config.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
+	model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
 
-		# Initializing a model from the configuration
-		model = f.Phi3Model(configuration)
+	text = "Hello my name is"
+	inputs = tokenizer(text, return_tensors="pt")
 
-		# Accessing the model configuration
-		configuration = model.config
-
-	if True:
-		model = transformers.Phi3ForCausalLM.from_pretrained("microsoft/phi-3-mini-4k-instruct")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-3-mini-4k-instruct")
-
-		prompt = "This is an example script ."
-		inputs = tokenizer(prompt, return_tensors="pt")
-
-		# Generate
-		generate_ids = model.generate(inputs.input_ids, max_length=30)
-		text = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
-		print(text)
-
-	if True:
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
-		model = transformers.Phi3ForTokenClassification.from_pretrained("microsoft/Phi-3-mini-4k-instruct")
-
-		inputs = tokenizer(
-			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
-		)
-
-		with torch.no_grad():
-			logits = model(**inputs).logits
-
-		predicted_token_class_ids = logits.argmax(-1)
-
-		# Note that tokens are classified rather then input words which means that
-		# there might be more predicted token classes than words.
-		# Multiple token classes might account for the same word
-		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
-
-		labels = predicted_token_class_ids
-		loss = model(**inputs, labels=labels).loss
+	outputs = model.generate(**inputs, max_new_tokens=20)
+	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -5016,6 +5100,46 @@ def openflamingo_example():
 	)
 
 	print(f"Generated text: {tokenizer.decode(generated_text[0])}.")
+
+# REF [site] >> https://huggingface.co/microsoft
+def phi_3_vision_example():
+	# Models:
+	#	microsoft/Phi-3-vision-128k-instruct
+	#	microsoft/Phi-3-vision-128k-instruct-onnx-cpu
+	#	microsoft/Phi-3-vision-128k-instruct-onnx-cuda
+
+	model_id = "microsoft/Phi-3-vision-128k-instruct"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="cuda", trust_remote_code=True, torch_dtype="auto", _attn_implementation="flash_attention_2")  # Use _attn_implementation='eager' to disable flash attention
+
+	processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+
+	messages = [ 
+		{"role": "user", "content": "<|image_1|>\nWhat is shown in this image?"},
+		{"role": "assistant", "content": "The chart displays the percentage of respondents who agree with various statements about their preparedness for meetings. It shows five categories: 'Having clear and pre-defined goals for meetings', 'Knowing where to find the information I need for a meeting', 'Understanding my exact role and responsibilities when I'm invited', 'Having tools to manage admin tasks like note-taking or summarization', and 'Having more focus time to sufficiently prepare for meetings'. Each category has an associated bar indicating the level of agreement, measured on a scale from 0% to 100%."},
+		{"role": "user", "content": "Provide insightful questions to spark discussion."}
+	]
+
+	url = "https://assets-c4akfrf5b4d3f4b7.z01.azurefd.net/assets/2024/04/BMDataViz_661fb89f3845e.png"
+	image = Image.open(requests.get(url, stream=True).raw)
+
+	prompt = processor.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+	inputs = processor(prompt, [image], return_tensors="pt").to("cuda:0")
+
+	generation_args = {
+		"max_new_tokens": 500,
+		"temperature": 0.0,
+		"do_sample": False,
+	}
+
+	generate_ids = model.generate(**inputs, eos_token_id=processor.tokenizer.eos_token_id, **generation_args)
+
+	# Remove input tokens 
+	generate_ids = generate_ids[:, inputs['input_ids'].shape[1]:]
+	response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+	print(response)
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/tvlt
 def tvlt_example():
@@ -7087,6 +7211,7 @@ def main():
 	#gemma_example()  # Gemma. Not yet tested.
 	#open_elm_example()  # OpenELM. Not yet tested.
 	#aya_example()  # Aya. Not yet tested.
+	#phi_3_example()  # phi-3. Not yet tested.
 
 	#rag_example()  # Retrieval-augmented generation (RAG).
 
@@ -7105,7 +7230,7 @@ def main():
 	#star_coder_example()  # StarCoder. Not yet tested.
 	#replit_example()  # Replit. Not yet tested.
 	#phi_example()  # phi-1, phi-1.5, & phi-2.
-	#phi_3_example()  # phi-3.
+	#codestral_example()  # Codestral. Not yet tested.
 
 	#--------------------
 	# Vision.
@@ -7129,6 +7254,7 @@ def main():
 	#git_example()  # GIT.
 	#blip_example()  # BLIP.
 	#openflamingo_example()  # OpenFlamingo.
+	#phi_3_vision_example()  # Phi-3-vision.
 
 	#--------------------
 	# Vision and audio.
