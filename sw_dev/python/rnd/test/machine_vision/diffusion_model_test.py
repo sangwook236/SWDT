@@ -572,6 +572,9 @@ def stabilityai_example():
 		image = pipe(prompt, image=init_image, num_inference_steps=2, strength=0.5, guidance_scale=0.0).images[0]
 
 def main():
+	# Denoising diffusion.
+	#	https://github.com/NVIDIA/modulus/tree/main/examples/generative/diffusion
+
 	# Hugging Face Diffusers.
 	#	https://github.com/huggingface/diffusers
 	#	https://huggingface.co/docs/diffusers
