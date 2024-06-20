@@ -1,0 +1,113 @@
+[-] General.
+	- Site.
+		https://ollama.com/
+		https://github.com/ollama/ollama
+
+		https://ollama.com/library
+
+[-] Usage.
+	https://github.com/ollama/ollama
+
+	- Quickstart.
+		To run and chat with Llama 3:
+			ollama run llama3
+
+	- Customize a model.
+		Import from GGUF.
+			Ollama supports importing GGUF models in the Modelfile:
+				1. Create a file named Modelfile, with a FROM instruction with the local filepath to the model you want to import.
+					FROM ./vicuna-33b.Q4_0.gguf
+
+				2. Create the model in Ollama
+					ollama create example -f Modelfile
+
+				3. Run the model
+					ollama run example
+
+	- Import from PyTorch or Safetensors.
+		https://github.com/ollama/ollama/blob/main/docs/import.md
+
+	- Customize a prompt
+		Models from the Ollama library can be customized with a prompt. For example, to customize the llama3 model:
+			ollama pull llama3
+		Create a Modelfile:
+			FROM llama3
+
+			# set the temperature to 1 [higher is more creative, lower is more coherent]
+			PARAMETER temperature 1
+
+			# set the system message
+			SYSTEM """
+			You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
+			"""
+		Create and run the model:
+			ollama create mario -f ./Modelfile
+			ollama run mario
+			>>> hi
+			Hello! It's your friend Mario.
+
+[-] Tool.
+	https://github.com/ollama/ollama
+
+	- CLI.
+		Create a model.
+			ollama create is used to create a model from a Modelfile.
+				ollama create mymodel -f ./Modelfile
+
+		Pull a model.
+			ollama pull llama3
+				This command can also be used to update a local model. Only the diff will be pulled.
+
+		Remove a model.
+			ollama rm llama3
+
+		Copy a model.
+			ollama cp llama3 my-model
+
+		Multiline input.
+			For multiline input, you can wrap text with """:
+
+			>>> """Hello,
+			... world!
+			... """
+			I'm a basic program that prints the famous "Hello, world!" message to the console.
+
+		Multimodal models.
+			>>> What's in this image? /Users/jmorgan/Desktop/smile.png
+			The image features a yellow smiley face, which is likely the central focus of the picture.
+
+		Pass the prompt as an argument.
+			$ ollama run llama3 "Summarize this file: $(cat README.md)"
+			Ollama is a lightweight, extensible framework for building and running language models on the local machine. It provides a simple API for creating, running, and managing models, as well as a library of pre-built models that can be easily used in a variety of applications.
+
+		List models on your computer.
+			ollama list
+
+		Start Ollama.
+			ollama serve is used when you want to start ollama without running the desktop application.
+
+	- REST API.
+		https://github.com/ollama/ollama/blob/main/docs/api.md
+
+		Ollama has a REST API for running and managing models.
+
+		Generate a response.
+			curl http://localhost:11434/api/generate -d '{
+				"model": "llama3",
+				"prompt":"Why is the sky blue?"
+			}'
+
+		Chat with a model.
+			curl http://localhost:11434/api/chat -d '{
+				"model": "llama3",
+				"messages": [
+					{ "role": "user", "content": "why is the sky blue?" }
+				]
+			}'
+
+[-] Installation.
+	- Install (Linux).
+		curl -fsSL https://ollama.com/install.sh | sh
+
+	- Docker.
+		https://hub.docker.com/r/ollama/ollama
