@@ -3,6 +3,23 @@
 		https://docs.microsoft.com/en-us/windows/wsl/
 
 [-] Usage.
+	- Run.
+		wsl --help
+		wsl --version
+
+		wsl --set-version <Distro> <Version>
+		wsl --set-default <Distro>
+		wsl --set-default-version <Version>
+			wsl --set-default-version 1
+			wsl --set-default-version 2
+
+		wsl --mount <Disk>
+		wsl --unmount <Disk>
+
+		wsl
+		wsl -d <Distro>
+		wsl -u <UserName>
+
 	- Filesystem.
 		Access the Windows local file system in WSL:
 			/mnt/c/<file_path>.
@@ -24,9 +41,3 @@
 			wsl --install --distribution Debian
 		wsl --update
 		wsl --shutdown
-
-		wsl --set-version <Distro> <Version>
-		wsl --set-default <Distro>
-		wsl --set-default-version <Version>
-			wsl --set-default-version 1
-			wsl --set-default-version 2
