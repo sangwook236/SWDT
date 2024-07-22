@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 		std::cout << "\nProtocol Buffers library --------------------------------------------" << std::endl;
 		//retval = protobuf_main(argc, argv);
 	}
-    catch (const std::bad_alloc &ex)
+	catch (const std::bad_alloc &ex)
 	{
 		std::cerr << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cerr << "Unknown exception caught" << std::endl;
+		std::cerr << "Unknown exception caught." << std::endl;
 		retval = EXIT_FAILURE;
 	}
 

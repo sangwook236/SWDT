@@ -108,13 +108,13 @@ int main(int argc, char **argv)
 		}
 #endif
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cout << "std::exception caught !!!: " << e.what() << std::endl;
+		std::cerr << "std::exception caught !!!: " << ex.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "Unknown exception caught !!!" << std::endl;
+		std::cerr << "Unknown exception caught !!!" << std::endl;
 	}
 
 	std::cout << "Press any key to exit ..." << std::endl;
