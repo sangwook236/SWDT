@@ -106,9 +106,9 @@
 		<error>
 			Could not find the following Boost libraries:
 				boost_thread
-		          boost_chrono
-		          boost_system
-		          boost_date_time
+				boost_chrono
+				boost_system
+				boost_date_time
 			No Boost libraries were found. You may need to set BOOST_LIBRARYDIR to the directory containing Boost libraries or BOOST_ROOT to the location of Boost.
 		<cause>
 			Boost library directory를 찾지 못함.

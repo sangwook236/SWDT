@@ -49,8 +49,13 @@
 
 [-] Installation (Linux, C++).
 	http://www.open3d.org/docs/release/compilation.html
-	
+
 	- Install from source.
+		Download 3rd-party:
+			https://github.com/isl-org/Open3D/releases/tag/v0.12.0
+			https://github.com/isl-org/Open3D/releases/tag/v0.18.0
+			https://github.com/isl-org/Open3D-3rdparty
+
 		git clone https://github.com/isl-org/Open3D
 		cd ${OPEN3D_HOME}
 
