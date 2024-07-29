@@ -65,3 +65,28 @@
 
 		make -j$(nproc)
 		sudo make install
+
+[-] Installation (Windows, C++).
+	http://www.open3d.org/docs/release/compilation.html
+
+	- Install from source.
+		Download 3rd-party:
+			https://github.com/isl-org/Open3D/releases/tag/v0.12.0
+			https://github.com/isl-org/Open3D/releases/tag/v0.18.0
+			https://github.com/isl-org/Open3D-3rdparty
+
+		git clone https://github.com/isl-org/Open3D
+		cd ${OPEN3D_HOME}
+
+		CMake:
+			Configure.
+				Set STATIC_WINDOWS_RUNTIME to OFF.
+				Set BUILD_SHARED_LIBS to ON.
+				Set BUILD_WEBRTC to OFF.
+			Generate.
+
+		Copy 'resources' directory to the parent folder of the project files.
+			${OPEN3D_HOME}/build/bin/resources
+			${OPEN3D_HOME}/build/Open3D/resources
+
+		Open Visual Studio solution file.
