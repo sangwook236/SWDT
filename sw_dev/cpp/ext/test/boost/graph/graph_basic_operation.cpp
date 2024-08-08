@@ -205,9 +205,221 @@ void boost_quick_tour()
 	);
 }
 
+void basic_operation_1()
+{
+	// Make convenient labels for the vertices.
+	enum { A, B, C, D, E, N };
+	//enum { A = 10, B, C, D, E, N = 5 };  // Create a graph with 14 vertices (0 ~ 14)
+	//enum { A, B, C, D, E = 30, N = 5 };  // Create a graph with 31 vertices (0 ~ 30)
+	const int num_vertices = N;
+
+	// Writing out the edges in the graph.
+	using edge_type = std::pair<int, int>;
+
+	const edge_type edge_array[] = { edge_type(A, B), edge_type(A, D), edge_type(C, A), edge_type(D, C), edge_type(C, E), edge_type(B, D), edge_type(D, E), };
+	const int num_edges = sizeof(edge_array) / sizeof(edge_array[0]);
+
+	const float edge_weights[] = { 1.2f, 4.5f, 2.6f, 0.4f, 5.2f, 1.8f, 3.3f, 9.1f };
+
+	std::cout << "-------------------------------------------------------------" << std::endl;
+	{
+		// Create a typedef for the graph_type type.
+		using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::no_property, boost::no_property>;
+
+		// Declare a graph object, adding the edges and edge properties.
+#if 1
+		graph_type g(num_vertices);
+		for (int i = 0; i < num_edges; ++i)
+		{
+			const edge_type &e = edge_array[i];
+			const auto &edge = boost::add_edge(e.first, e.second, g);
+			if (edge.second)
+			{
+				//g[edge.first] = edge_weights[i];  // Compile error
+				//boost::get(g, edge.first) = edge_weights[i];  // Compile error
+				//boost::put(g, edge.first, edge_weights[i]);  // Compile error
+			}
+		}
+#else
+		graph_type g(edge_array, edge_array + num_edges, edge_weights, num_vertices);  // Compile error
+#endif
+
+		{
+#if 0
+			for (int i = 0; i < num_vertices; ++i)
+			{
+				//g[i] = float(i * 10);  // Compile error
+			}
+#else
+			int i = 0;
+			//boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
+			graph_type::vertex_iterator vi, vi_end;
+			for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi, ++i)
+			{
+				//g[*vi] = float(i * 10);  // Compile error
+				//boost::get(g, *vi) = float(i * 10);  // Compile error
+				//boost::put(g, *vi, float(i * 10));  // Compile error
+			}
+#endif
+		}
+		std::cout << "#vertices = " << boost::num_vertices(g) << ", #edges = " << boost::num_edges(g) << std::endl;
+
+		//boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
+		graph_type::vertex_iterator vi, vi_end;
+		for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi)
+		{
+			//std::cout << "Vertex " << *vi << ": " << g[*vi] << std::endl;  // Compile error
+			//std::cout << "Vertex " << *vi << ": " << boost::get(g, *vi) << std::endl;  // Compile error
+		}
+		//boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
+		graph_type::edge_iterator ei, ei_end;
+		for (boost::tie(ei, ei_end) = boost::edges(g); ei != ei_end; ++ei)
+		{
+			//std::cout << "Edge " << boost::source(*ei, g) << " -> " << boost::target(*ei, g) << ": " << g[*ei] << std::endl;  // Compile error
+			//std::cout << "Edge " << boost::source(*ei, g) << " -> " << boost::target(*ei, g) << ": " << boost::get(g, *ei) << std::endl;  // Compile error
+		}
+	}
+
+	std::cout << "-------------------------------------------------------------" << std::endl;
+	{
+		// Create a typedef for the graph_type type.
+		using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, float, float>;
+
+		// Declare a graph object, adding the edges and edge properties.
+#if 1
+		graph_type g(num_vertices);
+		//boost::property_map<graph_type, float>::type edge_prop_map = boost::get(0.0f, g);  // Compile error
+		for (int i = 0; i < num_edges; ++i)
+		{
+			const edge_type &e = edge_array[i];
+			const auto &edge = boost::add_edge(e.first, e.second, g);
+			if (edge.second)
+			{
+				g[edge.first] = edge_weights[i];
+				//boost::get(g, edge.first) = edge_weights[i];  // Compile error
+				//boost::put(g, edge.first, edge_weights[i]);  // Compile error
+			}
+		}
+#else
+		graph_type g(edge_array, edge_array + num_edges, edge_weights, num_vertices);
+		//boost::property_map<graph_type, float>::type edge_prop_map = boost::get(0.0f, g);  // Compile error
+#endif
+
+		//boost::property_map<graph_type, float>::type vertex_prop_map = boost::get(0.0f, g);  // Compile error
+		{
+#if 0
+			for (int i = 0; i < num_vertices; ++i)
+			{
+				g[i] = float(i * 10);
+			}
+#else
+			int i = 0;
+			//boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
+			graph_type::vertex_iterator vi, vi_end;
+			for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi, ++i)
+			{
+				g[*vi] = float(i * 10);
+				//boost::get(g, *vi) = float(i * 10);  // Compile error
+				//boost::put(g, *vi, float(i * 10));  // Compile error
+			}
+#endif
+		}
+		std::cout << "#vertices = " << boost::num_vertices(g) << ", #edges = " << boost::num_edges(g) << std::endl;
+
+		//boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
+		graph_type::vertex_iterator vi, vi_end;
+		for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi)
+		{
+			std::cout << "Vertex " << *vi << ": " << g[*vi] << std::endl;
+			//std::cout << "Vertex " << *vi << ": " << boost::get(g, *vi) << std::endl;  // Compile error
+		}
+		//boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
+		graph_type::edge_iterator ei, ei_end;
+		for (boost::tie(ei, ei_end) = boost::edges(g); ei != ei_end; ++ei)
+		{
+			std::cout << "Edge " << boost::source(*ei, g) << " -> " << boost::target(*ei, g) << ": " << g[*ei] << std::endl;
+			//std::cout << "Edge " << boost::source(*ei, g) << " -> " << boost::target(*ei, g) << ": " << boost::get(g, *ei) << std::endl;  // Compile error
+		}
+	}
+
+	std::cout << "-------------------------------------------------------------" << std::endl;
+	{
+		// Create a typedef for the graph_type type.
+		//using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::property<boost::vertex_name_t, std::string>, boost::property<boost::edge_weight_t, float>>;
+		using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::property<boost::vertex_attribute_t, float>, boost::property<boost::edge_weight_t, float>>;
+
+		// Declare a graph object, adding the edges and edge properties.
+#if 1
+		graph_type g(num_vertices);
+		boost::property_map<graph_type, boost::edge_weight_t>::type edge_weight_map = boost::get(boost::edge_weight, g);
+		for (int i = 0; i < num_edges; ++i)
+		{
+			const edge_type &e = edge_array[i];
+			const auto &edge = boost::add_edge(e.first, e.second, g);
+			if (edge.second)
+			{
+				//edge_weight_map[edge.first] = edge_weights[i];
+				//boost::get(edge_weight_map, edge.first) = edge_weights[i];
+				boost::put(edge_weight_map, edge.first, edge_weights[i]);
+			}
+		}
+#else
+		graph_type g(edge_array, edge_array + num_edges, edge_weights, num_vertices);
+		boost::property_map<graph_type, boost::edge_weight_t>::type edge_weight_map = boost::get(boost::edge_weight, g);
+#endif
+
+		//boost::property_map<graph_type, boost::vertex_name_t>::type vertex_name_map = boost::get(boost::vertex_name, g);
+		boost::property_map<graph_type, boost::vertex_attribute_t>::type vertex_attribute_map = boost::get(boost::vertex_attribute, g);
+		{
+#if 0
+			for (int i = 0; i < num_vertices; ++i)
+			{
+				//vertex_name_map[i] = std::to_string(i * 10);
+				vertex_attribute_map[i] = float(i * 10);
+			}
+#else
+			int i = 0;
+			//boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
+			graph_type::vertex_iterator vi, vi_end;
+			for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi, ++i)
+			{
+				//vertex_name_map[*vi] = std::to_string(i * 10);
+				//boost::get(vertex_name_map, *vi) = std::to_string(i * 10);
+				//boost::put(vertex_name_map, *vi, std::to_string(i * 10));
+				//vertex_attribute_map[*vi] = float(i * 10);
+				//boost::get(vertex_attribute_map, *vi) = float(i * 10);
+				boost::put(vertex_attribute_map, *vi, float(i * 10));
+			}
+#endif
+		}
+		std::cout << "#vertices = " << boost::num_vertices(g) << ", #edges = " << boost::num_edges(g) << std::endl;
+
+		//boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
+		graph_type::vertex_iterator vi, vi_end;
+		for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi)
+		{
+			//std::cout << "Vertex " << *vi << ": " << vertex_name_map[*vi] << std::endl;
+			//std::cout << "Vertex " << *vi << ": " << boost::get(vertex_name_map, *vi) << std::endl;
+			//std::cout << "Vertex " << *vi << ": " << vertex_attribute_map[*vi] << std::endl;
+			std::cout << "Vertex " << *vi << ": " << boost::get(vertex_attribute_map, *vi) << std::endl;
+		}
+		//boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
+		graph_type::edge_iterator ei, ei_end;
+		for (boost::tie(ei, ei_end) = boost::edges(g); ei != ei_end; ++ei)
+		{
+			//std::cout << "Edge " << boost::source(*ei, g) << " -> " << boost::target(*ei, g) << ": " << edge_weight_map[*ei] << std::endl;
+			std::cout << "Edge " << boost::source(*ei, g) << " -> " << boost::target(*ei, g) << ": " << boost::get(edge_weight_map, *ei) << std::endl;
+		}
+
+		std::cout << "-----" << std::endl;
+		//boost::print_graph(g, vertex_name_map);  // Better
+		boost::print_graph(g, vertex_attribute_map);
+	}
+}
+
 // REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
 // REF [site] >> Example 31.4 in http://www.theboostcpplibraries.com/boost.graph-vertices-and-edges
-void basic_operation()
+void basic_operation_2()
 {
 	std::cout << "--------------------------------------------------------------" << std::endl;
 	{

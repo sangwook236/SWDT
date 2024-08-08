@@ -379,7 +379,8 @@ void graph_structure_comparisons()
 namespace boost_graph {
 
 void boost_quick_tour();
-void basic_operation();
+void basic_operation_1();
+void basic_operation_2();
 
 void bundled_properties_1();
 void bundled_properties_2();
@@ -412,7 +413,8 @@ void graph()
 		// boost::undirected_graph<> and boost::directed_graph<>.
 		// Access adjacent vertices, incoming and outgoing edges of a vertex.
 		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
-		boost_graph::basic_operation();
+		//boost_graph::basic_operation_1();
+		boost_graph::basic_operation_2();
 
 		std::cout << "\nBundled properties -------------------------------------------" << std::endl;
 		// Bundled(user-defined) properties of vertex, edge, or graph.

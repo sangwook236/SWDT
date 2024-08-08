@@ -25,6 +25,11 @@
 			OSNAME = WINNT
 			ARCH = x86_64.
 
+[-] Building GitHub (CMake).
+	- Configure and generate.
+		Set BUILD_SHARED_LIBS to ON.
+		Set CMAKE_DEBUG_POSTFIX to d.
+
 [-] Building GitHub (MSYS2).
 	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
 	REF [file] >> mingw_usage_guide.txt
