@@ -17,6 +17,6 @@ int simd_main(int argc, char *argv[])
 {
 	my_simd::sse();
 
-    return 0;
+	return 0;
 }
 

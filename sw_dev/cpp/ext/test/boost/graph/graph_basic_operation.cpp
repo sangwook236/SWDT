@@ -205,7 +205,294 @@ void boost_quick_tour()
 	);
 }
 
+// REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
+// REF [site] >> Example 31.4 in http://www.theboostcpplibraries.com/boost.graph-vertices-and-edges
 void basic_operation_1()
+{
+	std::cout << "--------------------------------------------------------------" << std::endl;
+	{
+		// The Directed template parameter controls whether the graph is directed, undirected, or directed with access to both the in-edges and out-edges (bidirectional).
+#if 0
+		// Use boost::listS as OutEdgeListS.
+		// Multiple edges between two vertices are possible.
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> undirected_graph_type;
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> directed_graph_type;
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
+#else
+		// boost::setS is used as the first template parameter (OutEdgeListS).
+		// Only one edge between two vertices can exist.
+		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS> undirected_graph_type;
+		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> directed_graph_type;
+		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
+#endif
+
+		undirected_graph_type ungraph(4);
+		boost::add_edge(0, 1, ungraph);
+		//boost::add_edge(1, 0, ungraph);
+		std::cout << "Is a duplicate edge added to undirected graph? " << std::boolalpha << boost::add_edge(0, 1, ungraph).second << std::endl;
+		std::cout << "Is a duplicate edge added to undirected graph? " << std::boolalpha << boost::add_edge(1, 0, ungraph).second << std::endl;
+		boost::add_edge(0, 2, ungraph);
+		boost::add_edge(3, 0, ungraph);
+		//boost::add_edge(0, 0, ungraph);
+
+		directed_graph_type digraph(4);
+		boost::add_edge(0, 1, digraph);
+		//boost::add_edge(1, 0, digraph);
+		std::cout << "Is a duplicate edge added to directed graph? " << std::boolalpha << boost::add_edge(0, 1, digraph).second << std::endl;
+		std::cout << "Is a duplicate edge added to directed graph? " << std::boolalpha << boost::add_edge(1, 0, digraph).second << std::endl;
+		boost::add_edge(0, 2, digraph);
+		boost::add_edge(3, 0, digraph);
+		//boost::add_edge(0, 0, digraph);
+
+		bidirectional_graph_type bigraph(4);
+		boost::add_edge(0, 1, bigraph);
+		//boost::add_edge(1, 0, bigraph);
+		std::cout << "Is a duplicate edge added to bidirectional graph? " << std::boolalpha << boost::add_edge(0, 1, bigraph).second << std::endl;
+		std::cout << "Is a duplicate edge added to bidirectional graph? " << std::boolalpha << boost::add_edge(1, 0, bigraph).second << std::endl;
+		boost::add_edge(0, 2, bigraph);
+		boost::add_edge(3, 0, bigraph);
+		//boost::add_edge(0, 0, bigraph);
+
+		std::cout << "Number of edges in the undirected graph = " << boost::num_edges(ungraph) << std::endl;
+		std::cout << "Number of edges in the directed graph = " << boost::num_edges(digraph) << std::endl;
+		std::cout << "Number of edges in the bidirectional graph = " << boost::num_edges(bigraph) << std::endl;
+
+		std::pair<undirected_graph_type::edge_iterator, undirected_graph_type::edge_iterator> es1 = boost::edges(ungraph);
+		std::copy(es1.first, es1.second, std::ostream_iterator<undirected_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+		std::pair<directed_graph_type::edge_iterator, directed_graph_type::edge_iterator> es2 = boost::edges(digraph);
+		std::copy(es2.first, es2.second, std::ostream_iterator<directed_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+		std::pair<bidirectional_graph_type::edge_iterator, bidirectional_graph_type::edge_iterator> es3 = boost::edges(bigraph);
+		std::copy(es3.first, es3.second, std::ostream_iterator<bidirectional_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+
+		//const auto &graph = ungraph;
+		//const auto &graph = digraph;  // Error.
+		const auto &graph = bigraph;
+		const auto &[avit_begin, avit_end] = boost::adjacent_vertices(0, graph);  // Vertices of outgoing edges.
+		std::cout << "Vertices of outgoing edges: ";
+		std::copy(avit_begin, avit_end, std::ostream_iterator<size_t>(std::cout, ", "));
+		std::cout << std::endl;
+		const auto &[iavit_begin, iavit_end] = boost::inv_adjacent_vertices(0, graph);  // Vertices of incoming edges.
+		std::cout << "Vertices of incoming edges: ";
+		std::copy(iavit_begin, iavit_end, std::ostream_iterator<size_t>(std::cout, ", "));
+		std::cout << std::endl;
+	}
+
+	std::cout << "\n--------------------------------------------------------------" << std::endl;
+	{
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> graph_type;
+
+		// Create a simple undirected graph.
+		graph_type g;
+		boost::add_edge(0, 1, g);
+		boost::add_edge(0, 3, g);
+		boost::add_edge(1, 2, g);
+		boost::add_edge(2, 3, g);
+
+		graph_type::vertex_iterator vertexIt, vertexEnd;  // Iterate over all the vertices of the graph.
+		graph_type::adjacency_iterator neighborIt, neighborEnd;  // Iterate over the corresponding adjacent vertices.
+		graph_type::out_edge_iterator edgeIt, edgeEnd;  // Iterate over all the incident edges of a vertex.
+		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
+			// Access adjacent vertices of each vertex.
+			std::cout << *vertexIt << " is connected with ";
+			boost::tie(neighborIt, neighborEnd) = boost::adjacent_vertices(*vertexIt, g);
+			for (; neighborIt != neighborEnd; ++neighborIt)
+				std::cout << *neighborIt << " ";
+			std::cout << std::endl;
+
+			// The number of adjacent vertices of a vertex.
+			// boost::degree(), boost::in_degree(), and boost::out_degree() can be used instead.
+
+			// Access incident edges of each vertex.
+			// REF [function] >> default_undirected_and_directed_graph().
+			std::cout << *vertexIt << " is incident to ";
+			boost::tie(edgeIt, edgeEnd) = boost::incident_edges(*vertexIt, g);
+			for (; edgeIt != edgeEnd; ++edgeIt)
+				std::cout << *edgeIt << " ";
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << "\n--------------------------------------------------------------" << std::endl;
+	{
+		// When using the directedS tag in BGL, you are allowed to use only the out_edges helper function and associated iterators.
+		// Using in_edges requires changing the graph type to bidirectionalS, although this is still more or less a directed graph.
+		//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> graph_type;
+
+		graph_type g;
+		boost::add_edge(0, 1, g);
+		boost::add_edge(0, 3, g);
+		boost::add_edge(1, 2, g);
+		boost::add_edge(2, 3, g);
+
+		graph_type::vertex_iterator vertexIt, vertexEnd;
+		graph_type::in_edge_iterator inEdgeIt, inEdgeEnd;
+
+		// Access incoming edges of each vertex.
+		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
+			std::cout << "In-edges for " << *vertexIt << ": ";
+			// NOTE [info] >> Directed graphs can only store outgoing edges.
+			boost::tie(inEdgeIt, inEdgeEnd) = boost::in_edges(*vertexIt, g);
+			for (; inEdgeIt != inEdgeEnd; ++inEdgeIt)
+				std::cout << *inEdgeIt << " ";
+			std::cout << std::endl;
+		}
+
+		//
+		graph_type::out_edge_iterator outEdgeIt, outEdgeEnd;
+
+		// Access outgoing edges of each vertex.
+		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
+			std::cout << "Out-edges for " << *vertexIt << ": ";
+			boost::tie(outEdgeIt, outEdgeEnd) = boost::out_edges(*vertexIt, g);  // Similar to incoming edges.
+			for (; outEdgeIt != outEdgeEnd; ++outEdgeIt)
+				std::cout << *outEdgeIt << " ";
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << "\n--------------------------------------------------------------" << std::endl;
+	{
+		typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, EdgeWeightProperty> graph_type;
+
+		graph_type g;
+		boost::add_edge(0, 1, 8, g);
+		boost::add_edge(0, 3, 18, g);
+		boost::add_edge(1, 2, 20, g);
+		boost::add_edge(2, 3, 2, g);
+		boost::add_edge(3, 1, 1, g);
+		boost::add_edge(1, 3, 7, g);
+
+		std::cout << "Number of edges: " << boost::num_edges(g) << std::endl;
+		std::cout << "Number of vertices: " << boost::num_vertices(g) << std::endl;
+
+		graph_type::vertex_iterator vertexIt, vertexEnd;
+		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
+			// NOTE [info] >> Directed graphs can only store outgoing edges.
+			std::cout << "In-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;
+			std::cout << "Out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
+		}
+
+		graph_type::edge_iterator edgeIt, edgeEnd;
+		boost::tie(edgeIt, edgeEnd) = boost::edges(g);
+		for (; edgeIt != edgeEnd; ++edgeIt)
+			std::cout << "Edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
+
+		// Sort edges.
+		//boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
+		//boost::tie(ei, ei_end) = boost::edges(g);
+		std::pair<graph_type::edge_iterator, graph_type::edge_iterator> eis = boost::edges(g);
+		std::list<graph_type::edge_descriptor> edges(eis.first, eis.second);
+		edges.sort(EdgeComparator<graph_type>(boost::num_vertices(g)));
+
+		std::cout << "Sorted edges: ";
+		std::copy(edges.begin(), edges.end(), std::ostream_iterator<graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+	}
+}
+
+void basic_operation_2()
+{
+	std::cout << "-------------------------------------------------------------" << std::endl;
+	{
+		using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS>;
+		//using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>;
+		//using graph_type = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
+
+		graph_type g;
+
+		auto v1 = boost::add_vertex(g);
+		auto v2 = boost::add_vertex(g);
+		auto v3 = boost::add_vertex(g);
+
+		auto e12 = boost::add_edge(v1, v2, g);
+		auto e23 = boost::add_edge(v2, v3, g);
+
+		std::cout << "Type of vertex = " << typeid(graph_type::vertex_descriptor).name() << std::endl;  // size_t
+		std::cout << "Type of vertex = " << typeid(v1).name() << std::endl;  // size_t
+		std::cout << "Vertex 1 = " << v1 << std::endl;
+		std::cout << "Vertex 2 = " << v2 << std::endl;
+		std::cout << "Vertex 3 = " << v3 << std::endl;
+		std::cout << "Type of vertex = " << typeid(graph_type::edge_descriptor).name() << std::endl;
+		std::cout << "Type of edge = " << typeid(e12.first).name() << std::endl;
+		std::cout << "Edge 12 = " << e12.first << std::endl;
+		std::cout << "Edge 23 = " << e23.first << std::endl;
+
+		const auto &vv1 = boost::vertex(0, g);
+		const auto &vv2 = boost::vertex(1, g);
+		const auto &vv3 = boost::vertex(2, g);
+
+		const auto &ee12 = boost::edge(vv1, vv2, g);
+		const auto &ee23 = boost::edge(vv2, vv3, g);
+
+		//std::cout << "Type of vertex = " << typeid(graph_type::vertex_descriptor).name() << std::endl;  // size_t
+		std::cout << "Type of vertex = " << typeid(vv1).name() << std::endl;  // size_t
+		std::cout << "Vertex 1 = " << vv1 << std::endl;
+		std::cout << "Vertex 2 = " << vv2 << std::endl;
+		std::cout << "Vertex 3 = " << vv3 << std::endl;
+		//std::cout << "Type of vertex = " << typeid(graph_type::edge_descriptor).name() << std::endl;
+		std::cout << "Type of edge = " << typeid(ee12.first).name() << std::endl;
+		std::cout << "Edge 12 = " << ee12.first << std::endl;
+		std::cout << "Edge 23 = " << ee23.first << std::endl;
+	}
+
+	std::cout << "-------------------------------------------------------------" << std::endl;
+	{
+		using graph_type = boost::adjacency_list<boost::setS, boost::setS, boost::bidirectionalS>;
+		//using graph_type = boost::adjacency_list<boost::setS, boost::setS, boost::directedS>;
+		//using graph_type = boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS>;
+
+		graph_type g;
+
+		auto v1 = boost::add_vertex(g);
+		auto v2 = boost::add_vertex(g);
+		auto v3 = boost::add_vertex(g);
+
+		auto e12 = boost::add_edge(v1, v2, g);
+		auto e23 = boost::add_edge(v2, v3, g);
+
+		std::cout << "Type of vertex = " << typeid(graph_type::vertex_descriptor).name() << std::endl;  // void *
+		std::cout << "Type of vertex = " << typeid(v1).name() << std::endl;  // void *
+		std::cout << "Vertex 1 = " << v1 << std::endl;
+		std::cout << "Vertex 2 = " << v2 << std::endl;
+		std::cout << "Vertex 3 = " << v3 << std::endl;
+		std::cout << "Type of vertex = " << typeid(graph_type::edge_descriptor).name() << std::endl;
+		std::cout << "Type of edge = " << typeid(e12.first).name() << std::endl;
+		std::cout << "Edge 12 = " << e12.first << std::endl;
+		std::cout << "Edge 23 = " << e23.first << std::endl;
+
+		const auto &vv1 = boost::vertex(0, g);
+		const auto &vv2 = boost::vertex(1, g);
+		const auto &vv3 = boost::vertex(2, g);
+
+		const auto &ee12 = boost::edge(vv1, vv2, g);
+		const auto &ee23 = boost::edge(vv2, vv3, g);
+
+		//std::cout << "Type of vertex = " << typeid(graph_type::vertex_descriptor).name() << std::endl;  // void *
+		std::cout << "Type of vertex = " << typeid(vv1).name() << std::endl;  // void *
+		std::cout << "Vertex 1 = " << vv1 << std::endl;
+		std::cout << "Vertex 2 = " << vv2 << std::endl;
+		std::cout << "Vertex 3 = " << vv3 << std::endl;
+		//std::cout << "Type of vertex = " << typeid(graph_type::edge_descriptor).name() << std::endl;
+		std::cout << "Type of edge = " << typeid(ee12.first).name() << std::endl;
+		std::cout << "Edge 12 = " << ee12.first << std::endl;
+		std::cout << "Edge 23 = " << ee23.first << std::endl;
+	}
+}
+
+void basic_operation_3()
 {
 	// Make convenient labels for the vertices.
 	enum { A, B, C, D, E, N };
@@ -414,204 +701,6 @@ void basic_operation_1()
 		std::cout << "-----" << std::endl;
 		//boost::print_graph(g, vertex_name_map);  // Better
 		boost::print_graph(g, vertex_attribute_map);
-	}
-}
-
-// REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
-// REF [site] >> Example 31.4 in http://www.theboostcpplibraries.com/boost.graph-vertices-and-edges
-void basic_operation_2()
-{
-	std::cout << "--------------------------------------------------------------" << std::endl;
-	{
-		// The Directed template parameter controls whether the graph is directed, undirected, or directed with access to both the in-edges and out-edges (bidirectional).
-#if 0
-		// Use boost::listS as OutEdgeListS.
-		// Multiple edges between two vertices are possible.
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> undirected_graph_type;
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> directed_graph_type;
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
-#else
-		// boost::setS is used as the first template parameter (OutEdgeListS).
-		// Only one edge between two vertices can exist.
-		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS> undirected_graph_type;
-		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> directed_graph_type;
-		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
-#endif
-
-		undirected_graph_type ungraph(4);
-		boost::add_edge(0, 1, ungraph);
-		//boost::add_edge(1, 0, ungraph);
-		std::cout << "Is a duplicate edge added to undirected graph? " << std::boolalpha << boost::add_edge(0, 1, ungraph).second << std::endl;
-		std::cout << "Is a duplicate edge added to undirected graph? " << std::boolalpha << boost::add_edge(1, 0, ungraph).second << std::endl;
-		boost::add_edge(0, 2, ungraph);
-		boost::add_edge(3, 0, ungraph);
-		//boost::add_edge(0, 0, ungraph);
-
-		directed_graph_type digraph(4);
-		boost::add_edge(0, 1, digraph);
-		//boost::add_edge(1, 0, digraph);
-		std::cout << "Is a duplicate edge added to directed graph? " << std::boolalpha << boost::add_edge(0, 1, digraph).second << std::endl;
-		std::cout << "Is a duplicate edge added to directed graph? " << std::boolalpha << boost::add_edge(1, 0, digraph).second << std::endl;
-		boost::add_edge(0, 2, digraph);
-		boost::add_edge(3, 0, digraph);
-		//boost::add_edge(0, 0, digraph);
-
-		bidirectional_graph_type bigraph(4);
-		boost::add_edge(0, 1, bigraph);
-		//boost::add_edge(1, 0, bigraph);
-		std::cout << "Is a duplicate edge added to bidirectional graph? " << std::boolalpha << boost::add_edge(0, 1, bigraph).second << std::endl;
-		std::cout << "Is a duplicate edge added to bidirectional graph? " << std::boolalpha << boost::add_edge(1, 0, bigraph).second << std::endl;
-		boost::add_edge(0, 2, bigraph);
-		boost::add_edge(3, 0, bigraph);
-		//boost::add_edge(0, 0, bigraph);
-
-		std::cout << "Number of edges in the undirected graph = " << boost::num_edges(ungraph) << std::endl;
-		std::cout << "Number of edges in the directed graph = " << boost::num_edges(digraph) << std::endl;
-		std::cout << "Number of edges in the bidirectional graph = " << boost::num_edges(bigraph) << std::endl;
-
-		std::pair<undirected_graph_type::edge_iterator, undirected_graph_type::edge_iterator> es1 = boost::edges(ungraph);
-		std::copy(es1.first, es1.second, std::ostream_iterator<undirected_graph_type::edge_descriptor>(std::cout, ", "));
-		std::cout << std::endl;
-		std::pair<directed_graph_type::edge_iterator, directed_graph_type::edge_iterator> es2 = boost::edges(digraph);
-		std::copy(es2.first, es2.second, std::ostream_iterator<directed_graph_type::edge_descriptor>(std::cout, ", "));
-		std::cout << std::endl;
-		std::pair<bidirectional_graph_type::edge_iterator, bidirectional_graph_type::edge_iterator> es3 = boost::edges(bigraph);
-		std::copy(es3.first, es3.second, std::ostream_iterator<bidirectional_graph_type::edge_descriptor>(std::cout, ", "));
-		std::cout << std::endl;
-
-		//const auto &graph = ungraph;
-		//const auto &graph = digraph;  // Error.
-		const auto &graph = bigraph;
-		const auto &[avit_begin, avit_end] = boost::adjacent_vertices(0, graph);  // Vertices of outgoing edges.
-		std::cout << "Vertices of outgoing edges: ";
-		std::copy(avit_begin, avit_end, std::ostream_iterator<size_t>(std::cout, ", "));
-		std::cout << std::endl;
-		const auto &[iavit_begin, iavit_end] = boost::inv_adjacent_vertices(0, graph);  // Vertices of incoming edges.
-		std::cout << "Vertices of incoming edges: ";
-		std::copy(iavit_begin, iavit_end, std::ostream_iterator<size_t>(std::cout, ", "));
-		std::cout << std::endl;
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> graph_type;
-
-		// Create a simple undirected graph.
-		graph_type g;
-		boost::add_edge(0, 1, g);
-		boost::add_edge(0, 3, g);
-		boost::add_edge(1, 2, g);
-		boost::add_edge(2, 3, g);
-
-		graph_type::vertex_iterator vertexIt, vertexEnd;  // Iterate over all the vertices of the graph.
-		graph_type::adjacency_iterator neighborIt, neighborEnd;  // Iterate over the corresponding adjacent vertices.
-		graph_type::out_edge_iterator edgeIt, edgeEnd;  // Iterate over all the incident edges of a vertex.
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			// Access adjacent vertices of each vertex.
-			std::cout << *vertexIt << " is connected with ";
-			boost::tie(neighborIt, neighborEnd) = boost::adjacent_vertices(*vertexIt, g);
-			for (; neighborIt != neighborEnd; ++neighborIt)
-				std::cout << *neighborIt << " ";
-			std::cout << std::endl;
-
-			// The number of adjacent vertices of a vertex.
-			// boost::degree(), boost::in_degree(), and boost::out_degree() can be used instead.
-
-			// Access incident edges of each vertex.
-			// REF [function] >> default_undirected_and_directed_graph().
-			std::cout << *vertexIt << " is incident to ";
-			boost::tie(edgeIt, edgeEnd) = boost::incident_edges(*vertexIt, g);
-			for (; edgeIt != edgeEnd; ++edgeIt)
-				std::cout << *edgeIt << " ";
-			std::cout << std::endl;
-		}
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		// When using the directedS tag in BGL, you are allowed to use only the out_edges helper function and associated iterators.
-		// Using in_edges requires changing the graph type to bidirectionalS, although this is still more or less a directed graph.
-		//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> graph_type;
-
-		graph_type g;
-		boost::add_edge(0, 1, g);
-		boost::add_edge(0, 3, g);
-		boost::add_edge(1, 2, g);
-		boost::add_edge(2, 3, g);
-
-		graph_type::vertex_iterator vertexIt, vertexEnd;
-		graph_type::in_edge_iterator inEdgeIt, inEdgeEnd;
-
-		// Access incoming edges of each vertex.
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			std::cout << "In-edges for " << *vertexIt << ": ";
-			// NOTE [info] >> Directed graphs can only store outgoing edges.
-			boost::tie(inEdgeIt, inEdgeEnd) = boost::in_edges(*vertexIt, g);
-			for (; inEdgeIt != inEdgeEnd; ++inEdgeIt)
-				std::cout << *inEdgeIt << " ";
-			std::cout << std::endl;
-		}
-
-		//
-		graph_type::out_edge_iterator outEdgeIt, outEdgeEnd;
-
-		// Access outgoing edges of each vertex.
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			std::cout << "Out-edges for " << *vertexIt << ": ";
-			boost::tie(outEdgeIt, outEdgeEnd) = boost::out_edges(*vertexIt, g);  // Similar to incoming edges.
-			for (; outEdgeIt != outEdgeEnd; ++outEdgeIt)
-				std::cout << *outEdgeIt << " ";
-			std::cout << std::endl;
-		}
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, EdgeWeightProperty> graph_type;
-
-		graph_type g;
-		boost::add_edge(0, 1, 8, g);
-		boost::add_edge(0, 3, 18, g);
-		boost::add_edge(1, 2, 20, g);
-		boost::add_edge(2, 3, 2, g);
-		boost::add_edge(3, 1, 1, g);
-		boost::add_edge(1, 3, 7, g);
-
-		std::cout << "Number of edges: " << boost::num_edges(g) << std::endl;
-		std::cout << "Number of vertices: " << boost::num_vertices(g) << std::endl;
-
-		graph_type::vertex_iterator vertexIt, vertexEnd;
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			// NOTE [info] >> Directed graphs can only store outgoing edges.
-			std::cout << "In-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;
-			std::cout << "Out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
-		}
-
-		graph_type::edge_iterator edgeIt, edgeEnd;
-		boost::tie(edgeIt, edgeEnd) = boost::edges(g);
-		for (; edgeIt != edgeEnd; ++edgeIt)
-			std::cout << "Edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
-
-		// Sort edges.
-		//boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
-		//boost::tie(ei, ei_end) = boost::edges(g);
-		std::pair<graph_type::edge_iterator, graph_type::edge_iterator> eis = boost::edges(g);
-		std::list<graph_type::edge_descriptor> edges(eis.first, eis.second);
-		edges.sort(EdgeComparator<graph_type>(boost::num_vertices(g)));
-
-		std::cout << "Sorted edges: ";
-		std::copy(edges.begin(), edges.end(), std::ostream_iterator<graph_type::edge_descriptor>(std::cout, ", "));
-		std::cout << std::endl;
 	}
 }
 

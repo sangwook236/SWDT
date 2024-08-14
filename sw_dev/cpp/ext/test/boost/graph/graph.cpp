@@ -80,6 +80,114 @@ void connected_components_algorithm()
 	}
 }
 
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/connected_components.cpp
+void connected_components_test()
+{
+	std::cout << "------------------------------------------------------------" << std::endl;
+	{
+		const int N = 6;
+
+#if 0
+		using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
+
+		Graph G(N);
+		boost::add_edge(0, 1, G);
+		boost::add_edge(1, 4, G);
+		boost::add_edge(4, 0, G);
+		boost::add_edge(2, 5, G);
+#else
+		using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, float>>;
+		//using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, int, boost::property<boost::edge_weight_t, float>>;
+		//using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::property<boost::vertex_color_t, int>, boost::property<boost::edge_weight_t, float>>;
+
+		Graph G(N);
+		boost::add_edge(0, 1, 1.2f, G);
+		boost::add_edge(1, 4, 3.0f, G);
+		boost::add_edge(4, 0, 2.5f, G);
+		boost::add_edge(2, 5, 0.7f, G);
+#endif
+
+		{
+			std::vector<int> components(boost::num_vertices(G));
+			//const auto &num_components = boost::connected_components(G, &components[0]);
+			const auto &num_components = boost::connected_components(G, boost::make_iterator_property_map(components.begin(), boost::get(boost::vertex_index, G), components[0]));
+
+			std::cout << "Total number of components = " << num_components << std::endl;
+			for (auto it = components.begin(); it != components.end(); ++it)
+				std::cout << "Vertex " << (it - components.begin()) << " is in component " << *it << std::endl;
+			std::cout << std::endl;
+		}
+
+		{
+			std::map<Graph::vertex_descriptor, int> components;
+			const auto &num_components = boost::connected_components(G, boost::make_assoc_property_map(components));
+
+			std::cout << "Total number of components = " << num_components << std::endl;
+			for (auto it = components.begin(); it != components.end(); ++it)
+				std::cout << "Vertex " << it->first << " is in component " << it->second << std::endl;
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << "------------------------------------------------------------" << std::endl;
+	{
+		const int N = 6;
+
+#if 1
+		using Graph = boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS>;
+
+		Graph G;
+		for (int i = 0; i < N; ++i)
+			boost::add_vertex(G);
+
+		boost::add_edge(boost::vertex(0, G), boost::vertex(1, G), G);
+		boost::add_edge(boost::vertex(1, G), boost::vertex(4, G), G);
+		boost::add_edge(boost::vertex(4, G), boost::vertex(0, G), G);
+		boost::add_edge(boost::vertex(2, G), boost::vertex(5, G), G);
+#else
+		using Graph = boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, float>>;
+		//using Graph = boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, int, boost::property<boost::edge_weight_t, float>>;
+		//using Graph = boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, boost::property<boost::vertex_color_t, int>, boost::property<boost::edge_weight_t, float>>;
+
+		Graph G;
+		for (int i = 0; i < N; ++i)
+			boost::add_vertex(G);
+
+		boost::add_edge(boost::vertex(0, G), boost::vertex(1, G), 1.2f, G);
+		boost::add_edge(boost::vertex(1, G), boost::vertex(4, G), 3.0f, G);
+		boost::add_edge(boost::vertex(4, G), boost::vertex(0, G), 2.5f, G);
+		boost::add_edge(boost::vertex(2, G), boost::vertex(5, G), 0.7f, G);
+#endif
+
+#if 0
+		{
+			std::vector<int> components(boost::num_vertices(G));
+			//const auto &num_components = boost::connected_components(G, &components[0]);  // Compile-time error: 'put': no matching overloaded function found
+			//const auto &num_components = boost::connected_components(G, boost::make_iterator_property_map(components.begin(), boost::get(boost::vertex_index, G), components[0]));
+			auto &prop_map = boost::make_iterator_property_map(components.begin(), boost::get(boost::vertex_index, G), components[0]);  // Compile-time error: you cannot create a reference to 'void'
+			const auto &num_components = boost::connected_components(G, prop_map);
+
+			std::cout << "Total number of components = " << num_components << std::endl;
+			for (auto it = components.begin(); it != components.end(); ++it)
+				std::cout << "Vertex " << (it - components.begin()) << " is in component " << *it << std::endl;
+			std::cout << std::endl;
+		}
+#endif
+
+#if 0
+		{
+			std::map<Graph::vertex_descriptor, int> components;
+			const auto &num_components = boost::connected_components(G, boost::make_assoc_property_map(components));  // Compile-time error: you cannot create a reference to 'void'
+
+			std::cout << "Total number of components = " << num_components << std::endl;
+			for (auto it = components.begin(); it != components.end(); ++it)
+				std::cout << "Vertex " << it->first << " is in component " << it->second << std::endl;
+			std::cout << std::endl;
+		}
+#endif
+	}
+}
+
 // REF [file] >> ${BOOST_HOME}/libs/graph/example/strong_components.cpp
 void strong_components_algorithm()
 {
@@ -332,6 +440,7 @@ void connected_components()
 {
 	std::cout << "Connected components algorithm --------------------------------" << std::endl;
 	connected_components_algorithm();
+	connected_components_test();
 
 	std::cout << "\nStrong components algorithm -----------------------------------" << std::endl;
 	strong_components_algorithm();
@@ -381,6 +490,7 @@ namespace boost_graph {
 void boost_quick_tour();
 void basic_operation_1();
 void basic_operation_2();
+void basic_operation_3();
 
 void bundled_properties_1();
 void bundled_properties_2();
@@ -413,8 +523,9 @@ void graph()
 		// boost::undirected_graph<> and boost::directed_graph<>.
 		// Access adjacent vertices, incoming and outgoing edges of a vertex.
 		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
-		//boost_graph::basic_operation_1();
-		boost_graph::basic_operation_2();
+		boost_graph::basic_operation_1();
+		//boost_graph::basic_operation_2();
+		//boost_graph::basic_operation_3();
 
 		std::cout << "\nBundled properties -------------------------------------------" << std::endl;
 		// Bundled(user-defined) properties of vertex, edge, or graph.
