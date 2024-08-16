@@ -185,6 +185,45 @@ void pose_graph_example()
 	}
 }
 
+void tensor_test()
+{
+	//open3d::core::Device device("CPU");  // Runtime error
+	//open3d::core::Device device("CPU:0");
+	//open3d::core::Device device("CUDA");  // Runtime error
+	open3d::core::Device device("CUDA:0");
+	open3d::core::Dtype dtype(open3d::core::Float32);
+	//open3d::core::Dtype dtype(open3d::core::Float64);
+
+	{
+		auto cloud_cpu(open3d::t::geometry::PointCloud(open3d::core::Device("CPU:0")));
+		auto cloud_gpu_from_cpu(cloud_cpu.To(open3d::core::Device("CUDA:0")));
+		auto cloud_gpu(open3d::t::geometry::PointCloud(open3d::core::Device("CUDA:0")));
+		auto cloud_cpu_from_gpu(cloud_gpu.To(open3d::core::Device("CPU:0")));
+
+		auto cloud_legacy_from_cpu(cloud_cpu.ToLegacy());
+		auto cloud_legacy_from_gpu(cloud_gpu.ToLegacy());
+
+		open3d::geometry::PointCloud cloud_legacy;
+		const size_t num_points = 100;
+		cloud_legacy.points_.reserve(num_points);
+		cloud_legacy.colors_.reserve(num_points);
+		for (size_t i = 0; i < num_points; ++i)
+		{
+			cloud_legacy.points_.push_back(Eigen::Vector3d::Random() * 100.0);
+			cloud_legacy.colors_.push_back((Eigen::Vector3d::Random() + Eigen::Vector3d::Ones()) * 0.5);
+		}
+		auto cloud_cpu_from_legacy(open3d::t::geometry::PointCloud::FromLegacy(cloud_legacy, open3d::core::Float32, open3d::core::Device("CPU:0")));
+		//auto cloud_gpu_from_legacy(open3d::t::geometry::PointCloud::FromLegacy(cloud_legacy, open3d::core::Float32, open3d::core::Device("CUDA:0")));  // Runtime error: Unsupported device "CUDA:0". Set BUILD_CUDA_MODULE=ON to compile for CUDA support and BUILD_SYCL_MODULE=ON to compile for SYCL support.
+	}
+
+	{
+		open3d::core::Tensor t1;
+		open3d::core::Tensor t2(open3d::core::SizeVector({ 2, 3, 4, 5 }), open3d::core::Float32);
+		open3d::core::Tensor t_cpu(open3d::core::SizeVector({ 2, 3, 4, 5 }), open3d::core::Float32, open3d::core::Device("CPU:0"));
+		//open3d::core::Tensor t_gpu(open3d::core::SizeVector({ 2, 3, 4, 5 }), open3d::core::Float32, open3d::core::Device("CUDA:0"));  // Runtime error: Unsupported device "CUDA:0". Set BUILD_CUDA_MODULE=ON to compile for CUDA support and BUILD_SYCL_MODULE=ON to compile for SYCL support.
+	}
+}
+
 void estimate_transformation_test()
 {
 	// 8 vertices on a cube.
@@ -290,6 +329,8 @@ int open3d_main(int argc, char *argv[])
 	//local::octree_example();
 
 	//local::pose_graph_example();
+
+	//local::tensor_test();
 
 	//-----
 	//local::estimate_transformation_test();
