@@ -6,18 +6,44 @@
 #	http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html
 #	http://scikit-learn.org/stable/modules/generated/sklearn.metrics.auc.html
 
+import numpy as np
 from sklearn import metrics
 from sklearn import model_selection, multiclass
 from sklearn import svm, ensemble, datasets, preprocessing
 #from scipy import interp
-import numpy as np
 import matplotlib.pyplot as plt
+
+def plot_f1_score():
+	import matplotlib
+
+	X = np.arange(0, 1, 0.01)
+	Y = np.arange(0, 1, 0.01)
+	X, Y = np.meshgrid(X, Y)
+	if True:
+		#Z = 2 / (1 / X + 1 / Y)  # F1 score
+		Z = 2 * X * Y / (X + Y)  # F1 score
+	else:
+		beta = 1.0
+		Z = (1 + beta**2) * X * Y / (beta**2 * X + Y)  # F1 score
+
+	fig = plt.figure()
+	ax = fig.add_subplot(111, projection="3d")
+	ax.plot_surface(X, Y, Z, cmap=matplotlib.cm.coolwarm, linewidth=0, antialiased=False)
+	ax.set_xlabel("Precision")
+	ax.set_ylabel("Recall")
+	ax.set_zlabel("F1 score")
+	plt.show()
 
 # REF [site] >>
 #	http://scikit-learn.org/stable/modules/model_evaluation.html
 #	http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics
 # For binary classification task or multilabel classification task in label indicator format.
-def classification_model_evaluation_example(is_binary_classification, classifier):
+def classification_model_evaluation_example():
+	#classifier = svm.SVC(probability=True)
+	classifier = ensemble.RandomForestClassifier(n_estimators=10, criterion='gini', max_depth=2, random_state=0)
+
+	is_binary_classification = True
+
 	if is_binary_classification:
 		X, Y = datasets.make_classification(n_samples=200, n_features=4, n_informative=4, n_redundant=0, n_repeated=0, n_classes=2, shuffle=False, random_state=0)
 		#Y[Y == 1] = -21
@@ -250,7 +276,9 @@ def confusion_matrix_example():
 	plt.show()
 
 # For binary classification task.
-def roc_curve_example(is_binary_classification):
+def roc_curve_example():
+	is_binary_classification = True
+
 	if is_binary_classification:
 		y = np.array([1, 1, 3, 3])
 	else:
@@ -264,7 +292,9 @@ def roc_curve_example(is_binary_classification):
 	print('AUC  =', metrics.auc(fpr, tpr))
 
 # For binary classification task.
-def precision_recall_curve_example(is_binary_classification):
+def precision_recall_curve_example():
+	is_binary_classification = True
+
 	if is_binary_classification:
 		y = np.array([1, 1, 3, 3])
 	else:
@@ -275,7 +305,7 @@ def precision_recall_curve_example(is_binary_classification):
 
 	plt.plot(recall, precision)
 
-# For binary classification task..
+# For binary classification task.
 # REF [site] >> http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html
 def iris_roc_curve():
 	# Import some data to play with.
@@ -358,17 +388,14 @@ def iris_precision_recall_curve():
 	plt.title('2-class Precision-Recall curve: AP={0:0.2f}'.format(average_precision))
 
 def main():
-	#classifier = svm.SVC(probability=True)
-	classifier = ensemble.RandomForestClassifier(n_estimators=10, criterion='gini', max_depth=2, random_state=0)
-
-	is_binary_classification = True
+	plot_f1_score()
 
 	#--------------------
-	#classification_model_evaluation_example(is_binary_classification, classifier)
+	#classification_model_evaluation_example()
 
-	confusion_matrix_example()
-	#roc_curve_example(is_binary_classification)
-	#precision_recall_curve_example(is_binary_classification)
+	#confusion_matrix_example()
+	#roc_curve_example()
+	#precision_recall_curve_example()
 
 	#iris_roc_curve()
 	#iris_precision_recall_curve()
