@@ -15,7 +15,36 @@ void draw_example()
 	const auto sphere = open3d::geometry::TriangleMesh::CreateSphere(1.0);
 	sphere->ComputeVertexNormals();
 	sphere->PaintUniformColor({0.0, 1.0, 0.0});
-	open3d::visualization::DrawGeometries({sphere});
+
+	const auto box = open3d::geometry::TriangleMesh::CreateBox(1.0, 1.0, 1.0);
+	box->ComputeVertexNormals();
+	box->PaintUniformColor({0.0, 0.0, 1.0});
+	box->Translate({2.0, 0.0, 0.0});
+
+	// Visualize
+#if 0
+	open3d::visualization::DrawGeometries({sphere, box});
+#elif 1
+	open3d::visualization::Draw({sphere, box});  // Open3D Viewer
+#else
+	// REF [site] >> https://github.com/isl-org/Open3D/issues/2850
+
+	open3d::visualization::Visualizer visualizer;
+	visualizer.CreateVisualizerWindow("Open3D Viewer");
+
+	visualizer.AddGeometry(sphere);
+	visualizer.AddGeometry(box);
+
+	//auto param = open3d::camera::PinholeCameraParameters();
+	//open3d::io::ReadIJsonConvertible("./view_point.json", param);
+	//auto view_control = visualizer.GetViewControl();
+	//view_control.ConvertFromPinholeCameraParameters(param, true);
+
+	visualizer.PollEvents();
+	visualizer.UpdateRender();
+	visualizer.Run();
+	visualizer.Destroy();
+#endif
 }
 
 void io_example()
@@ -40,7 +69,7 @@ void io_example()
 	//pointCloud = pointCloud->VoxelDownSample(10.0);
 	std::cout << "#points loaded = " << pointCloud->points_.size() << std::endl;
 
-	open3d::visualization::DrawGeometries({pointCloud}, "Point Cloud", 1000, 800);
+	open3d::visualization::DrawGeometries({pointCloud}, "Open3D Viewer", 1000, 800);
 }
 
 std::string indent(const int n)

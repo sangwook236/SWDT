@@ -29,7 +29,7 @@ void VisualizeRegistration(const open3d::geometry::PointCloud &source, const ope
 	*source_transformed_ptr = source;
 	*target_ptr = target;
 	source_transformed_ptr->Transform(transformation);
-	open3d::visualization::DrawGeometries({source_transformed_ptr, target_ptr}, "Registration result");
+	open3d::visualization::DrawGeometries({source_transformed_ptr, target_ptr}, "Registration Result");
 }
 
 // REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/cpp/RegistrationColoredICP.cpp
@@ -364,7 +364,7 @@ void multiway_registration_tutorial()
 	double zoom = 0.3412;
 	open3d::visualization::DrawGeometries(
 		std::vector<std::shared_ptr<const open3d::geometry::Geometry>>(pcds_down.begin(), pcds_down.end()),
-		"Registration result",
+		"Registration Result",
 		/*width =*/ 640, /*height =*/ 480, /*left =*/ 50, /*top =*/ 50,
 		/*point_show_normal =*/ false, /*mesh_show_wireframe =*/ false, /*mesh_show_back_face =*/ false,
 		/*lookat =*/ &lookat, /*up =*/ &up, /*front =*/ &front,
@@ -405,7 +405,7 @@ void multiway_registration_tutorial()
 
 	open3d::visualization::DrawGeometries(
 		std::vector<std::shared_ptr<const open3d::geometry::Geometry>>(pcds_down.begin(), pcds_down.end()),
-		"Registration optimized",
+		"Registration Optimized",
 		/*width =*/ 640, /*height =*/ 480, /*left =*/ 50, /*top =*/ 50,
 		/*point_show_normal =*/ false, /*mesh_show_wireframe =*/ false, /*mesh_show_back_face =*/ false,
 		/*lookat =*/ &lookat, /*up =*/ &up, /*front =*/ &front,
@@ -426,7 +426,7 @@ void multiway_registration_tutorial()
 
 	open3d::visualization::DrawGeometries(
 		{pcd_combined_down},
-		"Combined point cloud",
+		"Combined Point Cloud",
 		/*width =*/ 640, /*height =*/ 480, /*left =*/ 50, /*top =*/ 50,
 		/*point_show_normal =*/ false, /*mesh_show_wireframe =*/ false, /*mesh_show_back_face =*/ false,
 		/*lookat =*/ &lookat, /*up =*/ &up, /*front =*/ &front,

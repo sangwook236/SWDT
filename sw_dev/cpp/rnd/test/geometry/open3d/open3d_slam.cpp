@@ -109,7 +109,7 @@ void offline_slam_example()
 
 		if (visualize)
 		{
-			open3d::visualization::Draw({pcd_legacy}, "Extracted PointCloud.");
+			open3d::visualization::Draw({pcd_legacy}, "Extracted PointCloud");
 		}
 	}
 	else
@@ -122,7 +122,7 @@ void offline_slam_example()
 
 		if (visualize)
 		{
-			open3d::visualization::Draw({mesh_legacy}, "Extracted Mesh.");
+			open3d::visualization::Draw({mesh_legacy}, "Extracted Mesh");
 		}
 	}
 }
