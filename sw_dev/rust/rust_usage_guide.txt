@@ -1,0 +1,26 @@
+[-] General.
+	- Site.
+		https://www.rust-lang.org/
+
+		https://github.com/rust-lang
+		https://github.com/rust-lang/rust
+
+		https://doc.rust-lang.org/book/
+		https://doc.rust-kr.org/
+
+[-] Installation.
+	https://doc.rust-lang.org/book/ch01-01-installation.html
+
+	- Windows.
+		https://www.rust-lang.org/tools/install
+
+		Download rustup-init.exe
+		Run rustup-init.exe
+			%USERPRIFILE%/.rustup
+			%USERPRIFILE%/.cargo
+
+		Update:
+			rustup update
+
+		Uninstall:
+			rustup self uninstall

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <pcl/ModelCoefficients.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/search/kdtree.h>
@@ -28,6 +29,10 @@
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/console/time.h>
+#include <pcl/gpu/octree/octree.hpp>
+#include <pcl/gpu/containers/device_array.hpp>
+#include <pcl/gpu/segmentation/gpu_extract_clusters.h>
+#include <pcl/gpu/segmentation/impl/gpu_extract_clusters.hpp>
 #include <vtkPolyLine.h>
 
 
@@ -98,7 +103,7 @@ void euclidean_cluster_extraction_tutorial()
 
 	std::vector<pcl::PointIndices> cluster_indices;
 	pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-	ec.setClusterTolerance(0.02);  // 2cm.
+	ec.setClusterTolerance(0.02);  // Search radius. 2cm.
 	ec.setMinClusterSize(100);
 	ec.setMaxClusterSize(25000);
 	ec.setSearchMethod(tree);
@@ -122,6 +127,104 @@ void euclidean_cluster_extraction_tutorial()
 		std::stringstream ss;
 		ss << std::setw(4) << std::setfill('0') << j;
 		writer.write<pcl::PointXYZ>("./cloud_cluster_" + ss.str() + ".pcd", *cloud_cluster, false);
+		++j;
+	}
+}
+
+// REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/gpu/examples/segmentation/src/seg.cpp
+void euclidean_cluster_extraction_gpu_example()
+{
+	const std::string pcd_filepath("./input.pcd");
+
+	pcl::PCDWriter writer;
+
+	// Read in the cloud data
+	pcl::PCDReader reader;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
+	reader.read(pcd_filepath, *cloud_filtered);
+
+	pcl::Indices unused;
+	pcl::removeNaNFromPointCloud(*cloud_filtered, *cloud_filtered, unused);
+
+	//-----
+	// CPU version
+
+	std::cout << "INFO: PointCloud_filtered still has " << cloud_filtered->size() << " Points " << std::endl;
+	clock_t tStart = clock();
+
+	// Creating the KdTree object for the search method of the extraction
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
+	tree->setInputCloud(cloud_filtered);
+
+	std::vector<pcl::PointIndices> cluster_indices;
+	pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
+	ec.setClusterTolerance(0.02);  // Search radius. 2cm
+	ec.setMinClusterSize(100);
+	ec.setMaxClusterSize(25000);
+	ec.setSearchMethod(tree);
+	ec.setInputCloud(cloud_filtered);
+	ec.extract(cluster_indices);
+	
+	printf("CPU Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+
+	int j = 0;
+	for (const pcl::PointIndices &cluster: cluster_indices)
+	{
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster(new pcl::PointCloud<pcl::PointXYZ>);
+		for (const auto &index: (cluster.indices))
+			cloud_cluster->push_back((*cloud_filtered)[index]);  //*
+		cloud_cluster->width = cloud_cluster->size();
+		cloud_cluster->height = 1;
+		cloud_cluster->is_dense = true;
+
+		std::cout << "PointCloud representing the Cluster: " << cloud_cluster->size() << " data points." << std::endl;
+		std::stringstream ss;
+		ss << "cloud_cluster_" << j << ".pcd";
+		writer.write<pcl::PointXYZ>(ss.str(), *cloud_cluster, false);  //*
+		++j;
+	}
+
+	//-----
+	// GPU version
+
+	std::cout << "INFO: starting with the GPU version" << std::endl;
+	tStart = clock();
+
+	pcl::gpu::Octree::PointCloud cloud_device;
+	cloud_device.upload(cloud_filtered->points);
+	
+	pcl::gpu::Octree::Ptr octree_device(new pcl::gpu::Octree);
+	octree_device->setCloud(cloud_device);
+	octree_device->build();
+
+	std::vector<pcl::PointIndices> cluster_indices_gpu;
+	pcl::gpu::EuclideanClusterExtraction<pcl::PointXYZ> gec;
+	//pcl::gpu::EuclideanLabeledClusterExtraction<pcl::PointXYZ> gec;
+	gec.setClusterTolerance(0.02);  // Search radius. 2cm
+	gec.setMinClusterSize(100);
+	gec.setMaxClusterSize(25000);
+	gec.setSearchMethod(octree_device);  // NOTE [info] >> not a k-d tree
+	gec.setHostCloud(cloud_filtered);  // NOTE [info] >> not a cloud on the device, but a cloud on the host
+	gec.extract(cluster_indices_gpu);
+	//octree_device.clear();
+
+	printf("GPU Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+	std::cout << "INFO: stopped with the GPU version" << std::endl;
+
+	j = 0;
+	for (const pcl::PointIndices &cluster: cluster_indices_gpu)
+	{
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster_gpu(new pcl::PointCloud<pcl::PointXYZ>);
+		for (const auto &index: (cluster.indices))
+			cloud_cluster_gpu->push_back((*cloud_filtered)[index]);  //*
+		cloud_cluster_gpu->width = cloud_cluster_gpu->size();
+		cloud_cluster_gpu->height = 1;
+		cloud_cluster_gpu->is_dense = true;
+
+		std::cout << "PointCloud representing the Cluster: " << cloud_cluster_gpu->size() << " data points." << std::endl;
+		std::stringstream ss;
+		ss << "gpu_cloud_cluster_" << j << ".pcd";
+		writer.write<pcl::PointXYZ>(ss.str(), *cloud_cluster_gpu, false);  //*
 		++j;
 	}
 }
@@ -167,7 +270,7 @@ void region_growing_segmentation_tutorial()
 	std::cout << "First cluster has " << clusters[0].indices.size() << " points." << std::endl;
 	std::cout << "These are the indices of the points of the initial" << std::endl << "cloud that belong to the first cluster:" << std::endl;
 	std::size_t counter = 0;
-	while (counter < clusters[0].indices.size ())
+	while (counter < clusters[0].indices.size())
 	{
 		std::cout << clusters[0].indices[counter] << ", ";
 		++counter;
@@ -386,7 +489,7 @@ void don_segmentation_tutorial()
 	// Setting viewpoint is very important, so that we can ensure normals are all pointed in the same direction!
 	ne.setViewPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 
-	// Calculate normals with the small scale
+	// Calculate normals with the small scale.
 	std::cout << "Calculating normals for scale..." << scale1 << std::endl;
 	pcl::PointCloud<pcl::PointNormal>::Ptr normals_small_scale(std::make_shared<pcl::PointCloud<pcl::PointNormal> >());
 
@@ -705,19 +808,20 @@ namespace my_pcl {
 
 void segmentation()
 {
-	//local::euclidean_cluster_extraction_tutorial();
+	//local::euclidean_cluster_extraction_tutorial();  // pcl::SACSegmentation
+	//local::euclidean_cluster_extraction_gpu_example();  // GPU. pcl::EuclideanClusterExtraction & pcl::gpu::EuclideanClusterExtraction
 	//local::region_growing_segmentation_tutorial();
 	//local::min_cut_segmentation_tutorial();
 	//local::conditional_euclidean_clustering_tutorial();
-	//local::don_segmentation_tutorial();
-	local::supervoxels_clustering_tutorial();  // VCCS.
+	//local::don_segmentation_tutorial();  // Difference of normals (DoN) features
+	local::supervoxels_clustering_tutorial();  // Voxel cloud connectivity segmentation (VCCS)
 
 	//local::region_growing_example();
-	//local::supervoxels_example();  // VCCS. Not yet implemented.
-	//local::lccp_segmentatio_example();  // Not yet implemented.
-	//local::cpc_segmentatio_example();  // Not yet implemented.
+	//local::supervoxels_example();  // Voxel cloud connectivity segmentation (VCCS). Not yet implemented
+	//local::lccp_segmentatio_example();  // Locally convex connected patches (LCCP). Not yet implemented
+	//local::cpc_segmentatio_example();  // Constrained planar cuts (CPC). Not yet implemented
 
-	//local::grabcut_test();  // Not yet implemented.
+	//local::grabcut_test();  // Not yet implemented
 }
 
 }  // namespace my_pcl
