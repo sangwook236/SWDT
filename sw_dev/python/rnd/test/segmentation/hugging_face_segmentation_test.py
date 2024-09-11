@@ -50,6 +50,55 @@ def segment_anything_example():
 		print(f"Masks: shape = {masks[0].shape}, dtype = {masks[0].dtype}.")
 		print(f"{scores=}.")
 
+# REF [site] >> https://huggingface.co/facebook
+def segment_anything_2_example():
+	# Models:
+	#	facebook/sam2-hiera-tiny
+	#	facebook/sam2-hiera-tiny-hf
+	#	facebook/sam2-hiera-small
+	#	facebook/sam2-hiera-small-hf
+	#	facebook/sam2-hiera-base-plus
+	#	facebook/sam2-hiera-base-plus-hf
+	#	facebook/sam2-hiera-large
+	#	facebook/sam2-hiera-large-hfs
+
+	if False:
+		# To download the SAM 2 (Hiera-T, Hiera-S, Hiera-B+, Hiera-L) checkpoint
+
+		from huggingface_hub import hf_hub_download
+		hf_hub_download(repo_id="facebook/sam2-hiera-tiny", filename="sam2_hiera_tiny.pt", local_dir = "./")
+		#hf_hub_download(repo_id="facebook/sam2-hiera-small", filename="sam2_hiera_small.pt", local_dir = "./")
+		#hf_hub_download(repo_id="facebook/sam2-hiera-base-plus", filename="sam2_hiera_base_plus.pt", local_dir = "./")
+		#hf_hub_download(repo_id="facebook/sam2-hiera-large", filename="sam2_hiera_large.pt", local_dir = "./")
+
+	if True:
+		# For image prediction
+
+		from sam2.sam2_image_predictor import SAM2ImagePredictor
+
+		predictor = SAM2ImagePredictor.from_pretrained("facebook/sam2-hiera-tiny")
+
+		with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
+			predictor.set_image(<your_image>)
+			masks, _, _ = predictor.predict(<input_prompts>)
+
+	if True:
+		# For video prediction
+
+		from sam2.sam2_video_predictor import SAM2VideoPredictor
+
+		predictor = SAM2VideoPredictor.from_pretrained("facebook/sam2-hiera-tiny")
+
+		with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
+			state = predictor.init_state(<your_video>)
+
+			# Add new prompts and instantly get the output on the same frame
+			frame_idx, object_ids, masks = predictor.add_new_points_or_box(state, <your_prompts>):
+
+			# Propagate the prompts to get masklets throughout the video
+			for frame_idx, object_ids, masks in predictor.propagate_in_video(state):
+				# Do something
+
 # REF [site] >> https://huggingface.co/nvidia
 def segformer_example():
 	# Models:
@@ -84,6 +133,7 @@ def segformer_example():
 
 def main():
 	segment_anything_example()  # Segment Anything (SAM).
+	#segment_anything_2_example()  # Segment Anything 2 (SAM 2).
 
 	#segformer_example()  # SegFormer.
 
