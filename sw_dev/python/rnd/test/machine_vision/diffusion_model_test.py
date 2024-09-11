@@ -571,6 +571,81 @@ def stabilityai_example():
 
 		image = pipe(prompt, image=init_image, num_inference_steps=2, strength=0.5, guidance_scale=0.0).images[0]
 
+# REF [site] >> https://huggingface.co/Intel
+def ldm3d_example():
+	# Models:
+	#	Intel/ldm3d
+	#	Intel/ldm3d-4c
+	#
+	#	Intel/ldm3d-pano
+	#
+	#	Intel/ldm3d-sr
+
+	import diffusers
+
+	if True
+		#model_id = "Intel/ldm3d"
+		model_id = "Intel/ldm3d-4c"
+
+		pipe = diffusers.StableDiffusionLDM3DPipeline.from_pretrained(model_id)
+		#pipe.to("cpu")  # On CPU
+		pipe.to("cuda")  # On GPU
+
+		prompt = "A picture of some lemons on a table"
+		name = "lemons"
+
+		output = pipe(prompt)
+
+		rgb_image, depth_image = output.rgb, output.depth
+		#rgb_image[0].save(name + "_ldm3d_rgb.jpg")
+		#depth_image[0].save(name + "_ldm3d_depth.png")
+		rgb_image[0].save(name + "_ldm3d_4c_rgb.jpg")
+		depth_image[0].save(name + "_ldm3d_4c_depth.png")
+
+	if True:
+		pipe = diffusers.StableDiffusionLDM3DPipeline.from_pretrained("Intel/ldm3d-pano")
+		#pipe.to("cpu")  # On CPU
+		pipe.to("cuda")  # On GPU
+
+		prompt = "360 view of a large bedroom"
+		name = "bedroom_pano"
+
+		output = pipe(
+			prompt,
+			width=1024,
+			height=512,
+			guidance_scale=7.0,
+			num_inference_steps=50,
+		) 
+
+		rgb_image, depth_image = output.rgb, output.depth
+		rgb_image[0].save(name+"_ldm3d_rgb.jpg")
+		depth_image[0].save(name+"_ldm3d_depth.png")
+
+	if True:
+		# Generate a rgb/depth output from LDM3D
+		pipe_ldm3d = diffusers.StableDiffusionLDM3DPipeline.from_pretrained("Intel/ldm3d-4c")
+		pipe_ldm3d.to("cuda")
+
+		prompt = f"A picture of some lemons on a table"
+		output = pipe_ldm3d(prompt)
+		rgb_image, depth_image = output.rgb, output.depth
+		rgb_image[0].save(f"lemons_ldm3d_rgb.jpg")
+		depth_image[0].save(f"lemons_ldm3d_depth.png")
+
+		# Upscale the previous output to a resolution of (1024, 1024)
+		pipe_ldm3d_upscale = diffusers.DiffusionPipeline.from_pretrained("Intel/ldm3d-sr", custom_pipeline="pipeline_stable_diffusion_upscale_ldm3d")
+
+		pipe_ldm3d_upscale.to("cuda")
+
+		low_res_img = PIL.Image.open(f"lemons_ldm3d_rgb.jpg").convert("RGB")
+		low_res_depth = PIL.Image.open(f"lemons_ldm3d_depth.png")
+		outputs = pipe_ldm3d_upscale(prompt="high quality high resolution uhd 4k image", rgb=low_res_img, depth=low_res_depth, num_inference_steps=50, target_res=[1024, 1024])
+
+		upscaled_rgb, upscaled_depth =outputs.rgb[0], outputs.depth[0]
+		upscaled_rgb.save(f"upscaled_lemons_rgb.png")
+		upscaled_depth.save(f"upscaled_lemons_depth.png")
+
 def main():
 	# Denoising diffusion.
 	#	https://github.com/NVIDIA/modulus/tree/main/examples/generative/diffusion
@@ -586,6 +661,9 @@ def main():
 
 	#compvis_example()  # Stable diffusion.
 	stabilityai_example()  # Stable diffusion.
+
+	# 3D
+	#ldm3d_example()  # LDM3D
 
 #--------------------------------------------------------------------
 
