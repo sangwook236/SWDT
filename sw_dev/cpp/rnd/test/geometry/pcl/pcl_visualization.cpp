@@ -95,6 +95,19 @@ pcl::visualization::PCLVisualizer::Ptr shapesVis(pcl::PointCloud<pcl::PointXYZRG
 	// Add shapes at cloud points.
 	viewer->addLine<pcl::PointXYZRGB>(cloud->points[0], cloud->points[cloud->size() - 1], "line");
 	viewer->addSphere(cloud->points[0], 0.2, 0.5, 0.5, 0.0, "sphere");
+	/*
+	viewer->addPlane();
+	viewer->addCircle();
+	viewer->addPolygon();
+	viewer->addArrow();
+	viewer->addCone();
+	viewer->addCube();
+	viewer->addCylinder();
+	viewer->addEllipsoid();
+	viewer->addPolygonMesh();
+	viewer->addText();
+	viewer->addText3D();
+	*/
 
 	// Add shapes at other locations.
 	pcl::ModelCoefficients coeffs;

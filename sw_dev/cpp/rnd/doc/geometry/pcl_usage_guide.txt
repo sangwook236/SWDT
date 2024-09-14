@@ -148,6 +148,8 @@
 
 		CMake:
 			Configure.
+				(Optional) set BUILD_CUDA to ON.
+				(Optional) set BUILD_GPU to ON.
 			Generate.
 
 		make -j8
