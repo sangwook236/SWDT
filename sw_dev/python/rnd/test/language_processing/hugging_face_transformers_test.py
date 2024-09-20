@@ -3423,6 +3423,84 @@ def rag_example():
 		)
 		generated_string = tokenizer.batch_decode(generated, skip_special_tokens=True)
 
+# REF [site] >> https://huggingface.co/facebook
+def rag_facebook_example():
+	# Models:
+	#	facebook/rag-token-base
+	#	facebook/rag-token-nq
+	#	facebook/rag-sequence-base
+	#	facebook/rag-sequence-nq
+
+	if True:
+		model = transformers.RagTokenForGeneration.from_pretrained_question_encoder_generator("facebook/dpr-question_encoder-single-nq-base", "facebook/bart-large")
+
+		question_encoder_tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/dpr-question_encoder-single-nq-base")
+		generator_tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/bart-large")
+
+		tokenizer = transformers.RagTokenizer(question_encoder_tokenizer, generator_tokenizer)
+		model.config.use_dummy_dataset = True
+		model.config.index_name = "exact"
+		retriever = transformers.RagRetriever(model.config, question_encoder_tokenizer, generator_tokenizer)
+
+		model.save_pretrained("./")
+		tokenizer.save_pretrained("./")
+		retriever.save_pretrained("./")
+
+	if True:
+		model = transformers.RagSequenceForGeneration.from_pretrained_question_encoder_generator("facebook/dpr-question_encoder-single-nq-base", "facebook/bart-large")
+
+		question_encoder_tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/dpr-question_encoder-single-nq-base")
+		generator_tokenizer = transformers.AutoTokenizer.from_pretrained("facebook/bart-large")
+
+		tokenizer = transformers.RagTokenizer(question_encoder_tokenizer, generator_tokenizer)
+		model.config.use_dummy_dataset = True
+		model.config.index_name = "exact"
+		retriever = transformers.RagRetriever(model.config, question_encoder_tokenizer, generator_tokenizer)
+
+		model.save_pretrained("./")
+		tokenizer.save_pretrained("./")
+		retriever.save_pretrained("./")
+
+	if True:
+		model_id = "facebook/rag-token-base"
+		#model_id = "facebook/rag-sequence-base"
+
+		tokenizer = transformers.RagTokenizer.from_pretrained(model_id)
+		retriever = transformers.RagRetriever.from_pretrained(model_id)
+		model = transformers.RagTokenForGeneration.from_pretrained(model_id, retriever=retriever)
+
+		input_dict = tokenizer.prepare_seq2seq_batch("who holds the record in 100m freestyle", "michael phelps", return_tensors="pt") 
+
+		outputs = model(input_dict["input_ids"], labels=input_dict["labels"])
+
+		loss = outputs.loss
+
+		# Train on loss
+
+	if True:
+		tokenizer = transformers.RagTokenizer.from_pretrained("facebook/rag-token-nq")
+		retriever = transformers.RagRetriever.from_pretrained("facebook/rag-token-nq", index_name="exact", use_dummy_dataset=True)
+		model = transformers.RagTokenForGeneration.from_pretrained("facebook/rag-token-nq", retriever=retriever)
+
+		input_dict = tokenizer.prepare_seq2seq_batch("who holds the record in 100m freestyle", return_tensors="pt")
+
+		generated = model.generate(input_ids=input_dict["input_ids"])
+		print(tokenizer.batch_decode(generated, skip_special_tokens=True)[0])
+
+		# Should give michael phelps => sounds reasonable
+
+	if True:
+		tokenizer = transformers.RagTokenizer.from_pretrained("facebook/rag-sequence-nq")
+		retriever = transformers.RagRetriever.from_pretrained("facebook/rag-sequence-nq", index_name="exact", use_dummy_dataset=True)
+		model = transformers.RagSequenceForGeneration.from_pretrained("facebook/rag-sequence-nq", retriever=retriever)
+		
+		input_dict = tokenizer.prepare_seq2seq_batch("how many countries are in europe", return_tensors="pt")
+
+		generated = model.generate(input_ids=input_dict["input_ids"])
+		print(tokenizer.batch_decode(generated, skip_special_tokens=True)[0])
+
+		# Should give 54 => google says either 44 or 51
+
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -5503,6 +5581,79 @@ def phi_3_vision_example():
 
 	print(response)
 
+# REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/paligemma
+def paligemma_example():
+	if True:
+		model_id = "google/paligemma-3b-mix-224"
+		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(model_id)
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		prompt = "What is on the flower?"
+		image_file = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg?download=true"
+		raw_image = Image.open(requests.get(image_file, stream=True).raw)
+		if True:
+			inputs = processor(prompt, raw_image, return_tensors="pt")
+		else:
+			answer = "a bee"
+			inputs = processor(text=prompt, images=raw_image, suffix=answer, return_tensors="pt")
+
+		output = model.generate(**inputs, max_new_tokens=20)
+
+		print(processor.decode(output[0], skip_special_tokens=True)[len(prompt):])
+
+	if False:
+		# Initializing a Siglip-like vision config
+		vision_config = transformers.SiglipVisionConfig()
+
+		# Initializing a PaliGemma config
+		text_config = transformers.GemmaConfig()
+
+		# Initializing a PaliGemma paligemma-3b-224 style configuration
+		configuration = transformers.PaliGemmaConfig(vision_config, text_config)
+
+		# Initializing a model from the paligemma-3b-224 style configuration
+		model = transformers.PaliGemmaForConditionalGeneration(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained("google/PaliGemma-test-224px-hf")
+		processor = transformers.AutoProcessor.from_pretrained("google/PaliGemma-test-224px-hf")
+
+		prompt = "answer en Where is the cow standing?"
+		url = "https://huggingface.co/gv-hf/PaliGemma-test-224px-hf/resolve/main/cow_beach_1.png"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		inputs = processor(text=prompt, images=image, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(**inputs, max_length=30)
+
+		processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+# REF [site] >> https://huggingface.co/adept
+def fuyu_example():
+	# Models:
+	#	adept/fuyu-8b
+
+	# Load model and processor
+	model_id = "adept/fuyu-8b"
+	processor = transformers.FuyuProcessor.from_pretrained(model_id)
+	model = transformers.FuyuForCausalLM.from_pretrained(model_id, device_map="cuda:0")
+
+	# Prepare inputs for the model
+	text_prompt = "Generate a coco-style caption.\n"
+	url = "https://huggingface.co/adept/fuyu-8b/resolve/main/bus.png"
+	image = Image.open(requests.get(url, stream=True).raw)
+
+	inputs = processor(text=text_prompt, images=image, return_tensors="pt").to("cuda:0")
+
+	# Autoregressively generate text
+	generation_output = model.generate(**inputs, max_new_tokens=7)
+	generation_text = processor.batch_decode(generation_output[:, -7:], skip_special_tokens=True)
+	assert generation_text == ["A blue bus parked on the side of a road."]
+
 # REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
 def llava_example():
 	if False:
@@ -7410,7 +7561,11 @@ def main():
 	#aya_example()  # Aya. Not yet tested.
 	#phi_3_example()  # phi-3. Not yet tested.
 
-	#rag_example()  # Retrieval-augmented generation (RAG).
+	#-----
+	# Retrieval-augmented generation (RAG).
+
+	#rag_example()
+	#rag_facebook_example()
 
 	#-----
 	# Code.
@@ -7457,6 +7612,8 @@ def main():
 	#blip_example()  # BLIP.
 	#openflamingo_example()  # OpenFlamingo.
 	#phi_3_vision_example()  # Phi-3-vision.
+	#paligemma_example()  # PaliGemma.
+	#fuyu_example()  # Fuyu.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
