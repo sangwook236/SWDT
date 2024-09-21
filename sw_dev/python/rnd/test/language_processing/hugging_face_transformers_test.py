@@ -2865,6 +2865,10 @@ def mistral_example():
 	#	mistralai/Mistral-7B-Instruct-v0.2
 	#	mistralai/Mistral-7B-v0.3
 	#	mistralai/Mistral-7B-Instruct-v0.3
+	#	mistralai/Mistral-Nemo-Base-2407
+	#	mistralai/Mistral-Nemo-Instruct-2407
+	#	mistralai/Mistral-Small-Instruct-2409
+	#	mistralai/Mistral-Large-Instruct-2407
 
 	device = "cuda"  # The device to load the model onto
 
@@ -4243,6 +4247,7 @@ def print_prime(n):
 def codestral_example():
 	# Models:
 	#	mistralai/Codestral-22B-v0.1
+	#	mistralai/Mamba-Codestral-7B-v0.1  # REF [function] >> mamba2_example()
 
 	"""
 	# Download
@@ -5654,6 +5659,36 @@ def fuyu_example():
 	generation_text = processor.batch_decode(generation_output[:, -7:], skip_special_tokens=True)
 	assert generation_text == ["A blue bus parked on the side of a road."]
 
+# REF [site] >> https://huggingface.co/mistralai
+def pixtral_example():
+	# Models:
+	#	mistralai/Pixtral-12B-2409
+
+	raise NotImplementedError
+
+# REF [site] >>
+#	https://huggingface.co/Efficient-Large-Model
+#	https://github.com/NVlabs/VILA
+def vila_example():
+	# Models:
+	#	Efficient-Large-Model/VILA-2.7b
+	#	Efficient-Large-Model/VILA-7b
+	#	Efficient-Large-Model/VILA-7b-4bit-awq
+	#	Efficient-Large-Model/VILA-13b
+	#	Efficient-Large-Model/VILA-13b-4bit-awq
+	#	Efficient-Large-Model/VILA1.5-3b
+	#	Efficient-Large-Model/VILA1.5-3b-AWQ
+	#	Efficient-Large-Model/VILA1.5-3b-s2
+	#	Efficient-Large-Model/VILA1.5-3b-s2-AWQ
+	#	Efficient-Large-Model/VILA1.5-13b
+	#	Efficient-Large-Model/VILA1.5-13b-AWQ
+	#	Efficient-Large-Model/VILA1.5-40b
+	#	Efficient-Large-Model/VILA1.5-40b-AWQ
+	#	Efficient-Large-Model/Llama-3-VILA1.5-8B
+	#	Efficient-Large-Model/Llama-3-VILA1.5-8b-AWQ
+
+	raise NotImplementedError
+
 # REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
 def llava_example():
 	if False:
@@ -5747,6 +5782,18 @@ def nano_llava_example():
 	)[0]
 
 	print(tokenizer.decode(output_ids[input_ids.shape[1]:], skip_special_tokens=True).strip())
+
+# REF [site] >>
+#	https://huggingface.co/Efficient-Large-Model
+#	https://github.com/NVlabs/VILA
+def long_vila_example():
+	# Models:
+	#	Efficient-Large-Model/Llama-3-LongVILA-8B-128Frames
+	#	Efficient-Large-Model/Llama-3-LongVILA-8B-256Frames
+	#	Efficient-Large-Model/Llama-3-LongVILA-8B-512Frames
+	#	Efficient-Large-Model/Llama-3-LongVILA-8B-1024Frames
+
+	raise NotImplementedError
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/tvlt
 def tvlt_example():
@@ -7046,6 +7093,192 @@ def time_series_transformer_example():
 		print(f'MASE = {np.mean(mase["mase"])}, MAPE = {np.mean(mape["mape"])}, sMAPE = {np.mean(smape["smape"])}.')
 
 # REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/mamba
+#	https://huggingface.co/state-spaces
+#	https://github.com/state-spaces/mamba
+def mamba_example():
+	# Models:
+	#	state-spaces/mamba-130m
+	#	state-spaces/mamba-130m-hf
+	#	state-spaces/mamba-370m
+	#	state-spaces/mamba-370m-hf
+	#	state-spaces/mamba-390m-hf
+	#	state-spaces/mamba-790m
+	#	state-spaces/mamba-790m-hf
+	#	state-spaces/mamba-1.4b
+	#	state-spaces/mamba-1.4b-hf
+	#	state-spaces/mamba-2.8b
+	#	state-spaces/mamba-2.8b-slimpj
+	#	state-spaces/mamba-2.8b-hf
+
+	if True:
+		# A simple generation example
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("state-spaces/mamba-130m-hf")
+		model = transformers.MambaForCausalLM.from_pretrained("state-spaces/mamba-130m-hf")
+		input_ids = tokenizer("Hey how are you doing?", return_tensors= "pt")["input_ids"]
+
+		out = model.generate(input_ids, max_new_tokens=10)
+		print(tokenizer.batch_decode(out))
+
+	if True:
+		# Peft finetuning
+		#	The slow version is not very stable for training, and the fast one needs float32!
+
+		from datasets import load_dataset
+		from trl import SFTTrainer
+		from peft import LoraConfig
+
+		model_id = "state-spaces/mamba-130m-hf"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		dataset = load_dataset("Abirate/english_quotes", split="train")
+		training_args = transformers.TrainingArguments(
+			output_dir="./results",
+			num_train_epochs=3,
+			per_device_train_batch_size=4,
+			logging_dir="./logs",
+			logging_steps=10,
+			learning_rate=2e-3,
+		)
+		lora_config = LoraConfig(
+			r=8,
+			target_modules=["x_proj", "embeddings", "in_proj", "out_proj"],
+			task_type="CAUSAL_LM",
+			bias="none",
+		)
+		trainer = SFTTrainer(
+			model=model,
+			tokenizer=tokenizer,
+			args=training_args,
+			peft_config=lora_config,
+			train_dataset=dataset,
+			dataset_text_field="quote",
+		)
+		trainer.train()
+
+	if False:
+		# Initializing a Mamba configuration
+		configuration = transformers.MambaConfig()
+
+		# Initializing a model (with random weights) from the configuration
+		model = transformers.MambaModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("state-spaces/mamba-130m-hf")
+		model = transformers.MambaModel.from_pretrained("state-spaces/mamba-130m-hf")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("state-spaces/mamba-130m-hf")
+		model = transformers.MambaForCausalLM.from_pretrained("state-spaces/mamba-130m-hf")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs, labels=inputs["input_ids"])
+		loss = outputs.loss
+		logits = outputs.logits
+
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/mamba2
+#	https://huggingface.co/state-spaces
+#	https://github.com/state-spaces/mamba
+def mamba2_example():
+	# Models:
+	#	state-spaces/mamba2-130m
+	#	state-spaces/mamba2-370m
+	#	state-spaces/mamba2-780m
+	#	state-spaces/mamba2-1.3b
+	#	state-spaces/mamba2-2.7b
+	#	state-spaces/mamba2attn-2.7b
+
+	if True:
+		# A simple generation example
+
+		model_id = "mistralai/Mamba-Codestral-7B-v0.1"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id, revision="refs/pr/9", from_slow=True, legacy=False)
+		model = transformers.MambaForCausalLM.from_pretrained(model_id, revision="refs/pr/9")
+		input_ids = tokenizer("Hey how are you doing?", return_tensors= "pt")["input_ids"]
+
+		out = model.generate(input_ids, max_new_tokens=10)
+		print(tokenizer.batch_decode(out))
+
+	if True:
+		# A draft script for finetuning
+
+		from datasets import load_dataset
+		from trl import SFTTrainer
+		from peft import LoraConfig
+
+		model_id = "mistralai/Mamba-Codestral-7B-v0.1"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id, revision="refs/pr/9", from_slow=True, legacy=False)
+		tokenizer.pad_token = tokenizer.eos_token
+		tokenizer.padding_side = "left" #enforce padding side left
+
+		model = transformers.Mamba2ForCausalLM.from_pretrained(model_id, revision="refs/pr/9")
+		dataset = load_dataset("Abirate/english_quotes", split="train")
+		# Without CUDA kernels, batch size of 2 occupies one 80GB device
+		# but precision can be reduced.
+		# Experiments and trials welcome!
+		training_args = transformers.TrainingArguments(
+			output_dir="./results",
+			num_train_epochs=3,
+			per_device_train_batch_size=2,
+			logging_dir="./logs",
+			logging_steps=10,
+			learning_rate=2e-3,
+		)
+		lora_config = LoraConfig(
+			r=8,
+			target_modules=["embeddings", "in_proj", "out_proj"],
+			task_type="CAUSAL_LM",
+			bias="none",
+		)
+		trainer = SFTTrainer(
+			model=model,
+			tokenizer=tokenizer,
+			args=training_args,
+			peft_config=lora_config,
+			train_dataset=dataset,
+			dataset_text_field="quote",
+		)
+		trainer.train()
+
+	if False:
+		# Initializing a Mamba2 configuration
+		configuration = transformers.Mamba2Config()
+
+		# Initializing a model (with random weights) from the configuration
+		model = transformers.Mamba2Model(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("mistralai/mamba-codestral-7B-v0.1")
+		model = transformers.Mamba2Model.from_pretrained("mistralai/mamba-codestral-7B-v0.1")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("mistralai/mamba-codestral-7B-v0.1")
+		model = transformers.Mamba2ForCausalLM.from_pretrained("mistralai/mamba-codestral-7B-v0.1")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs, labels=inputs["input_ids"])
+		loss = outputs.loss
+		logits = outputs.logits
+
+# REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/decision_transformer
 #	https://huggingface.co/edbeeching
 #	https://github.com/huggingface/transformers/blob/main/examples/research_projects/decision_transformer/run_decision_transformer.py
@@ -7611,12 +7844,20 @@ def main():
 	#git_example()  # GIT.
 	#blip_example()  # BLIP.
 	#openflamingo_example()  # OpenFlamingo.
+
 	#phi_3_vision_example()  # Phi-3-vision.
 	#paligemma_example()  # PaliGemma.
 	#fuyu_example()  # Fuyu.
+	#pixtral_example()  # Pixtral. Not yet implemented.
+	#vila_example()  # VILA. Not yet implemented.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
+
+	#-----
+	# Video and language.
+
+	#long_vila_example()  # LongVILA. Not yet implemented.
 
 	#-----
 	# Vision and audio.
@@ -7674,6 +7915,8 @@ def main():
 	# Sequence.
 
 	#time_series_transformer_example()  # Probabilistic time series transformer.
+	#mamba_example()  # Mamba.
+	#mamba2_example()  # Mamba-2.
 
 	#--------------------
 	# Learning theory.
@@ -7708,5 +7951,5 @@ def main():
 
 #--------------------------------------------------------------------
 
-if '__main__' == __name__:
+if "_main__" == __name__:
 	main()
