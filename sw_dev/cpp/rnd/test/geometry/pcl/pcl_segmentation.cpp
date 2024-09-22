@@ -801,6 +801,555 @@ void grabcut_test()
 	throw std::runtime_error("Not yet implemented");
 }
 
+// REF [site] >>
+//	https://en.wikipedia.org/wiki/DBSCAN
+//	https://github.com/Eleobert/dbscan/blob/master/dbscan.cpp
+auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, const size_t min_pts)
+{
+	const double octree_resolution = 5.0;
+	pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> octree(octree_resolution);
+	octree.setInputCloud(cloud);
+	octree.addPointsFromInputCloud();
+
+	const auto &num_points = cloud->size();
+	std::vector<std::vector<size_t>> clusters;
+	std::vector<char> visited(num_points, 0);  // 0: undefined, 1: noise, 2: clustered
+	pcl::Indices k_indices, k_sub_indices;
+	std::vector<float> k_sqr_distances;
+	for (size_t pt_idx = 0; pt_idx < num_points; ++pt_idx)
+	{
+		if (visited[pt_idx]) continue;
+
+		octree.radiusSearch(cloud->points[pt_idx], eps, k_indices, k_sqr_distances);
+
+		if (k_indices.size() < min_pts)  // Noise
+		{
+			visited[pt_idx] = 1;
+			continue;
+		}
+		visited[pt_idx] = 2;
+
+		std::vector<size_t> cluster({pt_idx});
+		while (!k_indices.empty())
+		{
+			const auto neighbor_idx(k_indices.back());
+			k_indices.pop_back();
+			if (1 == visited[neighbor_idx])  // If noise
+			{
+				visited[neighbor_idx] = 2;
+				cluster.push_back(neighbor_idx);
+				continue;
+			}
+			if (visited[neighbor_idx]) continue;
+			visited[neighbor_idx] = 2;
+			cluster.push_back(neighbor_idx);
+
+			octree.radiusSearch(cloud->points[neighbor_idx], eps, k_sub_indices, k_sqr_distances);
+
+#if 1
+			// For checking
+			if (k_sub_indices.size() >= min_pts)
+			{
+				for (auto &clust: clusters)
+					std::sort(clust.begin(), clust.end());
+				for (const auto &idx: k_sub_indices)
+					if (2 == visited[idx])
+					{
+						size_t clust_idx = 0;
+						for (const auto &clust: clusters)
+						{
+							if (std::find(clust.begin(), clust.end(), idx) != clust.end())
+							{
+								pcl::Indices k_indices_tmp;
+								octree.radiusSearch(cloud->points[idx], eps, k_indices_tmp, k_sqr_distances);
+								std::cout << "Candidate point #" << idx << " (neighbor of point #" << neighbor_idx << ") of cluster #" << clusters.size() << " is already assigned to cluster #" << clust_idx << ": #neighbors = " << k_indices_tmp.size() << std::endl;
+								//break;
+							}
+							++clust_idx;
+						}
+					}
+			}
+#endif
+
+			if (k_sub_indices.size() >= min_pts)
+#if 1
+				std::copy(k_sub_indices.begin(), k_sub_indices.end(), std::back_inserter(k_indices));
+#else
+				std::copy_if(k_sub_indices.begin(), k_sub_indices.end(), std::back_inserter(k_indices), [&visited](const auto &idx) {
+					//return !visited[idx];
+					return 2 != visited[idx];
+				});
+#endif
+		}
+
+		if (cluster.size() >= min_pts)
+			clusters.emplace_back(std::move(cluster));
+	}
+
+	// Sort clusters
+#if 0
+	for (auto &cluster: clusters)
+		std::sort(cluster.begin(), cluster.end());
+#elif 0
+	std::for_each(clusters.begin(), clusters.end(), [](auto &cluster) {
+		std::sort(cluster.begin(), cluster.end());
+	});
+#else
+	// No sorting
+#endif
+
+	return clusters;
+}
+
+// REF [site] >>
+//	https://en.wikipedia.org/wiki/DBSCAN
+//	https://github.com/Eleobert/dbscan/blob/master/dbscan.cpp
+auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, const size_t min_pts)
+{
+	const auto radius = float(eps);
+	const auto max_elements = int(cloud->size());
+
+	pcl::gpu::Octree::PointCloud cloud_device;
+	cloud_device.upload(cloud->points);
+
+	pcl::gpu::Octree octree_device;
+	octree_device.setCloud(cloud_device);
+	octree_device.build();
+
+	pcl::gpu::Octree::Queries queries_device;
+	pcl::gpu::NeighborIndices result_device;
+
+	const auto &num_points = cloud->size();
+	std::vector<std::vector<size_t>> clusters;
+	std::vector<char> visited(num_points, 0);  // 0: undefined, 1: noise, 2: clustered
+	std::list<int> k_indices;
+	std::vector<int> k_indices_sizes, k_indices_data, k_sub_indices_sizes, k_sub_indices_data;
+	for (size_t pt_idx = 0; pt_idx < num_points; ++pt_idx)
+	{
+		if (visited[pt_idx]) continue;
+
+		std::vector<pcl::PointXYZ> queries({cloud->points[pt_idx]});  // TODO [check] >>
+		queries_device.upload(queries);
+		result_device.create(queries_device.size(), max_elements);
+
+		octree_device.radiusSearch(queries_device, radius, max_elements, result_device);
+
+		//std::vector<int> k_indices_sizes, k_indices_data;
+		result_device.sizes.download(k_indices_sizes);
+		result_device.data.download(k_indices_data);
+		if (k_indices_sizes[0] < min_pts)  // Noise
+		{
+			visited[pt_idx] = 1;
+			continue;
+		}
+		visited[pt_idx] = 2;
+
+		auto it_end = k_indices_data.begin();
+		std::advance(it_end, k_indices_sizes[0]);
+		k_indices.assign(k_indices_data.begin(), it_end);
+
+		std::vector<size_t> cluster({pt_idx});
+		while (!k_indices.empty())
+		{
+			std::vector<pcl::PointXYZ> queries;  // TODO [check] >>
+			queries.reserve(k_indices.size());
+			std::vector<int> query_point_indices;  // For checking
+			query_point_indices.reserve(k_indices.size());  // For checking
+			for (const auto &neighbor_idx: k_indices)
+			{
+				if (1 == visited[neighbor_idx])  // If noise
+				{
+					visited[neighbor_idx] = 2;
+					cluster.push_back(neighbor_idx);
+					continue;
+				}
+				if (visited[neighbor_idx]) continue;
+				visited[neighbor_idx] = 2;
+				cluster.push_back(neighbor_idx);
+
+				queries.push_back(cloud->points[neighbor_idx]);
+				query_point_indices.push_back(neighbor_idx);  // For checking
+			}
+			k_indices.clear();
+
+			if (!queries.empty())
+			{
+				queries_device.upload(queries);
+				result_device.create(queries_device.size(), max_elements);
+
+				octree_device.radiusSearch(queries_device, radius, max_elements, result_device);
+
+				//std::vector<int> k_sub_indices_sizes, k_sub_indices_data;  // Too slow
+				result_device.sizes.download(k_sub_indices_sizes);
+				result_device.data.download(k_sub_indices_data);
+				assert(queries_device.size() == k_sub_indices_sizes.size());
+
+#if 1
+				// For checking
+				for (auto &clust: clusters)
+					std::sort(clust.begin(), clust.end());
+				for (std::size_t si = 0; si < k_sub_indices_sizes.size(); ++si)
+					for (std::size_t sj = 0; sj < k_sub_indices_sizes[si]; ++sj)
+					{
+						const auto &idx = k_sub_indices_data[si * max_elements + sj];
+						if (2 == visited[idx])
+						{
+							size_t clust_idx = 0;
+							for (const auto &clust: clusters)
+							{
+								if (std::find(clust.begin(), clust.end(), idx) != clust.end())
+								{
+									std::vector<pcl::PointXYZ> queries({cloud->points[idx]});  // TODO [check] >>
+									queries_device.upload(queries);
+									result_device.create(queries_device.size(), max_elements);
+									octree_device.radiusSearch(queries_device, radius, max_elements, result_device);
+									std::vector<int> k_indices_sizes_tmp;  // TODO [check] >>
+									result_device.sizes.download(k_indices_sizes_tmp);
+									std::cout << "Candidate point #" << idx << " (neighbor of point #" << query_point_indices[si] << ") of cluster #" << clusters.size() << " is already assigned to cluster #" << clust_idx << ": #neighbors = " << k_indices_sizes_tmp[0] << std::endl;
+									//break;
+								}
+								++clust_idx;
+							}
+						}
+					}
+#endif
+
+				for (std::size_t si = 0; si < k_sub_indices_sizes.size(); ++si)
+					if (k_sub_indices_sizes[si] >= min_pts)
+#if 1
+						for (std::size_t sj = 0; sj < k_sub_indices_sizes[si]; ++sj)
+							k_indices.push_back(k_sub_indices_data[si * max_elements + sj]);
+#else
+					{
+						auto it_begin = k_indices_data.begin(), it_end = k_indices_data.begin();
+						std::advance(it_begin, si * max_elements);
+						std::advance(it_end, si * max_elements + k_indices_sizes[si]);
+#if 1
+						std::copy(it_begin, it_end, std::back_inserter(k_indices));
+#else
+						std::copy_if(it_begin, it_end, std::back_inserter(k_indices), [&visited](const auto &idx) {
+							//return !visited[idx];
+							return 2 != visited[idx];
+						});
+#endif
+					}
+#endif
+			}
+		}
+
+		if (cluster.size() >= min_pts)
+			clusters.emplace_back(std::move(cluster));
+	}
+
+	// Sort clusters
+#if 0
+	for (auto &cluster: clusters)
+		std::sort(cluster.begin(), cluster.end());
+#elif 0
+	std::for_each(clusters.begin(), clusters.end(), [](auto &cluster) {
+		std::sort(cluster.begin(), cluster.end());
+	});
+#else
+	// No sorting
+#endif
+
+	return clusters;
+}
+
+void dbscan_test()
+{
+	// Load a point cloud
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		const std::string input_filepath("path/to/input.pcd");
+		//const std::string input_filepath("/work/inno3d_git/data/Autofiltering_TestData_20240828/TestData/target.pcd");
+
+		std::cout << "Loading a point cloud from " << input_filepath << "..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		if (pcl::io::loadPCDFile<pcl::PointXYZ>(input_filepath, *cloud) != 0)
+		{
+			std::cerr << "File not found, " << input_filepath << std::endl;
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "A point cloud loaded (#points = " << cloud->size()  << "): " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
+	}
+
+	// Cluster points by DBSCAN algorithm
+	std::vector<std::vector<size_t>> clusters;
+	{
+		std::cout << "Clustering points by DBSCAN algorithm..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		const double eps = 10.0;  // The radius for searching neighbor points of octree
+		const size_t min_pts = 8;  // The minimum number of points required to form a dense region
+		clusters = dbscan(cloud, eps, min_pts);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Points clustered by DBSCAN algorithm (#clusters = " << clusters.size() << "): " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
+
+#if 1
+		const auto num_clustered_points = std::accumulate(clusters.begin(), clusters.end(), 0, [](size_t sum, const auto &cluster) { return sum + cluster.size(); });
+		std::set<size_t> noisy_points;
+		size_t idx = 0;
+		std::generate_n(std::inserter(noisy_points, noisy_points.end()), cloud->size(), [&idx]() { return idx++; });
+#if 1
+		for (const auto &cluster: clusters)
+			for (const auto &pt_idx: cluster)
+				noisy_points.erase(pt_idx);
+#else
+		std::for_each(clusters.begin(), clusters.end(), [&noisy_points](const auto &cluster) {
+			//noisy_points.erase(cluster.begin(), cluster.end());
+			std::for_each(cluster.begin(), cluster.end(), [&noisy_points](const auto &pt_idx) {
+				noisy_points.erase(pt_idx);
+			});
+		});
+#endif
+
+		std::cout << "#clustered points = " << num_clustered_points << std::endl;
+		std::cout << "#noisy points = " << noisy_points.size() << std::endl;
+		assert(cloud->size() == num_clustered_points + noisy_points.size());
+
+		// Add a noisy cluster
+		clusters.push_back(std::vector<size_t>(noisy_points.begin(), noisy_points.end()));
+#endif
+	}
+
+	// Visualize
+	{
+#if 1
+		pcl::visualization::PCLVisualizer viewer("3D Viewer");
+#if 1
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location
+			0.0, 0.0, 0.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#elif 0
+		pcl::PointXYZ min_point, max_point;
+		pcl::getMinMax3D(*cloud, min_point, max_point);
+		std::cout << "Center point of registered point cloud = (" << (min_point.x + max_point.x) / 2 << ", " << (min_point.y + max_point.y) / 2 << ", " << (min_point.z + max_point.z) / 2 << ")." << std::endl;
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location.
+			(min_point.x + max_point.x) / 2.0, (min_point.y + max_point.y) / 2.0, (min_point.z + max_point.z) / 2.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera.
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#else
+		viewer.initCameraParameters();
+#endif
+		viewer.setBackgroundColor(0.5, 0.5, 0.5);
+		viewer.addCoordinateSystem(100.0);
+
+		size_t cluster_idx = 0;
+		for (const auto &cluster: clusters)
+		{
+			pcl::PointCloud<pcl::PointXYZ>::Ptr cluster_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+			cluster_cloud->reserve(cluster.size());
+			for (const auto &pt_idx: cluster)
+				cluster_cloud->push_back(cloud->points[pt_idx]);
+
+#if 1
+			const std::string cloud_id("Point Cloud " + std::to_string(cluster_idx++));
+
+			//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cluster_cloud);
+			//viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, rgb, cloud_id);
+			viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, cloud_id);
+#else
+			// Estimate normals
+			pcl::PointCloud<pcl::Normal>::Ptr cluster_normals(new pcl::PointCloud<pcl::Normal>());
+			{
+				std::cout << "Estimating normals..." << std::endl;
+				const auto start_time(std::chrono::high_resolution_clock::now());
+				//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+				pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+				ne.setInputCloud(cluster_cloud);
+				pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+				ne.setSearchMethod(tree);
+				ne.setRadiusSearch(5.0);  // Use all neighbors in a sphere of radius 5m
+				ne.compute(*cluster_normals);  // Compute the features
+				const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+				std::cout << "Normals estimated: " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
+			}
+
+			const std::string cloud_id("Point Cloud " + std::to_string(cluster_idx)), cloud_normals_id("Point Cloud Normal " + std::to_string(cluster_idx));
+			++cluster_idx;
+
+			//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cluster_cloud);
+			//viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, rgb, cloud_id);
+			viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, cloud_id);
+			viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cluster_cloud, cluster_normals, 10, 10.0f, cloud_normals_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 1, 0, 0, cloud_normals_id);
+#endif
+		}
+
+		while (!viewer.wasStopped())
+		{
+			viewer.spinOnce(1);
+			//std::this_thread::sleep_for(1ms);
+		}
+#elif 0
+		pcl::visualization::CloudViewer viewer("Simple 3D Viewer");
+		viewer.showCloud(cloud, "Point Cloud");
+		while (!viewer.wasStopped());
+#else
+		// Visualize nothing
+#endif
+	}
+}
+
+void dbscan_gpu_test()
+{
+	// Load a point cloud
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		const std::string input_filepath("path/to/input.pcd");
+		//const std::string input_filepath("/work/inno3d_git/data/Autofiltering_TestData_20240828/TestData/target.pcd");
+
+		std::cout << "Loading a point cloud from " << input_filepath << "..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		if (pcl::io::loadPCDFile<pcl::PointXYZ>(input_filepath, *cloud) != 0)
+		{
+			std::cerr << "File not found, " << input_filepath << std::endl;
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "A point cloud loaded (#points = " << cloud->size()  << "): " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
+	}
+
+	// Cluster points by DBSCAN algorithm
+	std::vector<std::vector<size_t>> clusters;
+	{
+		std::cout << "Clustering points by DBSCAN (GPU) algorithm..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		const double eps = 10.0;  // The radius for searching neighbor points of octree
+		const size_t min_pts = 8;  // The minimum number of points required to form a dense region
+		clusters = dbscan_gpu(cloud, eps, min_pts);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Points clustered by DBSCAN (GPU) algorithm (#clusters = " << clusters.size() << "): " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
+
+#if 1
+		const auto num_clustered_points = std::accumulate(clusters.begin(), clusters.end(), 0, [](size_t sum, const auto &cluster) { return sum + cluster.size(); });
+		std::set<size_t> noisy_points;
+		size_t idx = 0;
+		std::generate_n(std::inserter(noisy_points, noisy_points.end()), cloud->size(), [&idx]() { return idx++; });
+#if 1
+		for (const auto &cluster: clusters)
+			for (const auto &pt_idx: cluster)
+				noisy_points.erase(pt_idx);
+#else
+		std::for_each(clusters.begin(), clusters.end(), [&noisy_points](const auto &cluster) {
+			//noisy_points.erase(cluster.begin(), cluster.end());
+			std::for_each(cluster.begin(), cluster.end(), [&noisy_points](const auto &pt_idx) {
+				noisy_points.erase(pt_idx);
+			});
+		});
+#endif
+
+		std::cout << "#clustered points = " << num_clustered_points << std::endl;
+		std::cout << "#noisy points = " << noisy_points.size() << std::endl;
+		assert(cloud->size() == num_clustered_points + noisy_points.size());
+
+		// Add a noisy cluster
+		clusters.push_back(std::vector<size_t>(noisy_points.begin(), noisy_points.end()));
+#endif
+	}
+
+	// Visualize
+	{
+#if 1
+		pcl::visualization::PCLVisualizer viewer("3D Viewer");
+#if 1
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location
+			0.0, 0.0, 0.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#elif 0
+		pcl::PointXYZ min_point, max_point;
+		pcl::getMinMax3D(*cloud, min_point, max_point);
+		std::cout << "Center point of registered point cloud = (" << (min_point.x + max_point.x) / 2 << ", " << (min_point.y + max_point.y) / 2 << ", " << (min_point.z + max_point.z) / 2 << ")." << std::endl;
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location.
+			(min_point.x + max_point.x) / 2.0, (min_point.y + max_point.y) / 2.0, (min_point.z + max_point.z) / 2.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera.
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#else
+		viewer.initCameraParameters();
+#endif
+		viewer.setBackgroundColor(0.5, 0.5, 0.5);
+		viewer.addCoordinateSystem(100.0);
+
+		size_t cluster_idx = 0;
+		for (const auto &cluster: clusters)
+		{
+			pcl::PointCloud<pcl::PointXYZ>::Ptr cluster_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+			cluster_cloud->reserve(cluster.size());
+			for (const auto &pt_idx: cluster)
+				cluster_cloud->push_back(cloud->points[pt_idx]);
+
+#if 1
+			const std::string cloud_id("Point Cloud " + std::to_string(cluster_idx++));
+
+			//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cluster_cloud);
+			//viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, rgb, cloud_id);
+			viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, cloud_id);
+#else
+			// Estimate normals
+			pcl::PointCloud<pcl::Normal>::Ptr cluster_normals(new pcl::PointCloud<pcl::Normal>());
+			{
+				std::cout << "Estimating normals..." << std::endl;
+				const auto start_time(std::chrono::high_resolution_clock::now());
+				//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+				pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+				ne.setInputCloud(cluster_cloud);
+				pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+				ne.setSearchMethod(tree);
+				ne.setRadiusSearch(5.0);  // Use all neighbors in a sphere of radius 5m
+				ne.compute(*cluster_normals);  // Compute the features
+				const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+				std::cout << "Normals estimated: " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
+			}
+
+			const std::string cloud_id("Point Cloud " + std::to_string(cluster_idx)), cloud_normals_id("Point Cloud Normal " + std::to_string(cluster_idx));
+			++cluster_idx;
+
+			//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cluster_cloud);
+			//viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, rgb, cloud_id);
+			viewer.addPointCloud<pcl::PointXYZ>(cluster_cloud, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, cloud_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, double(std::rand() + 1) / RAND_MAX, cloud_id);
+			viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cluster_cloud, cluster_normals, 10, 10.0f, cloud_normals_id);
+			viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 1, 0, 0, cloud_normals_id);
+#endif
+		}
+
+		while (!viewer.wasStopped())
+		{
+			viewer.spinOnce(1);
+			//std::this_thread::sleep_for(1ms);
+		}
+#elif 0
+		pcl::visualization::CloudViewer viewer("Simple 3D Viewer");
+		viewer.showCloud(cloud, "Point Cloud");
+		while (!viewer.wasStopped());
+#else
+		// Visualize nothing
+#endif
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -822,6 +1371,13 @@ void segmentation()
 	//local::cpc_segmentatio_example();  // Constrained planar cuts (CPC). Not yet implemented
 
 	//local::grabcut_test();  // Not yet implemented
+
+	//-----
+	// Clustering
+
+	// DBSCAN
+	//local::dbscan_test();
+	//local::dbscan_gpu_test();  // Too slow
 }
 
 }  // namespace my_pcl

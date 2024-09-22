@@ -26,5 +26,8 @@ int clustering_main(int argc, char *argv[])
 
 	my_clustering::spectral_clustering();
 
+	// DBSCAN.
+	//	Refer to dbscan() & dbscan_gpu() in ${SWDT_CPP_RND_HOME}/test/geometry/pcl/pcl_segmentation.cpp
+
 	return 0;
 }

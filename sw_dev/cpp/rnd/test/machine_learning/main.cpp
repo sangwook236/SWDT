@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 		std::cout << "clustering algorithm ------------------------------------------------" << std::endl;
 		//	- k-means & k-means++ algorithms.
 		//	- Spectral clustering.
+		//	- DBSCAN.
 		//retval = clustering_main(argc, argv);
 
 		std::cout << "\nlibsvm library ------------------------------------------------------" << std::endl;

@@ -33,7 +33,7 @@ public:
 	}
 
 private:
-    const std::vector<double> &points_;
+	const std::vector<double> &points_;
 	const int dim_features_;
 };
 
@@ -59,9 +59,9 @@ void construct_epsilon_neighborhood_graph(const double epsilon, const int num_po
 
 bool is_k_nearest_neighbor(const matrix_type &S, const int num_points, const int i, const int j, const int k)
 {
-    const double s_ij = S(i, j);
+	const double s_ij = S(i, j);
 	int count = 0;
-    for (int n = 0; n < num_points; ++n)
+	for (int n = 0; n < num_points; ++n)
 	{
 		if (i == n) continue;
 
@@ -70,8 +70,8 @@ bool is_k_nearest_neighbor(const matrix_type &S, const int num_points, const int
 			if (++count > k) return false;
 		}
 	}
-    //return count <= k;
-    return true;
+	//return count <= k;
+	return true;
 }
 
 template<class DistanceFunction>
@@ -96,8 +96,8 @@ void construct_k_neighbor_graph(const int k, const int num_points, const int dim
 			if (i == j) continue;
 
 			// TODO [choose] >>
-            //if (is_k_nearest_neighbor(similarity_matrix, num_points, i, j, k))
-            if (is_k_nearest_neighbor(similarity_matrix, num_points, i, j, k) || is_k_nearest_neighbor(similarity_matrix, num_points, j, i, k))
+			//if (is_k_nearest_neighbor(similarity_matrix, num_points, i, j, k))
+			if (is_k_nearest_neighbor(similarity_matrix, num_points, i, j, k) || is_k_nearest_neighbor(similarity_matrix, num_points, j, i, k))
 				W(i, j) = similarity_matrix(i, j);
 		}
 }
@@ -125,17 +125,17 @@ void construct_fully_connected_graph(const double sigma, const int num_points, c
 
 void construct_diagonal_matrix(const matrix_type& W, const int num_points, matrix_type &D)
 {
-    D = matrix_type::Zero(num_points, num_points);
+	D = matrix_type::Zero(num_points, num_points);
 
-    double sum;
+	double sum;
 	for (int i = 0; i < num_points; ++i)
 	{
-        sum = 0.0;
+		sum = 0.0;
 		for (int j = 0; j < num_points; ++j)
 			sum += W(i, j);
 
-        D(i, i) = sum;
-    }
+		D(i, i) = sum;
+	}
 }
 
 double run_spectral_clustering(const int clustering_method, const matrix_type &W, const int num_points, const int dim_features, const int num_clusters, const int num_attempts, std::vector<double> &cluster_centers, std::vector<int> &assignments)
