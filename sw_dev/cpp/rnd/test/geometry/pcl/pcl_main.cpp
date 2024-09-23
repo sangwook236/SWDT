@@ -293,6 +293,10 @@ void visualization(int argc, char **argv);
 
 int pcl_main(int argc, char *argv[])
 {
+	// Examples:
+	//	${PCL_HOME}/examples
+	//	${PCL_HOME}/tools
+
 	//local::io_example();
 	//local::pcd_to_ply();
 	//local::ply_to_pcd();
