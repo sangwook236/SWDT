@@ -32,9 +32,9 @@ from subtract_test import SubtractTestCase
 #
 #		python -m unittest discover --help
 #
-#		python3 -m unittest discover
-#		python3 -m unittest discover -s <path/to/test_dir> -p <pattern> -k <test_name_patterns> -t <path/to/top_level_dir>
-#			python3 -m unittest discover -s '.' -p 'test*.py'
+#		python -m unittest discover
+#		python -m unittest discover -s <path/to/test_dir> -p <pattern> -k <test_name_patterns> -t <path/to/top_level_dir>
+#			python -m unittest discover -s '.' -p 'test*.py'
 #
 #		Run tests in a specific directory:
 #			python -m unittest discover -s <path/to/test_dir>

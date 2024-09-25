@@ -63,6 +63,12 @@
 [-] Debugging (GDB).
 	Refer to gdb_usage_guide.txt
 
+[-] Documentation
+	- Docstrings.
+		https://peps.python.org/pep-0257/
+		https://realpython.com/documenting-python-code/
+		https://www.geeksforgeeks.org/python-docstrings/
+
 [-] Troubleshooting (extending & embedding)
 	- <error> unresolved external symbol __imp__Py_Initialize
 		<cause> When linking 64-bit Python library in 32-bit application.

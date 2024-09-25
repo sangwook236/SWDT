@@ -1,0 +1,37 @@
+[-] General.
+	- Site.
+		https://docs.aws.amazon.com/amazonq/
+
+		https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html
+		https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/what-is.html
+
+[-] Usage (VSCode).
+	https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html
+
+	- Start chatting with Amazon Q.
+		Ctrl+Shift+P -> Type 'Amazon Q'.
+
+		Choose 'Amazon Q' from the component tray at the bottom of the IDE window.
+		Choose 'View' from the main menu -> Choose 'Open View...' -> Choose 'Amazon Q'.
+
+		Highlight a section of a code file -> Right-click your highlighted code to open a context window -> Choose 'Amazon Q'.
+			Explain
+			Refactor
+			Fix
+			Optimize
+			Send to prompt
+
+	- Chat with Amazon Q.
+		Explain the function
+		Describe the class
+
+		Generate code:
+			Implement a merge sort algorithm
+			Implement its test cases
+
+			/dev Implement a merge sort algorithm
+
+		Documentate source code:
+			Generate its docstrings (for Python)
+			Write its javadoc (for Java)
+			Generate its doxygen

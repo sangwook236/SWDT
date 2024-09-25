@@ -6,3 +6,87 @@
 
 	- Document.
 		http://www.stack.nl/~dimitri/doxygen/manual/index.html
+
+[-] Tool.
+	- doxygen.
+		doxygen --help
+			You can use doxygen in a number of ways:
+
+			1) Use doxygen to generate a template configuration file:
+				doxygen [-s] -g [configName]
+				e.g.) doxygen -g project.doxy
+
+				If - is used for configName doxygen will write to standard output.
+
+			2) Use doxygen to update an old configuration file:
+				doxygen [-s] -u [configName]
+
+			3) Use doxygen to generate documentation using an existing configuration file:
+				doxygen [configName]
+
+				If - is used for configName doxygen will read from standard input.
+
+			4) Use doxygen to generate a template style sheet file for RTF, HTML or Latex.
+				HTML: doxygen -w html headerFile footerFile styleSheetFile [configFile]
+				e.g.) doxygen -w html header.html footer.html doxygen.css
+				LaTeX: doxygen -w latex headerFile styleSheetFile [configFile]
+				RTF: doxygen -w rtf styleSheetFile
+				e.g.) doxygen -w rtf rtfstyle.cfg
+
+			5) Use doxygen to generate an rtf extensions file
+				RTF:   doxygen -e rtf extensionsFile
+
+			If -s is specified the comments in the config file will be omitted.
+			If configName is omitted `Doxyfile' will be used as a default.
+
+			You can use doxygen in a number of ways:
+
+			1) Use doxygen to generate a template configuration file*:
+				doxygen [-s] -g [configName]
+
+			2) Use doxygen to update an old configuration file*:
+				doxygen [-s] -u [configName]
+
+			3) Use doxygen to generate documentation using an existing configuration file*:
+				doxygen [configName]
+
+			4) Use doxygen to generate a template file controlling the layout of the generated documentation:
+				doxygen -l [layoutFileName]
+
+				In case layoutFileName is omitted DoxygenLayout.xml will be used as filename.
+				If - is used for layoutFileName doxygen will write to standard output.
+
+			5) Use doxygen to generate a template style sheet file for RTF, HTML or Latex.
+				RTF:        doxygen -w rtf styleSheetFile
+				HTML:       doxygen -w html headerFile footerFile styleSheetFile [configFile]
+				LaTeX:      doxygen -w latex headerFile footerFile styleSheetFile [configFile]
+
+			6) Use doxygen to generate a rtf extensions file
+				doxygen -e rtf extensionsFile
+
+				If - is used for extensionsFile doxygen will write to standard output.
+
+			7) Use doxygen to compare the used configuration file with the template configuration file
+				doxygen -x [configFile]
+
+				Use doxygen to compare the used configuration file with the template configuration file
+				without replacing the environment variables or CMake type replacement variables
+					doxygen -x_noenv [configFile]
+
+			8) Use doxygen to show a list of built-in emojis.
+				doxygen -f emoji outputFileName
+
+				If - is used for outputFileName doxygen will write to standard output.
+
+			*) If -s is specified the comments of the configuration items in the config file will be omitted.
+				If configName is omitted 'Doxyfile' will be used as a default.
+				If - is used for configFile doxygen will write / read the configuration to /from standard output / input.
+
+			If -q is used for a doxygen documentation run, doxygen will see this as if QUIET=YES has been set.
+
+			-v print version string, -V print extended version information
+			-h,-? prints usage help information
+			doxygen -d prints additional usage flags for debugging purposes
+
+	- doxywizard.
+		Doxygen GUI frontend
