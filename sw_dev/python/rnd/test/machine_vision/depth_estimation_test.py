@@ -139,8 +139,8 @@ def dpt_example():
 		result = pipe(images="http://images.cocodataset.org/val2017/000000039769.jpg")
 		#result = pipe(images="http://images.cocodataset.org/val2017/000000181816.jpg")
 		print(result)
-		#print(result["predicted_depth"])  # Tensor
-		#print(result["depth"])  # PIL.Image
+		#print(result[0]["predicted_depth"])  # Tensor
+		#print(result[0]["depth"])  # PIL.Image
 
 	if True:
 		model_id = "Intel/dpt-large"

@@ -3327,6 +3327,245 @@ def phi_3_example():
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_example():
+	raise NotImplementedError
+
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen2
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen2_vl
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen2_audio
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen2_moe
+#	https://huggingface.co/Qwen
+def qwen2_example():
+	# Models:
+	#	Qwen/Qwen2-0.5B-Instruct
+	#	Qwen/Qwen2-0.5B-Instruct-AWQ
+	#	Qwen/Qwen2-0.5B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-0.5B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-0.5B-Instruct-MLX
+	#	Qwen/Qwen2-0.5B-Instruct-GGUF
+	#	Qwen/Qwen2-1.5B-Instruct
+	#	Qwen/Qwen2-1.5B-Instruct-AWQ
+	#	Qwen/Qwen2-1.5B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-1.5B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-1.5B-Instruct-MLX
+	#	Qwen/Qwen2-1.5B-Instruct-GGUF
+	#	Qwen/Qwen2-7B-Instruct
+	#	Qwen/Qwen2-7B-Instruct-AWQ
+	#	Qwen/Qwen2-7B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-7B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-7B-Instruct-MLX
+	#	Qwen/Qwen2-7B-Instruct-GGUF
+	#	Qwen/Qwen2-57B-A14B-Instruct  # The instruction-tuned 57B-A14B Mixture-of-Experts Qwen2 model
+	#	Qwen/Qwen2-57B-A14B-Instruct-AWQ
+	#	Qwen/Qwen2-57B-A14B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-57B-A14B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-57B-A14B-Instruct-MLX
+	#	Qwen/Qwen2-57B-A14B-Instruct-GGUF
+	#	Qwen/Qwen2-72B-Instruct
+	#	Qwen/Qwen2-72B-Instruct-AWQ
+	#	Qwen/Qwen2-72B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-72B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-72B-Instruct-MLX
+	#	Qwen/Qwen2-72B-Instruct-GGUF
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("Qwen/Qwen2-7B-Instruct", device_map="auto")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Qwen/Qwen2-7B-Instruct")
+
+		prompt = "Give me a short introduction to large language model."
+		messages = [{"role": "user", "content": prompt}]
+		text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+		model_inputs = tokenizer([text], return_tensors="pt").to(device)
+
+		generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512, do_sample=True)
+
+		generated_ids = [output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)]
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if False:
+		tokenizer = transformers. Qwen2Tokenizer.from_pretrained("Qwen/Qwen-tokenizer")
+		#tokenizer = transformers.Qwen2TokenizerFast.from_pretrained("Qwen/Qwen-tokenizer")
+
+		print(tokenizer("Hello world")["input_ids"])
+		print(tokenizer(" Hello world")["input_ids"])
+
+	if False:
+		model = transformers.Qwen2ForCausalLM.from_pretrained(PATH_TO_CONVERTED_WEIGHTS)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(PATH_TO_CONVERTED_TOKENIZER)
+
+		prompt = "Hey, are you conscious? Can you talk to me?"
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+		response = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+	if True:
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct"
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int8"
+		model_name = "Qwen/Qwen2.5-1.5B-Instruct"
+		#model_name = "Qwen/Qwen2.5-1.5B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-57B-A14B-Instruct"
+		#model_name = "Qwen/Qwen2.5-57B-A14B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-57B-A14B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-57B-A14B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int8"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Give me a short introduction to large language model."
+		messages = [
+			{"role": "system", "content": "You are a helpful assistant."},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(device)
+
+		generated_ids = model.generate(
+			model_inputs.input_ids,
+			max_new_tokens=512,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen2
+#	https://huggingface.co/Qwen
+def qwen2_5_example():
+	# Models:
+	#	Qwen/Qwen2.5-0.5B
+	#	Qwen/Qwen2.5-0.5B-Instruct
+	#	Qwen/Qwen2.5-0.5B-Instruct-AWQ
+	#	Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-0.5B-Instruct-GGUF
+	#	Qwen/Qwen2.5-1.5B
+	#	Qwen/Qwen2.5-1.5B-Instruct
+	#	Qwen/Qwen2.5-1.5B-Instruct-AWQ
+	#	Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-1.5B-Instruct-GGUF
+	#	Qwen/Qwen2.5-3B
+	#	Qwen/Qwen2.5-3B-Instruct
+	#	Qwen/Qwen2.5-3B-Instruct-AWQ
+	#	Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-3B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-3B-Instruct-GGUF
+	#	Qwen/Qwen2.5-7B
+	#	Qwen/Qwen2.5-7B-Instruct
+	#	Qwen/Qwen2.5-7B-Instruct-AWQ
+	#	Qwen/Qwen2.5-7B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-7B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-7B-Instruct-GGUF
+	#	Qwen/Qwen2.5-14B
+	#	Qwen/Qwen2.5-14B-Instruct
+	#	Qwen/Qwen2.5-14B-Instruct-AWQ
+	#	Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-14B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-14B-Instruct-GGUF
+	#	Qwen/Qwen2.5-32B
+	#	Qwen/Qwen2.5-32B-Instruct
+	#	Qwen/Qwen2.5-32B-Instruct-AWQ
+	#	Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-32B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-32B-Instruct-GGUF
+	#	Qwen/Qwen2.5-72B
+	#	Qwen/Qwen2.5-72B-Instruct
+	#	Qwen/Qwen2.5-72B-Instruct-AWQ
+	#	Qwen/Qwen2.5-72B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-72B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-72B-Instruct-GGUF
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if True:
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct"
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int8"
+		model_name = "Qwen/Qwen2.5-1.5B-Instruct"
+		#model_name = "Qwen/Qwen2.5-1.5B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-3B-Instruct"
+		#model_name = "Qwen/Qwen2.5-3B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-14B-Instruct"
+		#model_name = "Qwen/Qwen2.5-14B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-32B-Instruct"
+		#model_name = "Qwen/Qwen2.5-32B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int8"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Give me a short introduction to large language model."
+		messages = [
+			{"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -3504,6 +3743,105 @@ def rag_facebook_example():
 		print(tokenizer.batch_decode(generated, skip_special_tokens=True)[0])
 
 		# Should give 54 => google says either 44 or 51
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_math_example():
+	# Models:
+	#	Qwen/Qwen2-Math-1.5B
+	#	Qwen/Qwen2-Math-1.5B-Instruct
+	#	Qwen/Qwen2-Math-7B
+	#	Qwen/Qwen2-Math-7B-Instruct
+	#	Qwen/Qwen2-Math-72B
+	#	Qwen/Qwen2-Math-72B-Instruct
+	#	Qwen/Qwen2-Math-RM-72B
+	#
+	#	Qwen/Qwen2.5-Math-1.5B
+	#	Qwen/Qwen2.5-Math-1.5B-Instruct
+	#	Qwen/Qwen2.5-Math-7B
+	#	Qwen/Qwen2.5-Math-7B-Instruct
+	#	Qwen/Qwen2.5-Math-72B
+	#	Qwen/Qwen2.5-Math-72B-Instruct
+	#	Qwen/Qwen2.5-Math-RM-72B
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		model_name = "Qwen/Qwen2-Math-1.5B-Instruct"
+		#model_name = "Qwen/Qwen2-Math-7B-Instruct"
+		#model_name = "Qwen/Qwen2-Math-72B-Instruct"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Find the value of $x$ that satisfies the equation $4x+5 = 6x+7$."
+		messages = [
+			{"role": "system", "content": "You are a helpful assistant."},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if True:
+		model_name = "Qwen/Qwen2.5-Math-1.5B-Instruct"
+		#model_name = "Qwen/Qwen2.5-Math-7B-Instruct"
+		#model_name = "Qwen/Qwen2.5-Math-72B-Instruct"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Find the value of $x$ that satisfies the equation $4x+5 = 6x+7$."
+
+		# CoT
+		messages = [
+			{"role": "system", "content": "Please reason step by step, and put your final answer within \\boxed{}."},
+			{"role": "user", "content": prompt},
+		]
+
+		# TIR
+		messages = [
+			{"role": "system", "content": "Please integrate natural language reasoning with programs to solve the problem above, and put your final answer within \\boxed{}."},
+			{"role": "user", "content": prompt},
+		]
+
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
@@ -4300,6 +4638,63 @@ def codestral_example():
 
 	outputs = model.generate(**inputs, max_new_tokens=20)
 	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_coder_example():
+	# Models:
+	#	Qwen/Qwen2.5-Coder-1.5B
+	#	Qwen/Qwen2.5-Coder-1.5B-Instruct
+	#	Qwen/Qwen2.5-Coder-1.5B-Instruct-AWQ
+	#	Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF
+	#	Qwen/Qwen2.5-Coder-7B
+	#	Qwen/Qwen2.5-Coder-7B-Instruct
+	#	Qwen/Qwen2.5-Coder-7B-Instruct-AWQ
+	#	Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2.5-Coder-7B-Instruct-GGUF
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
+	#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-AWQ"
+	#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int4"
+	#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int8"
+	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
+	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ"
+	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int4"
+	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int8"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto",
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	prompt = "write a quick sort algorithm."
+	messages = [
+		{"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
+		{"role": "user", "content": prompt},
+	]
+	text = tokenizer.apply_chat_template(
+		messages,
+		tokenize=False,
+		add_generation_prompt=True,
+	)
+	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+	generated_ids = model.generate(
+		**model_inputs,
+		max_new_tokens=512,
+	)
+	generated_ids = [
+		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+	]
+
+	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -5587,7 +5982,7 @@ def phi_3_vision_example():
 	print(response)
 
 # REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/paligemma
-def paligemma_example():
+def pali_gemma_example():
 	if True:
 		model_id = "google/paligemma-3b-mix-224"
 		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(model_id)
@@ -5688,6 +6083,106 @@ def vila_example():
 	#	Efficient-Large-Model/Llama-3-VILA1.5-8b-AWQ
 
 	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_vl_example():
+	# Models:
+	#	Qwen/Qwen-VL
+	#	Qwen/Qwen-VL-Chat
+	#	Qwen/Qwen-VL-Chat-Int4
+	#
+	#	Qwen/Qwen2-VL-2B-Instruct
+	#	Qwen/Qwen2-VL-2B-Instruct-AWQ
+	#	Qwen/Qwen2-VL-2B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-VL-2B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-VL-7B-Instruct
+	#	Qwen/Qwen2-VL-7B-Instruct-AWQ
+	#	Qwen/Qwen2-VL-7B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-VL-7B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-VL-72B-Instruct
+	#	Qwen/Qwen2-VL-72B-Instruct-AWQ
+	#	Qwen/Qwen2-VL-72B-Instruct-GPTQ-Int4
+	#	Qwen/Qwen2-VL-72B-Instruct-GPTQ-Int8
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if True:
+		# Install:
+		#	pip install qwen-vl-utils
+
+		from qwen_vl_utils import process_vision_info
+
+		model_name = "Qwen/Qwen2-VL-2B-Instruct"
+		#model_name = "Qwen/Qwen2-VL-2B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2-VL-2B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2-VL-2B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2-VL-7B-Instruct"
+		#model_name = "Qwen/Qwen2-VL-7B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2-VL-7B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2-VL-7B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2-VL-72B-Instruct"
+		#model_name = "Qwen/Qwen2-VL-72B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2-VL-72B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2-VL-72B-Instruct-GPTQ-Int8"
+
+		# Default: Load the model on the available device(s)
+		model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+			model_name, torch_dtype="auto", device_map="auto"
+		)
+
+		# We recommend enabling flash_attention_2 for better acceleration and memory saving, especially in multi-image and video scenarios.
+		#model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+		#	model_name,
+		#	torch_dtype=torch.bfloat16,
+		#	attn_implementation="flash_attention_2",
+		#	device_map="auto",
+		#)
+
+		# Default processer
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+
+		# The default range for the number of visual tokens per image in the model is 4-16384. You can set min_pixels and max_pixels according to your needs, such as a token count range of 256-1280, to balance speed and memory usage.
+		#min_pixels = 256*28*28
+		#max_pixels = 1280*28*28
+		#processor = transformers.AutoProcessor.from_pretrained(model_name, min_pixels=min_pixels, max_pixels=max_pixels)
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg",
+					},
+					{"type": "text", "text": "Describe this image."},
+				],
+			}
+		]
+
+		# Preparation for inference
+		text = processor.apply_chat_template(
+			messages, tokenize=False, add_generation_prompt=True
+		)
+		image_inputs, video_inputs = process_vision_info(messages)
+		inputs = processor(
+			text=[text],
+			images=image_inputs,
+			videos=video_inputs,
+			padding=True,
+			return_tensors="pt",
+		)
+		inputs = inputs.to("cuda")
+
+		# Inference: Generation of the output
+		generated_ids = model.generate(**inputs, max_new_tokens=128)
+		generated_ids_trimmed = [
+			out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		]
+		output_text = processor.batch_decode(
+			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+		)
+		print(output_text)
 
 # REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
 def llava_example():
@@ -5794,6 +6289,71 @@ def long_vila_example():
 	#	Efficient-Large-Model/Llama-3-LongVILA-8B-1024Frames
 
 	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_audio_example():
+	# Models:
+	#	Qwen/Qwen-Audio
+	#	Qwen/Qwen-Audio-Chat
+	#
+	#	Qwen/Qwen2-Audio-7B
+	#	Qwen/Qwen2-Audio-7B-Instruct
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if True:
+		from io import BytesIO
+		from urllib.request import urlopen
+		import librosa
+
+		model = transformers.Qwen2AudioForConditionalGeneration.from_pretrained("Qwen/Qwen2-Audio-7B" ,trust_remote_code=True)
+		processor = transformers.AutoProcessor.from_pretrained("Qwen/Qwen2-Audio-7B" ,trust_remote_code=True)
+
+		prompt = "<|audio_bos|><|AUDIO|><|audio_eos|>Generate the caption in English:"
+		url = "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Audio/glass-breaking-151256.mp3"
+		audio, sr = librosa.load(BytesIO(urlopen(url).read()), sr=processor.feature_extractor.sampling_rate)
+		inputs = processor(text=prompt, audios=audio, return_tensors="pt")
+
+		generated_ids = model.generate(**inputs, max_length=256)
+		generated_ids = generated_ids[:, inputs.input_ids.size(1):]
+		response = processor.batch_decode(generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+	if True:
+		from io import BytesIO
+		from urllib.request import urlopen
+		import librosa
+
+		processor = transformers.AutoProcessor.from_pretrained("Qwen/Qwen2-Audio-7B-Instruct")
+		model = transformers.Qwen2AudioForConditionalGeneration.from_pretrained("Qwen/Qwen2-Audio-7B-Instruct", device_map="auto")
+
+		conversation = [
+			{"role": "user", "content": [
+				{"type": "audio", "audio_url": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-Audio/audio/guess_age_gender.wav"},
+			]},
+			{"role": "assistant", "content": "Yes, the speaker is female and in her twenties."},
+			{"role": "user", "content": [
+				{"type": "audio", "audio_url": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-Audio/audio/translate_to_chinese.wav"},
+			]},
+		]
+		text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
+		audios = []
+		for message in conversation:
+			if isinstance(message["content"], list):
+				for ele in message["content"]:
+					if ele["type"] == "audio":
+						audios.append(librosa.load(
+							BytesIO(urlopen(ele['audio_url']).read()),
+							sr=processor.feature_extractor.sampling_rate)[0]
+						)
+
+		inputs = processor(text=text, audios=audios, return_tensors="pt", padding=True)
+		inputs.input_ids = inputs.input_ids.to("cuda")
+
+		generate_ids = model.generate(**inputs, max_length=256)
+		generate_ids = generate_ids[:, inputs.input_ids.size(1):]
+
+		response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/tvlt
 def tvlt_example():
@@ -7889,11 +8449,20 @@ def main():
 	#aya_example()  # Aya. Not yet tested.
 	#phi_3_example()  # phi-3. Not yet tested.
 
+	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
+	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio. Not yet tested.
+	qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL. Not yet tested.
+
 	#-----
 	# Retrieval-augmented generation (RAG).
 
 	#rag_example()
 	#rag_facebook_example()
+
+	#-----
+	# Math.
+
+	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math. Not yet tested.
 
 	#-----
 	# Code.
@@ -7911,6 +8480,7 @@ def main():
 	#replit_example()  # Replit. Not yet tested.
 	#phi_example()  # phi-1, phi-1.5, & phi-2.
 	#codestral_example()  # Codestral. Not yet tested.
+	#qwen_coder_example()  # Qwen2.5-Coder. Not yet tested.
 
 	#--------------------
 	# Vision.
@@ -7941,10 +8511,11 @@ def main():
 	#openflamingo_example()  # OpenFlamingo.
 
 	#phi_3_vision_example()  # Phi-3-vision.
-	#paligemma_example()  # PaliGemma.
+	#pali_gemma_example()  # PaliGemma.
 	#fuyu_example()  # Fuyu.
 	#pixtral_example()  # Pixtral. Not yet implemented.
 	#vila_example()  # VILA. Not yet implemented.
+	#qwen_vl_example()  # Qwen-VL, Qwen2-VL. Not yet tested.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
@@ -7953,6 +8524,11 @@ def main():
 	# Video and language.
 
 	#long_vila_example()  # LongVILA. Not yet implemented.
+
+	#-----
+	# Audio and language.
+
+	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio. Not yet tested.
 
 	#-----
 	# Vision and audio.
