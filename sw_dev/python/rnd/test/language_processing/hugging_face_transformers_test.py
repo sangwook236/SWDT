@@ -3107,6 +3107,101 @@ def gemma_example():
 		]
 		prompt = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
 
+# REF [site] >> https://huggingface.co/google
+def data_gemma_example():
+	# Models:
+	#	google/datagemma-rig-27b-it
+	#	google/datagemma-rag-27b-it
+
+	if True:
+		model_id = "google/datagemma-rig-27b-it"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		if True:
+			# Running the model on a single/multi GPU
+
+			model = transformers.AutoModelForCausalLM.from_pretrained(
+				model_id,
+				device_map="auto",
+				torch_dtype=torch.bfloat16,
+			)
+		else:
+			# Run in 4-bit via bitsandbytes
+
+			nf4_config = transformers.BitsAndBytesConfig(
+				load_in_4bit=True,
+				bnb_4bit_quant_type="nf4",
+				bnb_4bit_compute_dtype=torch.bfloat16,
+			)
+			model = transformers.AutoModelForCausalLM.from_pretrained(
+				model_id,
+				device_map="auto",
+				quantization_config=nf4_config,
+				torch_dtype=torch.bfloat16,
+			)
+
+		input_text = "What are some interesting trends in Sunnyvale spanning gender, age, race, immigration, health conditions, economic conditions, crime and education?"
+		inputs = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+		outputs = model.generate(**inputs, max_new_tokens=4096)
+		answer = tokenizer.batch_decode(outputs[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0].strip()
+		print(answer)
+
+	if True:
+		# Run in 4-bit via bitsandbytes
+
+		model_id = "google/datagemma-rag-27b-it"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(
+				model_id,
+				device_map="auto",
+				torch_dtype=torch.bfloat16,
+			)
+		else:
+			nf4_config = transformers.BitsAndBytesConfig(
+				load_in_4bit=True,
+				bnb_4bit_quant_type="nf4",
+				bnb_4bit_compute_dtype=torch.bfloat16,
+			)
+			model = transformers.AutoModelForCausalLM.from_pretrained(
+				model_id,
+				device_map="auto",
+				quantization_config=nf4_config,
+				torch_dtype=torch.bfloat16,
+			)
+
+		input_text = """Your role is that of a Question Generator.  Given Query below, come up with a
+maximum of 25 Statistical Questions that help in answering Query.
+
+These are the only forms of Statistical Questions you can generate:
+1. What is $METRIC in $PLACE?
+2. What is $METRIC in $PLACE $PLACE_TYPE?
+3. How has $METRIC changed over time in $PLACE $PLACE_TYPE?
+
+where,
+- $METRIC should be a metric on societal topics like demographics, economy, health,
+  education, environment, etc.  Examples are unemployment rate and
+  life expectancy.
+- $PLACE is the name of a place like California, World, Chennai, etc.
+- $PLACE_TYPE is an immediate child type within $PLACE, like counties, states,
+  districts, etc.
+
+Your response should only have questions, one per line, without any numbering
+or bullet.
+
+If you cannot come up with Statistical Questions to ask for a Query, return an
+empty response.
+
+Query: What are some interesting trends in Sunnyvale spanning gender, age, race, immigration, health conditions, economic conditions, crime and education?
+Statistical Questions:"""
+		inputs = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+		outputs = model.generate(**inputs, max_new_tokens=4096)
+		answer = tokenizer.batch_decode(outputs[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0].strip()
+		print(answer)
+
 # REF [site] >> https://huggingface.co/apple
 def open_elm_example():
 	# Models:
@@ -8445,6 +8540,7 @@ def main():
 	#mixtral_example()  # Mixtral-8x7B.
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
 	#gemma_example()  # Gemma. Not yet tested.
+	#data_gemma_example()  # DataGemma. Not yet tested.
 	#open_elm_example()  # OpenELM. Not yet tested.
 	#aya_example()  # Aya. Not yet tested.
 	#phi_3_example()  # phi-3. Not yet tested.
