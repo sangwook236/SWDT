@@ -1,0 +1,30 @@
+[-] General.
+	- Document.
+		https://docs.python.org/3/library/venv.html
+
+[-] Usage.
+	https://docs.python.org/3/library/venv.html
+
+	- Activate an environment.
+		POSIX:
+			bash/zsh:
+				source <VENV_DIR>/<VENV_NAME>/bin/activate
+			fish:
+				source <VENV_DIR>/<VENV_NAME>/bin/activate.fish
+			csh/tcsh:
+				source <VENV_DIR>/<VENV_NAME>/bin/activate.csh
+			PowerShell:
+				<VENV_DIR>/<VENV_NAME>/bin/Activate.ps1
+		Windows:
+			Command Prompt:
+				<VENV_DIR>/<VENV_NAME>\Scripts\activate.bat
+			PowerShell:
+				<VENV_DIR>/<VENV_NAME>\Scripts\Activate.ps1
+
+	- Dectivate an environment.
+		deactivate
+
+	- Create an environment.
+		python -m venv -h
+
+		python -m venv <VENV_DIR>/<VENV_NAME>

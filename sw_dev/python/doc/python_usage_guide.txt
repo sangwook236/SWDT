@@ -63,6 +63,13 @@
 [-] Debugging (GDB).
 	Refer to gdb_usage_guide.txt
 
+[-] Virtual environment.
+	- conda.
+		Refer to conda_usage_guide.txt
+
+	- venv.
+		Refer to venv_usage_guide.txt
+
 [-] Documentation
 	- Docstrings.
 		https://peps.python.org/pep-0257/
