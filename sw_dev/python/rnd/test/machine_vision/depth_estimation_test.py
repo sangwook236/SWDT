@@ -244,6 +244,48 @@ def zoe_depth_example():
 	outputs = depth_estimator(image)
 	depth = outputs.depth
 
+# REF [site] >> https://github.com/lpiccinelli-eth/UniDepth
+def unidepth_example():
+	import numpy as np
+	from PIL import Image
+	from unidepth.models import UniDepthV1, UniDepthV2
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Deivce: {device}.")
+
+	if False:
+		#model_name = "lpiccinelli/unidepth-v1-cnvnxtl"
+		model_name = "lpiccinelli/unidepth-v1-vitl14"
+
+		model = UniDepthV1.from_pretrained(f"lpiccinelli/{model_name}")
+	elif True:
+		model_name = "lpiccinelli/unidepth-v2-vits14"
+		#model_name = "lpiccinelli/unidepth-v2-vitl14"
+
+		model = UniDepthV2.from_pretrained(f"lpiccinelli/{model_name}")
+	elif False:
+		version = "v2"
+		backbone = "vitl14"
+
+		model = torch.hub.load("lpiccinelli-eth/UniDepth", "UniDepth", version=version, backbone=backbone, pretrained=True, trust_repo=True, force_reload=True)
+	else:
+		raise ValueError("Model not selected.")
+	model = model.to(device)
+
+	# Load the RGB image and the normalization will be taken care of by the model
+	rgb = torch.from_numpy(np.array(Image.open(image_path))).permute(2, 0, 1)  # C, H, W
+
+	predictions = model.infer(rgb)
+
+	# Metric depth estimation
+	depth = predictions["depth"]
+
+	# Point cloud in camera coordinate
+	xyz = predictions["points"]
+
+	# Intrinsics prediction
+	intrinsics = predictions["intrinsics"]
+
 # REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/depth_anything
 def depth_anything_example():
 	import transformers
@@ -440,26 +482,29 @@ def main():
 	# https://huggingface.co/docs/datasets/en/depth_estimation
 	# Refer to ldm3d_example() in # ${SWDT_PYTHON_HOME}/rnd/test/machine_vision/diffusion_model_test.py
 
-	monocular_depth_estimation_example()
+	#monocular_depth_estimation_example()
 
 	# Dense Prediction Transformer (DPT)
 	#dpt_example()  # ${SWDT_PYTHON_HOME}/rnd/test/language_processing/hugging_face_transformers_test.py
-	dpt_example()
+	#dpt_example()
 
 	# MiDaS
 	#	https://pytorch.org/hub/intelisl_midas_v2/
 	#	https://github.com/isl-org/MiDaS
 
 	# ZoeDepth
-	zoe_depth_example()
+	#zoe_depth_example()
 
 	# Marigold
 	#	https://github.com/prs-eth/Marigold
 	#	https://huggingface.co/prs-eth
 
+	# Unidepth
+	unidepth_example()
+
 	# Depth Anything
-	depth_anything_example()
-	depth_anything_v2_example()
+	#depth_anything_example()
+	#depth_anything_v2_example()
 
 #--------------------------------------------------------------------
 
