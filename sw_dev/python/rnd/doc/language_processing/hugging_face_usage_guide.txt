@@ -12,6 +12,7 @@
 
 	- Directory.
 		~/.cache/huggingface
+		%USERPROFILE%/.cache/huggingface
 
 [-] Installation.
 	- Install.

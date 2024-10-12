@@ -246,6 +246,13 @@ def zoe_depth_example():
 
 # REF [site] >> https://github.com/lpiccinelli-eth/UniDepth
 def unidepth_example():
+	# Install:
+	#	git clone https://github.com/lpiccinelli-eth/UniDepth
+	#	cd ${UniDepth_HOME}
+	#	pip install -e .
+
+	import torch
+
 	import numpy as np
 	from PIL import Image
 	from unidepth.models import UniDepthV1, UniDepthV2
