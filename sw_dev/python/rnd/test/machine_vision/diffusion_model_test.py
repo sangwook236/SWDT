@@ -571,6 +571,119 @@ def stabilityai_example():
 
 		image = pipe(prompt, image=init_image, num_inference_steps=2, strength=0.5, guidance_scale=0.0).images[0]
 
+# REF [site] >> https://huggingface.co/docs/diffusers/en/api/pipelines/unidiffuser
+def uni_diffuser_example() -> None:
+	import torch
+	import diffusers
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Deivce: {device}.")
+
+	if True:
+		# Unconditional Image and Text Generation
+
+		model_id_or_path = "thu-ml/unidiffuser-v1"
+
+		pipe = diffusers.UniDiffuserPipeline.from_pretrained(model_id_or_path, torch_dtype=torch.float16)
+		pipe.to(device)
+
+		if True:
+			# Unconditional image and text generation. The generation task is automatically inferred
+			#pipe.set_joint_mode()
+			sample = pipe(num_inference_steps=20, guidance_scale=8.0)
+			image = sample.images[0]
+			text = sample.text[0]
+		elif True:
+			# Image-only generation
+			pipe.set_image_mode()
+			image = pipe(num_inference_steps=20).images[0]
+			text = None
+		elif False:
+			# Text-only generation
+			pipe.set_text_mode()
+			text = pipe(num_inference_steps=20).text[0]
+			image = None
+
+		if image is not None: image.save("./unidiffuser_joint_sample_image.png")
+		if text is not None: print(text)
+
+	if True:
+		# Text-to-Image Generation
+
+		model_id_or_path = "thu-ml/unidiffuser-v1"
+
+		pipe = diffusers.UniDiffuserPipeline.from_pretrained(model_id_or_path, torch_dtype=torch.float16)
+		pipe.to(device)
+
+		# Text-to-image generation
+		prompt = "an elephant under the sea"
+
+		sample = pipe(prompt=prompt, num_inference_steps=20, guidance_scale=8.0)
+		t2i_image = sample.images[0]
+		t2i_image
+
+	if True:
+		# Image-to-Text Generation
+
+		from diffusers.utils import load_image
+
+		model_id_or_path = "thu-ml/unidiffuser-v1"
+		pipe = diffusers.UniDiffuserPipeline.from_pretrained(model_id_or_path, torch_dtype=torch.float16)
+		pipe.to(device)
+
+		# Image-to-text generation
+		image_url = "https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/unidiffuser/unidiffuser_example_image.jpg"
+		init_image = load_image(image_url).resize((512, 512))
+
+		sample = pipe(image=init_image, num_inference_steps=20, guidance_scale=8.0)
+		i2t_text = sample.text[0]
+		print(i2t_text)
+
+	if True:
+		# Image Variation
+
+		from diffusers.utils import load_image
+
+		model_id_or_path = "thu-ml/unidiffuser-v1"
+
+		pipe = diffusers.UniDiffuserPipeline.from_pretrained(model_id_or_path, torch_dtype=torch.float16)
+		pipe.to(device)
+
+		# Image variation can be performed with an image-to-text generation followed by a text-to-image generation:
+		# 1. Image-to-text generation
+		image_url = "https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/unidiffuser/unidiffuser_example_image.jpg"
+		init_image = load_image(image_url).resize((512, 512))
+
+		sample = pipe(image=init_image, num_inference_steps=20, guidance_scale=8.0)
+		i2t_text = sample.text[0]
+		print(i2t_text)
+
+		# 2. Text-to-image generation
+		sample = pipe(prompt=i2t_text, num_inference_steps=20, guidance_scale=8.0)
+		final_image = sample.images[0]
+		final_image.save("./unidiffuser_image_variation_sample.png")
+
+	if True:
+		# Text Variation
+
+		model_id_or_path = "thu-ml/unidiffuser-v1"
+
+		pipe = diffusers.UniDiffuserPipeline.from_pretrained(model_id_or_path, torch_dtype=torch.float16)
+		pipe.to(device)
+
+		# Text variation can be performed with a text-to-image generation followed by a image-to-text generation:
+		# 1. Text-to-image generation
+		prompt = "an elephant under the sea"
+
+		sample = pipe(prompt=prompt, num_inference_steps=20, guidance_scale=8.0)
+		t2i_image = sample.images[0]
+		t2i_image.save("unidiffuser_text2img_sample_image.png")
+
+		# 2. Image-to-text generation
+		sample = pipe(image=t2i_image, num_inference_steps=20, guidance_scale=8.0)
+		final_prompt = sample.text[0]
+		print(final_prompt)
+
 # REF [site] >> https://huggingface.co/Intel
 def ldm3d_example():
 	# Models:
@@ -656,14 +769,23 @@ def main():
 
 	#diffusers_quickstart()
 	#diffusers_intro()
-	#diffusers_training_example()  # Not yet implemented.
-	#diffusers_dreambooth_training_example()  # DreamBooth. Not yet implemented.
+	#diffusers_training_example()  # Not yet implemented
+	#diffusers_dreambooth_training_example()  # DreamBooth. Not yet implemented
 
-	#compvis_example()  # Stable diffusion.
-	stabilityai_example()  # Stable diffusion.
+	#compvis_example()  # Stable diffusion
+	stabilityai_example()  # Stable diffusion
+
+	uni_diffuser_example()  # UniDiffuser
 
 	# 3D
 	#ldm3d_example()  # LDM3D
+
+	#-----
+	# Image synthesis
+	#	Refer to ./image_synthesis_test.py
+
+	# Video synthesis
+	#	Refer to ./video_synthesis_test.py
 
 #--------------------------------------------------------------------
 
