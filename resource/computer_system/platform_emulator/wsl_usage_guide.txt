@@ -41,3 +41,11 @@
 			wsl --install --distribution Debian
 		wsl --update
 		wsl --shutdown
+
+	- Unregister.
+		wsl --unregister <Distro>
+			Unregisters the distribution and deletes the root filesystem.
+
+	- Uninstall.
+		wsl --uninstall
+			Uninstalls the Windows System for Linux package from the machine.

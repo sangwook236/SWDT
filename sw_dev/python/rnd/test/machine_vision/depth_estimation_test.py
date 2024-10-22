@@ -249,12 +249,50 @@ def unidepth_example():
 	# Install:
 	#	git clone https://github.com/lpiccinelli-eth/UniDepth
 	#	cd ${UniDepth_HOME}
-	#	pip install -e .
+	#	pip install -e . --extra-index-url https://download.pytorch.org/whl/cu118
+	#		Windows does not support triton. (?)
+	#	Install Pillow-SIMD (optional):
+	#		pip uninstall pillow
+	#		CC="cc -mavx2" pip install -U --force-reinstall pillow-simd
 
-	import torch
+	image_width, image_height, image_depth_channels, image_color_channels = 400, 448, 1, 3
 
-	import numpy as np
-	from PIL import Image
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0001_TA/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0001_TB/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0002_TA/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0002_TB/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0002_TC/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0003_TA/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0003_TB/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0003_TC/raw"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0004_TA"
+	#dir_path = "/work/inno3d/Scanner_Testing_20240911/ST_0005_CA"
+	dir_path = "/work/inno3d/240717_upper_full_arch/ResultData_1"
+	#dir_path = "/work/inno3d/240717_upper_full_arch/ResultData_2"
+	#dir_path = "/work/inno3d/240717_upper_full_arch/ResultData_test"
+
+	if True:
+		print(f"Loading scanner data from {dir_path}...")
+		start_time = time.time()
+		scanner_dat = scanner_utils.load_scanner_data_from_dir(dir_path, image_width, image_height, image_depth_channels, image_color_channels)
+		if scanner_dat is None:
+			print(f"Failed to load scanner data from {dir_path}.")
+			return
+		print(f"Scanner data loaded: {time.time() - start_time} secs.")
+		depth_images, rgb_images = scanner_dat
+		print(f"Depth images: shape = {depth_images.shape}, dtype = {depth_images.dtype}, (min, max) = ({np.min(depth_images)}, {np.max(depth_images)}).")
+		print(f"RGB images: shape = {rgb_images.shape}, dtype = {rgb_images.dtype}, (min, max) = ({np.min(rgb_images)}, {np.max(rgb_images)}).")
+	else:
+		print(f"Loading scanner RGB data from {dir_path}...")
+		start_time = time.time()
+		rgb_images = scanner_utils.load_scanner_color_data_from_dir(dir_path, image_width, image_height, image_color_channels)
+		if rgb_images is None:
+			print(f"Failed to load scanner RGB data from {dir_path}.")
+			return
+		print(f"Scanner RGB data loaded: {time.time() - start_time} secs.")
+		print(f"RGB images: shape = {rgb_images.shape}, dtype = {rgb_images.dtype}, (min, max) = ({np.min(rgb_images)}, {np.max(rgb_images)}).")
+		depth_images = [None] * len(rgb_images)
+
 	from unidepth.models import UniDepthV1, UniDepthV2
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -264,12 +302,12 @@ def unidepth_example():
 		#model_name = "lpiccinelli/unidepth-v1-cnvnxtl"
 		model_name = "lpiccinelli/unidepth-v1-vitl14"
 
-		model = UniDepthV1.from_pretrained(f"lpiccinelli/{model_name}")
+		model = UniDepthV1.from_pretrained(model_name)
 	elif True:
 		model_name = "lpiccinelli/unidepth-v2-vits14"
 		#model_name = "lpiccinelli/unidepth-v2-vitl14"
 
-		model = UniDepthV2.from_pretrained(f"lpiccinelli/{model_name}")
+		model = UniDepthV2.from_pretrained(model_name)
 	elif False:
 		version = "v2"
 		backbone = "vitl14"
@@ -277,21 +315,58 @@ def unidepth_example():
 		model = torch.hub.load("lpiccinelli-eth/UniDepth", "UniDepth", version=version, backbone=backbone, pretrained=True, trust_repo=True, force_reload=True)
 	else:
 		raise ValueError("Model not selected.")
+	model.resolution_level = 10  # TODO [check] >>
 	model = model.to(device)
 
-	# Load the RGB image and the normalization will be taken care of by the model
-	rgb = torch.from_numpy(np.array(Image.open(image_path))).permute(2, 0, 1)  # C, H, W
+	for depth_img, rgb_img in zip(depth_images, rgb_images):
+	#for depth_img, rgb_img in zip(depth_images[:10], rgb_images[:10]):
+		# Load the RGB image and the normalization will be taken care of by the model
+		rgb = torch.from_numpy(rgb_img).permute(2, 0, 1)  # C, H, W
 
-	predictions = model.infer(rgb)
+		predictions = model.infer(rgb)
 
-	# Metric depth estimation
-	depth = predictions["depth"]
+		# Metric depth estimation
+		depth = predictions["depth"]
+		print(f"Depth: shape = {depth.shape}, dtype = {depth.dtype}, (min, max) = ({torch.min(depth)}, {torch.max(depth)}).")
 
-	# Point cloud in camera coordinate
-	xyz = predictions["points"]
+		# Point cloud in camera coordinate
+		pcloud = predictions["points"]
+		print(f"Point cloud: shape = {pcloud.shape}, dtype = {pcloud.dtype}, (min, max) = ({torch.min(pcloud)}, {torch.max(pcloud)}).")
 
-	# Intrinsics prediction
-	intrinsics = predictions["intrinsics"]
+		# Intrinsics prediction
+		intrinsics = predictions["intrinsics"]
+		print(f"Intrinsics: shape = {intrinsics.shape}, dtype = {intrinsics.dtype}, (min, max) = ({torch.min(intrinsics)}, {torch.max(intrinsics)}).")
+
+		# Visualize the prediction
+		predictions = depth.squeeze().cpu().numpy()
+		#predictions_scaled = (predictions * 255 / np.max(predictions)).astype("uint8")
+
+		if depth_img is None:
+			fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(10, 5), tight_layout=True)
+			ax[0].imshow(rgb_img)
+			ax[0].axis("off")
+			ax[0].set_title("RGB Image")
+			#im = ax[1].imshow(predictions_scaled)
+			im = ax[1].imshow(np.float64(predictions))
+			fig.colorbar(im, ax=ax[1])
+			ax[1].axis("off")
+			ax[1].set_title("Depth Prediction")
+		else:
+			fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(15, 5), tight_layout=True)
+			ax[0].imshow(rgb_img)
+			ax[0].axis("off")
+			ax[0].set_title("RGB Image")
+			im = ax[1].imshow(depth_img)
+			fig.colorbar(im, ax=ax[1])
+			ax[1].axis("off")
+			ax[1].set_title("Depth Image")
+			#im = ax[2].imshow(predictions_scaled)
+			im = ax[2].imshow(np.float64(predictions))
+			fig.colorbar(im, ax=ax[2])
+			ax[2].axis("off")
+			ax[2].set_title("Depth Prediction")
+
+		plt.show()
 
 # REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/depth_anything
 def depth_anything_example():
