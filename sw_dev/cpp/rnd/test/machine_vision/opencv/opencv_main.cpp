@@ -219,7 +219,8 @@ void retina_model();
 void bag_of_words();
 
 void camera_geometry();
-void camera_calibration();
+void camera_calibration_1();
+void camera_calibration_2();
 void stereo_camera_calibration();
 void image_undistortion();
 void kinect_image_undistortion();
@@ -377,7 +378,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::text();
 
 		//my_opencv::camera_geometry();
-		//my_opencv::camera_calibration();
+		//my_opencv::camera_calibration_1();
+		//my_opencv::camera_calibration_2();
 		//my_opencv::stereo_camera_calibration();
 		//my_opencv::image_undistortion();
 		//my_opencv::kinect_image_undistortion();

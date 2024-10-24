@@ -299,7 +299,7 @@ bool runAndSave(const std::string &outputFilename,
 namespace my_opencv {
 
 // [ref] ${OPENCV_HOME}/samples/cpp/calibration.cpp
-void camera_calibration()
+void camera_calibration_2()
 {
 #if 0
 	const std::string outputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");

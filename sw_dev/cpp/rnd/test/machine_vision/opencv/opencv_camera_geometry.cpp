@@ -64,12 +64,12 @@ void intrinsic_camera_params(const bool isPlanarCalibrationRigs)
 	CvMat *objPts = cvCreateMat(correspondenceCount * imageCount, 3, CV_64FC1);
 	CvMat *imgPts = cvCreateMat(correspondenceCount * imageCount, 2, CV_64FC1);
 	{
-        //cvTranspose(&cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void *)worldPts), objPts);
-        //cvTranspose(&cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void *)imagePts), imgPts);
-        const CvMat objPts_arr = cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void *)worldPts);
-        const CvMat imgPts_arr = cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void *)imagePts);
-        cvTranspose(&objPts_arr, objPts);
-        cvTranspose(&imgPts_arr, imgPts);
+		//cvTranspose(&cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void *)worldPts), objPts);
+		//cvTranspose(&cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void *)imagePts), imgPts);
+		const CvMat objPts_arr = cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void *)worldPts);
+		const CvMat imgPts_arr = cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void *)imagePts);
+		cvTranspose(&objPts_arr, objPts);
+		cvTranspose(&imgPts_arr, imgPts);
 	}
 #elif 0
 	// method #2
@@ -175,12 +175,12 @@ void extrinsic_camera_params()
 		CvMat *imgPts = cvCreateMat(correspondenceCount, 2, CV_64FC1);
 		const CvMat intrinsicParams = cvMat(3, 3, CV_64FC1, (void *)calibrationMat);
 		{
-            //cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void *)worldPts), objPts);
-            //cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void *)imagePts), imgPts);
-            const CvMat objPts_arr = cvMat(3, correspondenceCount, CV_64FC1, (void *)worldPts);
-            const CvMat imgPts_arr = cvMat(2, correspondenceCount, CV_64FC1, (void *)imagePts);
-            cvTranspose(&objPts_arr, objPts);
-            cvTranspose(&imgPts_arr, imgPts);
+			//cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void *)worldPts), objPts);
+			//cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void *)imagePts), imgPts);
+			const CvMat objPts_arr = cvMat(3, correspondenceCount, CV_64FC1, (void *)worldPts);
+			const CvMat imgPts_arr = cvMat(2, correspondenceCount, CV_64FC1, (void *)imagePts);
+			cvTranspose(&objPts_arr, objPts);
+			cvTranspose(&imgPts_arr, imgPts);
 		}
 
 		//print_opencv_matrix(objPts);
@@ -244,12 +244,12 @@ void extrinsic_camera_params()
 		CvMat* imgPts = cvCreateMat(correspondenceCount, 2, CV_64FC1);
 		const CvMat intrinsicParams = cvMat(3, 3, CV_64FC1, (void*)calibrationMat);
 		{
-            //cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts), objPts);
-            //cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts), imgPts);
-            const CvMat objPts_arr = cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts);
-            const CvMat imgPts_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts);
-            cvTranspose(&objPts_arr, objPts);
-            cvTranspose(&imgPts_arr, imgPts);
+			//cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts), objPts);
+			//cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts), imgPts);
+			const CvMat objPts_arr = cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts);
+			const CvMat imgPts_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts);
+			cvTranspose(&objPts_arr, objPts);
+			cvTranspose(&imgPts_arr, imgPts);
 		}
 
 		//my_opencv::print_opencv_matrix(objPts);
@@ -400,10 +400,10 @@ void fundamental_matrix()
 	const int method = CV_FM_RANSAC;
 	//const int method = CV_FM_LMEDS;
 	{
-        //cvFindFundamentalMat(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1), &cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2), fundamentalMat, method, 1.0, 0.9, NULL);
-        const CvMat imgPts1_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1);
-        const CvMat imgPts2_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2);
-        cvFindFundamentalMat(&imgPts1_arr, &imgPts2_arr, fundamentalMat, method, 1.0, 0.9, NULL);
+		//cvFindFundamentalMat(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1), &cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2), fundamentalMat, method, 1.0, 0.9, NULL);
+		const CvMat imgPts1_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1);
+		const CvMat imgPts2_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2);
+		cvFindFundamentalMat(&imgPts1_arr, &imgPts2_arr, fundamentalMat, method, 1.0, 0.9, NULL);
 	}
 /*
 	CvMat* imgPts1 = cvCreateMat(correspondenceCount, 2, CV_64FC1);

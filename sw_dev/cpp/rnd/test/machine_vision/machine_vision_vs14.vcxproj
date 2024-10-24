@@ -254,7 +254,8 @@
     <ClCompile Include="opencv\opencv_active_contour_model.cpp" />
     <ClCompile Include="opencv\opencv_basic_operation.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
-    <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
+    <ClCompile Include="opencv\opencv_camera_calibration_1.cpp" />
+    <ClCompile Include="opencv\opencv_camera_calibration_2.cpp" />
     <ClCompile Include="opencv\opencv_camera_geometry.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

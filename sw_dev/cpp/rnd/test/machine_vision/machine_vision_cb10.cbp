@@ -165,7 +165,8 @@
 		<Unit filename="opencv/opencv_active_contour_model.cpp" />
 		<Unit filename="opencv/opencv_bag_of_words.cpp" />
 		<Unit filename="opencv/opencv_basic_operation.cpp" />
-		<Unit filename="opencv/opencv_camera_calibration.cpp" />
+		<Unit filename="opencv/opencv_camera_calibration_1.cpp" />
+		<Unit filename="opencv/opencv_camera_calibration_2.cpp" />
 		<Unit filename="opencv/opencv_camera_geometry.cpp" />
 		<Unit filename="opencv/opencv_chamfer_matching.cpp">
 			<Option compile="0" />
