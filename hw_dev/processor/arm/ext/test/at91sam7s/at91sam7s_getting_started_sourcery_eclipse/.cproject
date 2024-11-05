@@ -31,7 +31,7 @@
 							<builder buildPath="${workspace_loc:/at91sam7s_getting_started_sourcery_eclipse/Debug}" errorParsers="org.eclipse.cdt.core.MakeErrorParser" id="cdt.managedbuild.target.gnu.builder.base.743407278" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1841603542" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
 								<option id="gnu.both.asm.option.include.paths.439518191" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1042785558" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
@@ -40,7 +40,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.2136599098" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
 							<tool command="arm-none-eabi-g++" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.9330118" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
 								<option id="gnu.cpp.compiler.option.include.paths.355549118" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include/c++/4.3.3&quot;"/>
 								</option>
@@ -54,7 +54,7 @@
 							</tool>
 							<tool command="arm-none-eabi-gcc" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1331586775" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
 								<option id="gnu.c.compiler.option.include.paths.35524375" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.409268719" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
@@ -857,7 +857,7 @@
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release.100126045" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release">
 								<option id="gnu.both.asm.option.include.paths.552556415" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1747251145" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1538406399" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
@@ -869,7 +869,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.172849857" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include/c++/4.3.3&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.162509261" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT91SAM7S256"/>
@@ -882,7 +882,7 @@
 								<option id="gnu.c.compiler.mingw.exe.release.option.debugging.level.1714290200" name="Debug Level" superClass="gnu.c.compiler.mingw.exe.release.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1333005179" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1296548382" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT91SAM7S256"/>

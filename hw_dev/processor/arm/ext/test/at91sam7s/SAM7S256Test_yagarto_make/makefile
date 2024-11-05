@@ -67,7 +67,7 @@ SRC  = ./src/main.c
 ASRC = ./src/crt.s
 
 # List all user directories here
-UINCDIR = ./inc
+UINCDIR = ./include
 
 # List the user directory to look for the libraries here
 ULIBDIR =

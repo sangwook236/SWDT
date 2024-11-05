@@ -23,7 +23,7 @@
 							<builder buildPath="${workspace_loc:/SAM7S256Test_yagarto_eclipse/Debug}" id="cdt.managedbuild.target.gnu.builder.base.2060365273" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1107753657" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
 								<option id="gnu.both.asm.option.include.paths.160260155" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1429576829" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
@@ -32,7 +32,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.1801860870" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
 							<tool command="arm-none-eabi-g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1338081506" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1699541368" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include/c++/4.5.0&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
@@ -46,7 +46,7 @@
 							</tool>
 							<tool command="arm-none-eabi-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.2059678422" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
 								<option id="gnu.c.compiler.option.include.paths.1253399804" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.861300378" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
@@ -1516,7 +1516,7 @@
 							<builder buildPath="${workspace_loc:/SAM7S256Test_yagarto_eclipse/Release}" id="cdt.managedbuild.target.gnu.builder.base.677212813" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1515589945" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
 								<option id="gnu.both.asm.option.include.paths.571441455" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1570700730" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
@@ -1525,7 +1525,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.1427547630" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
 							<tool command="arm-none-eabi-g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.210117915" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1467863334" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include/c++/4.5.0&quot;"/>
 								</option>
@@ -1539,7 +1539,7 @@
 							</tool>
 							<tool command="arm-none-eabi-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.715571343" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
 								<option id="gnu.c.compiler.option.include.paths.1584331022" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.1023015997" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>

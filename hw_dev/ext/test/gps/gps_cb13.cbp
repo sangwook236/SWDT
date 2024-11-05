@@ -33,7 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="../../inc" />
+			<Add directory="../../include" />
 			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>

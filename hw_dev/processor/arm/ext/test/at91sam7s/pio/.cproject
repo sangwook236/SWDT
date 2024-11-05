@@ -33,7 +33,7 @@
 							<builder buildPath="${workspace_loc:/pio/Debug}" id="cdt.managedbuild.target.gnu.builder.cygwin.base.1234389144" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.2003382562" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
 								<option id="gnu.both.asm.option.include.paths.1562672415" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../inc"/>
+									<listOptionValue builtIn="false" value="../../../include"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1552422375" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
@@ -42,7 +42,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.735320865" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
 							<tool command="arm-none-eabi-g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.334862702" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
 								<option id="gnu.cpp.compiler.option.include.paths.36598593" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../inc"/>
+									<listOptionValue builtIn="false" value="../../../include"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include/c++/4.5.0&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
@@ -56,7 +56,7 @@
 							</tool>
 							<tool command="arm-none-eabi-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1979415509" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
 								<option id="gnu.c.compiler.option.include.paths.2132451025" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../inc"/>
+									<listOptionValue builtIn="false" value="../../../include"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1527945732" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
@@ -1189,7 +1189,7 @@
 							<builder buildPath="${workspace_loc:/pio/Release}" id="cdt.managedbuild.target.gnu.builder.cygwin.base.1071169241" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.1144851536" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
 								<option id="gnu.both.asm.option.include.paths.1812016585" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../inc"/>
+									<listOptionValue builtIn="false" value="../../../include"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.650203805" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
@@ -1198,7 +1198,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.990670505" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
 							<tool command="arm-none-eabi-g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.475323393" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
 								<option id="gnu.cpp.compiler.option.include.paths.880555525" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../inc"/>
+									<listOptionValue builtIn="false" value="../../../include"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include/c++/4.5.0&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
@@ -1212,7 +1212,7 @@
 							</tool>
 							<tool command="arm-none-eabi-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1476910969" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
 								<option id="gnu.c.compiler.option.include.paths.1493135576" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../inc"/>
+									<listOptionValue builtIn="false" value="../../../include"/>
 									<listOptionValue builtIn="false" value="&quot;${ProgramFiles}/yagarto/arm-none-eabi/include&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.439807659" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">

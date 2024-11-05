@@ -34,7 +34,7 @@
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.595304428" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
 								<option id="gnu.both.asm.option.include.paths.1938240087" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1893130458" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1065174377" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
@@ -44,7 +44,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.118419161" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include/c++/4.5.0&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1522923477" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT91SAM7S256"/>
@@ -57,7 +57,7 @@
 							<tool command="arm-none-eabi-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1604097889" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
 								<option id="gnu.c.compiler.option.include.paths.212767133" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.350186350" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT91SAM7S256"/>
@@ -1190,7 +1190,7 @@
 							<tool command="arm-none-eabi-gcc -x assembler-with-cpp" id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.1305568371" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
 								<option id="gnu.both.asm.option.include.paths.482581297" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.both.asm.option.flags.1752636825" name="Assembler flags" superClass="gnu.both.asm.option.flags" value="-c -mcpu=arm7tdmi -g -gdwarf-2" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.174315900" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
@@ -1200,7 +1200,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.15514031" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include/c++/4.5.0&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.2134726029" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT91SAM7S256"/>
@@ -1213,7 +1213,7 @@
 							<tool command="arm-none-eabi-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1315703870" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
 								<option id="gnu.c.compiler.option.include.paths.2014282749" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:/Program Files (x86)/yagarto/arm-none-eabi/include&quot;"/>
-									<listOptionValue builtIn="false" value="../inc"/>
+									<listOptionValue builtIn="false" value="../include"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1770273100" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT91SAM7S256"/>
