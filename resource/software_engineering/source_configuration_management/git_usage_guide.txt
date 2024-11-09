@@ -4,12 +4,19 @@
 
 		https://tortoisegit.org/
 
-[-] Usage (Linux).
-	- Config.
+	- Config files.
 		In Linux:
 			~/.gitconfig
 		In Windows:
 			${USERPROFILE}/.gitconfig
+
+[-] Usage (Linux).
+	- Edit configs.
+		git config --system --edit
+		git config --global --edit
+		git config --local --edit
+		git config --worktree --edit
+		git config --file <filename> --edit
 
 	- Set user info.
 		Edit .gitconfig:
@@ -17,7 +24,14 @@
 				email = sangwook236@gmail.com
 				name = Sang-Wook Lee
 
-	- Use GUI tools.
+		Use commands:
+			git config --global user.email "sangwook236@gmail.com"
+			git config --global user.name "Sang-Wook Lee"
+
+			git config --global --get user.email
+			git config --global --get user.name
+
+	- Set GUI tools.
 		REF [site] >> https://stackoverflow.com/questions/34119866/setting-up-and-using-meld-as-your-git-difftool-and-mergetool
 
 		Edit .gitconfig:
@@ -34,7 +48,17 @@
 				# Choose one of these 2 lines (not both!) explained below.
 				cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 				#cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+
 		Use commands:
+			git config --global diff.tool meld
+			git config --global diff.guitool meld
+			git config --global difftool.meld.cmd 'meld \"$LOCAL\" \"$REMOTE\"'
+			git config --global merge.tool meld
+			git config --global mergetool.meld.cmd 'meld \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"'
+			git config --global mergetool.meld.path "/c/Program files (x86)/meld/bin/meld.exe"
+			git config --global merge.tool p4merge
+			git config --global mergetool.p4merge.cmd 'p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"'
+
 			git difftool ...
 			git mergetool ...
 				You do NOT use git mergetool to perform an actual merge.
@@ -47,3 +71,16 @@
 			git remote add origin https://gitlab.com/sangwook236/repo.git
 		git branch -M main
 		git push -uf origin main
+
+	- Etc.
+		git config pack.threads 1
+		git config --get pack.threads
+
+		git config pack.windowMemory 256m
+		git config --get pack.windowMemory
+
+		git config pack.packSizeLimit 2g
+		git config --get pack.packSizeLimit
+
+		git config http.postBuffer 524288000
+		git config --get http.postBuffer
