@@ -14,7 +14,7 @@
 namespace {
 namespace local {
 
-void setViewerPose (pcl::visualization::PCLVisualizer &viewer, const Eigen::Affine3f &viewer_pose)
+void setViewerPose(pcl::visualization::PCLVisualizer &viewer, const Eigen::Affine3f &viewer_pose)
 {
 	const Eigen::Vector3f pos_vector(viewer_pose * Eigen::Vector3f(0, 0, 0));
 	const Eigen::Vector3f look_at_vector(viewer_pose.rotation() * Eigen::Vector3f(0, 0, 1) + pos_vector);
