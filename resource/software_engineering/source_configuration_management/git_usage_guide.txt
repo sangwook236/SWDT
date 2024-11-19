@@ -5,12 +5,12 @@
 		https://tortoisegit.org/
 
 	- Config files.
-		In Linux:
+		On Linux:
 			~/.gitconfig
-		In Windows:
+		On Windows:
 			${USERPROFILE}/.gitconfig
 
-[-] Usage (Linux).
+[-] Usage.
 	- Edit configs.
 		git config --system --edit
 		git config --global --edit
@@ -84,3 +84,6 @@
 
 		git config http.postBuffer 524288000
 		git config --get http.postBuffer
+
+[-] Installation (Windows).
+	https://github.com/PowerShell/Win32-OpenSSH/wiki/Setting-up-a-Git-server-on-Windows-using-Git-for-Windows-and-Win32_OpenSSH
