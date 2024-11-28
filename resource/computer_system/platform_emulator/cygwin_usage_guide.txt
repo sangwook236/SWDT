@@ -1,6 +1,6 @@
 [-] General.
 	- Reference.
-		${GDT_HOME}/Cygwin-Usage-Guide.md
+		${SWDT_HOME}/Cygwin-Usage-Guide.md
 
 	- Site.
 		https://www.cygwin.com/
@@ -11,7 +11,7 @@
 [-] Usage.
 	- Reference.
 		mingw_usage_guide.txt
-    	${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+		${SWDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
 	- Both Cygwin32 and Cygwin64 are all required.
 		For 32-bit, use Cygwin32.
@@ -28,7 +28,7 @@
 		==> Dependency Walker.
 
 [-] System command.
-- X-Window.S
+	- X-Window.
 		Script:
 			/usr/bin/startxwin.sh
 			/usr/bin/startxwin.bat
@@ -37,14 +37,14 @@
 			/etc/X11/xinit/xinitrc
 		Displaying remote clients using ssh.
 			ssh -Y -l username remote_hostname_or_ip_address
-	
+
 	- System information.
 		/bin/uname
-	
+
 	- Package management.
 		/bin/cygcheck
 			cygcheck -c
-	
+
 	- Linking-libraries imformation.
 		Cygwin is telling you that there are some libraries missing.
 		You¡¯ll need to find out which ones and then run the setup/installer to fix it.

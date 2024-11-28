@@ -185,7 +185,7 @@ def simple_mpc_example_2():
 
 def main():
 	# Model predictive control (MPC), receding horizon control (RHC)
-	#	REF [project] >> ${SWDT_C++_HOME}/rnd/test/control.
+	#	REF [project] >> ${SWDT_CPP_HOME}/rnd/test/control_theory.
 
 	simple_mpc_example_1()
 	#simple_mpc_example_2()

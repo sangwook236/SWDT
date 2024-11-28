@@ -6153,6 +6153,8 @@ def fuyu_example():
 def pixtral_example():
 	# Models:
 	#	mistralai/Pixtral-12B-2409
+	#	mistralai/Pixtral-12B-Base-2409
+	#	mistralai/Pixtral-Large-Instruct-2411
 
 	raise NotImplementedError
 
@@ -6385,6 +6387,28 @@ def long_vila_example():
 
 	raise NotImplementedError
 
+# REF [site] >> https://huggingface.co/facebook
+def audiogen_example():
+	# Models:
+	#	facebook/audiogen-medium
+
+	# Install:
+	#	pip install git+https://github.com/facebookresearch/audiocraft.git
+	#	apt get install ffmpeg
+
+	import torchaudio
+	from audiocraft.models import AudioGen
+	from audiocraft.data.audio import audio_write
+
+	model = AudioGen.get_pretrained("facebook/audiogen-medium")
+	model.set_generation_params(duration=5)  # Generate 5 seconds.
+	descriptions = ["dog barking", "sirenes of an emergency vehicule", "footsteps in a corridor"]
+	wav = model.generate(descriptions)  # Generates 3 samples.
+
+	for idx, one_wav in enumerate(wav):
+		# Will save under {idx}.wav, with loudness normalization at -14 db LUFS.
+		audio_write(f"{idx}", one_wav.cpu(), model.sample_rate, strategy="loudness", loudness_compressor=True)
+
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_audio_example():
 	# Models:
@@ -6438,7 +6462,7 @@ def qwen_audio_example():
 				for ele in message["content"]:
 					if ele["type"] == "audio":
 						audios.append(librosa.load(
-							BytesIO(urlopen(ele['audio_url']).read()),
+							BytesIO(urlopen(ele["audio_url"]).read()),
 							sr=processor.feature_extractor.sampling_rate)[0]
 						)
 
@@ -8624,6 +8648,7 @@ def main():
 	#-----
 	# Audio and language.
 
+	#audiogen_example()  # AudioGen. Not yet tested.
 	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio. Not yet tested.
 
 	#-----
