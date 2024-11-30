@@ -1,5 +1,5 @@
-#include <gmock/gmock.h>
 #include <stdexcept>
+#include <gmock/gmock.h>
 
 
 namespace {
@@ -14,11 +14,14 @@ namespace my_gmock {
 
 int gmock_main(int argc, char *argv[])
 {
-	// REF [site] >> https://github.com/google/googletest/blob/master/googlemock/docs/ForDummies.md
+	// REF [site] >>
+	//	https://google.github.io/googletest/gmock_for_dummies.html
+	//	https://google.github.io/googletest/
+
 #if 1
 	// The following line must be executed to initialize Google Mock (and Google Test) before running the tests.
 	testing::InitGoogleMock(&argc, argv);
-	//testing::InitGoogleTest(&argc, argv);  // do not need to be called.
+	//testing::InitGoogleTest(&argc, argv);  // Do not need to be called.
 	return RUN_ALL_TESTS();
 #else
 	// If you want to use something other than Google Test (e.g. CppUnit or CxxTest) as your testing framework.
@@ -27,6 +30,6 @@ int gmock_main(int argc, char *argv[])
 	testing::GTEST_FLAG(throw_on_failure) = true;
 	testing::InitGoogleMock(&argc, argv);
 
-	// whatever your testing framework requires ...
+	// Whatever your testing framework requires ...
 #endif
 }
