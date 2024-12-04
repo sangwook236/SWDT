@@ -10,7 +10,7 @@
 
 		import open3d_tutorial as o3dtut
 
-[-] Tool.
+[-] Tools.
 	- Command line interface (CLI).
 		https://github.com/isl-org/Open3D/releases
 
@@ -80,9 +80,12 @@
 
 		CMake:
 			Configure.
+				(Optional) Set CMAKE_DEBUG_POSTFIX to d.
 				Set STATIC_WINDOWS_RUNTIME to OFF.
 				Set BUILD_SHARED_LIBS to ON.
 				Set BUILD_WEBRTC to OFF.
+				(Optional) Set USE_SYSTEM_FMT to OFF.
+				(Optional) Set USE_SYSTEM_TBB to OFF.
 			Generate.
 
 		Copy 'resources' directory to the parent folder of the project files.

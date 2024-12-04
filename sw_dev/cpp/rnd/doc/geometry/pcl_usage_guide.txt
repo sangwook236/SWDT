@@ -7,7 +7,7 @@
 
 		https://github.com/PointCloudLibrary/data
 
-[-] Tool.
+[-] Tools.
 	- Visualization.
 		pcl_viewer:
 			pcl_viewer <file_name 1..N>.<pcd or vtk> <options>

@@ -3,6 +3,10 @@
 		http://www.qt.io/
 		http://www.qt.io/developers/
 
+		https://github.com/qt
+		https://github.com/qt/qtbase
+		https://github.com/qt/qt5
+
 		https://doc.qt.io/
 		https://doc.qt.io/qtforpython/tutorials/
 		https://wiki.qt.io/Main
@@ -38,15 +42,37 @@
 			make
 			nmake
 
-[-] Usage (QtCreator).
-	https://doc.qt.io/qtcreator/creator-using-qt-designer.html
-	https://doc.qt.io/qt-5/qtdesigner-manual.html
+[-] Tools.
+	- QtCreator.
+		https://doc.qt.io/qtcreator/creator-using-qt-designer.html
+		https://doc.qt.io/qt-5/qtdesigner-manual.html
 
-	- Directory.
-		${QT_HOME}/Tools/QtCreator
-		${QT_HOME}/Tools/QtCreator/bin/qtcreator
+		Directory:
+			${QT_HOME}/Tools/QtCreator
+			${QT_HOME}/Tools/QtCreator/bin/qtcreator
 
-[-] Installation.
+[-] Building.
+	https://doc.qt.io/qt-6/build-sources.html
+	https://doc.qt.io/qt-5/build-sources.html
+
+	- Build (Windows).
+		https://doc.qt.io/qt-6/windows-building.html
+		https://doc.qt.io/qt-5/windows-building.html
+
+		mkdir ${QT_HOME}/build
+		cd ${QT_HOME}/build
+
+		${QT_HOME}/configure.bat -help
+		${QT_HOME}/configure.bat
+		${QT_HOME}/configure.bat -release -prefix <INSTALL_PREFIX>
+		${QT_HOME}/configure.bat -debug -prefix <INSTALL_PREFIX>
+		${QT_HOME}/configure.bat -debug-and-release -prefix <INSTALL_PREFIX>
+			By default, Qt is configured for installation in the C:\Qt\Qt-major.minor.patch directory, where the major.minor.patch triplet represents the Qt version being built.
+
+		cmake --build . --parallel
+		cmake --install .
+
+[-] Installation (Ubuntu).
 	- Install.
 		Using online installer:
 			https://www.qt.io/download-open-source
