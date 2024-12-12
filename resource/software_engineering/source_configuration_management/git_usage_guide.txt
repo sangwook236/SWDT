@@ -5,21 +5,29 @@
 		https://tortoisegit.org/
 
 	- Config files.
-		On Linux:
-			~/.gitconfig
-		On Windows:
-			${USERPROFILE}/.gitconfig
+		Local config file:
+			${WORKING_COPY}/.git/config
+		Global config file:
+			On Linux:
+				~/.gitconfig
+			On Windows:
+				%USERPROFILE%/.gitconfig
+				$Env:USERPROFILE/.gitconfig
+		System config file:
+			${GIT_HOME}/etc/gitconfig
 
 [-] Usage.
 	- Edit configs.
-		git config --system --edit
-		git config --global --edit
+		git config --edit
+			Edit local config file.
 		git config --local --edit
+		git config --global --edit
+		git config --system --edit
 		git config --worktree --edit
 		git config --file <filename> --edit
 
 	- Set user info.
-		Edit .gitconfig:
+		Edit config files:
 			[user]
 				email = sangwook236@gmail.com
 				name = Sang-Wook Lee
@@ -31,10 +39,27 @@
 			git config --global --get user.email
 			git config --global --get user.name
 
+	- Set excludes.
+		${WORKING_COPY}/.git/info/exclude
+
+		Edit config files:
+			[core]
+				excludesfile = ~/.gitignore
+
+		Use commands:
+			git config --global core.excludesFile ~/.gitignore
+			git config --global core.excludesFile "%USERPROFILE%\.gitignore"
+			git config --global core.excludesFile "$Env:USERPROFILE\.gitignore"
+			
+			git config --get core.excludesfile
+			git config --local --get core.excludesfile
+			git config --global --get core.excludesfile
+			git config --system --get core.excludesfile
+
 	- Set GUI tools.
 		REF [site] >> https://stackoverflow.com/questions/34119866/setting-up-and-using-meld-as-your-git-difftool-and-mergetool
 
-		Edit .gitconfig:
+		Edit config files:
 			[diff]
 				tool = meld
 			[difftool]

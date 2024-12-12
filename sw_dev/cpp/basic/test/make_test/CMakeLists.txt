@@ -81,13 +81,15 @@ find_package(Threads REQUIRED)
 #find_package(Log4cxx REQUIRED)
 #find_package(glog REQUIRED)
 #find_package(gflags REQUIRED)
-#find_package(GTest REQUIRED)  # ${GTest_FOUND}
+#find_package(GTest REQUIRED)  # ${GTest_FOUND}, #{GMock_FOUND}
 #find_package(ZLIB REQUIRED)
 #find_package(CUDA REQUIRED)
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)  # ${Qt5_FOUND}, ${Qt5Core_FOUND}, ${Qt5Gui_FOUND}, ${Qt5Widgets_FOUND}
 #find_package(OpenCV 4.10.0 REQUIRED)
 #message(STATUS "Boost found: ${Boost_FOUND}")
+
+#include(GoogleTest)
 
 #find_library(MY_LIBRARIES NAMES libmy.a)
 #find_library(MY_LIBRARIES NAMES libmy.a PATHS /path/to/lib)
@@ -104,11 +106,12 @@ find_package(Threads REQUIRED)
 #include_directories(${GSL_INCLUDE_DIRS})
 #include_directories(${Qt5Core_INCLUDE_DIRS})  # ${Qt5Core_INCLUDE_DIRS}, ${Qt5Gui_INCLUDE_DIRS}, ${Qt5Widgets_INCLUDE_DIRS}
 #include_directories(${OpenCV_INCLUDE_DIRS})
+#include_directories(AFTER /usr/local/include)
 #message(STATUS "Include directories: ${INCLUDE_DIRECTORIES}")
 
 #link_directories(${Boost_LIBRARY_DIRS})
 #link_directories(${PCL_LIBRARY_DIRS})
-#link_directories(BEFORE /usr/local/lib)
+#link_directories(AFTER /usr/local/lib)
 #message(STATUS "Link directories: ${LINK_DIRECTORIES}")
 
 #add_definitions(${OpenMP_CXX_FLAGS})
@@ -149,7 +152,7 @@ set(LIBS
 #	${LOG4CXX_LIBRARIES}
 #	${GLOG_LIBRARIES}
 #	${GFLAGS_LIBRARIES}
-#	${GTEST_LIBRARIES}  # ${GTEST_LIBRARIES}, ${GTEST_MAIN_LIBRARIES}, ${GTEST_BOTH_LIBRARIES}
+#	${GTEST_LIBRARIES}  # ${GTEST_LIBRARIES}, ${GTEST_MAIN_LIBRARIES}, ${GTEST_BOTH_LIBRARIES}, ${GMOCK_LIBRARIES}, ${GMOCK_MAIN_LIBRARIES}
 #	${ZLIB_LIBRARIES}
 #	${CUDA_LIBRARIES}
 #	Qt5::Core Qt5::Gui Qt5::Widgets
@@ -164,8 +167,32 @@ add_executable(${TARGET} ${SRCS} ${HDRS})
 #cuda_add_library(${TARGET} STATIC ${SRCS} ${HDRS})
 
 #add_test(...)
-#gtest_add_tests(...)
-#gtest_discover_tests(...)
+#gtest_add_tests(
+#	TARGET ${TARGET}
+#	TEST_SUFFIX .noArgs
+#	TEST_LIST noArgsTests
+#)
+#gtest_add_tests(
+#	TARGET ${TARGET}
+#	EXTRA_ARGS --someArg someValue
+#	TEST_SUFFIX .withArgs
+#	TEST_LIST withArgsTests
+#)
+#gtest_discover_tests(
+#	${TARGET}
+#	TEST_SUFFIX .noArgs
+#	TEST_LIST noArgsTests
+#)
+#gtest_discover_tests(
+#	${TARGET}
+#	EXTRA_ARGS --someArg someValue
+#	TEST_SUFFIX .withArgs
+#	TEST_LIST withArgsTests
+#	DISCOVERY_TIMEOUT 10
+#	DISCOVERY_EXTRA_ARGS --someArg someValue
+#)
 
 target_link_libraries(${TARGET} ${LIBS})
 set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
+#set_tests_properties(${noArgsTests} PROPERTIES TIMEOUT 10)
+#set_tests_properties(${withArgsTests} PROPERTIES TIMEOUT 20)
