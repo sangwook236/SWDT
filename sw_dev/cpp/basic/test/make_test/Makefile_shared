@@ -19,16 +19,22 @@ RM=rm -f
 
 CFLAGS=
 #-- Linux.
-#CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -fPIC -DUNICODE -D_UNICODE
-#CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -fPIC -D_DEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -O0 -g2 -Wall -fPIC -D_DEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -O3 -Wall -fPIC -DNDEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -Os -Wall -fPIC -DNDEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -O2 -g -Wall -fPIC -DNDEBUG -DUNICODE -D_UNICODE
 #LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
 #-- Cygwin.
-#CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -mdll -DUNICODE -D_UNICODE
-#CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -mdll -D_DEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -O0 -g2 -Wall -mdll -D_DEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -O3 -Wall -mdll -DNDEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -Os -Wall -mdll -DNDEBUG -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -O2 -g -Wall -mdll -DNDEBUG -DUNICODE -D_UNICODE
 #LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
 #-- MinGW(MSYS).
-CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -mdll -DUNICODE -D_UNICODE -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
-#CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -mdll -D_DEBUG -DUNICODE -D_UNICODE -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
+#CXXFLAGS=-c -std=c++17 -O0 -g2 -Wall -mdll -D_DEBUG -DUNICODE -D_UNICODE -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
+CXXFLAGS=-c -std=c++17 -O3 -Wall -mdll -DNDEBUG -DUNICODE -D_UNICODE -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
+#CXXFLAGS=-c -std=c++17 -Os -Wall -mdll -DNDEBUG -DUNICODE -D_UNICODE -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
+#CXXFLAGS=-c -std=c++17 -O2 -g -Wall -mdll -DNDEBUG -DUNICODE -D_UNICODE -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
 LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
 
 #--------------------

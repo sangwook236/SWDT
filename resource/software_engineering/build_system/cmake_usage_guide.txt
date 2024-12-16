@@ -1,11 +1,22 @@
 [-] General.
-    - Site.
-        http://www.cmake.org/
+	- Site.
+		http://www.cmake.org/
 
+	- Documentation.
 		https://cmake.org/documentation/
 
-    	http://www.cmake.org/Wiki/CMake
-    	http://www.cmake.org/Wiki/CMake_Useful_Variables
+		Reference:
+		https://cmake.org/cmake/help/latest/
+		https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html
+		https://cmake.org/cmake/help/latest/manual/cmake-modules.7.html
+		https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html
+
+		Tutorial:
+		https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+		https://cmake.org/cmake/help/latest/guide/user-interaction/index.html
+
+		Book:
+		https://cmake.org/cmake/help/book/mastering-cmake/
 
 [-] Usage.
 	${SWDT_CPP_HOME}/rnd/doc/probabilistic_graphical_model/mocapy_usage_guide.txt
@@ -18,12 +29,12 @@
 
 		Generate a project build system:
 			cmake ..
-			cmake -DCMAKE_PREFIX_PATH=/path/to/3rd_party_lib ..
-			cmake -DCMAKE_BUILD_TYPE=Release ..
-			cmake -DCMAKE_BUILD_TYPE=Debug ..
-
-			cmake -i -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
-			cmake -i ..
+			cmake -D CMAKE_PREFIX_PATH=/path/to/3rd_party_lib ..
+			cmake -D CMAKE_BUILD_TYPE=Release ..
+			cmake -D CMAKE_BUILD_TYPE=Debug ..
+			cmake -G Ninja -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
+			cmake -G "Visual Studio 17 2022" -T v143 -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
+			cmake -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
 
 		Build a project:
 			cmake --build . --config Release
@@ -39,15 +50,24 @@
 		https://cmake.org/cmake/help/latest/manual/ccmake.1.html
 		CMake curses interface.
 
+		ccmake -G Ninja -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
+		ccmake -G "Visual Studio 17 2022" -T v143 -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
 		ccmake -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
-		cmake ..
 
 	- cmake-gui.
+		https://cmake.org/cmake/help/latest/manual/cmake-gui.1.html
+
 		Windows:
 			cmake-gui
 		Linux:
 			library: cmake-qt-gui
 			executable: cmake-gui
+
+	- ctest.
+		https://cmake.org/cmake/help/latest/manual/ctest.1.html
+
+	- cpack.
+		https://cmake.org/cmake/help/latest/manual/cpack.1.html
 
 [-] Using external library.
 	REF [site] >> http://www.cmake.org/Wiki/CMake:How_To_Find_Libraries
@@ -108,35 +128,35 @@
 	- Building static library을 생성하기 위해서는 아래와 같이 add_library 항목이 추가되어야 함.
 		e.g.)
 		SET(Library_src1
-		src1/file1.cpp
-		src1/file2.cpp
+			src1/file1.cpp
+			src1/file2.cpp
 		)
 		SET(Library_src2
-		src2/file1.cpp
-		src2/file2.cpp
+			src2/file1.cpp
+			src2/file2.cpp
 		)
 		add_library (Library_name STATIC
 			${Library_src1}
-		    ${Library_src2}
+			${Library_src2}
 		)
 	- BUILD_SHARED_LIBS를 on으로 설정.
 		SET(BUILD_SHARED_LIBS ON)
 	- Building shared library을 생성하기 위해서는 아래와 같이 add_library 항목이 추가되어야 함.
 		e.g.)
 		SET(Library_src1
-		src1/file1.cpp
-		src1/file2.cpp
+			src1/file1.cpp
+			src1/file2.cpp
 		)
 		SET(Library_src2
-		src2/file1.cpp
-		src2/file2.cpp
+			src2/file1.cpp
+			src2/file2.cpp
 		)
 		add_library (Library_name SHARED
 			${Library_src1}
-		    ${Library_src2}
+			${Library_src2}
 		)
 
-[-] Trouble Shooting.
+[-] Troubleshooting.
 	- cmake error and output files.
 		${SRC_BUILD_HOME}/CMakeFiles/CMakeError.log
 		${SRC_BUILD_HOME}/CMakeFiles/CMakeOutput.log

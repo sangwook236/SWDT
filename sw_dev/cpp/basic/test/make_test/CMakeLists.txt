@@ -2,7 +2,11 @@
 #	Configure and generate:
 #		mkdir build
 #		cd build
-#		cmake -DCMAKE_PREFIX_PATH=/path/to/lib ..
+#		cmake --help
+#		cmake .. -G Ninja
+#		cmake .. -G "Visual Studio 17 2022" -T v143
+#		cmake .. -G "Unix Makefiles"
+#		cmake .. -D CMAKE_PREFIX_PATH=/path/to/lib -D BOOST_LIBRARYDIR:PATH=/usr/lib
 #	Build:
 #		cmake --build . --parallel
 #		cmake --build . --config Release --target all -j 14 --
@@ -10,10 +14,10 @@
 #		cmake --build . --target INSTALL -- /verbosity:detailed
 #			Pass additional options to the native build tool with the -- switch.
 #	Run:
-#		./build/my_cpp_test
+#		./my_cpp
 
-cmake_minimum_required(VERSION 3.29 FATAL_ERROR)
-project(my_cpp_test VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+project(my_cpp VERSION 0.1.0)
 
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 #set(CMAKE_PREFIX_PATH "/path/to/lib")
@@ -71,8 +75,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 	add_definitions(/DUNICODE /D_UNICODE)
 endif()
 
-#enable_testing()
-
 #--------------------
 find_package(Threads REQUIRED)
 #find_package(OpenMP REQUIRED)
@@ -81,15 +83,13 @@ find_package(Threads REQUIRED)
 #find_package(Log4cxx REQUIRED)
 #find_package(glog REQUIRED)
 #find_package(gflags REQUIRED)
-#find_package(GTest REQUIRED)  # ${GTest_FOUND}, #{GMock_FOUND}
+#find_package(GTest REQUIRED)  # ${GTest_FOUND}, ${GMock_FOUND}
 #find_package(ZLIB REQUIRED)
 #find_package(CUDA REQUIRED)
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)  # ${Qt5_FOUND}, ${Qt5Core_FOUND}, ${Qt5Gui_FOUND}, ${Qt5Widgets_FOUND}
 #find_package(OpenCV 4.10.0 REQUIRED)
 #message(STATUS "Boost found: ${Boost_FOUND}")
-
-#include(GoogleTest)
 
 #find_library(MY_LIBRARIES NAMES libmy.a)
 #find_library(MY_LIBRARIES NAMES libmy.a PATHS /path/to/lib)
@@ -132,9 +132,9 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 endif()
 
 #--------------------
-#set(TARGET my_cpp_test)
-set(TARGET ${CMAKE_PROJECT_NAME})  # The name of the top level project.
-#set(TARGET ${PROJECT_NAME})  # The name of the project given to the project command.
+#set(TARGET my_cpp)
+set(TARGET ${CMAKE_PROJECT_NAME})  # The name of the top level project
+#set(TARGET ${PROJECT_NAME})  # The name of the project given to the project command
 
 set(HDRS
 #	main.h
@@ -152,7 +152,7 @@ set(LIBS
 #	${LOG4CXX_LIBRARIES}
 #	${GLOG_LIBRARIES}
 #	${GFLAGS_LIBRARIES}
-#	${GTEST_LIBRARIES}  # ${GTEST_LIBRARIES}, ${GTEST_MAIN_LIBRARIES}, ${GTEST_BOTH_LIBRARIES}, ${GMOCK_LIBRARIES}, ${GMOCK_MAIN_LIBRARIES}
+#	${GTEST_BOTH_LIBRARIES}  # ${GTEST_LIBRARIES}, ${GTEST_MAIN_LIBRARIES}, ${GTEST_BOTH_LIBRARIES}, ${GMOCK_LIBRARIES}, ${GMOCK_MAIN_LIBRARIES}
 #	${ZLIB_LIBRARIES}
 #	${CUDA_LIBRARIES}
 #	Qt5::Core Qt5::Gui Qt5::Widgets
@@ -166,7 +166,19 @@ add_executable(${TARGET} ${SRCS} ${HDRS})
 #cuda_add_library(${TARGET} SHARED ${SRCS} ${HDRS})
 #cuda_add_library(${TARGET} STATIC ${SRCS} ${HDRS})
 
-#add_test(...)
+target_link_libraries(${TARGET} ${LIBS})
+set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
+
+#--------------------
+# Testing:
+#	ctest --help
+#	ctest
+#	make test
+
+#enable_testing()
+#include(GoogleTest)
+
+#add_test(NAME my_test COMMAND ${TARGET})
 #gtest_add_tests(
 #	TARGET ${TARGET}
 #	TEST_SUFFIX .noArgs
@@ -192,7 +204,26 @@ add_executable(${TARGET} ${SRCS} ${HDRS})
 #	DISCOVERY_EXTRA_ARGS --someArg someValue
 #)
 
-target_link_libraries(${TARGET} ${LIBS})
-set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 #set_tests_properties(${noArgsTests} PROPERTIES TIMEOUT 10)
 #set_tests_properties(${withArgsTests} PROPERTIES TIMEOUT 20)
+
+#--------------------
+# Installation:
+#	make install
+
+#install(
+#	TARGETS ${TARGET}
+#	RUNTIME DESTINATION bin
+#	LIBRARY DESTINATION lib
+#	ARCHIVE DESTINATION lib
+#)
+
+# Packaging:
+#	cpack --help
+#	cpack
+#	cpack --config CPackConfig.cmake
+#	cpack --config CPackSourceConfig.cmake
+#	make package
+#	make package_source
+
+#include(CPack)
