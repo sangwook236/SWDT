@@ -1,0 +1,16 @@
+[-] General.
+	- Site.
+		https://ninja-build.org/
+		https://github.com/ninja-build/ninja
+
+	- Documentation.
+		https://ninja-build.org/manual.html
+
+[-] Usage.
+	- Use CMake.
+		cd ${BUILD_SRC_HOME}
+		cmake -B build -G Ninja
+		ninja all
+
+[-] Installation.
+	https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages

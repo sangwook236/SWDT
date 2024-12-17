@@ -5,8 +5,11 @@
 		https://github.com/ospector/gtest-gbar
 		https://github.com/kinow/gtest-tap-listener
 
-		https://code.google.com/p/googletest/wiki/Documentation
-		https://code.google.com/p/googletest/wiki/V1_6_Documentation
+	- Documentation.
+		https://google.github.io/googletest/
+
+	- Sample.
+		https://github.com/google/googletest/tree/main/googletest/samples
 
 [-] Building (CMake).
 	- Set options.

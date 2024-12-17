@@ -3,9 +3,9 @@
 #		mkdir build
 #		cd build
 #		cmake --help
-#		cmake .. -G Ninja
 #		cmake .. -G "Visual Studio 17 2022" -T v143
 #		cmake .. -G "Unix Makefiles"
+#		cmake .. -G Ninja
 #		cmake .. -D CMAKE_PREFIX_PATH=/path/to/lib -D BOOST_LIBRARYDIR:PATH=/usr/lib
 #	Build:
 #		cmake --build . --parallel
@@ -13,6 +13,8 @@
 #		cmake --build . --config Release --target ALL_BUILD
 #		cmake --build . --target INSTALL -- /verbosity:detailed
 #			Pass additional options to the native build tool with the -- switch.
+#		make all
+#		ninja all
 #	Run:
 #		./my_cpp
 
@@ -174,6 +176,7 @@ set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 #	ctest --help
 #	ctest
 #	make test
+#	ninja test
 
 #enable_testing()
 #include(GoogleTest)
@@ -210,6 +213,7 @@ set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 #--------------------
 # Installation:
 #	make install
+#	ninja install
 
 #install(
 #	TARGETS ${TARGET}
@@ -225,5 +229,7 @@ set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 #	cpack --config CPackSourceConfig.cmake
 #	make package
 #	make package_source
+#	ninja package
+#	ninja package_source
 
 #include(CPack)
