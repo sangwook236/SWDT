@@ -347,6 +347,8 @@ void registration();
 void slam();
 void odometry();
 
+void tsdf();
+
 }  // namespace my_open3d
 
 int open3d_main(int argc, char *argv[])
@@ -368,6 +370,9 @@ int open3d_main(int argc, char *argv[])
 	my_open3d::registration();
 	//my_open3d::slam();
 	//my_open3d::odometry();
+
+	//-----
+	//my_open3d::tsdf();
 
 	return 0;
 }
