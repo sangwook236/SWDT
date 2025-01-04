@@ -197,6 +197,10 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="open3d\open3d_main.cpp" />
+    <ClCompile Include="open3d\open3d_odometry.cpp" />
+    <ClCompile Include="open3d\open3d_registration.cpp" />
+    <ClCompile Include="open3d\open3d_slam.cpp" />
+    <ClCompile Include="open3d\open3d_tsdf.cpp" />
     <ClCompile Include="pcl\pcl_feature.cpp" />
     <ClCompile Include="pcl\pcl_filtering.cpp" />
     <ClCompile Include="pcl\pcl_greedy_projection.cpp" />
@@ -204,8 +208,11 @@
     <ClCompile Include="pcl\pcl_main.cpp" />
     <ClCompile Include="pcl\pcl_octree.cpp" />
     <ClCompile Include="pcl\pcl_ransac.cpp" />
+    <ClCompile Include="pcl\pcl_reconstruction.cpp" />
     <ClCompile Include="pcl\pcl_registration.cpp" />
     <ClCompile Include="pcl\pcl_resampling.cpp" />
+    <ClCompile Include="pcl\pcl_segmentation.cpp" />
+    <ClCompile Include="pcl\pcl_tsdf.cpp" />
     <ClCompile Include="pcl\pcl_visualization.cpp" />
   </ItemGroup>
   <ItemGroup>

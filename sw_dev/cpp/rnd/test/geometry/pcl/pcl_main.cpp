@@ -775,6 +775,8 @@ void segmentation();
 void reconstruction();
 void visualization(int argc, char **argv);
 
+void tsdf();
+
 }  // namespace my_pcl
 
 int pcl_main(int argc, char *argv[])
@@ -787,7 +789,7 @@ int pcl_main(int argc, char *argv[])
 	//local::pcd_to_ply();
 	//local::ply_to_pcd();
 
-	local::basic_operation();
+	//local::basic_operation();
 
 	//my_pcl::octree();
 	//my_pcl::resampling();
@@ -799,6 +801,8 @@ int pcl_main(int argc, char *argv[])
 	//my_pcl::reconstruction();
 
 	//my_pcl::visualization(argc, argv);
+
+	my_pcl::tsdf();
 
 	//-----
 	// Occlusion test

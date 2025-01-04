@@ -63,6 +63,10 @@
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="open3d/open3d_main.cpp" />
+		<Unit filename="open3d/open3d_odometry.cpp" />
+		<Unit filename="open3d/open3d_registration.cpp" />
+		<Unit filename="open3d/open3d_slam.cpp" />
+		<Unit filename="open3d/open3d_tsdf.cpp" />
 		<Unit filename="pcl/pcl_feature.cpp" />
 		<Unit filename="pcl/pcl_filtering.cpp" />
 		<Unit filename="pcl/pcl_greedy_projection.cpp" />
@@ -74,6 +78,7 @@
 		<Unit filename="pcl/pcl_registration.cpp" />
 		<Unit filename="pcl/pcl_resampling.cpp" />
 		<Unit filename="pcl/pcl_segmentation.cpp" />
+		<Unit filename="pcl/pcl_tsdf.cpp" />
 		<Unit filename="pcl/pcl_visualization.cpp" />
 		<Extensions>
 			<code_completion />

@@ -7,6 +7,21 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="open3d\open3d_main.cpp">
+      <Filter>Source Files\open3d</Filter>
+    </ClCompile>
+    <ClCompile Include="open3d\open3d_odometry.cpp">
+      <Filter>Source Files\open3d</Filter>
+    </ClCompile>
+    <ClCompile Include="open3d\open3d_registration.cpp">
+      <Filter>Source Files\open3d</Filter>
+    </ClCompile>
+    <ClCompile Include="open3d\open3d_slam.cpp">
+      <Filter>Source Files\open3d</Filter>
+    </ClCompile>
+    <ClCompile Include="open3d\open3d_tsdf.cpp">
+      <Filter>Source Files\open3d</Filter>
+    </ClCompile>
     <ClCompile Include="pcl\pcl_feature.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
@@ -38,6 +53,9 @@
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
     <ClCompile Include="pcl\pcl_segmentation.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_tsdf.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
     <ClCompile Include="pcl\pcl_visualization.cpp">
