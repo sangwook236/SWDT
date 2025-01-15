@@ -1,6 +1,6 @@
 [-] General.
 	- Reference.
-		${GDT_HOME}/MinGW-Usage-Guide.md
+		${SWDT_HOME}/MinGW-Usage-Guide.md
 
 	- Site.
 		MinGW:
@@ -46,7 +46,7 @@
 
 [-] Usage.
 	- Reference.
-		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+		${SWDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
 [-] Package Management.
 	- MinGW.
@@ -55,20 +55,15 @@
 		e.g.)
 			mingw-get install lib-package-name
 			mingw-get update
-	- MSYS2.
-		REF [file] >> pacman_usage_guide.txt
 
-		Search package:
-			pacman -Ss cmake
-		Install package:
-			pacman -S mingw32/mingw-w64-i686-cmake
-			pacman -S --force mingw64/mingw-w64-x86_64-cmake
 	- MSYS.
 		For packages which are not installed by mingw-get.exe, find them in the sites below.
 			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 			http://sourceforge.net/projects/mingw/files/MSYS/Base/
 		Copy, uncompress, and copy downloaded files to ${MSYS_HOME}/bin.
 
+	- MSYS2.
+		Refer to msys_usage_guide.txt.
 
 [-] Toolchain (MinGW-w64).
 	- Site.
@@ -103,41 +98,6 @@
 			${MINGW_HOME}/lib/gcc/i686-w64-mingw32
 			${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32
 
-[-] MSYS.
-	- Install.
-		MSYS2 (Windows):
-			REF [site] >> https://sourceforge.net/p/msys2/wiki/MSYS2%20installation/
-			==> Install only one of two installation files below.
-				msys2-i686-yyyymmdd.exe
-				msys2-x86_64-yyyymmdd.exe
-				==> Terminals below are installed.
-					MSYS2 MinGW 32-bit
-					MSYS2 MinGW 64-bit
-					MSYS2 MSYS
-	- Uninstall.
-		MSYS2 (Windows):
-			Use Control Panel.
-			
-	- Update package database.
-		MSYS2:
-			REF [site] >> http://msys2.github.io/
-
-			pacman -Sy pacman
-			pacman -Syu
-			pacman -Su
-
-	- Mount MinGW directory.
-		mount D:/util/mingw /mingw
-			For MSYS:
-				mount D:/util/mingw-w64/i686-5.3.0-posix-dwarf-rt_v4-rev0/mingw32 /mingw
-			For MSYS2 MinGW 32-bit:
-				mount D:/util/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
-			For MSYS2 MinGW 64-bit:
-				mount D:/util/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
-		Add into ${MSYS_HOME}/etc/fstab.
-			D:/util/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
-			D:/util/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
-
 [-] Setting.
 	- Compiler, linker, & make to use for building library.
 	    Use executables in ${MINGW_HOME}/bin.
@@ -147,7 +107,7 @@
 		Use mingw32-make.exe.
 			make.exe (X) ==> mingw32-make.exe (O)
 	- Set the GNU runtime directory in PATH. 
-		set PATH=${MINGW_HOME}/bin;${MSYS_ROOT}/bin;%PATH%
+		set PATH=${MINGW_HOME}/bin;${MSYS_HOME}/bin;%PATH%
 		set PATH=${MINGW_HOME}/bin;${CYGWIN_HOME}/bin;%PATH%
 		set PATH=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%PATH%
 
@@ -155,7 +115,7 @@
 		a) When using MSYS terminal.
 			Run MSYS terminal.
 			(Optional) mount MinGW directory.
-				==> Refer to "MSYS".
+				==> Refer to msys_usage_guide.txt.
 			(Optional) Set the MinGW directory in PATH.
 				Use 'export PATH'.
 				export PATH=${MINGW_HOME}/bin:$PATH
@@ -180,8 +140,8 @@
 		Therefore, use the following directory as an installation prefix.
 			--prefix=${MINGW_HOME}
 		Then installed files are added to the following directories.
-			${MINGW_HOME}/include or ${MSYS_ROOT}/include
-			${MINGW_HOME}/lib or ${MSYS_ROOT}/lib
+			${MINGW_HOME}/include or ${MSYS_HOME}/include
+			${MINGW_HOME}/lib or ${MSYS_HOME}/lib
 
 [-] Building (Terminal).
 	- Set environment.
@@ -213,7 +173,7 @@
 	- Configure and generate.
 		> When an error occurs about 'sh', re-run 'Configure'.
 			<error> sh.exe was found in your PATH.
-			==> Set CMAKE_SH to ${MSYS_ROOT}/bin/sh.exe.
+			==> Set CMAKE_SH to ${MSYS_HOME}/bin/sh.exe.
 		> When an error occurs about C/C++ compiler.
 			<error> The C compiler "${MINGW_HOME}/bin/gcc.exe" is not able to compile a simple test program.
 			==> Set CMAKE_MAKE_PROGRAM to ${MINGW_HOME}/bin/mingw32-make.exe.

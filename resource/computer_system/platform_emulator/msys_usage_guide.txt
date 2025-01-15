@@ -1,0 +1,139 @@
+[-] General.
+	- Site.
+		MSYS2:
+		https://www.msys2.org/
+		https://github.com/msys2
+
+		https://sourceforge.net/p/msys2/wiki/Packages/
+		https://sourceforge.net/projects/msys2/files/Base/
+
+		https://github.com/Alexpux/MSYS2-packages
+
+		MSYS:
+		For 32-bit:
+			http://www.mingw.org/wiki/MSYS
+		For 64-bit:
+			https://sourceforge.net/p/mingw-w64/wiki2/MSYS/
+			https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/MSYS%20%2832-bit%29/
+
+		http://sourceforge.net/projects/mingw/files/MSYS/Base/
+		http://sourceforge.net/projects/mingw/files/MSYS/Extension/
+			wget
+		http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
+
+[-] Usage.
+	https://www.msys2.org/
+
+	- Environments (MSYSTEM).
+		https://www.msys2.org/docs/environments/
+
+		MSYS:
+			${MSYS2_HOME}/usr
+		UCRT64:
+			Universal C Runtime (UCRT).
+				https://learn.microsoft.com/en-us/cpp/windows/universal-crt-deployment
+			${MSYS2_HOME}/ucrt64
+		CLANG64:
+			${MSYS2_HOME}/clang64
+		CLANGARM64:
+			${MSYS2_HOME}/clangarm64
+		MINGW64:
+			${MSYS2_HOME}/mingw64
+
+	- Terminals.
+		${MSYS2_HOME}/clang32.exe
+		${MSYS2_HOME}/clang64.exe
+		${MSYS2_HOME}/clangarm64.exe
+		${MSYS2_HOME}/mingw32.exe
+		${MSYS2_HOME}/mingw64.exe
+		${MSYS2_HOME}/msys2.exe
+		${MSYS2_HOME}/ucrt64.exe
+
+[-] Installation (MSYS2).
+	https://www.msys2.org/
+
+	- Install.
+		msys2-x86_64-yyyymmdd.exe
+		msys2-i686-yyyymmdd.exe
+
+	- Uninstall.
+		Use Control Panel.
+
+	- Install packages.
+		https://packages.msys2.org/
+		https://packages.msys2.org/packages/
+		https://packages.msys2.org/basegroups/
+		https://packages.msys2.org/groups/
+
+		REF [file] >> pacman_usage_guide.txt
+
+		Search packages:
+			pacman -Ss mingw-w64-x86_64-gcc
+			pacman -Ss mingw-w64-x86_64-clang
+			pacman -Ss mingw-w64-ucrt-x86_64-gcc
+			pacman -Ss mingw-w64-ucrt-x86_64-clang
+			pacman -Ss mingw-w64-clang-x86_64-gcc
+			pacman -Ss mingw-w64-clang-x86_64-clang
+
+		Install packages:
+			pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+			pacman -S mingw-w64-x86_64-cmake
+			pacman -S mingw-w64-x86_64-gtest
+			pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+			pacman -S mingw-w64-ucrt-x86_64-cmake
+			pacman -S mingw-w64-ucrt-x86_64-gtest
+			pacman -S --needed base-devel mingw-w64-clang-x86_64-toolchain
+			pacman -S mingw-w64-clang-x86_64-cmake
+			pacman -S mingw-w64-clang-x86_64-gtest
+
+			pacman -S mingw-w64-x86_64-gcc
+			pacman -S mingw-w64-x86_64-clang
+			pacman -S mingw-w64-i686-gcc
+			pacman -S mingw-w64-i686-clang
+			pacman -S mingw-w64-ucrt-x86_64-gcc
+			pacman -S mingw-w64-ucrt-x86_64-clang
+			pacman -S mingw-w64-clang-x86_64-gcc
+			pacman -S mingw-w64-clang-x86_64-clang
+
+		Update package database:
+			pacman -Sy pacman
+			pacman -Syu
+			pacman -Su
+
+		Check:
+			Optional:
+				export PATH=/clang32/bin:$PATH
+				export PATH=/clang64/bin:$PATH
+				export PATH=/clangarm64/bin:$PATH
+				export PATH=/mingw32/bin:$PATH
+				export PATH=/mingw64/bin:$PATH
+				export PATH=/ucrt64/bin:$PATH
+
+				set PATH=/msys64/clang32/bin;%PATH%
+				set PATH=/msys64/clang64/bin;%PATH%
+				set PATH=/msys64/clangarm64/bin;%PATH%
+				set PATH=/msys64/mingw32/bin;%PATH%
+				set PATH=/msys64/mingw64/bin;%PATH%
+				set PATH=/msys64/ucrt64/bin;%PATH%
+
+			gcc --version
+			g++ --version
+			gdb --version
+			clang --version
+			clang++ --version
+			lldb --version
+
+	- Mount MinGW directory.
+		Mount:
+			For MSYS:
+				mount ${MINGW_HOME}/mingw32 /mingw
+					mount D:/util/mingw-w64/i686-5.3.0-posix-dwarf-rt_v4-rev0/mingw32 /mingw
+			For MSYS2 MinGW 32-bit:
+				mount ${MINGW_HOME}/mingw32 /mingw32
+					mount D:/util/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
+			For MSYS2 MinGW 64-bit:
+				mount ${MINGW_HOME}/mingw64 /mingw64
+					mount D:/util/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
+		Add into ${MSYS_HOME}/etc/fstab:
+			D:/util/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
+			D:/util/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64

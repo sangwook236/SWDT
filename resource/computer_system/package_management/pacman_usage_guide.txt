@@ -3,6 +3,16 @@
 		https://wiki.archlinux.org/index.php/pacman
 
 [-] Usage.
+	- Help.
+		pacman --help
+		pacman -S --help
+		pacman -R --help
+		pacman -Q --help
+
+	- Query.
+		pacman -Q -e
+		pacman -Q -i
+
 	- Update.
 		pacman -Sy pacman
 		pacman -Syu
@@ -17,3 +27,8 @@
 	- Install package.
 		pacman -S mingw32/mingw-w64-i686-cmake
 		pacman -S --force mingw64/mingw-w64-x86_64-cmake
+		pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+
+	- Remove package.
+		pacman -Rc mingw-w64-x86_64-cmake
+		pacman -Rs mingw-w64-ucrt-x86_64-cmake
