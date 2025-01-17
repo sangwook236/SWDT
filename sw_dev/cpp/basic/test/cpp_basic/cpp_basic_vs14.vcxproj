@@ -174,16 +174,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="array.cpp" />
-    <ClCompile Include="file_io.cpp" />
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="date_time.cpp" />
+    <ClCompile Include="file_io.cpp" />
+    <ClCompile Include="deprecated.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="performance_analysis.cpp" />
     <ClCompile Include="predefined_macro.cpp" />
     <ClCompile Include="shared_lib_linking.cpp" />
     <ClCompile Include="static_lib_linking.cpp" />
-    <ClCompile Include="stl_data_structure.cpp" />
     <ClCompile Include="stl_algorithm.cpp" />
+    <ClCompile Include="stl_data_structure.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="virtual_function.cpp" />
   </ItemGroup>

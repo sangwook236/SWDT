@@ -57,6 +57,8 @@ int main(int argc, char **argv)
 	void static_lib_linking();
 	void shared_lib_linking();
 
+	void deprecated();
+
 	try
 	{
 		//local::cpp_2011();
@@ -82,6 +84,8 @@ int main(int argc, char **argv)
 		//
 		//static_lib_linking();
 		//shared_lib_linking();
+
+		//deprecated();
 
 		// Test.
 #if 0

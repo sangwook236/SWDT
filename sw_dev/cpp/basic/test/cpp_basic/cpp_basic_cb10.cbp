@@ -38,8 +38,13 @@
 		<Unit filename="array.cpp" />
 		<Unit filename="complex.cpp" />
 		<Unit filename="date_time.cpp" />
+		<Unit filename="deprecated.cpp" />
+		<Unit filename="file_io.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="performance_analysis.cpp" />
 		<Unit filename="predefined_macro.cpp" />
+		<Unit filename="shared_lib_linking.cpp" />
+		<Unit filename="static_lib_linking.cpp" />
 		<Unit filename="stl_algorithm.cpp" />
 		<Unit filename="stl_data_structure.cpp" />
 		<Unit filename="string.cpp" />
