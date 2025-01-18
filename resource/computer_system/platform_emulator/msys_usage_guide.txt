@@ -40,14 +40,30 @@
 		MINGW64:
 			${MSYS2_HOME}/mingw64
 
+		Environment variable:
+			export MSYSTEM=MSYS
+			export MSYSTEM=UCRT64
+			export MSYSTEM=CLANG64
+			export MSYSTEM=CLANGARM64
+			export MSYSTEM=MINGW64
+
+			echo $MSYSTEM
+
 	- Terminals.
 		${MSYS2_HOME}/clang32.exe
+			${MSYS2_HOME}/clang32.ini
 		${MSYS2_HOME}/clang64.exe
+			${MSYS2_HOME}/clang64.ini
 		${MSYS2_HOME}/clangarm64.exe
+			${MSYS2_HOME}/clangarm64.ini
 		${MSYS2_HOME}/mingw32.exe
+			${MSYS2_HOME}/mingw32.ini
 		${MSYS2_HOME}/mingw64.exe
+			${MSYS2_HOME}/mingw64.ini
 		${MSYS2_HOME}/msys2.exe
+			${MSYS2_HOME}/msys2.ini
 		${MSYS2_HOME}/ucrt64.exe
+			${MSYS2_HOME}/ucrt64.ini
 
 [-] Installation (MSYS2).
 	https://www.msys2.org/
@@ -68,32 +84,40 @@
 		REF [file] >> pacman_usage_guide.txt
 
 		Search packages:
-			pacman -Ss mingw-w64-x86_64-gcc
-			pacman -Ss mingw-w64-x86_64-clang
-			pacman -Ss mingw-w64-ucrt-x86_64-gcc
-			pacman -Ss mingw-w64-ucrt-x86_64-clang
-			pacman -Ss mingw-w64-clang-x86_64-gcc
-			pacman -Ss mingw-w64-clang-x86_64-clang
+			MINGW64:
+				pacman -Ss mingw-w64-x86_64-clang
+				pacman -Ss mingw-w64-x86_64-gcc
+			UCRT64:
+				pacman -Ss mingw-w64-ucrt-x86_64-gcc
+				pacman -Ss mingw-w64-ucrt-x86_64-clang
+			CLANG64:
+				pacman -Ss mingw-w64-clang-x86_64-gcc
+				pacman -Ss mingw-w64-clang-x86_64-clang
 
 		Install packages:
-			pacman -S --needed base-devel mingw-w64-x86_64-toolchain
-			pacman -S mingw-w64-x86_64-cmake
-			pacman -S mingw-w64-x86_64-gtest
-			pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
-			pacman -S mingw-w64-ucrt-x86_64-cmake
-			pacman -S mingw-w64-ucrt-x86_64-gtest
-			pacman -S --needed base-devel mingw-w64-clang-x86_64-toolchain
-			pacman -S mingw-w64-clang-x86_64-cmake
-			pacman -S mingw-w64-clang-x86_64-gtest
+			MINGW64:
+				pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+				pacman -S mingw-w64-x86_64-cmake
+				pacman -S mingw-w64-x86_64-gtest
 
-			pacman -S mingw-w64-x86_64-gcc
-			pacman -S mingw-w64-x86_64-clang
-			pacman -S mingw-w64-i686-gcc
-			pacman -S mingw-w64-i686-clang
-			pacman -S mingw-w64-ucrt-x86_64-gcc
-			pacman -S mingw-w64-ucrt-x86_64-clang
-			pacman -S mingw-w64-clang-x86_64-gcc
-			pacman -S mingw-w64-clang-x86_64-clang
+				pacman -S mingw-w64-x86_64-gcc
+				pacman -S mingw-w64-x86_64-clang
+				pacman -S mingw-w64-i686-gcc
+				pacman -S mingw-w64-i686-clang
+			UCRT64:
+				pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+				pacman -S mingw-w64-ucrt-x86_64-cmake
+				pacman -S mingw-w64-ucrt-x86_64-gtest
+
+				pacman -S mingw-w64-ucrt-x86_64-gcc
+				pacman -S mingw-w64-ucrt-x86_64-clang
+			CLANG64:
+				pacman -S --needed base-devel mingw-w64-clang-x86_64-toolchain
+				pacman -S mingw-w64-clang-x86_64-cmake
+				pacman -S mingw-w64-clang-x86_64-gtest
+
+				pacman -S mingw-w64-clang-x86_64-gcc
+				pacman -S mingw-w64-clang-x86_64-clang
 
 		Update package database:
 			pacman -Sy pacman

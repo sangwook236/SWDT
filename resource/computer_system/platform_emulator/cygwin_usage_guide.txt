@@ -8,11 +8,11 @@
 		https://cygwin.com/docs.html
 		https://cygwin.com/faq.html
 
-[-] Usage.
 	- Reference.
 		mingw_usage_guide.txt
 		${SWDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
+[-] Usage.
 	- Both Cygwin32 and Cygwin64 are all required.
 		For 32-bit, use Cygwin32.
 		For 64-bit, use Cygwin64.
@@ -22,12 +22,6 @@
 		e.g.)
 			set CYGWIN=nodosfilewarning
 
-	- Check required modules.
-		objdump -p foo.exe | grep 'DLL Name'
-		cygcheck ./foo.exe
-		==> Dependency Walker.
-
-[-] System command.
 	- X-Window.
 		Script:
 			/usr/bin/startxwin.sh
@@ -41,16 +35,55 @@
 	- System information.
 		/bin/uname
 
-	- Package management.
-		/bin/cygcheck
-			cygcheck -c
+		uname -a
 
-	- Linking-libraries imformation.
-		Cygwin is telling you that there are some libraries missing.
-		You¡¯ll need to find out which ones and then run the setup/installer to fix it.
-		to fix it, first use the cygwin utility 'cygcheck' to reveal the names of the missing DLLs.
-		Run the command to generate a list of the missing libraries/DLLs:
-			cygcheck program_name
+[-] Tools.
+	- cygcheck.
+		List system information, check installed packages, or query package database.
+
+		List library (DLL) dependencies of PROGRAM:
+			cygcheck <PROGRAM>
+
+			cygcheck ./foo.exe
+			objdump -p foo.exe | grep 'DLL Name'
+			Use Dependency Walker.
+
+		Show installed version of PACKAGE and verify integrity (or for all installed packages if none specified):
+			cygcheck -c
+			cygcheck -c <PACKAGE>
+		Find the installed package to which FILE belongs:
+			cygcheck -f <FILE>
+		List contents of the installed PACKAGE (or all installed packages if none given):
+			cygcheck -l
+			cygcheck -l <PACKAGE>
+			cygcheck -l <PACKAGE> | grep -i <KEYWORD>
+
+		Print full info on packages matching PATTERN, installed and available releases (PATTERN is a glob pattern with * and ? as wildcard chars):
+			cygcheck -i <PATTERN>
+		List all available packages matching PATTERN (PATTERN is a glob pattern with * and ? as wildcard chars):
+			cygcheck -e <PATTERN>
+
+		Search for REGEXP in the entire cygwin.com package repository (requires internet connectivity):
+			cygcheck -p <REGEXP>
+
+	- mount.
+		Display information about mounted filesystems, or mount a filesystem.
+
+		mount
+		mount -m
+		mount -p
+		mount -v
+
+	- cygpath.
+		Convert Windows paths to Cygwin paths.
+		Convert Cygwin paths to Windows paths.
+
+		cygpath -w /usr/bin
+		cygpath -w /usr/bin/ls.exe
+		cygpath -w /usr/bin/ls.exe | xargs cygpath -u
+
+		cygpath -w /cygdrive/d/work
+		cygpath -u D:/work
 
 [-] Toolchain.
 	- General.
