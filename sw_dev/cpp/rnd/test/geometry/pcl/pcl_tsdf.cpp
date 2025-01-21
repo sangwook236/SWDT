@@ -9,8 +9,9 @@
 #include <pcl/gpu/kinfu/kinfu.h>
 #include <pcl/gpu/containers/device_array.h>
 #include <pcl/gpu/containers/initialization.h>
-#include "openni_capture.h"
+//#include "openni_capture.h"
 //#include "../src/internal.h"
+#include "/internal.h"
 #include "tsdf_volume.h"
 #include "tsdf_volume.hpp"
 
@@ -148,6 +149,7 @@ bool DeviceVolume::getCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud)
 	return true;
 }
 
+#if 0
 /** \brief Converts depth and RGB sensor readings into a point cloud
  * param[in] depth depth data from sensor
  * param[in] rgb24 color data from sensor
@@ -239,9 +241,66 @@ bool captureCloud(
 
 	return true;
 }
+#else
+/** \brief Converts depth and RGB sensor readings into a point cloud
+ * param[in] depth depth data from sensor
+ * param[in] rgb24 color data from sensor
+ * param[out] cloud the generated point cloud
+ * \note: position in mm is converted to m
+ * \note: RGB reading not working!
+ */
+//TODO implement correct color reading (how does rgb24 look like?)
+bool convertDepthRGBToCloud(const pcl::device::PtrStepSz<const unsigned short> &depth, const pcl::device::PtrStepSz<const pcl::gpu::KinfuTracker::PixelRGB> &rgb24, pcl::PointCloud<PointT>::Ptr &cloud)
+{
+	// Resize point cloud if it doesn't fit
+	if (depth.rows != (int)cloud->height || depth.cols != (int)cloud->width)
+		cloud = pcl::PointCloud<PointT>::Ptr(new pcl::PointCloud<PointT>(depth.cols, depth.rows));
+
+	//std::cout << "step = " << rgb24.step << std::endl;
+	//std::cout << "elem size = " << rgb24.elem_size << std::endl;
+
+	// Iterate over all depth and rgb values
+	for (int y = 0; y < depth.rows; ++y)
+	{
+		// Get pointers to the values in one row
+		const unsigned short *depth_row_ptr = depth.ptr(y);
+		//const pcl::gpu::KinfuTracker::RGB *rgb24_row_ptr = rgb24.ptr(y);
+		//const char *rgb24_row_ptr = (const char *)rgb24.ptr(y);
+
+		// Iterate over row and store values
+		for (int x = 0; x < depth.cols; ++x)
+		{
+			float u = (x - intr.cx) / intr.fx;
+			float v = (y - intr.cy) / intr.fy;
+
+			PointT &point = cloud->at(x, y);
+
+			point.z = depth_row_ptr[x] / 1000.0f;
+			point.x = u * point.z;
+			point.y = v * point.z;
+
+/*
+			std::uint8_t r = *(rgb24_row_ptr + 0);
+			std::uint8_t g = *(rgb24_row_ptr + 1);
+			std::uint8_t b = *(rgb24_row_ptr + 2);
+			std::uint32_t rgb = ((std::uint32_t)r << 16 | (std::uint32_t)g << 8 | (std::uint32_t)b);
+			point.rgb = *reinterpret_cast<float *>(&rgb);
+
+			point.r = *((const char *)rgb24.data + y * rgb24.step + x * rgb24.elem_size);
+			point.g = *((const char *)rgb24.data + y * rgb24.step + x * rgb24.elem_size + 1);
+			point.b = *((const char *)rgb24.data + y * rgb24.step + x * rgb24.elem_size + 2);
+*/
+		}
+	}
+
+	cloud->is_dense = false;
+
+	return true;
+}
+#endif
 
 // REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/gpu/kinfu/tools/record_tsdfvolume.cpp
-void tsdf_example()
+void kinfu_record_tsdfvolume_example()
 {
 	const std::string cloud_file("./cloud.pcd");
 	const std::string volume_file("./tsdf_volume.dat");
@@ -257,16 +316,26 @@ void tsdf_example()
 	pcl::gpu::setDevice(0);
 	pcl::gpu::printShortCudaDeviceInfo(0);
 
-	pcl::gpu::CaptureOpenNI capture(0);  // First OpenNI device
 	pcl::device::PtrStepSz<const unsigned short> depth;
 	pcl::device::PtrStepSz<const pcl::gpu::KinfuTracker::PixelRGB> rgb24;
 
+#if 0
+	pcl::gpu::CaptureOpenNI capture(0);  // First OpenNI device
 	pcl::PointCloud<PointT>::Ptr cloud; //(new pcl::PointCloud<PointT>);
 	pcl::device::Intr intr;
 
 	// Capture first frame
 	if (!captureCloud(capture, depth, rgb24, intr, cloud))
-		return EXIT_FAILURE;
+		return;
+#else
+	// Generate point cloud
+	pcl::PointCloud<PointT>::Ptr cloud = pcl::PointCloud<PointT>::Ptr(new pcl::PointCloud<PointT>(depth.cols, depth.rows));
+	if (!convertDepthRGBToCloud(depth, rgb24, cloud))
+	{
+		pcl::console::print_error("Conversion depth --> cloud was not successful!\n");
+		return;
+	}
+#endif
 
 	// Start visualizer
 	pcl::visualization::PCLVisualizer visualizer;
@@ -281,13 +350,23 @@ void tsdf_example()
 
 	//--------------------
 	// Capture data and generate cloud
-	pcl::console::print_highlight ("Capturing data ... \n");
+	pcl::console::print_highlight("Capturing data ... \n");
 
 	while (!quit && !save)
 	{
+#if 0
 		// Capture data and convert to point cloud
 		if (!captureCloud(capture, depth, rgb24, intr, cloud))
-			return EXIT_FAILURE;
+			return;
+#else
+		// Generate point cloud
+		pcl::PointCloud<PointT>::Ptr cloud = pcl::PointCloud<PointT>::Ptr(new pcl::PointCloud<PointT>(depth.cols, depth.rows));
+		if (!convertDepthRGBToCloud(depth, rgb24, cloud))
+		{
+			pcl::console::print_error("Conversion depth --> cloud was not successful!\n");
+			return;
+		}
+#endif
 
 		// Update visualization
 		visualizer.updatePointCloud<PointT>(cloud); //, color_handler, "cloud");
@@ -316,7 +395,7 @@ void tsdf_example()
 	if (!device_volume->getVolume(volume))
 	{
 		pcl::console::print_error("Coudln't get volume from device!\n");
-		return EXIT_FAILURE;
+		return;
 	}
 	pcl::console::print_info("done [%d voxels]\n", volume->size());
 
@@ -334,7 +413,7 @@ void tsdf_example()
 		if (!device_volume->getCloud(cloud_volume))
 		{
 			pcl::console::print_error("Cloudn't get cloud from device volume!\n");
-			return EXIT_FAILURE;
+			return;
 		}
 		pcl::console::print_info("done [%d points]\n", cloud_volume->size());
 	}
@@ -390,7 +469,7 @@ namespace my_pcl {
 
 void tsdf()
 {
-	local::tsdf_example();
+	local::kinfu_record_tsdfvolume_example();
 }
 
 }  // namespace my_pcl

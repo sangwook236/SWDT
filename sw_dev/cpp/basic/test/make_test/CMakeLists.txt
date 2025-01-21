@@ -3,10 +3,16 @@
 #		mkdir build
 #		cd build
 #		cmake --help
-#		cmake .. -G "Visual Studio 17 2022" -T v143
+#		cmake -B /path/to/build -S /path/to/source
+#		cmake ..
+#		cmake .. -D CMAKE_BUILD_TYPE:STRING=Debug -D CMAKE_PREFIX_PATH:PATH=/path/to/install -D BOOST_LIBRARYDIR=/path/to/boost -D CMAKE_C_COMPILER:FILEPATH=/path/to/clang -D CMAKE_CXX_COMPILER=/path/to/clang++
+#		cmake .. -G "Visual Studio 17 2022"
+#		cmake .. -G "Visual Studio 17 2022" -A Win64 -T v143
+#		cmake .. -G "MSYS Makefiles"
+#		cmake .. -G "MinGW Makefiles"
 #		cmake .. -G "Unix Makefiles"
 #		cmake .. -G Ninja
-#		cmake .. -D CMAKE_PREFIX_PATH=/path/to/lib -D BOOST_LIBRARYDIR:PATH=/usr/lib
+#		cmake .. -G Ninja -D CMAKE_MAKE_PROGRAM=/path/to/ninja
 #	Build:
 #		cmake --build . --parallel
 #		cmake --build . --config Release --target all -j 14 --
@@ -46,6 +52,15 @@ elseif(WIN32 AND NOT CYGWIN)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+	set(CMAKE_CXX_FLAGS "-target x86_64-w64-mingw32 -std=c++17 -Wall -Wextra")
+#	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-gnu -std=c++17 -Wall -Wextra")
+#	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-msvc -std=c++17 -Wall -Wextra")
+	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+#	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
+#	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG")
+
+	add_definitions(-DUNICODE -D_UNICODE)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 	set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 #	set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wno-deprecated-declarations")
@@ -221,6 +236,10 @@ set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 #	LIBRARY DESTINATION lib
 #	ARCHIVE DESTINATION lib
 #)
+#file(GLOB_RECURSE HEADER_FILES "${CMAKE_SOURCE_DIR}/include/*.h")
+#install(FILES ${HEADER_FILES} DESTINATION include)
+#file(GLOB EXECUTABLE_FILES "${CMAKE_SOURCE_DIR}/bin/*")
+#install(PROGRAMS ${EXECUTABLE_FILES} DESTINATION bin)
 
 # Packaging:
 #	cpack --help
