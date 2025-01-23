@@ -1,0 +1,80 @@
+[-] General.
+	- Site.
+		https://vcpkg.io/
+		https://github.com/microsoft/vcpkg
+
+		https://vcpkg.io/en/packages
+
+	- Documentation.
+		https://learn.microsoft.com/en-us/vcpkg/
+
+	- Directory.
+		${USERPROFILE}/AppData/Local/vcpkg
+		${VCPKG_HOME}/packages
+		${VCPKG_HOME}/downloads
+
+		${CMAKE_BUILD_DIR}/vcpkg_installed
+
+[-] Usage.
+	- Get started.
+		https://learn.microsoft.com/en-us/vcpkg/get_started/overview
+		https://learn.microsoft.com/en-us/vcpkg/get_started/get-started
+		https://learn.microsoft.com/en-us/vcpkg/get_started/get-started-msbuild
+		https://learn.microsoft.com/en-us/vcpkg/get_started/get-started-vs
+		https://learn.microsoft.com/en-us/vcpkg/get_started/get-started-vscode
+
+		Add dependency:
+			Set environment variables:
+				$env:VCPKG_ROOT = "C:\path\to\vcpkg"
+				$env:PATH = "$env:VCPKG_ROOT;$env:PATH"
+
+			Create a manifest file (vcpkg.json):
+				vcpkg new --application
+
+			Add a package dependency:
+				vcpkg add port <PACKAGE>
+					vcpkg add port fmt
+
+	- Manifest mode.
+		https://learn.microsoft.com/en-us/vcpkg/concepts/manifest-mode
+		https://learn.microsoft.com/en-us/vcpkg/reference/vcpkg-json
+		https://learn.microsoft.com/en-us/vcpkg/reference/vcpkg-configuration-json
+
+		vcpkg.json
+		vcpkg-configuration.json
+
+	- Triplets.
+		https://learn.microsoft.com/en-us/vcpkg/concepts/triplets
+		https://learn.microsoft.com/en-us/vcpkg/users/triplets
+
+		${VCPKG_HOME}/triplets
+
+	- Commands.
+		https://learn.microsoft.com/en-us/vcpkg/commands/common-options
+
+		vcpkg new
+			Creates a manifest file (vcpkg.json) and a default configuration file (vcpkg-configuration.json) ready to use in your project in the current working directory.
+		vcpkg add
+			Updates the vcpkg.json manifest file by adding new package dependencies to your C++ project.
+		vcpkg install
+			Builds and installs port packages.
+		vcpkg remove
+			Removes listed packages and any packages that require them from the Classic mode installed directory.
+		vcpkg update
+			Compares the set of Classic mode installed packages against the current available versions.
+		vcpkg upgrade
+			Removes and reinstalls Classic mode packages that have different current available versions.
+		vcpkg search
+			Searches for available packages by name and description.
+		vcpkg list
+			Shows a list of the packages in the installed tree, along with the version and description of each.
+		vcpkg integrate
+			Integrates vcpkg with shells and buildsystems.
+
+[-] Installation.
+	- Install from source.
+		git clone https://github.com/microsoft/vcpkg.git
+
+		cd ${VCPKG_HOME}
+		.\bootstrap-vcpkg.bat
+		./bootstrap-vcpkg.sh

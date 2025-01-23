@@ -27,12 +27,13 @@ void deprecated_test()
 	std::cout << "i = " << i << std::endl;
 
 #if defined(_MSC_VER)
-	__declspec(deprecated) int j = 200;
+	__declspec(deprecated)
 #elif defined(__GNUC__) || defined(__clang__)
-	__attribute__((deprecated)) int j = 200;
+	__attribute__((deprecated))
 #else
-	[[deprecated]] int j = 200;
+	[[deprecated]]
 #endif
+	const int j = 200;
 	std::cout << "j = " << j << std::endl;
 
 	local::deprecated_func();
