@@ -18,7 +18,7 @@
 #		cmake --build . --config Release --target all -j 14 --
 #		cmake --build . --config Release --target ALL_BUILD
 #		cmake --build . --target INSTALL -- /verbosity:detailed
-#			Pass additional options to the native build tool with the -- switch.
+#			Pass additional options to the native build tool with the -- switch
 #		make all
 #		ninja all
 #	Run:
@@ -26,6 +26,7 @@
 
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(my_cpp VERSION 0.1.0)
+#project(my_cpp VERSION 0.1.0 LANGUAGES C CXX CUDA)
 
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 #set(CMAKE_PREFIX_PATH "/path/to/lib")
@@ -46,11 +47,58 @@ if(APPLE)
 elseif(CYGWIN)
 elseif(MSYS OR MINGW)
 elseif(UNIX AND NOT APPLE AND NOT CYGWIN)
-	set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
+#	set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
 #	set(OpenCV_DIR "/usr/lib/x86_64-linux-gnu/cmake/opencv4")
 elseif(WIN32 AND NOT CYGWIN)
 endif()
 
+#--------------------
+find_package(Threads REQUIRED)
+#find_package(OpenMP REQUIRED)
+#find_package(OpenGL REQUIRED)
+#find_package(CUDA REQUIRED)
+#find_package(Boost 1.86 REQUIRED thread timer)
+#find_package(Log4cxx REQUIRED)
+#find_package(glog REQUIRED)
+#find_package(gflags REQUIRED)
+#find_package(GTest REQUIRED)  # ${GTest_FOUND}, ${GMock_FOUND}
+#find_package(ZLIB REQUIRED)
+#find_package(GSL REQUIRED)
+#find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)  # ${Qt5_FOUND}, ${Qt5Core_FOUND}, ${Qt5Gui_FOUND}, ${Qt5Widgets_FOUND}
+#find_package(OpenCV 4.10.0 REQUIRED)
+#message(STATUS "Boost found: ${Boost_FOUND}")
+
+#find_library(MY_LIBRARIES NAMES libmy.a)
+#find_library(MY_LIBRARIES NAMES libmy.a PATHS /path/to/lib)
+#message(STATUS "MY_LIBRARIES found: ${MY_LIBRARIES}")
+
+#include_directories(${CUDA_INCLUDE_DIRS})
+#include_directories(${Boost_INCLUDE_DIRS})
+#include_directories(${LOG4CXX_INCLUDE_DIR})
+#include_directories(${GLOG_INCLUDE_DIR})
+#include_directories(${GFLAGS_INCLUDE_DIR})
+#include_directories(${GTEST_INCLUDE_DIRS})
+#include_directories(${ZLIB_INCLUDE_DIRS})
+#include_directories(/usr/include/eigen3)
+#include_directories(${GSL_INCLUDE_DIRS})
+#include_directories(${Qt5Core_INCLUDE_DIRS})  # ${Qt5Core_INCLUDE_DIRS}, ${Qt5Gui_INCLUDE_DIRS}, ${Qt5Widgets_INCLUDE_DIRS}
+#include_directories(${OpenCV_INCLUDE_DIRS})
+#include_directories(AFTER /usr/local/include)
+#include_directories(AFTER /usr/include)
+#message(STATUS "Include directories: ${INCLUDE_DIRECTORIES}")
+
+#link_directories(${Boost_LIBRARY_DIRS})
+#link_directories(${PCL_LIBRARY_DIRS})
+#link_directories(AFTER /usr/local/lib)
+#link_directories(AFTER /usr/lib)
+#message(STATUS "Link directories: ${LINK_DIRECTORIES}")
+
+#add_definitions(${OpenMP_CXX_FLAGS})
+#add_definitions(${Qt5Core_DEFINITIONS})  # ${Qt5Core_DEFINITIONS}, ${Qt5Gui_DEFINITIONS}, ${Qt5Widgets_DEFINITIONS}
+#add_definitions(${PCL_DEFINITIONS})
+#message(STATUS "Compile definitions: ${COMPILE_DEFINITIONS}")
+
+#--------------------
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 	set(CMAKE_CXX_FLAGS "-target x86_64-w64-mingw32 -std=c++17 -Wall -Wextra")
 #	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-gnu -std=c++17 -Wall -Wextra")
@@ -61,6 +109,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 #	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG")
 
 	add_definitions(-DUNICODE -D_UNICODE)
+
+	if(OpenMP_CXX_FOUND)
+		add_compile_options(-fopenmp)
+	endif(OpenMP_CXX_FOUND)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 	set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 #	set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wno-deprecated-declarations")
@@ -71,6 +123,11 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 
 	add_definitions(-DUNICODE -D_UNICODE)
 
+	if(OpenMP_CXX_FOUND)
+		add_compile_options(-fopenmp)
+	endif(OpenMP_CXX_FOUND)
+
+#	add_compile_options(-mavx2)
 #	add_compile_options(-fPIC)
 #	add_compile_options(-fpermissive)
 #	add_compile_options(-Wno-strict-aliasing)
@@ -90,62 +147,13 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 #	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")  # {-MT, -MTd}.
 
 	add_definitions(/DUNICODE /D_UNICODE)
-endif()
 
-#--------------------
-find_package(Threads REQUIRED)
-#find_package(OpenMP REQUIRED)
-#find_package(OpenGL REQUIRED)
-#find_package(Boost 1.86 REQUIRED thread timer)
-#find_package(Log4cxx REQUIRED)
-#find_package(glog REQUIRED)
-#find_package(gflags REQUIRED)
-#find_package(GTest REQUIRED)  # ${GTest_FOUND}, ${GMock_FOUND}
-#find_package(ZLIB REQUIRED)
-#find_package(CUDA REQUIRED)
-#find_package(GSL REQUIRED)
-#find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)  # ${Qt5_FOUND}, ${Qt5Core_FOUND}, ${Qt5Gui_FOUND}, ${Qt5Widgets_FOUND}
-#find_package(OpenCV 4.10.0 REQUIRED)
-#message(STATUS "Boost found: ${Boost_FOUND}")
-
-#find_library(MY_LIBRARIES NAMES libmy.a)
-#find_library(MY_LIBRARIES NAMES libmy.a PATHS /path/to/lib)
-#message(STATUS "MY_LIBRARIES found: ${MY_LIBRARIES}")
-
-#include_directories(${Boost_INCLUDE_DIRS})
-#include_directories(${LOG4CXX_INCLUDE_DIR})
-#include_directories(${GLOG_INCLUDE_DIR})
-#include_directories(${GFLAGS_INCLUDE_DIR})
-#include_directories(${GTEST_INCLUDE_DIRS})
-#include_directories(${ZLIB_INCLUDE_DIRS})
-#include_directories(${CUDA_INCLUDE_DIRS})
-#include_directories(/usr/include/eigen3)
-#include_directories(${GSL_INCLUDE_DIRS})
-#include_directories(${Qt5Core_INCLUDE_DIRS})  # ${Qt5Core_INCLUDE_DIRS}, ${Qt5Gui_INCLUDE_DIRS}, ${Qt5Widgets_INCLUDE_DIRS}
-#include_directories(${OpenCV_INCLUDE_DIRS})
-#include_directories(AFTER /usr/local/include)
-#message(STATUS "Include directories: ${INCLUDE_DIRECTORIES}")
-
-#link_directories(${Boost_LIBRARY_DIRS})
-#link_directories(${PCL_LIBRARY_DIRS})
-#link_directories(AFTER /usr/local/lib)
-#message(STATUS "Link directories: ${LINK_DIRECTORIES}")
-
-#add_definitions(${OpenMP_CXX_FLAGS})
-#add_definitions(${Qt5Core_DEFINITIONS})  # ${Qt5Core_DEFINITIONS}, ${Qt5Gui_DEFINITIONS}, ${Qt5Widgets_DEFINITIONS}
-#add_definitions(${PCL_DEFINITIONS})
-#message(STATUS "Compile definitions: ${COMPILE_DEFINITIONS}")
-
-if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-	if(OpenMP_CXX_FOUND)
-		add_compile_options(-fopenmp)
-	endif(OpenMP_CXX_FOUND)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES Intel)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 	if(OpenMP_CXX_FOUND)
 		add_compile_options(/fopenmp)
 	endif(OpenMP_CXX_FOUND)
+
+#	add_compile_options(/arch:AVX2)
+#	add_compile_options(/permissive-)
 endif()
 
 #--------------------
@@ -165,13 +173,13 @@ set(LIBS
 #	${OpenMP_CXX_LIBRARIES}
 #	OpenMP::OpenMP_CXX
 #	OpenGL::GLU
+#	${CUDA_LIBRARIES}
 #	${Boost_LIBRARIES}
 #	${LOG4CXX_LIBRARIES}
 #	${GLOG_LIBRARIES}
 #	${GFLAGS_LIBRARIES}
 #	${GTEST_BOTH_LIBRARIES}  # ${GTEST_LIBRARIES}, ${GTEST_MAIN_LIBRARIES}, ${GTEST_BOTH_LIBRARIES}, ${GMOCK_LIBRARIES}, ${GMOCK_MAIN_LIBRARIES}
 #	${ZLIB_LIBRARIES}
-#	${CUDA_LIBRARIES}
 #	Qt5::Core Qt5::Gui Qt5::Widgets
 #	${OpenCV_LIBRARIES}
 )
