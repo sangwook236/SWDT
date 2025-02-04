@@ -74,6 +74,9 @@
     <CudaCompile Include="cuda\cuda_basic_operation.cu">
       <Filter>Source Files\cuda</Filter>
     </CudaCompile>
+    <CudaCompile Include="cuda\cuda_texture.cu">
+      <Filter>Source Files\cuda</Filter>
+    </CudaCompile>
     <CudaCompile Include="thrust\thrust_iterator.cu">
       <Filter>Source Files\thrust</Filter>
     </CudaCompile>
