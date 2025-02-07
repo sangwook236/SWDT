@@ -3580,12 +3580,14 @@ def qwen2_5_example():
 	#	Qwen/Qwen2.5-7B-Instruct-GPTQ-Int4
 	#	Qwen/Qwen2.5-7B-Instruct-GPTQ-Int8
 	#	Qwen/Qwen2.5-7B-Instruct-GGUF
+	#	Qwen/Qwen2.5-7B-Instruct-1M
 	#	Qwen/Qwen2.5-14B
 	#	Qwen/Qwen2.5-14B-Instruct
 	#	Qwen/Qwen2.5-14B-Instruct-AWQ
 	#	Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4
 	#	Qwen/Qwen2.5-14B-Instruct-GPTQ-Int8
 	#	Qwen/Qwen2.5-14B-Instruct-GGUF
+	#	Qwen/Qwen2.5-14B-Instruct-1M
 	#	Qwen/Qwen2.5-32B
 	#	Qwen/Qwen2.5-32B-Instruct
 	#	Qwen/Qwen2.5-32B-Instruct-AWQ
@@ -3619,10 +3621,12 @@ def qwen2_5_example():
 		#model_name = "Qwen/Qwen2.5-7B-Instruct-AWQ"
 		#model_name = "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int4"
 		#model_name = "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-7B-Instruct-1M"
 		#model_name = "Qwen/Qwen2.5-14B-Instruct"
 		#model_name = "Qwen/Qwen2.5-14B-Instruct-AWQ"
 		#model_name = "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4"
 		#model_name = "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-14B-Instruct-1M"
 		#model_name = "Qwen/Qwen2.5-32B-Instruct"
 		#model_name = "Qwen/Qwen2.5-32B-Instruct-AWQ"
 		#model_name = "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4"
@@ -3660,6 +3664,91 @@ def qwen2_5_example():
 		]
 
 		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+# REF [site] >> https://huggingface.co/deepseek-ai
+def deepseek_llm_example():
+	# Models:
+	#	deepseek-ai/deepseek-llm-7b-base
+	#	deepseek-ai/deepseek-llm-7b-chat
+	#	deepseek-ai/deepseek-llm-67b-base
+	#	deepseek-ai/deepseek-llm-67b-chat
+	#
+	#	deepseek-ai/deepseek-moe-16b-base
+	#	deepseek-ai/deepseek-moe-16b-chat
+	#
+	#	deepseek-ai/DeepSeek-V2
+	#	deepseek-ai/DeepSeek-V2-Chat
+	#	deepseek-ai/DeepSeek-V2-Chat-628
+	#	deepseek-ai/DeepSeek-V2-Lite
+	#	deepseek-ai/DeepSeek-V2-Lite-Chat
+	#
+	#	deepseek-ai/DeepSeek-V2.5
+	#	deepseek-ai/DeepSeek-V2.5-1210
+	#
+	#	deepseek-ai/DeepSeek-V3
+	#	deepseek-ai/DeepSeek-V3-Base
+
+	if True:
+		# Text Completion
+
+		if True:
+			model_name = "deepseek-ai/DeepSeek-V2"
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			# `max_memory` should be set based on your devices
+			max_memory = {i: "75GB" for i in range(8)}
+			# `device_map` cannot be set to `auto`
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, device_map="sequential", torch_dtype=torch.bfloat16, max_memory=max_memory, attn_implementation="eager")
+		elif False:
+			model_name = "deepseek-ai/DeepSeek-V2-Lite"
+			tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16).cuda()
+		else:
+			model_name = "deepseek-ai/deepseek-llm-7b-base"
+			#model_name = "deepseek-ai/deepseek-moe-16b-base"
+			tokenizer = AutoTokenizer.from_pretrained(model_name)
+			model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		model.generation_config = transformers.GenerationConfig.from_pretrained(model_name)
+		model.generation_config.pad_token_id = model.generation_config.eos_token_id
+
+		text = "An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is"
+		inputs = tokenizer(text, return_tensors="pt")
+		outputs = model.generate(**inputs.to(model.device), max_new_tokens=100)
+
+		result = tokenizer.decode(outputs[0], skip_special_tokens=True)
+		print(result)
+
+	if True:
+		# Chat Completion
+
+		if True:
+			#model_name = "deepseek-ai/DeepSeek-V2-Chat"
+			model_name = "deepseek-ai/DeepSeek-V2.5"
+			#model_name = "deepseek-ai/DeepSeek-V2.5-1210"
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			# `max_memory` should be set based on your devices
+			max_memory = {i: "75GB" for i in range(8)}
+			# `device_map` cannot be set to `auto`
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, device_map="sequential", torch_dtype=torch.bfloat16, max_memory=max_memory, attn_implementation="eager")
+		elif False:
+			model_name = "deepseek-ai/DeepSeek-V2-Lite-Chat"
+			tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16).cuda()
+		else:
+			model_name = "deepseek-ai/deepseek-llm-7b-chat"
+			#model_name = "deepseek-ai/deepseek-moe-16b-chat"
+			tokenizer = AutoTokenizer.from_pretrained(model_name)
+			model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		model.generation_config = transformers.GenerationConfig.from_pretrained(model_name)
+		model.generation_config.pad_token_id = model.generation_config.eos_token_id
+
+		messages = [
+			{"role": "user", "content": "Write a piece of quicksort code in C++"}
+		]
+		input_tensor = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+		outputs = model.generate(input_tensor.to(model.device), max_new_tokens=100)
+
+		result = tokenizer.decode(outputs[0][input_tensor.shape[1]:], skip_special_tokens=True)
+		print(result)
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
@@ -3857,6 +3946,8 @@ def qwen_math_example():
 	#	Qwen/Qwen2.5-Math-72B
 	#	Qwen/Qwen2.5-Math-72B-Instruct
 	#	Qwen/Qwen2.5-Math-RM-72B
+	#	Qwen/Qwen2.5-Math-PRM-7B
+	#	Qwen/Qwen2.5-Math-PRM-72B
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
@@ -3937,6 +4028,43 @@ def qwen_math_example():
 		]
 
 		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+# REF [site] >> https://huggingface.co/deepseek-ai
+def deepseek_math_example():
+	# Models:
+	#	deepseek-ai/deepseek-math-7b-base
+	#	deepseek-ai/deepseek-math-7b-instruct
+	#	deepseek-ai/deepseek-math-7b-rl
+
+	if True:
+		model_name = "deepseek-ai/deepseek-math-7b-base"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		model.generation_config = transformers.GenerationConfig.from_pretrained(model_name)
+		model.generation_config.pad_token_id = model.generation_config.eos_token_id
+
+		text = "The integral of x^2 from 0 to 2 is"
+		inputs = tokenizer(text, return_tensors="pt")
+		outputs = model.generate(**inputs.to(model.device), max_new_tokens=100)
+
+		result = tokenizer.decode(outputs[0], skip_special_tokens=True)
+		print(result)
+
+	if True:
+		model_name = "deepseek-ai/deepseek-math-7b-instruct"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		model.generation_config = transformers.GenerationConfig.from_pretrained(model_name)
+		model.generation_config.pad_token_id = model.generation_config.eos_token_id
+
+		messages = [
+			{"role": "user", "content": "what is the integral of x^2 from 0 to 2?\nPlease reason step by step, and put your final answer within \\boxed{}."}
+		]
+		input_tensor = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+		outputs = model.generate(input_tensor.to(model.device), max_new_tokens=100)
+
+		result = tokenizer.decode(outputs[0][input_tensor.shape[1]:], skip_special_tokens=True)
+		print(result)
 
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
@@ -4791,6 +4919,254 @@ def qwen_coder_example():
 
 	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
+# REF [site] >> https://huggingface.co/deepseek-ai
+def deepseek_coder_example():
+	# Models:
+	#	deepseek-ai/deepseek-coder-1.3b-base
+	#	deepseek-ai/deepseek-coder-1.3b-instruct
+	#	deepseek-ai/deepseek-coder-5.7bmqa-base
+	#	deepseek-ai/deepseek-coder-6.7b-base
+	#	deepseek-ai/deepseek-coder-6.7b-instruct
+	#	deepseek-ai/deepseek-coder-7b-base-v1.5
+	#	deepseek-ai/deepseek-coder-7b-instruct-v1.5
+	#	deepseek-ai/deepseek-coder-33b-base
+	#	deepseek-ai/deepseek-coder-33b-instruct
+	#
+	#	deepseek-ai/DeepSeek-Coder-V2-Base
+	#	deepseek-ai/DeepSeek-Coder-V2-Instruct
+	#	deepseek-ai/DeepSeek-Coder-V2-Instruct-0724
+	#	deepseek-ai/DeepSeek-Coder-V2-Lite-Base
+	#	deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+
+	if True:
+		# Code Completion
+
+		if False:
+			model_name = "deepseek-ai/deepseek-coder-1.3b-base"
+			#model_name = "deepseek-ai/deepseek-coder-5.7bmqa-base"
+			#model_name = "deepseek-ai/deepseek-coder-6.7b-base"
+			#model_name = "deepseek-ai/deepseek-coder-7b-base-v1.5"
+			#model_name = "deepseek-ai/deepseek-coder-33b-base"
+
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True).cuda()
+		else:
+			model_name = "deepseek-ai/DeepSeek-Coder-V2-Base"
+			#model_name = "deepseek-ai/DeepSeek-Coder-V2-Lite-Base"
+
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16).cuda()
+
+		input_text = "#write a quick sort algorithm"
+		inputs = tokenizer(input_text, return_tensors="pt").cuda()
+		#inputs = tokenizer(input_text, return_tensors="pt").to(model.device)
+
+		outputs = model.generate(**inputs, max_length=128)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+	if True:
+		# Code Insertion
+
+		if False:
+			model_name = "deepseek-ai/deepseek-coder-1.3b-base"
+			#model_name = "deepseek-ai/deepseek-coder-5.7bmqa-base"
+			#model_name = "deepseek-ai/deepseek-coder-6.7b-base"
+			#model_name = "deepseek-ai/deepseek-coder-33b-base"
+
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True).cuda()
+		else:
+			model_name = "deepseek-ai/DeepSeek-Coder-V2-Base"
+			#model_name = "deepseek-ai/DeepSeek-Coder-V2-Lite-Base"
+
+			tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16).cuda()
+
+		input_text = """<|fim▁begin|>def quick_sort(arr):
+	if len(arr) <= 1:
+		return arr
+	pivot = arr[0]
+	left = []
+	right = []
+<|fim▁hole|>
+		if arr[i] < pivot:
+			left.append(arr[i])
+		else:
+			right.append(arr[i])
+	return quick_sort(left) + [pivot] + quick_sort(right)<|fim▁end|>"""
+		inputs = tokenizer(input_text, return_tensors="pt").cuda()
+		#inputs = tokenizer(input_text, return_tensors="pt").to(model.device)
+
+		outputs = model.generate(**inputs, max_length=128)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True)[len(input_text):])
+
+	if True:
+		# Repository Level Code Completion
+
+		model_name = "deepseek-ai/deepseek-coder-1.3b-base"
+		#model_name = "deepseek-ai/deepseek-coder-5.7bmqa-base"
+		#model_name = "deepseek-ai/deepseek-coder-6.7b-base"
+		#model_name = "deepseek-ai/deepseek-coder-33b-base"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True).cuda()
+
+		input_text = """#utils.py
+import torch
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
+
+def load_data():
+	iris = datasets.load_iris()
+	X = iris.data
+	y = iris.target
+
+	# Standardize the data
+	scaler = StandardScaler()
+	X = scaler.fit_transform(X)
+
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+	# Convert numpy data to PyTorch tensors
+	X_train = torch.tensor(X_train, dtype=torch.float32)
+	X_test = torch.tensor(X_test, dtype=torch.float32)
+	y_train = torch.tensor(y_train, dtype=torch.int64)
+	y_test = torch.tensor(y_test, dtype=torch.int64)
+	
+	return X_train, X_test, y_train, y_test
+
+def evaluate_predictions(y_test, y_pred):
+	return accuracy_score(y_test, y_pred)
+#model.py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
+
+class IrisClassifier(nn.Module):
+	def __init__(self):
+		super(IrisClassifier, self).__init__()
+		self.fc = nn.Sequential(
+			nn.Linear(4, 16),
+			nn.ReLU(),
+			nn.Linear(16, 3)
+		)
+
+	def forward(self, x):
+		return self.fc(x)
+
+	def train_model(self, X_train, y_train, epochs, lr, batch_size):
+		criterion = nn.CrossEntropyLoss()
+		optimizer = optim.Adam(self.parameters(), lr=lr)
+		
+		# Create DataLoader for batches
+		dataset = TensorDataset(X_train, y_train)
+		dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+		for epoch in range(epochs):
+			for batch_X, batch_y in dataloader:
+				optimizer.zero_grad()
+				outputs = self(batch_X)
+				loss = criterion(outputs, batch_y)
+				loss.backward()
+				optimizer.step()
+
+	def predict(self, X_test):
+		with torch.no_grad():
+			outputs = self(X_test)
+			_, predicted = outputs.max(1)
+		return predicted.numpy()
+#main.py
+from utils import load_data, evaluate_predictions
+from model import IrisClassifier as Classifier
+
+def main():
+	# Model training and evaluation
+"""
+		inputs = tokenizer(input_text, return_tensors="pt").cuda()
+		#inputs = tokenizer(input_text, return_tensors="pt").to(model.device)
+
+		outputs = model.generate(**inputs, max_new_tokens=140)
+		print(tokenizer.decode(outputs[0]))
+
+	if True:
+		# Chat Model Inference
+
+		#model_name = "deepseek-ai/deepseek-coder-1.3b-instruct"
+		#model_name = "deepseek-ai/deepseek-coder-6.7b-instruct"
+		#model_name = "deepseek-ai/deepseek-coder-7b-instruct-v1.5"
+		#model_name = "deepseek-ai/deepseek-coder-33b-instruct"
+		model_name = "deepseek-ai/DeepSeek-Coder-V2-Instruct"
+		#model_name = "deepseek-ai/DeepSeek-Coder-V2-Instruct-0724"
+		#model_name = "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.bfloat16).cuda()
+
+		messages=[
+			{ 'role': 'user', 'content': "write a quick sort algorithm in python."}
+		]
+		inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(model.device)
+
+		# tokenizer.eos_token_id is the id of <|EOT|> token
+		# tokenizer.eos_token_id is the id of <|end▁of▁sentence|> token
+		outputs = model.generate(inputs, max_new_tokens=512, do_sample=False, top_k=50, top_p=0.95, num_return_sequences=1, eos_token_id=tokenizer.eos_token_id)
+		print(tokenizer.decode(outputs[0][len(inputs[0]):], skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_qwq_example():
+	# Models:
+	#	Qwen/QwQ-32B-Preview
+
+	model_name = "Qwen/QwQ-32B-Preview"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	prompt = "How many r in strawberry."
+	messages = [
+		{"role": "system", "content": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step."},
+		{"role": "user", "content": prompt}
+	]
+	text = tokenizer.apply_chat_template(
+		messages,
+		tokenize=False,
+		add_generation_prompt=True
+	)
+	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+	generated_ids = model.generate(
+		**model_inputs,
+		max_new_tokens=512
+	)
+	generated_ids = [
+		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+	]
+
+	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+	print(response)
+
+# REF [site] >>
+#	https://huggingface.co/deepseek-ai
+#	https://github.com/deepseek-ai/DeepSeek-R1
+def deepseek_r_example():
+	# Models:
+	#	deepseek-ai/DeepSeek-R1
+	#	deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+	#	deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+	#	deepseek-ai/DeepSeek-R1-Zero
+
+	raise NotImplementedError
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
 	import datasets
@@ -5078,6 +5454,72 @@ def dpt_example():
 	output = prediction.squeeze().cpu().numpy()
 	formatted = (output * 255 / np.max(output)).astype("uint8")
 	depth = Image.fromarray(formatted)
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_qvq_example():
+	# Models:
+	#	Qwen/QVQ-72B-Preview
+
+	# Install:
+	#	pip install qwen-vl-utils
+
+	from qwen_vl_utils import process_vision_info
+
+	# Default: Load the model on the available device(s)
+	model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+		"Qwen/QVQ-72B-Preview", torch_dtype="auto", device_map="auto"
+	)
+
+	# Default processer
+	processor = transformers.AutoProcessor.from_pretrained("Qwen/QVQ-72B-Preview")
+
+	# The default range for the number of visual tokens per image in the model is 4-16384. You can set min_pixels and max_pixels according to your needs, such as a token count range of 256-1280, to balance speed and memory usage.
+	#min_pixels = 256*28*28
+	#max_pixels = 1280*28*28
+	#processor = transformers.AutoProcessor.from_pretrained("Qwen/QVQ-72B-Preview", min_pixels=min_pixels, max_pixels=max_pixels)
+
+	messages = [
+		{
+			"role": "system",
+			"content": [
+				{"type": "text", "text": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step."}
+			],
+		},
+		{
+			"role": "user",
+			"content": [
+				{
+					"type": "image",
+					"image": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/QVQ/demo.png",
+				},
+				{"type": "text", "text": "What value should be filled in the blank space?"},
+			],
+		}
+	]
+
+	# Preparation for inference
+	text = processor.apply_chat_template(
+		messages, tokenize=False, add_generation_prompt=True
+	)
+	image_inputs, video_inputs = process_vision_info(messages)
+	inputs = processor(
+		text=[text],
+		images=image_inputs,
+		videos=video_inputs,
+		padding=True,
+		return_tensors="pt",
+	)
+	inputs = inputs.to("cuda")
+
+	# Inference: Generation of the output
+	generated_ids = model.generate(**inputs, max_new_tokens=8192)
+	generated_ids_trimmed = [
+		out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+	]
+	output_text = processor.batch_decode(
+		generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+	)
+	print(output_text)
 
 # REF [site] >> https://huggingface.co/microsoft/kosmos-2-patch14-224
 def kosmos_example():
@@ -6188,18 +6630,25 @@ def qwen_vl_example():
 	#	Qwen/Qwen-VL-Chat
 	#	Qwen/Qwen-VL-Chat-Int4
 	#
+	#	Qwen/Qwen2-VL-2B
 	#	Qwen/Qwen2-VL-2B-Instruct
 	#	Qwen/Qwen2-VL-2B-Instruct-AWQ
 	#	Qwen/Qwen2-VL-2B-Instruct-GPTQ-Int4
 	#	Qwen/Qwen2-VL-2B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-VL-7B
 	#	Qwen/Qwen2-VL-7B-Instruct
 	#	Qwen/Qwen2-VL-7B-Instruct-AWQ
 	#	Qwen/Qwen2-VL-7B-Instruct-GPTQ-Int4
 	#	Qwen/Qwen2-VL-7B-Instruct-GPTQ-Int8
+	#	Qwen/Qwen2-VL-72B
 	#	Qwen/Qwen2-VL-72B-Instruct
 	#	Qwen/Qwen2-VL-72B-Instruct-AWQ
 	#	Qwen/Qwen2-VL-72B-Instruct-GPTQ-Int4
 	#	Qwen/Qwen2-VL-72B-Instruct-GPTQ-Int8
+	#
+	#	Qwen/Qwen2.5-VL-3B-Instruct
+	#	Qwen/Qwen2.5-VL-7B-Instruct
+	#	Qwen/Qwen2.5-VL-72B-Instruct
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
@@ -6239,7 +6688,8 @@ def qwen_vl_example():
 		# Default processer
 		processor = transformers.AutoProcessor.from_pretrained(model_name)
 
-		# The default range for the number of visual tokens per image in the model is 4-16384. You can set min_pixels and max_pixels according to your needs, such as a token count range of 256-1280, to balance speed and memory usage.
+		# The default range for the number of visual tokens per image in the model is 4-16384.
+		# You can set min_pixels and max_pixels according to your needs, such as a token count range of 256-1280, to balance speed and memory usage.
 		#min_pixels = 256*28*28
 		#max_pixels = 1280*28*28
 		#processor = transformers.AutoProcessor.from_pretrained(model_name, min_pixels=min_pixels, max_pixels=max_pixels)
@@ -6269,7 +6719,7 @@ def qwen_vl_example():
 			padding=True,
 			return_tensors="pt",
 		)
-		inputs = inputs.to("cuda")
+		inputs = inputs.to(device)
 
 		# Inference: Generation of the output
 		generated_ids = model.generate(**inputs, max_new_tokens=128)
@@ -6280,6 +6730,224 @@ def qwen_vl_example():
 			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
 		)
 		print(output_text)
+
+	if True:
+		# Install:
+		#	# It's highly recommanded to use `[decord]` feature for faster video loading.
+		#	pip install qwen-vl-utils[decord]==0.0.8
+
+		from qwen_vl_utils import process_vision_info
+
+		model_name = "Qwen/Qwen2.5-VL-3B-Instruct"
+		#model_name = "Qwen/Qwen2.5-VL-7B-Instruct"
+		#model_name = "Qwen/Qwen2.5-VL-72B-Instruct"
+
+		# default: Load the model on the available device(s)
+		model = transformersQwen2_5_VLForConditionalGeneration.from_pretrained(
+			model_name, torch_dtype="auto", device_map="auto"
+		)
+
+		# We recommend enabling flash_attention_2 for better acceleration and memory saving, especially in multi-image and video scenarios.
+		#model = transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
+		#	model_name,
+		#	torch_dtype=torch.bfloat16,
+		#	attn_implementation="flash_attention_2",
+		#	device_map="auto",
+		#)
+
+		# Default processer
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+
+		# The default range for the number of visual tokens per image in the model is 4-16384.
+		# You can set min_pixels and max_pixels according to your needs, such as a token range of 256-1280, to balance performance and cost.
+		#min_pixels = 256*28*28
+		#max_pixels = 1280*28*28
+		#processor = transformers.AutoProcessor.from_pretrained(model_name, min_pixels=min_pixels, max_pixels=max_pixels)
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg",
+					},
+					{"type": "text", "text": "Describe this image."},
+				],
+			}
+		]
+
+		# Preparation for inference
+		text = processor.apply_chat_template(
+			messages, tokenize=False, add_generation_prompt=True
+		)
+		image_inputs, video_inputs = process_vision_info(messages)
+		inputs = processor(
+			text=[text],
+			images=image_inputs,
+			videos=video_inputs,
+			padding=True,
+			return_tensors="pt",
+		)
+		inputs = inputs.to(device)
+
+		# Inference: Generation of the output
+		generated_ids = model.generate(**inputs, max_new_tokens=128)
+		generated_ids_trimmed = [
+			out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		]
+		output_text = processor.batch_decode(
+			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+		)
+		print(output_text)
+
+# REF [site] >> https://huggingface.co/deepseek-ai
+def deepseek_vl_example():
+	# Models:
+	#	deepseek-ai/deepseek-vl-1.3b-base
+	#	deepseek-ai/deepseek-vl-1.3b-chat
+	#	deepseek-ai/deepseek-vl-7b-base
+	#	deepseek-ai/deepseek-vl-7b-chat
+	#
+	#	deepseek-ai/deepseek-vl2
+	#	deepseek-ai/deepseek-vl2-tiny
+	#	deepseek-ai/deepseek-vl2-small
+
+	if True:
+		# Simple Inference Example
+
+		# Install:
+		#	git clone https://github.com/deepseek-ai/DeepSeek-VL
+		#	cd DeepSeek-VL
+		#	pip install -e .
+
+		from deepseek_vl.models import VLChatProcessor, MultiModalityCausalLM
+		from deepseek_vl.utils.io import load_pil_images
+
+		# Specify the path to the model
+		model_path = "deepseek-ai/deepseek-vl-1.3b-base"
+		#model_path = "deepseek-ai/deepseek-vl-1.3b-chat"
+		#model_path = "deepseek-ai/deepseek-vl-7b-base"
+		#model_path = "deepseek-ai/deepseek-vl-7b-chat"
+		vl_chat_processor: VLChatProcessor = VLChatProcessor.from_pretrained(model_path)
+		tokenizer = vl_chat_processor.tokenizer
+
+		vl_gpt: MultiModalityCausalLM = transformers.AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
+		vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
+
+		conversation = [
+			{
+				"role": "User",
+				"content": "<image_placeholder>Describe each stage of this image.",
+				"images": ["./images/training_pipelines.png"]
+			},
+			{
+				"role": "Assistant",
+				"content": ""
+			}
+		]
+
+		# Load images and prepare for inputs
+		pil_images = load_pil_images(conversation)
+		prepare_inputs = vl_chat_processor(
+			conversations=conversation,
+			images=pil_images,
+			force_batchify=True
+		).to(vl_gpt.device)
+
+		# Run image encoder to get the image embeddings
+		inputs_embeds = vl_gpt.prepare_inputs_embeds(**prepare_inputs)
+
+		# Run the model to get the response
+		outputs = vl_gpt.language_model.generate(
+			inputs_embeds=inputs_embeds,
+			attention_mask=prepare_inputs.attention_mask,
+			pad_token_id=tokenizer.eos_token_id,
+			bos_token_id=tokenizer.bos_token_id,
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=512,
+			do_sample=False,
+			use_cache=True
+		)
+
+		answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
+		print(f"{prepare_inputs['sft_format'][0]}", answer)
+
+	if True:
+		# Simple Inference Example
+
+		# Install:
+		#	git clone https://github.com/deepseek-ai/DeepSeek-VL2
+		#	cd DeepSeek-VL2
+		#	pip install -e .
+
+		from deepseek_vl.models import DeepseekVLV2Processor, DeepseekVLV2ForCausalLM
+		from deepseek_vl.utils.io import load_pil_images
+
+		# Specify the path to the model
+		#model_path = "deepseek-ai/deepseek-vl2"
+		#model_path = "deepseek-ai/deepseek-vl2-tiny"
+		model_path = "deepseek-ai/deepseek-vl2-small"
+		vl_chat_processor: DeepseekVLV2Processor = DeepseekVLV2Processor.from_pretrained(model_path)
+		tokenizer = vl_chat_processor.tokenizer
+
+		vl_gpt: DeepseekVLV2ForCausalLM = transformers.AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
+		vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
+
+		# Single image conversation example
+		conversation = [
+			{
+				"role": "<|User|>",
+				"content": "<image>\n<|ref|>The giraffe at the back.<|/ref|>.",
+				"images": ["./images/visual_grounding.jpeg"],
+			},
+			{"role": "<|Assistant|>", "content": ""},
+		]
+
+		# Multiple images (or in-context learning) conversation example
+		#conversation = [
+		#	{
+		#		"role": "User",
+		#		"content": "<image_placeholder>A dog wearing nothing in the foreground, "
+		#				"<image_placeholder>a dog wearing a santa hat, "
+		#				"<image_placeholder>a dog wearing a wizard outfit, and "
+		#				"<image_placeholder>what's the dog wearing?",
+		#		"images": [
+		#			"images/dog_a.png",
+		#			"images/dog_b.png",
+		#			"images/dog_c.png",
+		#			"images/dog_d.png",
+		#		],
+		#	},
+		#	{"role": "Assistant", "content": ""}
+		#]
+
+		# Load images and prepare for inputs
+		pil_images = load_pil_images(conversation)
+		prepare_inputs = vl_chat_processor(
+			conversations=conversation,
+			images=pil_images,
+			force_batchify=True,
+			system_prompt=""
+		).to(vl_gpt.device)
+
+		# Run image encoder to get the image embeddings
+		inputs_embeds = vl_gpt.prepare_inputs_embeds(**prepare_inputs)
+
+		# Run the model to get the response
+		outputs = vl_gpt.language_model.generate(
+			inputs_embeds=inputs_embeds,
+			attention_mask=prepare_inputs.attention_mask,
+			pad_token_id=tokenizer.eos_token_id,
+			bos_token_id=tokenizer.bos_token_id,
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=512,
+			do_sample=False,
+			use_cache=True
+		)
+
+		answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
+		print(f"{prepare_inputs['sft_format'][0]}", answer)
 
 # REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
 def llava_example():
@@ -6527,6 +7195,46 @@ def tvlt_example():
 		outputs = model(**input_dict)
 
 		loss = outputs.loss
+
+# REF [site] >> https://huggingface.co/physical-intelligence
+def fast_example():
+	# Models:
+	#	physical-intelligence/fast
+
+	# Install.
+	#	pip install transformers scipy
+
+	import numpy as np
+
+	if True:
+		# Using the Universal Action Tokenizer
+
+		# Load the tokenizer from the Hugging Face hub
+		tokenizer = transformers.AutoProcessor.from_pretrained("physical-intelligence/fast", trust_remote_code=True)
+
+		# Tokenize & decode action chunks (we use dummy data here)
+		action_data = np.random.rand(256, 50, 14)  # one batch of action chunks
+		tokens = tokenizer(action_data)  # tokens = list[int]
+		decoded_actions = tokenizer.decode(tokens)
+
+	if False:
+		# Training a new Action Tokenizer on Your Own Data
+
+		# First, we download the tokenizer from the Hugging Face model hub
+		# Here, we will not use the pre-trained tokenizer weights, but only the source code
+		# to train a new tokenizer on our own data.
+		tokenizer = transformers.AutoProcessor.from_pretrained("physical-intelligence/fast", trust_remote_code=True)
+
+		# Load your action data for tokenizer training
+		# Chunks do not need to be of the same length, we will use dummy data
+		action_data = np.random.rand(4000, 50, 14)
+
+		# Train the new tokenizer, depending on your dataset size this can take a few minutes
+		tokenizer = tokenizer.fit(action_data)
+
+		# Save the new tokenizer, optionally push it to the Hugging Face model hub
+		tokenizer.save_pretrained("<your_local_path>")
+		tokenizer.push_to_hub("YourUsername/my_new_tokenizer")
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
@@ -8112,8 +8820,7 @@ def decision_transformer_example():
 				return_dict=False,
 			)
 
-# REF [site] >>
-#	https://huggingface.co/docs/transformers/model_doc/trajectory_transformer
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/trajectory_transformer
 def trajectory_transformer_example():
 	# Models:
 	#	CarlCochet/trajectory-transformer-ant-medium-v2
@@ -8165,6 +8872,52 @@ def trajectory_transformer_example():
 			output_hidden_states=True,
 			return_dict=True,
 		)
+
+# REF [site] >>
+#	https://huggingface.co/nvidia
+#	https://github.com/NVIDIA/Cosmos
+#	https://github.com/NVIDIA/Cosmos-Tokenizer
+def cosmos_example():
+	# Models:
+	#	nvidia/Cosmos-0.1-Tokenizer-CI8x8
+	#	nvidia/Cosmos-0.1-Tokenizer-CV4x8x8
+	#	nvidia/Cosmos-0.1-Tokenizer-CV8x8x8
+	#	nvidia/Cosmos-0.1-Tokenizer-CV8x16x16
+	#	nvidia/Cosmos-0.1-Tokenizer-DV4x8x8
+	#	nvidia/Cosmos-0.1-Tokenizer-DV8x8x8
+	#	nvidia/Cosmos-0.1-Tokenizer-DV8x16x16
+	#
+	#	nvidia/Cosmos-1.0-Diffusion-7B-Decoder-DV8x16x16ToCV8x8x8
+	#	nvidia/Cosmos-1.0-Diffusion-7B-Text2World
+	#	nvidia/Cosmos-1.0-Diffusion-14B-Text2World
+	#	nvidia/Cosmos-1.0-Diffusion-7B-Video2World
+	#	nvidia/Cosmos-1.0-Diffusion-14B-Video2World
+	#	nvidia/Cosmos-1.0-Autoregressive-4B
+	#	nvidia/Cosmos-1.0-Autoregressive-5B-Video2World
+	#	nvidia/Cosmos-1.0-Autoregressive-12B
+	#	nvidia/Cosmos-1.0-Autoregressive-13B-Video2World
+	#	nvidia/Cosmos-1.0-Prompt-Upsampler-12B-Text2World
+	#	nvidia/Cosmos-1.0-Guardrail
+	#	nvidia/Cosmos-1.0-Tokenizer-DV8x16x16
+	#	nvidia/Cosmos-1.0-Tokenizer-CV8x8x8
+
+	# Inference:
+	#	Cosmos Installation
+	#		https://github.com/NVIDIA/Cosmos/blob/main/INSTALL.md
+	#	Cosmos Diffusion-based World Foundation Models
+	#		https://github.com/NVIDIA/Cosmos/blob/main/cosmos1/models/diffusion/README.md
+	#	Cosmos Diffusion-based World Foundation Models: NeMo Framework User Guide
+	#		https://github.com/NVIDIA/Cosmos/blob/main/cosmos1/models/diffusion/nemo/inference/README.md
+	#	Cosmos Autoregressive-based World Foundation Models
+	#		https://github.com/NVIDIA/Cosmos/blob/main/cosmos1/models/autoregressive/README.md
+
+	# Post-training:
+	#	Cosmos Diffusion-based World Foundation Models: NeMo Framework User Guide
+	#		https://github.com/NVIDIA/Cosmos/blob/main/cosmos1/models/diffusion/nemo/post_training/README.md
+	#	Cosmos Autoregressive-based World Foundation Models: NeMo Framework User Guide
+	#		https://github.com/NVIDIA/Cosmos/blob/main/cosmos1/models/autoregressive/nemo/post_training/README.md
+
+	raise NotImplementedError
 
 # REF [site] >> https://github.com/huggingface/trl/tree/main/examples/research_projects/stack_llama/scripts
 def stack_llama_example():
@@ -8568,10 +9321,10 @@ def main():
 	#open_elm_example()  # OpenELM. Not yet tested.
 	#aya_example()  # Aya. Not yet tested.
 	#phi_3_example()  # phi-3. Not yet tested.
-
 	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
 	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio. Not yet tested.
-	qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL. Not yet tested.
+	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL. Not yet tested.
+	deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3. Not yet tested.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -8583,6 +9336,7 @@ def main():
 	# Math.
 
 	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math. Not yet tested.
+	#deepseek_math_example()  # DeepSeek-Math. Not yet tested.
 
 	#-----
 	# Code.
@@ -8601,6 +9355,13 @@ def main():
 	#phi_example()  # phi-1, phi-1.5, & phi-2.
 	#codestral_example()  # Codestral. Not yet tested.
 	#qwen_coder_example()  # Qwen2.5-Coder. Not yet tested.
+	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2. Not yet tested.
+
+	#-----
+	# Reasoning.
+
+	#qwen_qwq_example()  # QwQ. Not yet tested.
+	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
 
 	#--------------------
 	# Vision.
@@ -8612,6 +9373,11 @@ def main():
 
 	#dino_example()  # DINO & DINOv2. Not yet tested.
 	#dpt_example()  # Dense Prediction Transformer (DPT). Not yet tested.
+
+	#-----
+	# Visual reasoning.
+
+	#qwen_qvq_example()  # QVQ. Not yet tested.
 
 	#--------------------
 	# Multimodal.
@@ -8635,7 +9401,8 @@ def main():
 	#fuyu_example()  # Fuyu.
 	#pixtral_example()  # Pixtral. Not yet implemented.
 	#vila_example()  # VILA. Not yet implemented.
-	#qwen_vl_example()  # Qwen-VL, Qwen2-VL. Not yet tested.
+	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL. Not yet tested.
+	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2. Not yet tested.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
@@ -8655,6 +9422,11 @@ def main():
 	# Vision and audio.
 
 	#tvlt_example()  # TVLT.
+
+	#-----
+	# Vision-language-action.
+
+	#fast_example()  # FAST.
 
 	#--------------------
 	# Document.
@@ -8716,10 +9488,15 @@ def main():
 	#biogpt_example()  # BioGPT.
 
 	#--------------------
-	# Learning theory.
+	# Reinforcement learning.
 
 	#decision_transformer_example()  # Decision transformer. Not yet tested.
 	#trajectory_transformer_example()  # Trajectory transformer. Not yet tested.
+
+	#--------------------
+	# World model.
+
+	#cosmos_example()  # Not yet implemented.
 
 	#--------------------
 	# Transformer Reinforcement Learning (TRL).
