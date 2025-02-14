@@ -80,13 +80,22 @@
 
 		CMake:
 			Configure.
-				(Optional) Set CMAKE_DEBUG_POSTFIX to d.
 				Set STATIC_WINDOWS_RUNTIME to OFF.
 				Set BUILD_SHARED_LIBS to ON.
 				Set BUILD_WEBRTC to OFF.
-				(Optional) Set USE_SYSTEM_FMT to OFF.
+				(Optional) Set CMAKE_DEBUG_POSTFIX to d.
+				(Optional) Set Python3_EXECUTABLE to /path/to/python3.
+				(Optional) Set USE_SYSTEM_GLEW to OFF.
+				(Optional) Set USE_SYSTEM_GLFW to OFF.
 				(Optional) Set USE_SYSTEM_TBB to OFF.
+					Some errors may occur in oneAPI Threading Building Blocks (oneTBB) library.
+				(Optional) Set USE_SYSTEM_FMT to OFF.
+				(Optional) Set USE_SYSTEM_QHULLCPP to OFF.
+					Use header files in ${OPEN3D_HOME}/build/fmt/include
 			Generate.
+			Build.
+				Perform "ALL_BUILD and INSTALL" targets in debug & release build modes respectively.
+					Library names of debug & release builds are the same: e.g.) glfw3.lib.
 
 		Copy 'resources' directory to the parent folder of the project files.
 			${OPEN3D_HOME}/build/bin/resources

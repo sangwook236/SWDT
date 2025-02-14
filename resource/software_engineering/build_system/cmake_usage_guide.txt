@@ -160,3 +160,27 @@
 	- cmake error and output files.
 		${SRC_BUILD_HOME}/CMakeFiles/CMakeError.log
 		${SRC_BUILD_HOME}/CMakeFiles/CMakeOutput.log
+
+[-] Troubleshooting (Windows + VC).
+	- When the toolset setting option, e.g. "-T v142" does not work.
+		<error>
+			Failed to run MSBuild command:
+			C:/Program Files/Microsoft Visual Studio/2022/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe
+			to get the value of VCTargetsPath:
+		<cause>
+			Platform Toolset version not supported by MSBuild.
+		<solution>
+			Modify MSBuild.exe.config files.
+				Target files:
+					C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe.config
+						C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe
+					C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe.config
+						C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe
+				Add the required setting as following below the default Platform Toolset setting:
+					e.g.)
+						<property name="VCTargetsPath" value="$([MSBuild]::ValueOrDefault('$(VCTargetsPath)','$(MSBuildExtensionsPath32)\Microsoft\VC\v170\'))" />:
+							Default Platform Toolset setting.
+						<property name="VCTargetsPath16" value="$([MSBuild]::ValueOrDefault('$(VCTargetsPath16)','$(MSBuildExtensionsPath32)\Microsoft\VC\v160\'))" />
+							Required setting.
+			A project file related to VCTargetsPath:
+				${SRC_BUILD_HOME}\CMakeFiles\<CMAKE_VERSION>\VCTargetsPath.vcxproj
