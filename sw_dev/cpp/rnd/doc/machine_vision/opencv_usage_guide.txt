@@ -31,11 +31,18 @@
 [-] Building (CMake).
 	- Build.
 		Configure.
-			Set OPENCV_ENABLE_NONFREE to True.
+			Set OPENCV_ENABLE_NONFREE to ON.
 			Set OPENCV_EXTRA_MODULE_PATH to ${OPENCV_CONTRIB_HOME}/modules.
+			Set BUILD_CUDA_STUBS to OFF.
+			(Optional) Set OPENCV_PYTHON3_VERSION to OFF.
+			(Optional) Set WITH_OPENGL to OFF.
+			(Optional) Set WITH_QT to OFF.
+			(Optional) Set BUILD_TBB to ON.
+			(Optional) Set WITH_TBB to OFF.
+				Some errors may occur in oneAPI Threading Building Blocks (oneTBB) library.
 		Generate.
 
-[-] Building (Linux + CMake).
+[-] Building (Linux, CMake).
 	- CUDA_nvcuvid_LIBRARY 항목이 올바르게 설정되어 있지 않다는 오류 발생.
 		NVIDIA CUDA library 중에서 video decoder (NVCUVID) library를 사용하는데,
 		해당 library의 path가 다른 CUDA library와 다르게 설정되어 있어 발생.

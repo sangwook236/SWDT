@@ -7,7 +7,7 @@
 #		cmake ..
 #		cmake .. -D CMAKE_BUILD_TYPE:STRING=Debug -D CMAKE_PREFIX_PATH:PATH=/path/to/install -D BOOST_LIBRARYDIR=/path/to/boost -D CMAKE_C_COMPILER:FILEPATH=/path/to/clang -D CMAKE_CXX_COMPILER=/path/to/clang++
 #		cmake .. -G "Visual Studio 17 2022"
-#		cmake .. -G "Visual Studio 17 2022" -A Win64 -T v143
+#		cmake .. -G "Visual Studio 17 2022" -A x64 -T v143
 #		cmake .. -G "MSYS Makefiles"
 #		cmake .. -G "MinGW Makefiles"
 #		cmake .. -G "Unix Makefiles"
@@ -26,7 +26,13 @@
 
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(my_cpp VERSION 0.1.0)
-#project(my_cpp VERSION 0.1.0 LANGUAGES C CXX CUDA)
+#project(
+#	my_cpp
+#	VERSION 0.1.0
+#	DESCRIPTION "My C++ Project"
+#	HOMEPAGE_URL "http://www.sangwook.com/"
+#	LANGUAGES C CXX CUDA
+#)
 
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 #set(CMAKE_PREFIX_PATH "/path/to/lib")
@@ -93,6 +99,7 @@ find_package(Threads REQUIRED)
 #link_directories(AFTER /usr/lib)
 #message(STATUS "Link directories: ${LINK_DIRECTORIES}")
 
+add_definitions(-DUNICODE -D_UNICODE)
 #add_definitions(${OpenMP_CXX_FLAGS})
 #add_definitions(${Qt5Core_DEFINITIONS})  # ${Qt5Core_DEFINITIONS}, ${Qt5Gui_DEFINITIONS}, ${Qt5Widgets_DEFINITIONS}
 #add_definitions(${PCL_DEFINITIONS})
@@ -108,8 +115,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG")
 
-	add_definitions(-DUNICODE -D_UNICODE)
-
 	if(OpenMP_CXX_FOUND)
 		add_compile_options(-fopenmp)
 	endif(OpenMP_CXX_FOUND)
@@ -120,8 +125,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG")
-
-	add_definitions(-DUNICODE -D_UNICODE)
 
 	if(OpenMP_CXX_FOUND)
 		add_compile_options(-fopenmp)
@@ -145,8 +148,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 
 #	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")  # {-MD, -MDd}. Default.
 #	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")  # {-MT, -MTd}.
-
-	add_definitions(/DUNICODE /D_UNICODE)
 
 	if(OpenMP_CXX_FOUND)
 		add_compile_options(/fopenmp)
