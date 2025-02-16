@@ -1,0 +1,33 @@
+[-] General.
+	- Site.
+		https://github.com/microsoft/winget-cli
+
+		https://github.com/microsoft/winget-pkgs
+
+	- Documentation.
+		https://learn.microsoft.com/en-us/windows/package-manager/
+
+[-] Usage.
+	- Client.
+		winget --help
+		winget search --help
+
+		Install the selected package:
+			winget install --id=<PKG_ID> -e
+				winget install --id Microsoft.VisualStudioCode
+		Uninstall the selected package:
+			winget uninstall --id=<PKG_ID>
+		Upgrade the selected package:
+			winget upgrade --id=<PKG_ID>
+		Upgrade all installed packages:
+			winget upgrade --all
+
+		Search for packages:
+			winget search <PKG_ID>
+				winget search VisualStudioCode
+				winget search "visual studio code" --exact
+
+		List all installed packages:
+			winget list
+		Show package information:
+			winget show <PKG_ID>
