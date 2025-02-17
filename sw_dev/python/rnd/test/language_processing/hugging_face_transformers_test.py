@@ -5167,6 +5167,34 @@ def deepseek_r_example():
 
 	raise NotImplementedError
 
+# REF [site] >> https://huggingface.co/open-r1
+def open_r1_example():
+	# Models:
+	#	open-r1/OpenR1-Qwen-7B
+
+	from transformers import AutoModelForCausalLM, AutoTokenizer
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	model_name = "open-r1/OpenR1-Qwen-7B"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	prompt = "Find the value of $x$ that satisfies the equation $4x+5 = 6x+7$."
+
+	messages = [
+		{"role": "system", "content": "Please reason step by step, and put your final answer within \\boxed{}."},
+		{"role": "user", "content": prompt}
+	]
+
+	# FIXME [implement] >> do something
+
+	raise NotImplementedError
+
 # REF [site] >>
 #	https://huggingface.co/simplescaling
 #	https://github.com/simplescaling/s1
@@ -9403,6 +9431,7 @@ def main():
 
 	#qwen_qwq_example()  # QwQ. Not yet tested.
 	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
+	#open_r1_example()  # OpenR1. Not yet completed.
 	#s1_example()  # s1. Not yet tested.
 
 	#--------------------
