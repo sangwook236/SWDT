@@ -767,7 +767,7 @@ void VoxelGridOcclusionEstimation_test()
 namespace my_pcl {
 
 void octree();
-void resampling();
+void sampling();
 void greedy_projection();
 void ransac();
 void registration();
@@ -792,7 +792,7 @@ int pcl_main(int argc, char *argv[])
 	//local::basic_operation();
 
 	//my_pcl::octree();
-	//my_pcl::resampling();
+	//my_pcl::sampling();
 	//my_pcl::greedy_projection();
 	//my_pcl::ransac();
 

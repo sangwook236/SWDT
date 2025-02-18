@@ -49,7 +49,7 @@
     <ClCompile Include="pcl\pcl_registration.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
-    <ClCompile Include="pcl\pcl_resampling.cpp">
+    <ClCompile Include="pcl\pcl_sampling.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
     <ClCompile Include="pcl\pcl_segmentation.cpp">

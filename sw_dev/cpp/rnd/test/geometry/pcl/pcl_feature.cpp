@@ -41,6 +41,7 @@ void normal_estimation_tutorial()
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+	//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 	ne.setInputCloud(cloud);
 	//ne.setNumberOfThreads(8);
 
@@ -67,6 +68,7 @@ void normal_estimation_tutorial()
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+	//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 	ne.setInputCloud(cloud);
 	//ne.setNumberOfThreads(8);
 
@@ -109,6 +111,7 @@ void normal_estimation_tutorial()
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+	//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 	ne.setInputCloud(cloud_downsampled);
 	//ne.setNumberOfThreads(8);
 
@@ -226,6 +229,7 @@ void principal_curvature_estimation_example()
 		// Use the same KdTree from the normal estimation.
 		principal_curvatures_estimation.setSearchMethod(tree);
 		principal_curvatures_estimation.setRadiusSearch(0.01);
+		//principal_curvatures_estimation.setRadiusSearch(0.001);  // Faster and more locally
 		//principal_curvatures_estimation.setKSearch(5);
 		// Actually compute the principal curvatures.
 		principal_curvatures_estimation.compute(*principal_curvatures);
@@ -320,7 +324,7 @@ void principal_curvature_estimation_gpu_test()
 {
 	throw std::runtime_error("Not yet implemented");
 
-	//pcl::gpu::PrincipalCurvaturesEstimation<pcl::PointXYZ, pcl::Normal, pcl::PrincipalCurvatures> principal_curvatures_estimation;
+	//pcl::gpu::PrincipalCurvaturesEstimation principal_curvatures_estimation;  // Only for pcl::PointXYZ
 }
 
 // REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/pfh_estimation.html
@@ -343,6 +347,7 @@ void pfh_estimation_tutorial()
 	{
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+		//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 		ne.setInputCloud(cloud);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);  // Create an empty kdtree representation.
@@ -353,6 +358,7 @@ void pfh_estimation_tutorial()
 	//--------------------
 	// Create the PFH estimation class, and pass the input dataset+normals to it.
 	pcl::PFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::PFHSignature125> pfh;
+	//pcl::gpu::PFHEstimation pfh;  // Only for pcl::PointXYZ.
 	pfh.setInputCloud(cloud);
 	pfh.setInputNormals(normals);
 	//pfh.setInputNormals(cloud);  // Alternatively, if cloud is of type PointNormal.
@@ -400,6 +406,7 @@ void fpfh_estimation_tutorial()
 	{
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+		//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 		ne.setInputCloud(cloud);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);  // Create an empty kdtree representation.
@@ -445,7 +452,8 @@ void fpfh_estimation_gpu_test()
 	//pcl::gpu::FPFHEstimation::Normals normals_gpu;
 	//pcl::gpu::FPFHEstimation::Indices indices_gpu;
 	//pcl::gpu::FPFHEstimation::PointCloud surface_gpu;
-	//pcl::gpu::FPFHEstimation fe_gpu;
+
+	//pcl::gpu::FPFHEstimation fpfh_gpu;  // Only for pcl::PointXYZ
 }
 
 #if 0
@@ -521,6 +529,7 @@ void feature_matching()
 	// Compute the normals.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normalEstimation;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> normalEstimation;
+	//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 	normalEstimation.setInputCloud(source_cloud);
 	normalEstimation.setSearchMethod(tree);
 
@@ -584,6 +593,7 @@ void feature_matching()
 	// Compute the normals.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normalEstimation_1;
 	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> normalEstimation_1;
+	//pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ.
 	normalEstimation_1.setInputCloud(target_cloud);
 	normalEstimation_1.setSearchMethod(tree);
 
