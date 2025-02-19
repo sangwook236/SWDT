@@ -47,6 +47,8 @@ int main(int argc, char **argv)
 	void complex();
 	void date_time();
 
+	void algorithm();
+
 	void file_io();
 
 	void stl_data_structure();

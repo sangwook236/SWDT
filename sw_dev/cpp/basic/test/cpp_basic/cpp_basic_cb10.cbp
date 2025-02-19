@@ -31,10 +31,11 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++11" />
+			<Add option="-std=c++17" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="algorithm.cpp" />
 		<Unit filename="array.cpp" />
 		<Unit filename="complex.cpp" />
 		<Unit filename="date_time.cpp" />

@@ -173,6 +173,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="algorithm.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="date_time.cpp" />
