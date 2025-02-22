@@ -21,10 +21,10 @@ void map_reduce_test()
 	double total;
 	std::chrono::system_clock::time_point start_time;
 
-#if 0
+#if 1
 	std::vector<int> v(MAX_VAL);
-	std::generate(v.begin(), v.end(), [n = 1]() mutable { return n++; });
-	//std::iota(v.begin(), v.end(), 1);
+	//std::generate(v.begin(), v.end(), [n = 1]() mutable { return n++; });
+	std::iota(v.begin(), v.end(), 1);
 #else
 	std::vector<int> v;
 	v.reserve(MAX_VAL);
