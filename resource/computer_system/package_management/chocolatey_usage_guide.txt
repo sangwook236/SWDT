@@ -1,0 +1,40 @@
+[-] General.
+	- Site.
+		https://chocolatey.org/
+
+		https://github.com/chocolatey
+		https://github.com/chocolatey/choco
+
+	- Documentation.
+		https://github.com/chocolatey/docs
+
+	- Directory.
+		%ProgramData%/chocolatey
+
+[-] Usage.
+	- CLI.
+		choco --help
+		choco install --help
+
+		Installs packages using configured sources:
+			choco install <PACKAGE_NAME>
+				choco install vscode
+		Uninstalls a package:
+			choco uninstall <PACKAGE_NAME>
+			choco uninstall all
+		Upgrades packages from various sources:
+			choco upgrade <PACKAGE_NAME>
+				choco upgrade all
+
+		Searches remote packages:
+			choco search <PACKAGE_NAME>
+				choco search "visual studio code"
+				choco search vscode --exact
+
+		Lists local packages:
+			choco list
+		Retrieves package information:
+			choco info <PACKAGE_NAME>
+
+[-] Install.
+	https://chocolatey.org/install
