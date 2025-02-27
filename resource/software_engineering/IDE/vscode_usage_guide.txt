@@ -1,0 +1,364 @@
+[-] General.
+	- Site.
+		https://code.visualstudio.com/
+		https://marketplace.visualstudio.com/
+
+	- Document.
+		https://code.visualstudio.com/docs
+
+	- Tutorial.
+		https://demun.github.io/vscode-tutorial/
+
+[-] Usage (Common).
+	https://code.visualstudio.com/docs/getstarted/getting-started
+	https://code.visualstudio.com/docs/getstarted/tips-and-tricks
+	https://code.visualstudio.com/docs/getstarted/settings
+	https://code.visualstudio.com/docs/getstarted/keybindings
+
+	- Info.
+		"tasks.json" is used for compilation.
+		"launch.json" is used for debugging.
+		"c_cpp_properties.json" is used with Intellisense and in no way deals with compilation.
+
+	- Setting.
+		"File -> Preferences -> Settings (Ctrl+,)" in VS Code GUI.
+			"User" tab: Default setting for VS Code.
+				Linux:
+					${HOME}/.config/Code/User/settings.json
+				Windows:
+					${USERPROFILE}/AppData/Roaming/Code/User/settings.json
+			"Workspace" tab:
+				.vscode/settings.json
+		"settings.json" in .vscode directory.
+
+	- Task.
+		https://code.visualstudio.com/docs/editor/tasks
+
+		tasks.json:
+			label: The task's label used in the user interface.
+			type: The task's type.
+				For a custom task, this can either be shell or process.
+				If shell is specified, the command is interpreted as a shell command (for example: bash, cmd, or PowerShell).
+				If process is specified, the command is interpreted as a process to execute.
+			command: The actual command to execute.
+			windows: Any Windows specific properties.
+				Will be used instead of the default properties when the command is executed on the Windows operating system.
+			group: Defines to which group the task belongs.
+				In the example, it belongs to the test group.
+				Tasks that belong to the test group can be executed by running Run Test Task from the Command Palette.
+			presentation: Defines how the task output is handled in the user interface.
+				In this example, the Integrated Terminal showing the output is always revealed and a new terminal is created on every task run.
+			options: Override the defaults for cwd (current working directory), env (environment variables), or shell (default shell).
+				Options can be set per task but also globally or per platform.
+				Environment variables configured here can only be referenced from within your task script or process and will not be resolved if they are part of your args, command, or other task attributes.
+			runOptions: Defines when and how a task is run.
+
+	- Debugging.
+		https://code.visualstudio.com/docs/editor/debugging
+		https://code.visualstudio.com/docs/cpp/cpp-debug
+		https://code.visualstudio.com/docs/cpp/launch-json-reference
+
+		launch.json:
+			type: The type of debugger to use for this launch configuration.
+				Every installed debug extension introduces a type: node for the built-in Node debugger, for example, or php and go for the PHP and Go extensions.
+			request: The request type of this launch configuration.
+				Currently, launch and attach are supported.
+			name: The reader-friendly name to appear in the Debug launch configuration drop-down.
+			presentation: Using the order, group, and hidden attributes in the presentation object you can sort, group, and hide configurations and compounds in the Debug configuration dropdown and in the Debug quick pick.
+			preLaunchTask: To launch a task before the start of a debug session, set this attribute to the name of a task specified in tasks.json (in the workspace's .vscode folder).
+				Or, this can be set to ${defaultBuildTask} to use your default build task.
+			postDebugTask: To launch a task at the very end of a debug session, set this attribute to the name of a task specified in tasks.json (in the workspace's .vscode folder).
+			internalConsoleOptions: This attribute controls the visibility of the Debug Console panel during a debugging session.
+			debugServer: For debug extension authors only: this attribute allows you to connect to a specified port instead of launching the debug adapter.
+			serverReadyAction: If you want to open a URL in a web browser whenever the program under debugging outputs a specific message to the debug console or integrated terminal.
+				For details see section Automatically open a URI when debugging a server program below.
+			program: Executable or file to run when launching the debugger.
+			module: The name of your module.
+			args: Arguments passed to the program to debug.
+			env: Environment variables (the value null can be used to "undefine" a variable).
+			envFile: Path to the file containing your environment variables.
+			cwd: Current working directory for finding dependencies and other files.
+			port: port when attaching to a running process.
+			stopOnEntry: Break immediately when the program launches.
+			console: What kind of console to use, for example, internalConsole, integratedTerminal, or externalTerminal.
+
+	- Editor.
+		https://code.visualstudio.com/docs/editor/profiles
+
+		Variable:
+			https://code.visualstudio.com/docs/editor/variables-reference
+
+		Integrated terminal:
+			https://code.visualstudio.com/docs/editor/integrated-terminal
+
+			Default shell:
+				Linux: /bin/bash
+				Windows: C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
+
+		IntelliSense:
+			https://code.visualstudio.com/docs/editor/intellisense
+			https://code.visualstudio.com/docs/python/editing
+
+			Code completion, content assist, or code hinting.
+			Features: code completion, parameter info, quick info, and member lists.
+
+			Ctrl+Shift+P -> Type 'Quick Fix...'.
+			Ctrl+.
+
+			Ctrl+Shift+P -> Type 'Auto Fix...'.
+			Shift+Alt+.
+
+			Ctrl+Shift+P -> Type 'Trigger Suggest'.
+			Ctrl+Space
+
+			Ctrl+Shift+P -> Type 'Trigger Parameter Hints'.
+			Ctrl+Shift+Space
+
+		Refactoring:
+			https://code.visualstudio.com/docs/editor/refactoring
+			https://code.visualstudio.com/docs/python/editing
+
+			Quick Fix command: Ctrl+.
+			Refactor command: Ctrl+Shift+R
+
+	- UI.
+		https://code.visualstudio.com/docs/getstarted/userinterface
+			Command Palette (Ctrl+Shift+P).
+
+	- Log.
+		Ctrl+Shift+P -> Type 'Show Log'.
+		Ctrl+Shift+P -> Type 'Tasks: Show Task Log'.
+		Ctrl+Shift+P -> Type 'Developer: Show Logs...'.
+
+	- Configure.
+		Ctrl+Shift+P -> Type 'Configure'.
+
+	- Terminal.
+		https://code.visualstudio.com/docs/terminal/getting-started
+		https://code.visualstudio.com/docs/terminal/basics
+		https://code.visualstudio.com/docs/terminal/profiles
+		https://code.visualstudio.com/docs/supporting/troubleshoot-terminal-launch
+
+	- Coding assistant.
+		Refer coding_assistant_usage_guide.txt.
+
+[-] Usage (Python).
+	https://code.visualstudio.com/docs/languages/python
+	https://code.visualstudio.com/docs/python
+
+	- Run a script in terminal.
+		Ctrl+Shift+P -> Type 'Python: Run Python File in Terminal'.
+
+		Click mouse right button on a python file.
+		Choose 'Run Python File in Terminal'.
+
+		To pass command line arguments:
+			Specify "python.terminal.launchArgs" in settings.json.
+				Launch arguments that are given to the 'Python interpreter' when you run a file using commands such as 'Python: Run Python File in Terminal'.
+				"python.terminal.launchArgs": ["arg1", "arg2"]
+
+	- Configure and run a task using tasks.json.
+		REF [file] >> tasks.json in testbed/python directory.
+
+		Configure tasks:
+			Ctrl+Shift+P -> Type 'Tasks: Configure Task'.
+			Choose 'Create tasks.json file from template' for the target project.
+			Choose one of 'MSBuild', 'maven', '.NET Core', 'Others'.
+
+		Run a task:
+			Ctrl+Shift+P -> Type 'Tasks: Run Task'.
+			Choose a task for the target project.
+
+		To pass command line arguments: (workaround)
+			(Optional) "command" in tasks.json.
+			"args" in tasks.json.
+			Ctrl+Shift+B
+
+	- Debug.
+		https://code.visualstudio.com/docs/python/debugging
+
+		Python interpreter has to be selected for 'Python Debug Console' in the integrated terminal.
+
+		launch.json:
+			args:
+				Pass command line arguments.
+			justMyCode:
+				When omitted or set to true (the default), restricts debugging to user-written code only.
+				Set to false to also enable debugging of standard library functions.
+
+	- Linting.
+		https://code.visualstudio.com/docs/python/linting
+
+		Run linting:
+			Linting will automatically run when a Python file is opened or saved.
+			Problems panel: Ctrl+Shift+M
+
+		Logging:
+			Output panel: Ctrl+Shift+U
+				Select <linter name> from the drop down menu.
+
+			Ctrl+Shift+P -> Type 'Developer: Set Log Level'.
+
+	- Jupyter.
+		https://code.visualstudio.com/docs/python/jupyter-support-py
+
+		Ctrl+Shift+P -> Type 'Jupyter: Create Interactive Window'.
+		Ctrl+Shift+P -> Type 'Jupyter: Run Current File in Interactive Window'.
+		Ctrl+Shift+P -> Type 'Jupyter: Run Selection/Line in Interactive Window'.
+
+		Remote Jupyter server:
+			Ctrl+Shift+P -> Type 'Jupyter: Specify local or remote Jupyter server for connections'.
+
+		Debug a Jupyter notebook:
+			Ctrl+Shift+P -> Type 'Jupyter: Debug Current File in Interactive Window'.
+			Ctrl+Shift+P -> Type 'Jupyter: Debug Cell'.
+			'Debug Cell' adornment.
+
+		Export a Jupyter notebook:
+			Ctrl+Shift+P -> Type 'Jupyter: Export Current Python File as Jupyter Notebook'.
+			Ctrl+Shift+P -> Type 'Jupyter: Export Current Python File and Output as Jupyter Notebook'.
+			Ctrl+Shift+P -> Type 'Jupyter: Export Interactive Window as Jupyter Notebook'.
+
+	- Activate conda environment in VS Code.
+		https://code.visualstudio.com/docs/editor/integrated-terminal
+		https://medium.com/@udiyosovzon/how-to-activate-conda-environment-in-vs-code-ce599497f20d
+
+	- Test.
+		https://code.visualstudio.com/docs/python/testing
+
+[-] Usage (C++).
+	https://code.visualstudio.com/docs/languages/cpp
+	https://code.visualstudio.com/docs/cpp/config-msvc
+	https://code.visualstudio.com/docs/cpp/config-mingw
+	https://code.visualstudio.com/docs/cpp/config-wsl
+	https://code.visualstudio.com/docs/cpp/config-linux
+	https://code.visualstudio.com/docs/cpp/config-clang-mac
+
+	- c_cpp_properties.json.
+		https://code.visualstudio.com/docs/cpp/configure-intellisense
+		https://code.visualstudio.com/docs/cpp/c-cpp-properties-schema-reference
+		https://github.com/microsoft/vscode-cpptools/issues/3522
+
+	- Configure and run a task using tasks.json.
+		REF [file] >> tasks.json in testbed/cpp directory.
+
+		Configure tasks:
+			Ctrl+Shift+P -> Type 'Tasks: Configure Task'.
+			Choose 'Create tasks.json file from template' for the target project.
+			Choose one of 'MSBuild', 'maven', '.NET Core', 'Others'.
+
+		Run a task:
+			Ctrl+Shift+P -> Type 'Tasks: Run Task'.
+			Choose a task for the target project.
+
+		Run a build task:
+			Ctrl+Shift+B
+			Choose a build task for the target project.
+
+			Ctrl+Shift+P -> Type 'Tasks: Run Build Task'.
+			Choose a build task for the target project.
+
+	- CMake.
+		https://code.visualstudio.com/docs/cpp/cmake-linux
+		https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/README.md
+		https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/debug-launch.md
+
+		Pass command line arguments for "Run Without Debugging":
+			Specify "cmake.debugConfig" in settings.json (for both release and debug).
+				"cmake.debugConfig": {
+					"args": ["arg1", "arg2"],
+				}
+
+			Specify "cmake.launchArgs" in settings.json. (???)
+				"cmake.launchArgs": ["arg1", "arg2"]
+
+[-] Usage (Java).
+	https://code.visualstudio.com/docs/languages/java
+	https://code.visualstudio.com/docs/java/java-tutorial
+
+[-] Usage (Markdown).
+	https://code.visualstudio.com/docs/languages/markdown
+
+	- Edit.
+		Document outline:
+			The Outline view.
+		Snippets for Markdown:
+			Ctrl+Space
+		Go to header in file:
+			Ctrl+Shift+O
+		Go to header in workspace:
+			Ctrl+T
+		Path completions:
+			Ctrl+Space
+		Create links to a header in another file:
+		Insert images and links to files:
+			You can Drag and drop a file from VS Code's Explorer or from your operating system into a Markdown editor.
+			Start by dragging a file from VS Code's Explorer over your Markdown code and then hold down Shift to start dropping it into the file.
+		Smart selection:
+			Expand: Shift+Alt+Right
+			Shrink: Shift+Alt+Left
+		Link validation:
+		Find all references to headers and links:
+		Rename headers and links:
+		Automatic link updates on file move or rename:
+
+	- Preview.
+		Open preview:
+			Ctrl+Shift+V
+			Ctrl+Shift+P -> Type 'Markdown: Open Preview'.
+		Open preview to the side:
+			Ctrl+K V
+			Ctrl+Shift+P -> Type 'Markdown: Open Preview to the Side'.
+		Dynamic previews and preview locking:
+		Editor and preview synchronization:
+
+[-] Remote development.
+	https://code.visualstudio.com/docs/remote
+	https://code.visualstudio.com/docs/remote/ssh
+	https://code.visualstudio.com/remote-tutorials/ssh/getting-started
+	https://code.visualstudio.com/remote-tutorials/wsl/getting-started
+	https://code.visualstudio.com/blogs/2019/07/25/remote-ssh
+	https://code.visualstudio.com/blogs/2019/10/03/remote-ssh-tips-and-tricks
+
+	- Edit an SSH config file.
+		In ${USERPROFILE}/.ssh/config:
+			Host SiliconMinds1
+				HostName siliconminds.iptime.org
+				User sangwook
+				Port 2224
+
+			Host SiliconMinds2
+				HostName siliconminds.iptime.org
+				User sangwook
+				Port 2225
+
+[-] Troubleshooting.
+	- The terminal process terminated.
+		<error>
+			The terminal process terminated with exit code: 9009
+			The terminal process terminated with exit code: 1
+		<cause>
+			Conda initialization error. (?)
+		<solution>
+			Initialize Conda:
+				${ANACONDA_HOME}/condabin/conda init powershell
+				${ANACONDA_HOME}/bin/conda init bash
+			Use PowerShell in Windows.
+		==> The error still occurs in Commnad Prompt of Windows.
+
+	- Cannot run in VNC.
+		https://stackoverflow.com/questions/55802252/visual-studio-code-wont-open-on-ubuntu-16-04-via-vnc
+		<cause> The problem is that VS Code uses Electron.
+		<solution>
+			sudo cp /usr/lib/x86_64-linux-gnu/libxcb.so.1 /usr/lib/x86_64-linux-gnu/libxcb.so.1.original
+			sudo sed -i 's/BIG-REQUESTS/_IG-REQUESTS/' /usr/lib/x86_64-linux-gnu/libxcb.so.1
+			code --verbose
+
+			mkdir ~/lib
+			sudo cp /usr/lib/x86_64-linux-gnu/libxcb.so.1 ~/lib/libxcb.so.1
+			sudo sed -i 's/BIG-REQUESTS/_IG-REQUESTS/' ~/lib/libxcb.so.1
+			LD_LIBRARY_PATH=$HOME/lib code --verbose
+
+			(Optional)
+			Install vscode using apt instead of snap:
+				sudo apt install code

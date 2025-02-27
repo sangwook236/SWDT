@@ -232,27 +232,27 @@ void subsampling_test()
 
 		const auto num_curvatures(curvatures->size());
 #if 0
-		std::vector<size_t> indices(num_curvatures);
-		//std::generate(indices.begin(), indices.end(), [n = 0]() mutable { return n++; });
-		std::iota(indices.begin(), indices.end(), 0);
+		std::vector<size_t> curvature_indices(num_curvatures);
+		//std::generate(curvature_indices.begin(), curvature_indices.end(), [n = 0]() mutable { return n++; });
+		std::iota(curvature_indices.begin(), curvature_indices.end(), 0);
 #elif 0
-		std::vector<size_t> indices;
-		indices.reserve(num_curvatures);
-		std::generate_n(std::back_inserter(indices), num_curvatures, [n = 0]() mutable { return n++; });
+		std::vector<size_t> curvature_indices;
+		curvature_indices.reserve(num_curvatures);
+		std::generate_n(std::back_inserter(curvature_indices), num_curvatures, [n = 0]() mutable { return n++; });
 #else
 		// NOTE [caution] >> std::numeric_limits<float>::quiet_NaN() can be treated as 0 during operations
-		std::vector<size_t> indices;
-		indices.reserve(num_curvatures);
-		std::for_each(curvatures->begin(), curvatures->end(), [&indices, idx = 0](const auto curvature) mutable {
+		std::vector<size_t> curvature_indices;
+		curvature_indices.reserve(num_curvatures);
+		std::for_each(curvatures->begin(), curvatures->end(), [&curvature_indices, idx = 0](const auto curvature) mutable {
 			//if (!std::isnan(curvature.pc1) && !std::isnan(curvature.pc2))
 			if (!std::isnan(curvature.pc1))
-				indices.push_back(idx);
+			curvature_indices.push_back(idx);
 			++idx;
 		});
 #endif
-		//auto curvature_threshold_index_it = indices.begin() + (num_curvatures - num_points_to_sample);
-		auto curvature_threshold_index_it = indices.begin() + std::max((int)indices.size() - (int)num_points_to_sample, 0);
-		std::nth_element(indices.begin(), curvature_threshold_index_it, indices.end(), [&curvatures](const auto &lhs, const auto &rhs) {
+		//auto curvature_threshold_index_it = curvature_indices.begin() + std::max((int)num_curvatures - (int)num_points_to_sample, 0);
+		auto curvature_threshold_index_it = curvature_indices.begin() + std::max((int)curvature_indices.size() - (int)num_points_to_sample, 0);
+		std::nth_element(curvature_indices.begin(), curvature_threshold_index_it, curvature_indices.end(), [&curvatures](const auto &lhs, const auto &rhs) {
 			//return std::abs(curvatures->points[lhs].pc1) < std::abs(curvatures->points[rhs].pc1) && std::abs(curvatures->points[lhs].pc2) < std::abs(curvatures->points[rhs].pc2);
 			return std::abs(curvatures->points[lhs].pc1) < std::abs(curvatures->points[rhs].pc1);
 		});
@@ -260,7 +260,7 @@ void subsampling_test()
 		if (std::abs(curvatures->points[*curvature_threshold_index_it].pc1) < invalid_curvature_threshold)
 		{
 			// Find the minimum larger than invalid_curvature_threshold in order to use all points with curvature larger than invalid_curvature_threshold
-			curvature_threshold_index_it = std::min_element(curvature_threshold_index_it, indices.end(), [&curvatures, invalid_curvature_threshold](const auto &lhs, const auto &rhs) {
+			curvature_threshold_index_it = std::min_element(curvature_threshold_index_it, curvature_indices.end(), [&curvatures, invalid_curvature_threshold](const auto &lhs, const auto &rhs) {
 				const auto lhs_pc1(std::abs(curvatures->points[lhs].pc1));
 				const auto rhs_pc1(std::abs(curvatures->points[rhs].pc1));
 				if (lhs_pc1 < invalid_curvature_threshold && rhs_pc1 < invalid_curvature_threshold)
@@ -270,18 +270,19 @@ void subsampling_test()
 				else return lhs_pc1 < rhs_pc1;
 			});
 			if (std::abs(curvatures->points[*curvature_threshold_index_it].pc1) < invalid_curvature_threshold)
-				curvature_threshold_index_it = indices.end();
+				curvature_threshold_index_it = curvature_indices.end();
 		}
-		//const float curvature_threshold(std::min(indices.end() != curvature_threshold_index_it ? std::abs(curvatures->points[*curvature_threshold_index_it].pc1), std::abs(curvatures->points[*curvature_threshold_index_it].pc2)) : std::numeric_limits<float>::quiet_NaN());
-		const float curvature_threshold(indices.end() != curvature_threshold_index_it ? std::abs(curvatures->points[*curvature_threshold_index_it].pc1) : std::numeric_limits<float>::quiet_NaN());
+		//const float curvature_threshold(std::min(curvature_indices.end() != curvature_threshold_index_it ? std::abs(curvatures->points[*curvature_threshold_index_it].pc1), std::abs(curvatures->points[*curvature_threshold_index_it].pc2)) : std::numeric_limits<float>::quiet_NaN());
+		const float curvature_threshold(curvature_indices.end() != curvature_threshold_index_it ? std::abs(curvatures->points[*curvature_threshold_index_it].pc1) : std::numeric_limits<float>::quiet_NaN());
 		pcl::PointCloud<PointType>::Ptr cloud_curvature(new pcl::PointCloud<PointType>);
 		cloud_curvature->reserve(num_curvatures);
-		std::for_each(curvature_threshold_index_it, indices.end(), [&cloud, &cloud_curvature](const auto &idx) {
+		std::for_each(curvature_threshold_index_it, curvature_indices.end(), [&cloud, &cloud_curvature](const auto &idx) {
 			cloud_curvature->push_back(cloud->points[idx]);
 		});
 #if 0
 		// TODO [check] >> Is it necessary to filter curvatures by pc2?
-		std::for_each(indices.begin(), curvature_threshold_index_it, [&cloud, &curvatures, &cloud_curvature, pc2_thres = curvature_threshold * 0.5f](const auto &idx) {
+		const float curvature_threshold_pc2(curvature_threshold * 0.5f);
+		std::for_each(curvature_indices.begin(), curvature_threshold_index_it, [&cloud, &curvatures, &cloud_curvature, pc2_thres = curvature_threshold_pc2](const auto &idx) {
 			// NOTE [info] >> std::abs(NaN) = NaN
 			//const auto pc1(std::abs(curvatures->points[idx].pc1));
 			const auto pc2(std::abs(curvatures->points[idx].pc2));
@@ -335,7 +336,8 @@ void subsampling_test()
 
 		// Check computation time
 		{
-			const size_t num_samples(num_curvatures / 2);
+			const size_t &num_samples = num_points_to_sample;
+			//const size_t num_samples(num_curvatures / 2);
 			const size_t iterations(1000);
 
 			{

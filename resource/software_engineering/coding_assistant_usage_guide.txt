@@ -1,0 +1,98 @@
+[-] GitHub Copilot.
+	https://github.com/features/copilot
+	https://github.com/copilot/
+	https://code.visualstudio.com/docs/copilot/getting-started
+	https://code.visualstudio.com/docs/copilot/overview
+	https://code.visualstudio.com/docs/copilot/copilot-vscode-features
+
+	- Usage.
+		Type # to attach context
+			#codebase
+			#editor
+			#selection
+			#terminalSelection
+			#terminalLastCommand
+			#VSCodeAPI
+			#file
+			#<filename>
+			#sym
+			#<symbol>
+		Type / to use commands
+			/docs
+				/docs generate a doxygen comment for foo
+			/help
+			/clear
+		Type @ to chat with extensions
+			@workspace
+				/explain
+					@workspace /explain how the selected code works
+				/tests
+					@workspace /tests add unit tests for my code
+				/setupTests
+				/fix
+					@workspace /fix the problems in my code
+				/fixTestFailure
+				/new
+				/newNotebook
+			@vscode
+				/search
+				/startDebugging
+				/runCommand
+			@terminal
+				/explain
+			@github
+			@remote-ssh
+
+		Copilot Chat:
+			https://code.visualstudio.com/docs/copilot/copilot-chat
+			https://docs.github.com/en/copilot/example-prompts-for-github-copilot-chat
+
+			Chat view: Ctrl+Alt+I
+			Inline Chat: Ctrl+I
+			Quick Chat: Ctrl+Shift+Alt+L
+	`
+		Copilot Edits:
+			https://docs.github.com/en/copilot/example-prompts-for-github-copilot-chat
+
+			Inline Chat: Ctrl+Shift+I
+
+[-] Amazon Q.
+	https://aws.amazon.com/q/
+	https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.amazon-q-vscode
+	https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/
+	https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-in-IDE.html
+
+	- Usage.
+		Inline Chat: Ctrl+I
+
+		Comands:
+			/dev
+				Generates new code across your entire project and implement features.
+			/doc
+				Writes API, technical design, and onboarding documentation.
+			/review
+				Performs code reviews, flagging suspicious code patterns and assessing deployment risk.
+			/test
+				Generates unit tests and adds them to your project, helping you improve code quality, fast.
+			/transform
+				Upgrades your Java applications in minutes, not weeks.
+			/help
+			/clear
+
+		@workspace
+			Add @workspace to the beginning of your message to include your entire workspace as context.
+
+[-] Gemini Code Assist.
+	https://codeassist.google/
+	https://cloud.google.com/gemini/docs/codeassist/overview
+	https://cloud.google.com/gemini/docs/codeassist/write-code-gemini
+
+	- Usage.
+		/generate
+		/fix
+
+		@<filename>
+
+[-] Claude Code.
+	https://github.com/anthropics/claude-code
+	https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview
