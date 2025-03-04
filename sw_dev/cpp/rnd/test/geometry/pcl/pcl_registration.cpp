@@ -4,6 +4,10 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/filter.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>
@@ -52,13 +56,9 @@
 #include <pcl/registration/ia_ransac.h>
 #include <pcl/registration/ia_fpcs.h>
 #include <pcl/registration/ia_kfpcs.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/io/ply_io.h>
-#include <pcl/visualization/pcl_visualizer.h>
-#include <pcl/visualization/cloud_viewer.h>
+
 
 using namespace std::literals::chrono_literals;
-
 
 namespace
 {
@@ -571,6 +571,224 @@ void sample_consensus_prerejective_example()
 		viewer.spinOnce();
 		//std::this_thread::sleep_for(100ms);
 	}
+}
+
+void visualize(const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1, const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2, const pcl::PointCloud<pcl::PointXYZ>::Ptr result)
+{
+	pcl::visualization::PCLVisualizer viewer("Point Cloud Registration");
+
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> source_color(cloud1, 255, 0, 0);
+	viewer.addPointCloud(cloud1, source_color, "Source Cloud");
+
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> target_color(cloud2, 0, 255, 0);
+	viewer.addPointCloud(cloud2, target_color, "Target Cloud");
+
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> result_color(result, 0, 0, 255);
+	viewer.addPointCloud(result, result_color, "Result Cloud");
+
+	viewer.addCoordinateSystem(100.0);
+	viewer.initCameraParameters();
+	viewer.setBackgroundColor(0, 0, 0);
+
+	while (!viewer.wasStopped())
+	{
+		viewer.spinOnce();
+	}
+}
+
+void frame_to_frame_registration_test()
+{
+	const std::string tgt_filepath("/path/to/target.ply");
+	const std::string src_filepath("/path/to/source.ply");
+
+	// Load point clouds
+	pcl::PointCloud<pcl::PointXYZ>::Ptr tgt_cloud_loaded(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr src_cloud_loaded(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Loading point clouds..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//if (pcl::io::loadPCDFile<pcl::PointXYZ>(tgt_filepath, *tgt_cloud_loaded) == -1)
+		if (pcl::io::loadPLYFile<pcl::PointXYZ>(tgt_filepath, *tgt_cloud_loaded) == -1)
+		{
+			std::cerr << "File not found, " << tgt_filepath << std::endl;
+			return;
+		}
+		//if (pcl::io::loadPCDFile<pcl::PointXYZ>(src_filepath, *src_cloud_loaded) == -1)
+		if (pcl::io::loadPLYFile<pcl::PointXYZ>(src_filepath, *src_cloud_loaded) == -1)
+		{
+			std::cerr << "File not found, " << src_filepath << std::endl;
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point clouds loaded (#points = " << tgt_cloud_loaded->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+#if 0
+	// Downsample
+	pcl::PointCloud<pcl::PointXYZ>::Ptr tgt_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr src_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Downsampling..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::VoxelGrid<pcl::PointXYZ> sor;
+		//pcl::ApproximateVoxelGrid<pcl::PointXYZ> sor;
+		const float leaf_size(5.0f);
+		sor.setLeafSize(leaf_size, leaf_size, leaf_size);
+		sor.setInputCloud(tgt_cloud_loaded);
+		sor.filter(*tgt_cloud);
+		sor.setInputCloud(src_cloud_loaded);
+		sor.filter(*src_cloud);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Downsampled (#points = " << tgt_cloud->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr tgt_cloud = tgt_cloud_loaded;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr src_cloud = src_cloud_loaded;
+#endif
+
+	// Estimate normals
+	pcl::PointCloud<pcl::Normal>::Ptr tgt_normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr src_normals(new pcl::PointCloud<pcl::Normal>);
+	{
+		// NOTE [caution] >>
+		//	It is faster to compute normals for original point clouds than for their downsampled point clouds.
+		//	It is slower to use pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal>::setSearchSurface().
+
+		std::cout << "Estimating normals..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+		const double radius_search(5.0);
+		ne.setRadiusSearch(radius_search);
+		ne.setInputCloud(tgt_cloud);
+		//ne.setSearchSurface(tgt_cloud_loaded);
+		ne.compute(*tgt_normals);
+		ne.setInputCloud(src_cloud);
+		//ne.setSearchSurface(src_cloud_loaded);
+		ne.compute(*src_normals);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Normals estimated: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// ICP
+	pcl::PointCloud<pcl::PointXYZ>::Ptr icp_result(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Registering point clouds (ICP)..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
+		//pcl::IterativeClosestPointWithNormals<pcl::PointXYZ, pcl::PointXYZ> icp;
+		//pcl::IterativeClosestPointNonLinear<pcl::PointXYZ, pcl::PointXYZ> icp;
+		//icp.setMaximumIterations(50);
+		//icp.setTransformationEpsilon(1.0e-8);
+		//icp.setTransformationRotationEpsilon(1.0e-8);
+		//icp.setEuclideanFitnessEpsilon(1.0);
+		//icp.setMaxCorrespondenceDistance(5.0);  // 5m
+		//icp.setUseReciprocalCorrespondences(true);
+		icp.setInputSource(tgt_cloud);
+		icp.setInputTarget(src_cloud);
+		icp.align(*icp_result);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point clouds registered (ICP): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+
+		if (icp.hasConverged())
+		{
+			std::cout << "ICP has converged: score = " << icp.getFitnessScore() << std::endl;
+		}
+		else
+		{
+			std::cout << "ICP did not converge." << std::endl;
+		}
+	}
+
+	// GICP
+	pcl::PointCloud<pcl::PointXYZ>::Ptr gicp_result(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Registering point clouds (GICP)..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::GeneralizedIterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> gicp;
+		//pcl::GeneralizedIterativeClosestPoint6D gicp;
+		//gicp.setMaximumIterations(50);
+		//gicp.setTransformationEpsilon(1.0e-8);
+		//gicp.setTransformationRotationEpsilon(1.0e-8);
+		//gicp.setEuclideanFitnessEpsilon(1.0);
+		//gicp.setMaxCorrespondenceDistance(5.0);  // 5m
+		//gicp.setUseReciprocalCorrespondences(true);
+		gicp.setInputSource(tgt_cloud);
+		gicp.setInputTarget(src_cloud);
+		gicp.align(*gicp_result);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point clouds registered (GICP): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+
+		if (gicp.hasConverged())
+		{
+			std::cout << "GICP has converged: score = " << gicp.getFitnessScore() << std::endl;
+		}
+		else
+		{
+			std::cout << "GICP did not converge." << std::endl;
+		}
+	}
+
+	// Joint ICP
+	pcl::PointCloud<pcl::PointXYZ>::Ptr jicp_result(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Registering point clouds (Joint ICP)..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::JointIterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> jicp;
+		//jicp.setMaximumIterations(50);
+		//jicp.setTransformationEpsilon(1.0e-8);
+		//jicp.setTransformationRotationEpsilon(1.0e-8);
+		//jicp.setEuclideanFitnessEpsilon(1.0);
+		//jicp.setMaxCorrespondenceDistance(5.0);  // 5m
+		//jicp.setUseReciprocalCorrespondences(true);
+		jicp.addInputSource(tgt_cloud);
+		jicp.addInputTarget(src_cloud);
+		jicp.align(*jicp_result);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point clouds registered (Joint ICP): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+
+		if (jicp.hasConverged())
+		{
+			std::cout << "Joint ICP has converged: score = " << jicp.getFitnessScore() << std::endl;
+		}
+		else
+		{
+			std::cout << "Joint ICP did not converge." << std::endl;
+		}
+	}
+
+	// NDT
+	pcl::PointCloud<pcl::PointXYZ>::Ptr ndt_result(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Registering point clouds (NDT)..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt;
+		//ndt.setMaximumIterations(50);
+		//ndt.setTransformationEpsilon(1.0e-8);
+		//ndt.setTransformationRotationEpsilon(1.0e-8);
+		//ndt.setEuclideanFitnessEpsilon(1.0);
+		//ndt.setMaxCorrespondenceDistance(5.0);  // 5m
+		ndt.setInputSource(tgt_cloud);
+		ndt.setInputTarget(src_cloud);
+		ndt.align(*ndt_result);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point clouds registered (NDT): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+
+		if (ndt.hasConverged())
+		{
+			std::cout << "NDT has converged: score = " << ndt.getFitnessScore() << std::endl;
+		}
+		else
+		{
+			std::cout << "NDT did not converge." << std::endl;
+		}
+	}
+
+	// Visualize the results
+	visualize(tgt_cloud, src_cloud, icp_result);
+	visualize(tgt_cloud, src_cloud, gicp_result);
+	visualize(tgt_cloud, src_cloud, jicp_result);
+	visualize(tgt_cloud, src_cloud, ndt_result);
 }
 
 // REF [site] >>
@@ -1119,8 +1337,10 @@ void registration()
 {
 	//local::icp_registration_tutorial();
 	//local::icp_registration_example();
-	local::ndt_example();  // Not yet tested.
+	//local::ndt_example();  // Not yet tested.
 	//local::sample_consensus_prerejective_example();  // Not yet tested.
+
+	local::frame_to_frame_registration_test();  // ICP, GICP, JICP, NDT.
 
 	//local::correspondence_estimation_test();  // Not yet implemented.
 	//local::transformation_estimation_test();  // Not yet implemented.

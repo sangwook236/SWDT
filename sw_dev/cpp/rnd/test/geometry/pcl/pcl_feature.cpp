@@ -3,7 +3,12 @@
 #include <chrono>
 #include <iostream>
 #include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/approximate_voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/features/normal_3d_omp.h>
 #include <pcl/features/integral_image_normal.h>
@@ -11,10 +16,8 @@
 #include <pcl/features/pfh.h>
 #include <pcl/features/fpfh.h>
 #include <pcl/features/fpfh_omp.h>
-//#include <pcl/gpu/features/features.hpp>
+#include <pcl/gpu/features/features.hpp>
 #include <pcl/registration/transformation_estimation_svd.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/visualization/cloud_viewer.h>
 
 using namespace std::literals::chrono_literals;
 
@@ -171,6 +174,119 @@ void normal_estimation_using_integral_images_tutorial()
 	}
 }
 
+void normal_estimation_test()
+{
+	const std::string filepath("/path/to/sample.ply");
+
+	// Load point clouds
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_loaded(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Loading point cloud..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//if (pcl::io::loadPCDFile<pcl::PointXYZ>(filepath, *cloud_loaded) == -1)
+		if (pcl::io::loadPLYFile<pcl::PointXYZ>(filepath, *cloud_loaded) == -1)
+		{
+			std::cerr << "File not found, " << filepath << std::endl;
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point cloud loaded (#points = " << cloud_loaded->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+#if 1
+	// Downsample
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Downsampling..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::VoxelGrid<pcl::PointXYZ> sor;
+		//pcl::ApproximateVoxelGrid<pcl::PointXYZ> sor;
+		const float leaf_size(5.0f);
+		sor.setLeafSize(leaf_size, leaf_size, leaf_size);
+		sor.setInputCloud(cloud_loaded);
+		sor.filter(*cloud);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Downsampled (#points = " << cloud->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = cloud_loaded;
+#endif
+
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+
+	// Estimate normals
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
+	{
+		// NOTE [caution] >>
+		//	It is faster to compute normals for original point clouds than for their downsampled point clouds.
+		//	It is slower to use pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal>::setSearchSurface().
+
+		std::cout << "Estimating normals..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+		//ne.setKSearch(30);
+		ne.setRadiusSearch(5.0);
+		//ne.setSearchMethod(tree);
+		ne.setInputCloud(cloud);
+		//ne.setSearchSurface(cloud_loaded);
+		ne.compute(*normals);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Normals estimated: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Visualize
+	{
+#if 1
+		pcl::visualization::PCLVisualizer viewer("3D Viewer");
+#if 0
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location
+			0.0, 0.0, 0.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#elif 0
+		pcl::PointXYZ min_point, max_point;
+		pcl::getMinMax3D(*cloud, min_point, max_point);
+		std::cout << "Center point of registered point cloud = (" << (min_point.x + max_point.x) / 2 << ", " << (min_point.y + max_point.y) / 2 << ", " << (min_point.z + max_point.z) / 2 << ")." << std::endl;
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location.
+			(min_point.x + max_point.x) / 2.0, (min_point.y + max_point.y) / 2.0, (min_point.z + max_point.z) / 2.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera.
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#else
+		viewer.initCameraParameters();
+#endif
+		viewer.setBackgroundColor(0.5, 0.5, 0.5);
+		viewer.addCoordinateSystem(100.0);
+
+		//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cloud);
+		//viewer.addPointCloud<pcl::PointXYZ>(cloud, rgb, "Point Cloud");
+		viewer.addPointCloud<pcl::PointXYZ>(cloud, "Point Cloud");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, "Point Cloud");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0.5, 0, 0, "Point Cloud");
+		viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, normals, 100, 20.0f, "Normals");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 1, "Normals");
+
+		while (!viewer.wasStopped())
+		{
+			viewer.spinOnce(1);
+			//std::this_thread::sleep_for(1ms);
+		}
+#elif 0
+		pcl::visualization::CloudViewer viewer("Simple 3D Viewer");
+		viewer.showCloud(cloud, "Point Cloud");
+		while (!viewer.wasStopped());
+#else
+		// Visualize nothing
+#endif
+	}
+}
+
 // REF [site] >> https://github.com/otherlab/pcl/blob/master/examples/features/example_principal_curvatures_estimation.cpp
 void principal_curvature_estimation_example()
 {
@@ -320,11 +436,318 @@ void principal_curvature_estimation_example()
 	}
 }
 
-void principal_curvature_estimation_gpu_test()
+void principal_curvature_estimation_test()
 {
-	throw std::runtime_error("Not yet implemented");
+	const std::string filepath("/path/to/sample.ply");
 
-	//pcl::gpu::PrincipalCurvaturesEstimation principal_curvatures_estimation;  // Only for pcl::PointXYZ
+	// Load point clouds
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_loaded(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Loading point cloud..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//if (pcl::io::loadPCDFile<pcl::PointXYZ>(filepath, *cloud_loaded) == -1)
+		if (pcl::io::loadPLYFile<pcl::PointXYZ>(filepath, *cloud_loaded) == -1)
+		{
+			std::cerr << "File not found, " << filepath << std::endl;
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point cloud loaded (#points = " << cloud_loaded->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+#if 0
+	// Downsample
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Downsampling..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::VoxelGrid<pcl::PointXYZ> sor;
+		//pcl::ApproximateVoxelGrid<pcl::PointXYZ> sor;
+		const float leaf_size(5.0f);
+		sor.setLeafSize(leaf_size, leaf_size, leaf_size);
+		sor.setInputCloud(cloud_loaded);
+		sor.filter(*cloud);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Downsampled (#points = " << cloud->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = cloud_loaded;
+#endif
+
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+
+	// Estimate normals
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
+	{
+		// NOTE [caution] >>
+		//	It is faster to compute normals for original point clouds than for their downsampled point clouds.
+		//	It is slower to use pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal>::setSearchSurface().
+
+		std::cout << "Estimating normals..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
+		//ne.setKSearch(30);
+		ne.setRadiusSearch(5.0);
+		ne.setNumberOfThreads();
+		//ne.setSearchMethod(tree);
+		ne.setInputCloud(cloud);
+		//ne.setSearchSurface(cloud_loaded);
+		ne.compute(*normals);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Normals estimated: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Estimate principal curvatures
+	pcl::PointCloud<pcl::PrincipalCurvatures>::Ptr curvatures(new pcl::PointCloud<pcl::PrincipalCurvatures>);
+	{
+		std::cout << "Estimating principal curvatures..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::PrincipalCurvaturesEstimation<pcl::PointXYZ, pcl::Normal, pcl::PrincipalCurvatures> curvature_estimation;
+		//curvature_estimation.setKSearch(30);
+		curvature_estimation.setRadiusSearch(5.0);
+		//curvature_estimation.setSearchMethod(tree);
+		curvature_estimation.setInputCloud(cloud);
+		//curvature_estimation.setSearchSurface(cloud_loaded);
+		curvature_estimation.setInputNormals(normals);
+		curvature_estimation.compute(*curvatures);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Principal curvatures estimated (#curvatures = " << curvatures->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Visualize
+	{
+#if 1
+		pcl::visualization::PCLVisualizer viewer("3D Viewer");
+#if 0
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location
+			0.0, 0.0, 0.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#elif 0
+		pcl::PointXYZ min_point, max_point;
+		pcl::getMinMax3D(*cloud, min_point, max_point);
+		std::cout << "Center point of registered point cloud = (" << (min_point.x + max_point.x) / 2 << ", " << (min_point.y + max_point.y) / 2 << ", " << (min_point.z + max_point.z) / 2 << ")." << std::endl;
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location.
+			(min_point.x + max_point.x) / 2.0, (min_point.y + max_point.y) / 2.0, (min_point.z + max_point.z) / 2.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera.
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#else
+		viewer.initCameraParameters();
+#endif
+		viewer.setBackgroundColor(0.5, 0.5, 0.5);
+		viewer.addCoordinateSystem(100.0);
+
+		//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cloud);
+		//viewer.addPointCloud<pcl::PointXYZ>(cloud, rgb, "Point Cloud");
+		viewer.addPointCloud<pcl::PointXYZ>(cloud, "Point Cloud");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, "Point Cloud");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0.5, 0, 0, "Point Cloud");
+		viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, normals, 100, 20.0f, "Normals");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 1, "Normals");
+		viewer.addPointCloudPrincipalCurvatures<pcl::PointXYZ, pcl::Normal>(cloud, normals, curvatures, 60, 1.0, "Curvatures");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 1, 0, "Curvatures");
+
+		while (!viewer.wasStopped())
+		{
+			viewer.spinOnce(1);
+			//std::this_thread::sleep_for(1ms);
+		}
+#elif 0
+		pcl::visualization::CloudViewer viewer("Simple 3D Viewer");
+		viewer.showCloud(cloud, "Point Cloud");
+		while (!viewer.wasStopped());
+#else
+		// Visualize nothing
+#endif
+	}
+}
+
+void normal_and_principal_curvature_estimation_gpu_test()
+{
+	const std::string filepath("/path/to/sample.ply");
+
+	// Load point clouds
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_loaded(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Loading point cloud..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//if (pcl::io::loadPCDFile<pcl::PointXYZ>(filepath, *cloud_loaded) == -1)
+		if (pcl::io::loadPLYFile<pcl::PointXYZ>(filepath, *cloud_loaded) == -1)
+		{
+			std::cerr << "File not found, " << filepath << std::endl;
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point cloud loaded (#points = " << cloud_loaded->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+#if 0
+	// Downsample
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		std::cout << "Downsampling..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::VoxelGrid<pcl::PointXYZ> sor;
+		//pcl::ApproximateVoxelGrid<pcl::PointXYZ> sor;
+		const float leaf_size(5.0f);
+		sor.setLeafSize(leaf_size, leaf_size, leaf_size);
+		sor.setInputCloud(cloud_loaded);
+		sor.filter(*cloud);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Downsampled (#points = " << cloud->size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = cloud_loaded;
+#endif
+
+	// Upload to device
+	//pcl::gpu::DeviceArray<pcl::PointXYZ> cloud_device, cloud_loaded_device;
+	pcl::gpu::Feature::PointCloud cloud_device, cloud_loaded_device;
+
+	{
+		std::cout << "Uploading to device..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		cloud_device.upload(cloud->points);
+		//cloud_loaded_device.upload(cloud_loaded->points);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Uploaded to device: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Estimate normals
+	//pcl::gpu::DeviceArray<pcl::Normal> normals_device;  // Compile-time error
+	//pcl::gpu::DeviceArray<pcl::PointXYZ> normals_device;
+	pcl::gpu::Feature::Normals normals_device;
+	{
+		// NOTE [info] >>
+		//	GPU-based normal estimation doesn't compute curvatures in pcl::Normal
+		//	The estimated normals isn't visualized in pcl::visualization::PCLVisualizer
+
+		std::cout << "Estimating normals (GPU)..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::gpu::NormalEstimation ne;  // Only for pcl::PointXYZ
+		const double radius_search(5.0);
+		const int max_neighbors(30);
+		ne.setRadiusSearch(radius_search, max_neighbors);
+		ne.setInputCloud(cloud_device);
+		//ne.setSearchSurface(cloud_loaded_device);
+		ne.compute(normals_device);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Normals estimated (GPU): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Estimate principal curvatures
+	pcl::gpu::DeviceArray<pcl::PrincipalCurvatures> curvatures_device;
+	{
+		std::cout << "Estimating principal curvatures (GPU)..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::gpu::PrincipalCurvaturesEstimation curvature_estimation;  // Only for pcl::PointXYZ
+		const double search_radius(5.0);
+		const int max_neighbors(30);
+		curvature_estimation.setRadiusSearch(search_radius, max_neighbors);
+		curvature_estimation.setInputCloud(cloud_device);
+		//curvature_estimation.setSearchSurface(cloud_loaded_device);
+		curvature_estimation.setInputNormals(normals_device);
+		curvature_estimation.compute(curvatures_device);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Principal curvatures estimated (GPU) (#curvatures = " << curvatures_device.size() << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Download normals to host
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
+	{
+		pcl::PointCloud<pcl::PointXYZ> normals_xyz;
+		{
+			std::cout << "Downloading normals to host..." << std::endl;
+			const auto start_time(std::chrono::high_resolution_clock::now());
+			normals_device.download(normals_xyz.points);
+			const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+			std::cout << "Downloaded normals to host: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		}
+
+		// Map pcl::PointCloud<pcl::PointXYZ> to pcl::PointCloud<pcl::Normal>
+		std::cout << "Mapping pcl::PointCloud<pcl::PointXYZ> to pcl::PointCloud<pcl::Normal>..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+#if 1
+		pcl::copyPointCloud(normals_xyz, *normals);
+#else
+		tgt_normals->reserve(normals_xyz.size());
+		std::transform(normals_xyz.begin(), normals_xyz.end(), std::back_inserter(normals->points), [](const auto &val) -> auto {
+			return pcl::Normal(val.x, val.y, val.z);
+		});
+#endif
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Mapped pcl::PointCloud<pcl::PointXYZ> to pcl::PointCloud<pcl::Normal>: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Download curvatures to host
+	pcl::PointCloud<pcl::PrincipalCurvatures>::Ptr curvatures(new pcl::PointCloud<pcl::PrincipalCurvatures>);
+	{
+		std::cout << "Downloading curvatures to host..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		curvatures_device.download(curvatures->points);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Downloaded curvatures to host: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Visualize
+	{
+#if 1
+		pcl::visualization::PCLVisualizer viewer("3D Viewer");
+#if 0
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location
+			0.0, 0.0, 0.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#elif 0
+		pcl::PointXYZ min_point, max_point;
+		pcl::getMinMax3D(*cloud, min_point, max_point);
+		std::cout << "Center point of registered point cloud = (" << (min_point.x + max_point.x) / 2 << ", " << (min_point.y + max_point.y) / 2 << ", " << (min_point.z + max_point.z) / 2 << ")." << std::endl;
+		viewer.setCameraPosition(
+			0.0, 0.0, 1000.0,  // The coordinates of the camera location.
+			(min_point.x + max_point.x) / 2.0, (min_point.y + max_point.y) / 2.0, (min_point.z + max_point.z) / 2.0,  // The components of the view point of the camera
+			0.0, 1.0, 0.0  // The component of the view up direction of the camera.
+		);
+		viewer.setCameraFieldOfView(M_PI / 2.0);  // [rad]
+		viewer.setCameraClipDistances(1.0, 1000.0);
+#else
+		viewer.initCameraParameters();
+#endif
+		viewer.setBackgroundColor(0.5, 0.5, 0.5);
+		viewer.addCoordinateSystem(100.0);
+
+		//pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZ> rgb(cloud);
+		//viewer.addPointCloud<pcl::PointXYZ>(cloud, rgb, "Point Cloud");
+		viewer.addPointCloud<pcl::PointXYZ>(cloud, "Point Cloud");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2.0, "Point Cloud");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0.5, 0, 0, "Point Cloud");
+		viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, normals, 100, 20.0f, "Normals");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 1, "Normals");
+		viewer.addPointCloudPrincipalCurvatures<pcl::PointXYZ, pcl::Normal>(cloud, normals, curvatures, 60, 1.0, "Curvatures");
+		viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 1, 0, "Curvatures");
+
+		while (!viewer.wasStopped())
+		{
+			viewer.spinOnce(1);
+			//std::this_thread::sleep_for(1ms);
+		}
+#elif 0
+		pcl::visualization::CloudViewer viewer("Simple 3D Viewer");
+		viewer.showCloud(cloud, "Point Cloud");
+		while (!viewer.wasStopped());
+#else
+		// Visualize nothing
+#endif
+	}
 }
 
 // REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/pfh_estimation.html
@@ -752,9 +1175,12 @@ void feature()
 	//-----
 	//local::normal_estimation_tutorial();
 	//local::normal_estimation_using_integral_images_tutorial();
+	//local::normal_estimation_test();
 
-	local::principal_curvature_estimation_example();
-	//local::principal_curvature_estimation_gpu_test();  // Not yet implemented.
+	//local::principal_curvature_estimation_example();
+	local::principal_curvature_estimation_test();
+
+	//local::normal_and_principal_curvature_estimation_gpu_test();
 
 	// Point feature histograms (PFH) descriptor.
 	//local::pfh_estimation_tutorial();

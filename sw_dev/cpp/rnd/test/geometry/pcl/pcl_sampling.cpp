@@ -84,6 +84,7 @@ void subsampling_test()
 	const size_t num_points_to_sample(cloud->size() / 5);
 	const float grid_leaf_size(0.01f);
 	const double normal_search_radius(0.03);
+	const unsigned int num_bins_for_NSS(4);
 	//const double curvature_search_radius(0.03);
 	const double curvature_search_radius(0.003);  // Faster and more locally
 	const float invalid_curvature_threshold(1.0e-5f);
@@ -185,7 +186,7 @@ void subsampling_test()
 		pcl::NormalSpaceSampling<PointType, pcl::Normal> normal_space_sampling;
 		normal_space_sampling.setInputCloud(cloud);
 		normal_space_sampling.setNormals(normals);
-		normal_space_sampling.setBins(4, 4, 4);
+		normal_space_sampling.setBins(num_bins_for_NSS, num_bins_for_NSS, num_bins_for_NSS);
 		normal_space_sampling.setSample((unsigned int)num_points_to_sample);
 		normal_space_sampling.filter(*cloud_normal_space);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
