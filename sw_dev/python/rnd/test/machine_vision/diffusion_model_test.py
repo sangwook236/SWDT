@@ -684,6 +684,86 @@ def uni_diffuser_example() -> None:
 		final_prompt = sample.text[0]
 		print(final_prompt)
 
+# REF [site] >> https://huggingface.co/playgroundai
+def playground_example():
+	# Models:
+	#	playgroundai/playground-v1
+	#
+	#	playgroundai/playground-v2-256px-base
+	#	playgroundai/playground-v2-512px-base
+	#	playgroundai/playground-v2-1024px-aesthetic
+	#
+	#	playgroundai/playground-v2.5-1024px-aesthetic
+
+	# Install:
+	#	pip install diffusers torch accelerate transformers safetensors
+
+	import diffusers
+	import torch
+
+	if False:
+		pipe = diffusers.DiffusionPipeline.from_pretrained("playgroundai/playground-v1")
+
+		if torch.cuda.is_available():
+			pipe.to("cuda")
+
+		prompt = "An Astronaut in a jungle, photorealistic"
+		image  = pipe(prompt=prompt).images[0]
+
+		image.save("playground-v1.png")
+
+	if False:
+		pipe = diffusers.DiffusionPipeline.from_pretrained(
+			"playgroundai/playground-v2-256px-base",
+			torch_dtype=torch.float16,
+			use_safetensors=True,
+			add_watermarker=False,
+			variant="fp16",
+		)
+		pipe.to("cuda")
+
+		prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+		image = pipe(prompt=prompt, width=256, height=256).images[0]
+
+	if False:
+		pipe = diffusers.DiffusionPipeline.from_pretrained(
+			"playgroundai/playground-v2-512px-base",
+			torch_dtype=torch.float16,
+			use_safetensors=True,
+			add_watermarker=False,
+			variant="fp16",
+		)
+		pipe.to("cuda")
+
+		prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+		image = pipe(prompt=prompt, width=512, height=512).images[0]
+
+	if False:
+		pipe = diffusers.DiffusionPipeline.from_pretrained(
+			"playgroundai/playground-v2-1024px-aesthetic",
+			torch_dtype=torch.float16,
+			use_safetensors=True,
+			add_watermarker=False,
+			variant="fp16",
+		)
+		pipe.to("cuda")
+
+		prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+		image  = pipe(prompt=prompt, guidance_scale=3.0).images[0]
+
+	if True:
+		pipe = diffusers.DiffusionPipeline.from_pretrained(
+			"playgroundai/playground-v2.5-1024px-aesthetic",
+			torch_dtype=torch.float16,
+			variant="fp16",
+		).to("cuda")
+
+		# Optional: Use DPM++ 2M Karras scheduler for crisper fine details
+		#pipe.scheduler = diffusers.EDMDPMSolverMultistepScheduler()
+
+		prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+		image = pipe(prompt=prompt, num_inference_steps=50, guidance_scale=3).images[0]
+
 # REF [site] >> https://huggingface.co/Intel
 def ldm3d_example():
 	# Models:
@@ -773,9 +853,11 @@ def main():
 	#diffusers_dreambooth_training_example()  # DreamBooth. Not yet implemented
 
 	#compvis_example()  # Stable diffusion
-	stabilityai_example()  # Stable diffusion
+	#stabilityai_example()  # Stable diffusion
 
-	uni_diffuser_example()  # UniDiffuser
+	#uni_diffuser_example()  # UniDiffuser
+
+	playground_example()  # Playground v2 & v2.5
 
 	# 3D
 	#ldm3d_example()  # LDM3D

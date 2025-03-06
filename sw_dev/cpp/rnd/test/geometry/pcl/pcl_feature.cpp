@@ -614,8 +614,8 @@ void normal_and_principal_curvature_estimation_gpu_test()
 	{
 		std::cout << "Uploading to device..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		cloud_device.upload(cloud->points);
-		//cloud_loaded_device.upload(cloud_loaded->points);
+		cloud_device.upload(cloud->points);  // Allocates GPU memory once
+		//cloud_loaded_device.upload(cloud_loaded->points);  // Allocates GPU memory once
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Uploaded to device: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 	}
