@@ -7305,6 +7305,69 @@ def fast_example():
 		tokenizer.save_pretrained("<your_local_path>")
 		tokenizer.push_to_hub("YourUsername/my_new_tokenizer")
 
+# REF [site] >> https://huggingface.co/openvla
+def openvla_example():
+	# Models:
+	#	openvla/openvla-v01-7b
+	#	openvla/openvla-7b
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		# Install minimal dependencies (`torch`, `transformers`, `timm`, `tokenizers`, ...):
+		#	pip install -r https://raw.githubusercontent.com/openvla/openvla/main/requirements-min.txt
+
+		# Load Processor & VLA
+		processor = transformers.AutoProcessor.from_pretrained("openvla/openvla-7b", trust_remote_code=True)
+		vla = transformers.AutoModelForVision2Seq.from_pretrained(
+			"openvla/openvla-v01-7b",
+			attn_implementation="flash_attention_2",  # [Optional] Requires `flash_attn`
+			torch_dtype=torch.bfloat16, 
+			low_cpu_mem_usage=True, 
+			trust_remote_code=True
+		).to(device)
+
+		# Grab image input & format prompt (note inclusion of system prompt due to Vicuña base model)
+		image: Image.Image = get_from_camera(...)
+		system_prompt = (
+			"A chat between a curious user and an artificial intelligence assistant. "
+			"The assistant gives helpful, detailed, and polite answers to the user's questions."
+		)
+		prompt = f"{system_prompt} USER: What action should the robot take to {<INSTRUCTION>}? ASSISTANT:"
+
+		# Predict Action (7-DoF; un-normalize for BridgeV2)
+		inputs = processor(prompt, image).to(device, dtype=torch.bfloat16)
+		action = vla.predict_action(**inputs, unnorm_key="bridge_orig", do_sample=False)
+
+		# Execute...
+		robot.act(action, ...)
+
+	if True:
+		# Install minimal dependencies (`torch`, `transformers`, `timm`, `tokenizers`, ...):
+		#	pip install -r https://raw.githubusercontent.com/openvla/openvla/main/requirements-min.txt
+
+		# Load Processor & VLA
+		processor = transformers.AutoProcessor.from_pretrained("openvla/openvla-7b", trust_remote_code=True)
+		vla = transformers.AutoModelForVision2Seq.from_pretrained(
+			"openvla/openvla-7b",
+			attn_implementation="flash_attention_2",  # [Optional] Requires `flash_attn`
+			torch_dtype=torch.bfloat16, 
+			low_cpu_mem_usage=True, 
+			trust_remote_code=True
+		).to(device)
+
+		# Grab image input & format prompt
+		image: Image.Image = get_from_camera(...)
+		prompt = "In: What action should the robot take to {<INSTRUCTION>}?\nOut:"
+
+		# Predict Action (7-DoF; un-normalize for BridgeV2)
+		inputs = processor(prompt, image).to(device, dtype=torch.bfloat16)
+		action = vla.predict_action(**inputs, unnorm_key="bridge_orig", do_sample=False)
+
+		# Execute...
+		robot.act(action, ...)
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
 def layoutlmv2_example():
 	import datasets
@@ -9393,7 +9456,7 @@ def main():
 	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
 	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio. Not yet tested.
 	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL. Not yet tested.
-	deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3. Not yet tested.
+	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3. Not yet tested.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -9498,6 +9561,7 @@ def main():
 	# Vision-language-action.
 
 	#fast_example()  # FAST.
+	openvla_example()  # OpenVLA. Not yet completed.
 
 	#--------------------
 	# Document.
