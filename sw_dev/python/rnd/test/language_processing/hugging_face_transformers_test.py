@@ -3040,11 +3040,27 @@ def gemma_example():
 	#	google/gemma-2b-it.
 	#	google/gemma-7b.
 	#	google/gemma-7b-it.
+	#
+	#	google/gemma-2-2b
+	#	google/gemma-2-2b-it
+	#	google/gemma-2-2b-pytorch
+	#	google/gemma-2-2b-it-pytorch
+	#	google/gemma-2-9b
+	#	google/gemma-2-9b-it
+	#	google/gemma-2-9b-pytorch
+	#	google/gemma-2-9b-it-pytorch
+	#	google/gemma-2-27b
+	#	google/gemma-2-27b-it
+	#	google/gemma-2-27b-pytorch
+	#	google/gemma-2-27b-it-pytorch
+	#	google/gemma-2-9b-keras
+	#	google/gemma-2-instruct-9b-keras
+	#	google/gemma-2-27b-keras
 
-	model_id = "google/gemma-2b"
-
-	if True:
+	if False:
 		# Running the model on a CPU
+
+		model_id = "google/gemma-2b"
 
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
@@ -3055,8 +3071,10 @@ def gemma_example():
 		outputs = model.generate(input_ids)
 		print(tokenizer.decode(outputs[0]))
 
-	if True:
+	if False:
 		# Running the model on a single / multi GPU
+
+		model_id = "google/gemma-2b"
 
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 		if True:
@@ -3088,7 +3106,7 @@ def gemma_example():
 		outputs = model.generate(**input_ids)
 		print(tokenizer.decode(outputs[0]))
 
-	if True:
+	if False:
 		# Chat template
 
 		model_id = "gg-hf/gemma-2b-it"
@@ -3106,6 +3124,91 @@ def gemma_example():
 			{ "role": "user", "content": "Write a hello world program" },
 		]
 		prompt = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+
+	#------------------------------
+	if False:
+		# Running with the pipeline API
+
+		pipe = transformers.pipeline(
+			"text-generation",
+			model="google/gemma-2-2b",
+			device="cuda",  # replace with "mps" to run on a Mac device
+		)
+
+		text = "Once upon a time,"
+		outputs = pipe(text, max_new_tokens=256)
+		response = outputs[0]["generated_text"]
+		print(response)
+
+	if False:
+		# Running the model on a single / multi GPU
+
+		# Install:
+		#	pip install accelerate
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("google/gemma-2-2b")
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			"google/gemma-2-2b",
+			device_map="auto",
+		)
+
+		input_text = "Write me a poem about Machine Learning."
+		input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+		outputs = model.generate(**input_ids, max_new_tokens=32)
+		print(tokenizer.decode(outputs[0]))
+
+	if False:
+		# Running with the pipeline API
+
+		pipe = transformers.pipeline(
+			"text-generation",
+			model="google/gemma-2-2b-it",
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device="cuda",  # Replace with "mps" to run on a Mac device
+		)
+
+		messages = [
+			{"role": "user", "content": "Who are you? Please, answer in pirate-speak."},
+		]
+
+		outputs = pipe(messages, max_new_tokens=256)
+		assistant_response = outputs[0]["generated_text"][-1]["content"].strip()
+		print(assistant_response)
+		# Ahoy, matey! I be Gemma, a digital scallywag, a language-slingin' parrot of the digital seas. I be here to help ye with yer wordy woes, answer yer questions, and spin ye yarns of the digital world.  So, what be yer pleasure, eh? 🦜
+
+	if False:
+		# Running the model on a single / multi GPU
+
+		# Install:
+		#	pip install accelerate
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("google/gemma-2-2b-it")
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			"google/gemma-2-2b-it",
+			device_map="auto",
+			torch_dtype=torch.bfloat16,
+		)
+
+		if False:
+			input_text = "Write me a poem about Machine Learning."
+			input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+			outputs = model.generate(**input_ids, max_new_tokens=32)
+			print(tokenizer.decode(outputs[0]))
+		else:
+			# You can ensure the correct chat template is applied by using tokenizer.apply_chat_template as follows:
+
+			messages = [
+				{"role": "user", "content": "Write me a poem about Machine Learning."},
+			]
+			input_ids = tokenizer.apply_chat_template(messages, return_tensors="pt", return_dict=True).to("cuda")
+
+			outputs = model.generate(**input_ids, max_new_tokens=256)
+			print(tokenizer.decode(outputs[0]))
+
+	#------------------------------
+	if True:
 
 # REF [site] >> https://huggingface.co/google
 def data_gemma_example():
@@ -4563,11 +4666,17 @@ def code_llama_example():
 	for seq in sequences:
 		print(f"Result: {seq['generated_text']}")
 
+# REF [site] >> https://huggingface.co/google
+def code_gemma_example():
+	# Models:
+	#	google/codegemma-2b-pytorch
+	#	bigcode/starcoderplus.
+
 # REF [site] >> https://huggingface.co/bigcode
 def star_coder_example():
 	# Models:
-	#	bigcode/starcoder.
-	#	bigcode/starcoderplus.
+	#	bigcode/starcoder
+	#	bigcode/starcoderplus
 
 	checkpoint = "bigcode/starcoder"
 	device = "cuda"  # for GPU usage or "cpu" for CPU usage
@@ -6589,6 +6698,19 @@ def phi_3_vision_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/paligemma
 def pali_gemma_example():
+	# Models:
+	#	google/paligemma2-3b-pt-224
+	#	google/paligemma2-3b-pt-448
+	#	google/paligemma2-3b-pt-896
+	#	google/paligemma2-10b-pt-224
+	#	google/paligemma2-10b-pt-448
+	#	google/paligemma2-10b-pt-896
+	#	google/paligemma2-28b-pt-224
+	#	google/paligemma2-28b-pt-448
+	#	google/paligemma2-28b-pt-896
+	#	google/paligemma2-3b-ft-docci-448
+	#	google/paligemma2-10b-ft-docci-448
+
 	if True:
 		model_id = "google/paligemma-3b-mix-224"
 		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(model_id)
@@ -6623,7 +6745,7 @@ def pali_gemma_example():
 		# Accessing the model configuration
 		configuration = model.config
 
-	if True:
+	if False:
 		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained("google/PaliGemma-test-224px-hf")
 		processor = transformers.AutoProcessor.from_pretrained("google/PaliGemma-test-224px-hf")
 
@@ -6637,6 +6759,56 @@ def pali_gemma_example():
 		generate_ids = model.generate(**inputs, max_length=30)
 
 		processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+	#------------------------------
+	if True:
+		model_id = "google/paligemma2-3b-pt-224"
+		#model_id = "google/paligemma2-3b-pt-448"
+		#model_id = "google/paligemma2-3b-pt-896"
+		#model_id = "google/paligemma2-10b-pt-224"
+		#model_id = "google/paligemma2-10b-pt-448"
+		#model_id = "google/paligemma2-10b-pt-896"
+		#model_id = "google/paligemma2-28b-pt-224"
+		#model_id = "google/paligemma2-28b-pt-448"
+		#model_id = "google/paligemma2-28b-pt-896"
+
+		url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/tasks/car.jpg"
+		image = transformers.image_utils.load_image(url)
+
+		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto").eval()
+		processor = transformers.PaliGemmaProcessor.from_pretrained(model_id)
+
+		# Leaving the prompt blank for pre-trained models
+		prompt = ""
+		model_inputs = processor(text=prompt, images=image, return_tensors="pt").to(torch.bfloat16).to(model.device)
+		input_len = model_inputs["input_ids"].shape[-1]
+
+		with torch.inference_mode():
+			generation = model.generate(**model_inputs, max_new_tokens=100, do_sample=False)
+			generation = generation[0][input_len:]
+			decoded = processor.decode(generation, skip_special_tokens=True)
+			print(decoded)
+
+	if True:
+		model_id = "google/paligemma2-3b-ft-docci-448"
+		#model_id = "google/paligemma2-10b-ft-docci-448"
+
+		url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/tasks/car.jpg"
+		image = transformers.image_utils.load_image(url)
+
+		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto").eval()
+		processor = transformers.PaliGemmaProcessor.from_pretrained(model_id)
+
+		# Instruct the model to create a caption in English
+		prompt = "caption en"
+		model_inputs = processor(text=prompt, images=image, return_tensors="pt").to(torch.bfloat16).to(model.device)
+		input_len = model_inputs["input_ids"].shape[-1]
+
+		with torch.inference_mode():
+			generation = model.generate(**model_inputs, max_new_tokens=100, do_sample=False)
+			generation = generation[0][input_len:]
+			decoded = processor.decode(generation, skip_special_tokens=True)
+			print(decoded)
 
 # REF [site] >> https://huggingface.co/adept
 def fuyu_example():
@@ -9448,7 +9620,7 @@ def main():
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
-	#gemma_example()  # Gemma. Not yet tested.
+	#gemma_example()  # Gemma. Gemma 2, Gemma 3, Not yet tested.
 	#data_gemma_example()  # DataGemma. Not yet tested.
 	#open_elm_example()  # OpenELM. Not yet tested.
 	#aya_example()  # Aya. Not yet tested.
@@ -9482,6 +9654,7 @@ def main():
 	#codegen25_example()  # CodeGen2.5.
 	#codeparrot_example()  # CodeParrot.
 	#code_llama_example()  # Code Llama.
+	#code_gemma_example()  # CodeGemma.
 	#star_coder_example()  # StarCoder. Not yet tested.
 	#replit_example()  # Replit. Not yet tested.
 	#phi_example()  # phi-1, phi-1.5, & phi-2.
@@ -9531,7 +9704,7 @@ def main():
 	#openflamingo_example()  # OpenFlamingo.
 
 	#phi_3_vision_example()  # Phi-3-vision.
-	#pali_gemma_example()  # PaliGemma.
+	#pali_gemma_example()  # PaliGemma, PaliGemma 2.
 	#fuyu_example()  # Fuyu.
 	#pixtral_example()  # Pixtral. Not yet implemented.
 	#vila_example()  # VILA. Not yet implemented.
@@ -9561,7 +9734,7 @@ def main():
 	# Vision-language-action.
 
 	#fast_example()  # FAST.
-	openvla_example()  # OpenVLA. Not yet completed.
+	#openvla_example()  # OpenVLA. Not yet completed.
 
 	#--------------------
 	# Document.
