@@ -3056,6 +3056,15 @@ def gemma_example():
 	#	google/gemma-2-9b-keras
 	#	google/gemma-2-instruct-9b-keras
 	#	google/gemma-2-27b-keras
+	#
+	#	google/gemma-3-1b-it
+	#	google/gemma-3-1b-pt
+	#	google/gemma-3-4b-it
+	#	google/gemma-3-4b-pt
+	#	google/gemma-3-12b-it
+	#	google/gemma-3-12b-pt
+	#	google/gemma-3-27b-it
+	#	google/gemma-3-27b-pt
 
 	if False:
 		# Running the model on a CPU
@@ -3209,6 +3218,344 @@ def gemma_example():
 
 	#------------------------------
 	if True:
+		# Running with the pipeline API
+
+		model_id = "google/gemma-3-1b-it"
+
+		pipe = transformers.pipeline("text-generation", model=model_id, device="cuda", torch_dtype=torch.bfloat16)
+
+		messages = [
+			[
+				{
+					"role": "system",
+					"content": [{"type": "text", "text": "You are a helpful assistant."},]
+				},
+				{
+					"role": "user",
+					"content": [{"type": "text", "text": "Write a poem on Hugging Face, the company"},]
+				},
+			],
+		]
+
+		output = pipe(messages, max_new_tokens=50)
+
+	if True:
+		# Running the model on a single / multi GPU
+
+		model_id = "google/gemma-3-1b-it"
+
+		quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+		model = transformers.Gemma3ForCausalLM.from_pretrained(
+			model_id, quantization_config=quantization_config
+		).eval()
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		messages = [
+			[
+				{
+					"role": "system",
+					"content": [{"type": "text", "text": "You are a helpful assistant."},]
+				},
+				{
+					"role": "user",
+					"content": [{"type": "text", "text": "Write a poem on Hugging Face, the company"},]
+				},
+			],
+		]
+		inputs = tokenizer.apply_chat_template(
+			messages,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+		).to(model.device).to(torch.bfloat16)
+
+		with torch.inference_mode():
+			outputs = model.generate(**inputs, max_new_tokens=64)
+
+		outputs = tokenizer.batch_decode(outputs)
+		#print(outputs)
+
+	if True:
+		# Running with the pipeline API
+
+		model_id = "google/gemma-3-1b-pt"
+
+		pipe = transformers.pipeline("text-generation", model=model_id, device="cuda", torch_dtype=torch.bfloat16)
+		output = pipe("Eiffel tower is located in", max_new_tokens=50)
+		#print(output)
+
+	if True:
+		# Running the model on a single / multi GPU
+
+		model_id = "google/gemma-3-1b-pt"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.Gemma3ForCausalLM.from_pretrained(
+			model_id,
+			torch_dtype=torch.bfloat16,
+			device_map="auto"
+		)
+
+		prompt = "Eiffel tower is located in"
+		model_inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+		input_len = model_inputs["input_ids"].shape[-1]
+
+		with torch.inference_mode():
+			generation = model.generate(**model_inputs, max_new_tokens=50, do_sample=False)
+			generation = generation[0][input_len:]
+
+		decoded = tokenizer.decode(generation, skip_special_tokens=True)
+		print(decoded)
+
+	if True:
+		# Running with the pipeline API
+
+		model_id = "google/gemma-3-4b-it"
+		#model_id = "google/gemma-3-12b-it"
+		#model_id = "google/gemma-3-27b-it"
+
+		pipe = transformers.pipeline(
+			"image-text-to-text",
+			model=model_id,
+			device="cuda",
+			torch_dtype=torch.bfloat16
+		)
+
+		messages = [
+			{
+				"role": "system",
+				"content": [{"type": "text", "text": "You are a helpful assistant."}]
+			},
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy.JPG"},
+					{"type": "text", "text": "What animal is on the candy?"}
+				]
+			}
+		]
+
+		output = pipe(text=messages, max_new_tokens=200)
+		print(output[0][0]["generated_text"][-1]["content"])
+		# Okay, let's take a look! 
+		# Based on the image, the animal on the candy is a **turtle**. 
+		# You can see the shell shape and the head and legs.
+
+	if True:
+		# Running the model on a single/multi GPU
+
+		# Install:
+		#	pip install accelerate
+
+		model_id = "google/gemma-3-4b-it"
+		#model_id = "google/gemma-3-12b-it"
+		#model_id = "google/gemma-3-27b-it"
+
+		model = transformers.Gemma3ForConditionalGeneration.from_pretrained(
+			model_id, device_map="auto"
+		).eval()
+
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		messages = [
+			{
+				"role": "system",
+				"content": [{"type": "text", "text": "You are a helpful assistant."}]
+			},
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "image": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg"},
+					{"type": "text", "text": "Describe this image in detail."}
+				]
+			}
+		]
+
+		inputs = processor.apply_chat_template(
+			messages, add_generation_prompt=True, tokenize=True,
+			return_dict=True, return_tensors="pt"
+		).to(model.device, dtype=torch.bfloat16)
+
+		input_len = inputs["input_ids"].shape[-1]
+
+		with torch.inference_mode():
+			generation = model.generate(**inputs, max_new_tokens=100, do_sample=False)
+			generation = generation[0][input_len:]
+
+		decoded = processor.decode(generation, skip_special_tokens=True)
+		print(decoded)
+
+		# **Overall Impression:** The image is a close-up shot of a vibrant garden scene, 
+		# focusing on a cluster of pink cosmos flowers and a busy bumblebee. 
+		# It has a slightly soft, natural feel, likely captured in daylight.
+
+	if True:
+		# Running with the pipeline API
+
+		model_id = "google/gemma-3-4b-pt"
+		#model_id = "google/gemma-3-12b-pt"
+		#model_id = "google/gemma-3-27b-pt"
+
+		pipe = transformers.pipeline(
+			"image-text-to-text",
+			model=model_id,
+			device="cuda",
+			torch_dtype=torch.bfloat16
+		)
+
+		output = pipe(
+			"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg",
+			text="<start_of_image> in this image, there is"
+		)
+
+		print(output)
+		# [{'input_text': '<start_of_image> in this image, there is',
+		# 'generated_text': '<start_of_image> in this image, there is a bumblebee on a pink flower.\n\n'}]
+
+	if True:
+		# Running the model on a single/multi GPU
+
+		# Install:
+		#	pip install accelerate
+
+		model_id = "google/gemma-3-4b-pt"
+		#model_id = "google/gemma-3-12b-pt"
+		#model_id = "google/gemma-3-27b-pt"
+
+		url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		model = transformers.Gemma3ForConditionalGeneration.from_pretrained(model_id).eval()
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		prompt = "<start_of_image> in this image, there is"
+		model_inputs = processor(text=prompt, images=image, return_tensors="pt")
+
+		input_len = model_inputs["input_ids"].shape[-1]
+
+		with torch.inference_mode():
+			generation = model.generate(**model_inputs, max_new_tokens=100, do_sample=False)
+			generation = generation[0][input_len:]
+
+		decoded = processor.decode(generation, skip_special_tokens=True)
+		print(decoded)
+
+# REF [site] >> https://huggingface.co/google
+def shield_gemma_example():
+	# Models:
+	#	google/shieldgemma-2b
+	#	google/shieldgemma-9b
+	#	google/shieldgemma-27b
+	#
+	#	google/shieldgemma-2-4b-it
+
+	if False:
+		# Running the model on a single / multi GPU (and compute scores)
+
+		model_id = "google/shieldgemma-2b"
+		#model_id = "google/shieldgemma-9b"
+		#model_id = "google/shieldgemma-27b"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="auto",
+			torch_dtype=torch.bfloat16,
+		)
+
+		# Format the prompt
+		user_prompt = "Create 20 paraphrases of I hate you"
+		safety_policy = """
+* "No Harassment": The prompt shall not contain or seek generation of content that is malicious, intimidating, bullying, or abusive content targeting another individual (e.g., physical threats, denial of tragic events, disparaging victims of violence).
+"""
+		prompt = f"""You are a policy expert trying to help determine whether a user
+prompt is in violation of the defined safety policies.
+
+<start_of_turn>
+Human Question: {user_prompt.strip()}
+<end_of_turn>
+
+Our safety principle is defined in the below:
+
+{safety_policy.strip()}
+
+Does the human question violate the above principle? Your answer must start
+with 'Yes' or 'No'. And then walk through step by step to be sure we answer
+correctly.
+"""
+
+		inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		# Extract the logits for the Yes and No tokens
+		vocab = tokenizer.get_vocab()
+		selected_logits = logits[0, -1, [vocab["Yes"], vocab["No"]]]
+
+		# Convert these logits to a probability with softmax
+		probabilities = torch.nn.functional.softmax(selected_logits, dim=0)
+
+		# Return probability of 'Yes'
+		score = probabilities[0].item()
+		print(score)  # 0.7310585379600525
+
+	if False:
+		# Usage with chat templates
+
+		model_id = "google/shieldgemma-2b"
+		#model_id = "google/shieldgemma-9b"
+		#model_id = "google/shieldgemma-27b"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="auto",
+			torch_dtype=torch.bfloat16,
+		)
+
+		chat = [{"role": "user", "content": "Create 20 paraphrases of I hate you"}]
+
+		guideline = "\"No Harassment\": The prompt shall not contain or seek generation of content that is malicious, intimidating, bullying, or abusive content targeting another individual (e.g., physical threats, denial of tragic events, disparaging victims of violence)."
+		inputs = tokenizer.apply_chat_template(chat, guideline=guideline, return_tensors="pt", return_dict=True).to(model.device)
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		# Extract the logits for the Yes and No tokens
+		vocab = tokenizer.get_vocab()
+		selected_logits = logits[0, -1, [vocab["Yes"], vocab["No"]]]
+
+		# Convert these logits to a probability with softmax
+		probabilities = torch.softmax(selected_logits, dim=0)
+
+		# Return probability of 'Yes'
+		score = probabilities[0].item()
+		print(score)
+
+	#------------------------------
+	if True:
+		# Running the model on a single/multi GPU
+
+		# Install:
+		#	pip install accelerate
+
+		model_id = "google/shieldgemma-2-4b-it"
+
+		url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		model = transformers.ShieldGemmaForImageClassification.from_pretrained(model_id).eval()
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		model_inputs = processor(images=[image], return_tensors="pt")
+
+		with torch.inference_mode():
+			scores = model(**model_inputs)
+
+		print(scores.probabilities)
 
 # REF [site] >> https://huggingface.co/google
 def data_gemma_example():
@@ -6711,7 +7058,7 @@ def pali_gemma_example():
 	#	google/paligemma2-3b-ft-docci-448
 	#	google/paligemma2-10b-ft-docci-448
 
-	if True:
+	if False:
 		model_id = "google/paligemma-3b-mix-224"
 		model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(model_id)
 		processor = transformers.AutoProcessor.from_pretrained(model_id)
@@ -9620,7 +9967,8 @@ def main():
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
-	#gemma_example()  # Gemma. Gemma 2, Gemma 3, Not yet tested.
+	gemma_example()  # Gemma, Gemma 2, Gemma 3, Not yet tested.
+	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2. Not yet tested.
 	#data_gemma_example()  # DataGemma. Not yet tested.
 	#open_elm_example()  # OpenELM. Not yet tested.
 	#aya_example()  # Aya. Not yet tested.
