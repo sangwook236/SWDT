@@ -325,6 +325,7 @@ void principal_curvature_estimation_example()
 		normal_estimation.setInputCloud(cloud);
 		normal_estimation.setSearchMethod(tree);
 		normal_estimation.setRadiusSearch(0.03);
+		//normal_estimation.setKSearch(20);
 		normal_estimation.compute(*cloud_with_normal);
 
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);

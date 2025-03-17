@@ -573,22 +573,41 @@ void sample_consensus_prerejective_example()
 	}
 }
 
-void visualize(const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1, const pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2, const pcl::PointCloud<pcl::PointXYZ>::Ptr result)
+void visualize_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr tgt_cloud, const pcl::PointCloud<pcl::PointXYZ>::Ptr src_cloud, const pcl::PointCloud<pcl::PointXYZ>::Ptr third_cloud = nullptr, pcl::CorrespondencesPtr correspondences = nullptr, const std::string &viewer_name = "Point Cloud Registration Viewer")
 {
-	pcl::visualization::PCLVisualizer viewer("Point Cloud Registration");
+	if (nullptr == tgt_cloud || !tgt_cloud)
+	{
+		std::cerr << "Invalid target point clouds." << std::endl;
+		return;
+	}
+	if (nullptr == src_cloud || !src_cloud)
+	{
+		std::cerr << "Invalid source point clouds." << std::endl;
+		return;
+	}
 
-	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> source_color(cloud1, 255, 0, 0);
-	viewer.addPointCloud(cloud1, source_color, "Source Cloud");
-
-	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> target_color(cloud2, 0, 255, 0);
-	viewer.addPointCloud(cloud2, target_color, "Target Cloud");
-
-	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> result_color(result, 0, 0, 255);
-	viewer.addPointCloud(result, result_color, "Result Cloud");
-
+	pcl::visualization::PCLVisualizer viewer(viewer_name);
+	viewer.setBackgroundColor(0.5, 0.5, 0.5);
 	viewer.addCoordinateSystem(100.0);
 	viewer.initCameraParameters();
-	viewer.setBackgroundColor(0, 0, 0);
+
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> tgt_color(tgt_cloud, 255, 0, 0);
+	viewer.addPointCloud(tgt_cloud, tgt_color, "Target Cloud");
+
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> src_color(src_cloud, 0, 255, 0);
+	viewer.addPointCloud(src_cloud, src_color, "Source Cloud");
+
+	if (nullptr != third_cloud && !!third_cloud)
+	{
+		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> third_color(third_cloud, 0, 0, 255);
+		viewer.addPointCloud(third_cloud, third_color, "3rd Cloud");
+	}
+
+	if (nullptr != correspondences && !!correspondences && nullptr != tgt_cloud && !!tgt_cloud && nullptr != src_cloud && !!src_cloud)
+	{
+		viewer.addCorrespondences<pcl::PointXYZ>(src_cloud, tgt_cloud, *correspondences, 1, "Correspondences");
+		//viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 1, 0, 1, "Correspondences");  // Runtime error: [setPointCloudRenderingProperties] Could not find any PointCloud datasets with id <Correspondences>!
+	}
 
 	while (!viewer.wasStopped())
 	{
@@ -658,8 +677,10 @@ void frame_to_frame_registration_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		//pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
-		const double radius_search(5.0);
-		ne.setRadiusSearch(radius_search);
+		ne.setRadiusSearch(5.0);
+		//ne.setKSearch(20);
+		//pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+		//norm_est.setSearchMethod(tree);
 		ne.setInputCloud(tgt_cloud);
 		//ne.setSearchSurface(tgt_cloud_loaded);
 		ne.compute(*tgt_normals);
@@ -671,28 +692,33 @@ void frame_to_frame_registration_test()
 	}
 
 	// ICP
-	pcl::PointCloud<pcl::PointXYZ>::Ptr icp_result(new pcl::PointCloud<pcl::PointXYZ>);
 	{
 		std::cout << "Registering point clouds (ICP)..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
 		//pcl::IterativeClosestPointWithNormals<pcl::PointXYZ, pcl::PointXYZ> icp;
 		//pcl::IterativeClosestPointNonLinear<pcl::PointXYZ, pcl::PointXYZ> icp;
+		//icp.setMaxCorrespondenceDistance(5.0);  // [m]
 		//icp.setMaximumIterations(50);
+		//icp.setUseReciprocalCorrespondences(true);
+		//icp.setEuclideanFitnessEpsilon(1.0);
 		//icp.setTransformationEpsilon(1.0e-8);
 		//icp.setTransformationRotationEpsilon(1.0e-8);
-		//icp.setEuclideanFitnessEpsilon(1.0);
-		//icp.setMaxCorrespondenceDistance(5.0);  // 5m
-		//icp.setUseReciprocalCorrespondences(true);
-		icp.setInputSource(tgt_cloud);
-		icp.setInputTarget(src_cloud);
-		icp.align(*icp_result);
+		//icp.setCorrespondenceEstimation(correspodence_est);
+		//icp.addCorrespondenceRejector(correspodence_rej);
+		icp.setInputTarget(tgt_cloud);
+		icp.setInputSource(src_cloud);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr icp_result(new pcl::PointCloud<pcl::PointXYZ>);
+		icp.align(*icp_result);  // Source registered to target
+		//icp.align(*icp_result, Eigen::Matrix4f::Identity());  // Source registered to target
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Point clouds registered (ICP): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 
 		if (icp.hasConverged())
 		{
 			std::cout << "ICP has converged: score = " << icp.getFitnessScore() << std::endl;
+			visualize_registration(tgt_cloud, icp_result, src_cloud, icp.correspondences_);
+			//visualize_registration(tgt_cloud, icp_result, nullptr, icp.correspondences_);
 		}
 		else
 		{
@@ -701,27 +727,32 @@ void frame_to_frame_registration_test()
 	}
 
 	// GICP
-	pcl::PointCloud<pcl::PointXYZ>::Ptr gicp_result(new pcl::PointCloud<pcl::PointXYZ>);
 	{
 		std::cout << "Registering point clouds (GICP)..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::GeneralizedIterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> gicp;
 		//pcl::GeneralizedIterativeClosestPoint6D gicp;
+		//gicp.setMaxCorrespondenceDistance(5.0);  // [m]
 		//gicp.setMaximumIterations(50);
+		//gicp.setUseReciprocalCorrespondences(true);
+		//gicp.setEuclideanFitnessEpsilon(1.0);
 		//gicp.setTransformationEpsilon(1.0e-8);
 		//gicp.setTransformationRotationEpsilon(1.0e-8);
-		//gicp.setEuclideanFitnessEpsilon(1.0);
-		//gicp.setMaxCorrespondenceDistance(5.0);  // 5m
-		//gicp.setUseReciprocalCorrespondences(true);
-		gicp.setInputSource(tgt_cloud);
-		gicp.setInputTarget(src_cloud);
-		gicp.align(*gicp_result);
+		//gicp.setCorrespondenceEstimation(correspodence_est);
+		//gicp.addCorrespondenceRejector(correspodence_rej);
+		gicp.setInputTarget(tgt_cloud);
+		gicp.setInputSource(src_cloud);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr gicp_result(new pcl::PointCloud<pcl::PointXYZ>);
+		gicp.align(*gicp_result);  // Source registered to target
+		//gicp.align(*gicp_result, Eigen::Matrix4f::Identity());  // Source registered to target
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Point clouds registered (GICP): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 
 		if (gicp.hasConverged())
 		{
 			std::cout << "GICP has converged: score = " << gicp.getFitnessScore() << std::endl;
+			visualize_registration(tgt_cloud, gicp_result, src_cloud, gicp.correspondences_);
+			//visualize_registration(tgt_cloud, gicp_result, nullptr, gicp.correspondences_);
 		}
 		else
 		{
@@ -730,26 +761,31 @@ void frame_to_frame_registration_test()
 	}
 
 	// Joint ICP
-	pcl::PointCloud<pcl::PointXYZ>::Ptr jicp_result(new pcl::PointCloud<pcl::PointXYZ>);
 	{
 		std::cout << "Registering point clouds (Joint ICP)..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::JointIterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> jicp;
+		//jicp.setMaxCorrespondenceDistance(5.0);  // [m]
 		//jicp.setMaximumIterations(50);
+		//jicp.setUseReciprocalCorrespondences(true);
+		//jicp.setEuclideanFitnessEpsilon(1.0);
 		//jicp.setTransformationEpsilon(1.0e-8);
 		//jicp.setTransformationRotationEpsilon(1.0e-8);
-		//jicp.setEuclideanFitnessEpsilon(1.0);
-		//jicp.setMaxCorrespondenceDistance(5.0);  // 5m
-		//jicp.setUseReciprocalCorrespondences(true);
-		jicp.addInputSource(tgt_cloud);
-		jicp.addInputTarget(src_cloud);
-		jicp.align(*jicp_result);
+		//jicp.setCorrespondenceEstimation(correspodence_est);
+		//jicp.addCorrespondenceRejector(correspodence_rej);
+		jicp.setInputTarget(tgt_cloud);
+		jicp.setInputSource(src_cloud);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr jicp_result(new pcl::PointCloud<pcl::PointXYZ>);
+		jicp.align(*jicp_result);  // Source registered to target
+		//jicp.align(*jicp_result, Eigen::Matrix4f::Identity());  // Source registered to target
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Point clouds registered (Joint ICP): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 
 		if (jicp.hasConverged())
 		{
 			std::cout << "Joint ICP has converged: score = " << jicp.getFitnessScore() << std::endl;
+			visualize_registration(tgt_cloud, jicp_result, src_cloud, jicp.correspondences_);
+			//visualize_registration(tgt_cloud, jicp_result, nullptr, jicp.correspondences_);
 		}
 		else
 		{
@@ -758,37 +794,36 @@ void frame_to_frame_registration_test()
 	}
 
 	// NDT
-	pcl::PointCloud<pcl::PointXYZ>::Ptr ndt_result(new pcl::PointCloud<pcl::PointXYZ>);
 	{
 		std::cout << "Registering point clouds (NDT)..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt;
+		//ndt.setMaxCorrespondenceDistance(5.0);  // [m]
 		//ndt.setMaximumIterations(50);
+		//ndt.setEuclideanFitnessEpsilon(1.0);
 		//ndt.setTransformationEpsilon(1.0e-8);
 		//ndt.setTransformationRotationEpsilon(1.0e-8);
-		//ndt.setEuclideanFitnessEpsilon(1.0);
-		//ndt.setMaxCorrespondenceDistance(5.0);  // 5m
-		ndt.setInputSource(tgt_cloud);
-		ndt.setInputTarget(src_cloud);
-		ndt.align(*ndt_result);
+		//ndt.setCorrespondenceEstimation(correspodence_est);
+		//ndt.addCorrespondenceRejector(correspodence_rej);
+		ndt.setInputTarget(tgt_cloud);
+		ndt.setInputSource(src_cloud);
+		pcl::PointCloud<pcl::PointXYZ>::Ptr ndt_result(new pcl::PointCloud<pcl::PointXYZ>);
+		ndt.align(*ndt_result);  // Source registered to target
+		//ndt.align(*ndt_result, Eigen::Matrix4f::Identity());  // Source registered to target
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Point clouds registered (NDT): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 
 		if (ndt.hasConverged())
 		{
 			std::cout << "NDT has converged: score = " << ndt.getFitnessScore() << std::endl;
+			visualize_registration(tgt_cloud, ndt_result, src_cloud, nullptr);
+			//visualize_registration(tgt_cloud, ndt_result, nullptr, nullptr);
 		}
 		else
 		{
 			std::cout << "NDT did not converge." << std::endl;
 		}
 	}
-
-	// Visualize the results
-	visualize(tgt_cloud, src_cloud, icp_result);
-	visualize(tgt_cloud, src_cloud, gicp_result);
-	visualize(tgt_cloud, src_cloud, jicp_result);
-	visualize(tgt_cloud, src_cloud, ndt_result);
 }
 
 // REF [site] >>

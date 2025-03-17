@@ -2,3 +2,12 @@
 	- Site.
 		http://meshlab.sourceforge.net/
 		https://github.com/cnr-isti-vclab/meshlab
+
+[-] Building (CMake).
+	- Build from source.
+		Qt5 is required for version MeshLab-2023.12
+
+		Configure.
+			(Optional) Set MESHLAB_BUILD_ONLY_LIBRARIES to ON.
+		Generate.
+		Build.

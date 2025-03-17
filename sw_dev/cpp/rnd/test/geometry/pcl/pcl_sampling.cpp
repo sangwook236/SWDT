@@ -98,10 +98,10 @@ void subsampling_test()
 		//pcl::NormalEstimation<PointType, pcl::Normal> normal_estimation;
 		pcl::NormalEstimationOMP<PointType, pcl::Normal> normal_estimation;
 		//pcl::gpu::NormalEstimation normal_estimation;  // Only for pcl::PointXYZ
+		normal_estimation.setRadiusSearch(normal_search_radius);
+		//normal_estimation.setKSearch(normal_search_k);
 		normal_estimation.setSearchMethod(tree);
 		normal_estimation.setInputCloud(cloud);
-		//normal_estimation.setKSearch(normal_search_k);
-		normal_estimation.setRadiusSearch(normal_search_radius);
 		normal_estimation.compute(*normals);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Normals estimated: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -112,8 +112,8 @@ void subsampling_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::PointCloud<PointType>::Ptr cloud_voxelgrid(new pcl::PointCloud<PointType>);
 		pcl::VoxelGrid<PointType> sor;
-		sor.setInputCloud(cloud);
 		sor.setLeafSize(grid_leaf_size, grid_leaf_size, grid_leaf_size);
+		sor.setInputCloud(cloud);
 		sor.filter(*cloud_voxelgrid);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Downsampled using VoxelGrid (" << cloud_voxelgrid->size() << " points, " << pcl::getFieldsList(*cloud_voxelgrid) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -130,8 +130,8 @@ void subsampling_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::PointCloud<PointType>::Ptr cloud_uniform(new pcl::PointCloud<PointType>);
 		pcl::UniformSampling<PointType> uniform_sampling;
-		uniform_sampling.setInputCloud(cloud);
 		uniform_sampling.setRadiusSearch(grid_leaf_size);
+		uniform_sampling.setInputCloud(cloud);
 		uniform_sampling.filter(*cloud_uniform);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Uniform subsampling done (" << cloud_uniform->size() << " points, " << pcl::getFieldsList(*cloud_uniform) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -148,8 +148,8 @@ void subsampling_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::PointCloud<PointType>::Ptr cloud_random(new pcl::PointCloud<PointType>);
 		pcl::RandomSample<PointType> random_sample;
-		random_sample.setInputCloud(cloud);
 		random_sample.setSample((unsigned int)num_points_to_sample);
+		random_sample.setInputCloud(cloud);
 		random_sample.filter(*cloud_random);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Random subsampling done (" << cloud_random->size() << " points, " << pcl::getFieldsList(*cloud_random) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -166,8 +166,8 @@ void subsampling_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::PointCloud<PointType>::Ptr cloud_farthest(new pcl::PointCloud<PointType>);
 		pcl::FarthestPointSampling<PointType> farthest_point_sampling;
-		farthest_point_sampling.setInputCloud(cloud);
 		farthest_point_sampling.setSample(num_points_to_sample);
+		farthest_point_sampling.setInputCloud(cloud);
 		farthest_point_sampling.filter(*cloud_farthest);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Farthest point subsampling done (" << cloud_farthest->size() << " points, " << pcl::getFieldsList(*cloud_farthest) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -184,10 +184,10 @@ void subsampling_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::PointCloud<PointType>::Ptr cloud_normal_space(new pcl::PointCloud<PointType>);
 		pcl::NormalSpaceSampling<PointType, pcl::Normal> normal_space_sampling;
-		normal_space_sampling.setInputCloud(cloud);
-		normal_space_sampling.setNormals(normals);
 		normal_space_sampling.setBins(num_bins_for_NSS, num_bins_for_NSS, num_bins_for_NSS);
 		normal_space_sampling.setSample((unsigned int)num_points_to_sample);
+		normal_space_sampling.setInputCloud(cloud);
+		normal_space_sampling.setNormals(normals);
 		normal_space_sampling.filter(*cloud_normal_space);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Normal-space subsampling done (" << cloud_normal_space->size() << " points, " << pcl::getFieldsList(*cloud_normal_space) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -204,9 +204,9 @@ void subsampling_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::PointCloud<PointType>::Ptr cloud_covariance(new pcl::PointCloud<PointType>);
 		pcl::CovarianceSampling<PointType, pcl::Normal> covariance_sampling;
+		covariance_sampling.setNumberOfSamples((unsigned int)num_points_to_sample);
 		covariance_sampling.setInputCloud(cloud);
 		covariance_sampling.setNormals(normals);
-		covariance_sampling.setNumberOfSamples((unsigned int)num_points_to_sample);
 		covariance_sampling.filter(*cloud_covariance);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Covariance subsampling done (" << cloud_covariance->size() << " points, " << pcl::getFieldsList(*cloud_covariance) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
@@ -224,11 +224,11 @@ void subsampling_test()
 		pcl::PointCloud<pcl::PrincipalCurvatures>::Ptr curvatures(new pcl::PointCloud<pcl::PrincipalCurvatures>);
 		pcl::PrincipalCurvaturesEstimation<PointType, pcl::Normal, pcl::PrincipalCurvatures> curvature_estimation;
 		//pcl::gpu::PrincipalCurvaturesEstimation curvature_estimation;  // Only for pcl::PointXYZ
+		curvature_estimation.setRadiusSearch(curvature_search_radius);
+		//curvature_estimation.setKSearch(curvature_search_k);
 		curvature_estimation.setSearchMethod(tree);
 		curvature_estimation.setInputCloud(cloud);
 		curvature_estimation.setInputNormals(normals);
-		//curvature_estimation.setKSearch(curvature_search_k);
-		curvature_estimation.setRadiusSearch(curvature_search_radius);
 		curvature_estimation.compute(*curvatures);
 
 		const auto num_curvatures(curvatures->size());
