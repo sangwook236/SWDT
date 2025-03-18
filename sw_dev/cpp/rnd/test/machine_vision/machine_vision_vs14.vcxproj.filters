@@ -96,9 +96,6 @@
     <ClCompile Include="opencv\opencv_feature_extraction_and_matching_by_signature.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_using_gpu.cpp">
-      <Filter>Source Files\opencv</Filter>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_fourier_transform.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>

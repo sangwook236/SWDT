@@ -1,15 +1,23 @@
 //#include "stdafx.h"
-#define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/xfeatures2d.hpp>
-#include <opencv2/opencv.hpp>
-#include <iostream>
+#include <stdexcept>
+#include <chrono>
+#include <algorithm>
+#include <vector>
 #include <list>
+#include <iostream>
+#define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/opencv.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/xfeatures2d/cuda.hpp>
+#include <opencv2/cudafeature2d.hpp>
 
 #if 0
-#define DRAW_RICH_KEYPOINTS_MODE     0
-#define DRAW_OUTLIERS_MODE           0
+#define DRAW_RICH_KEYPOINTS_MODE	0
+#define DRAW_OUTLIERS_MODE			0
 #endif
 
+
+using namespace std::literals::chrono_literals;
 
 namespace {
 namespace local {
@@ -42,7 +50,6 @@ void crossCheckMatching(const cv::Ptr<cv::DescriptorMatcher> &matcher, const cv:
 		}
 	}
 }
-
 
 #if 0
 void feature_extraction_and_matching()
@@ -404,7 +411,7 @@ void feature_extraction_and_matching()
 		H1to2 = cv::findHomography(cv::Mat(points1), cv::Mat(points2), cv::RANSAC, ransacReprojThreshold);
 		//H1to2 = cv::findHomography(cv::Mat(points1), cv::Mat(points2), cv::RHO, ransacReprojThreshold);
 
-		//std::cout << "Homograph = " << H1to2 << std::endl;
+		//std::cout << "Homography = " << H1to2 << std::endl;
 
 		// Warp image.
 		cv::warpPerspective(rgb1, img_warped, H1to2, cv::Size(300, 300), cv::INTER_LINEAR, cv::BORDER_CONSTANT, cv::Scalar());
@@ -784,6 +791,447 @@ void kaze_match_test2()
 	cv::waitKey();
 }
 
+void surf_gpu_test()
+{
+	const std::string image_filepath1("../data/machine_vision/opencv/box.png");
+	const std::string image_filepath2("../data/machine_vision/opencv/box_in_scene.png");
+
+	cv::Mat gray1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
+	if (gray1.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath1 << std::endl;
+		return;
+	}
+	cv::Mat gray2(cv::imread(image_filepath2, cv::IMREAD_GRAYSCALE));
+	if (gray2.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
+		return;
+	}
+
+	//--------------------
+	// Upload to GPU
+	cv::cuda::GpuMat gray1_gpu, gray2_gpu;
+	{
+		std::cout << "Uploading data to GPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		gray1_gpu.upload(gray1);
+		gray2_gpu.upload(gray2);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data uploaded to GPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	cv::cuda::SURF_CUDA surf;
+
+	// Detect keypoints & computing descriptors
+	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;
+	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;
+	{
+		std::cout << "Detecting keypoints and describing features..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		surf(gray1_gpu, cv::cuda::GpuMat(), keypoints1_gpu, descriptors1_gpu);
+		surf(gray2_gpu, cv::cuda::GpuMat(), keypoints2_gpu, descriptors2_gpu);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1_gpu.cols << std::endl;
+		std::cout << "\t#keypoints detected in image2 = " << keypoints2_gpu.cols << std::endl;
+		assert(keypoints1_gpu.cols == descriptors1_gpu.rows);
+		assert(keypoints2_gpu.cols == descriptors2_gpu.rows);
+	}
+
+	// Match descriptors
+	std::vector<cv::DMatch> good_matches;
+	if (descriptors1_gpu.rows > 0 && descriptors2_gpu.rows > 0)
+	{
+		std::cout << "Matching descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(surf.defaultNorm()));
+
+#if 0
+		std::vector<cv::DMatch> init_matches;
+#if 0
+		matcher->match(descriptors1_gpu, descriptors2_gpu, init_matches, cv::noArray());
+#else
+		cv::cuda::GpuMat matches_gpu;
+		matcher->matchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, cv::noArray(), cv::cuda::Stream::Null());
+
+		matcher->matchConvert(matches_gpu, init_matches);
+#endif
+
+		// Sort
+		//const size_t max_matches(init_matches.size() / 2);
+		const size_t max_matches(std::min<size_t>(50, init_matches.size()));
+#if 1
+		auto match_it = init_matches.begin() + max_matches;
+		std::nth_element(init_matches.begin(), match_it, init_matches.end());
+#else
+		std::sort(init_matches.begin(), init_matches.end(), [](const auto &lhs, const auto &rhs) {
+			return lhs.distance < rhs.distance;
+		});
+		std::vector<cv::DMatch>::iterator match_it = init_matches.begin();
+		std::advance(match_it, max_matches);
+#endif
+
+		good_matches.assign(init_matches.begin(), match_it);
+#else
+		cv::cuda::GpuMat matches_gpu;
+		matcher->knnMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*k =*/ 2, cv::noArray(), cv::cuda::Stream::Null());
+		//matcher->radiusMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*maxDistance =*/ 100.0f, cv::noArray(), cv::cuda::Stream::Null());
+
+		std::vector<std::vector<cv::DMatch>> init_matches;
+		matcher->knnMatchConvert(matches_gpu, init_matches);
+		//matcher->radiusMatchConvert(matches_gpu, init_matches);
+
+		const float nnr(0.8f);  // Nearest neighbor ratio (typically 0.6 ~ 0.8)
+		good_matches.reserve(init_matches.size());
+		for (std::vector<std::vector<cv::DMatch>>::const_iterator it = init_matches.begin(); it != init_matches.end(); ++it)
+		{
+			// NOTE [info] >> it->size() == k if using knnMatch()
+
+			// Use nearest-neighbor ratio to determine "good" matches
+			if (it->size() > 1 && ((*it)[0].distance / (*it)[1].distance) < nnr)
+				good_matches.push_back((*it)[0]);  // Save good matches here
+		}
+#endif
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#initial matches = " << init_matches.size() << std::endl;
+		std::cout << "\t#good matches = " << good_matches.size() << std::endl;
+	}
+	else
+	{
+		std::cerr << "No valid feature descriptors to match" << std::endl;
+		return;
+	}
+
+	// Download to CPU
+	std::vector<cv::KeyPoint> keypoints1, keypoints2;
+	std::vector<float> descriptors1, descriptors2;
+	{
+		std::cout << "Downloading data to CPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		surf.downloadKeypoints(keypoints1_gpu, keypoints1);
+		surf.downloadKeypoints(keypoints2_gpu, keypoints2);
+		surf.downloadDescriptors(descriptors1_gpu, descriptors1);  // Descriptor's size = 128
+		surf.downloadDescriptors(descriptors2_gpu, descriptors2);  // Descriptor's size = 128
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2 = " << keypoints2.size() << std::endl;
+		assert(keypoints1.size() * 128 == descriptors1.size());
+		assert(keypoints2.size() * 128 == descriptors2.size());
+	}
+
+	//--------------------
+	// Draw the results
+	cv::Mat img_matches;
+	cv::drawMatches(cv::Mat(gray1), keypoints1, cv::Mat(gray2), keypoints2, good_matches, img_matches);
+
+	cv::imshow("Matches", img_matches);
+	cv::waitKey(0);
+	cv::destroyAllWindows();
+}
+
+void orb_gpu_test()
+{
+	const std::string image_filepath1("../data/machine_vision/opencv/box.png");
+	const std::string image_filepath2("../data/machine_vision/opencv/box_in_scene.png");
+
+	cv::Mat gray1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
+	if (gray1.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath1 << std::endl;
+		return;
+	}
+	cv::Mat gray2(cv::imread(image_filepath2, cv::IMREAD_GRAYSCALE));
+	if (gray2.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
+		return;
+	}
+
+	//--------------------
+	// Upload to GPU
+	cv::cuda::GpuMat gray1_gpu, gray2_gpu;
+	cv::cuda::GpuMat mask1_gpu, mask2_gpu;
+	//cv::cuda::GpuMat mask1_gpu(cv::noArray()), mask2_gpu(cv::noArray());  // Runtime error
+	{
+		std::cout << "Uploading data to GPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		gray1_gpu.upload(gray1);
+		gray2_gpu.upload(gray2);
+		//mask1_gpu.upload(mask1);
+		//mask2_gpu.upload(mask2);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data uploaded to GPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	cv::cuda::Stream stream;
+
+	// Detect keypoints and describe features
+	const int num_features(500);
+	const bool blur_for_descriptor = false;
+	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;  // Size = [6, num_features]
+	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;  // Size = [num_features, 32]
+	std::vector<cv::KeyPoint> keypoints1, keypoints2;
+	cv::Mat descriptors1, descriptors2;
+	cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(num_features, 1.2f, 8, 31, 0, 2, 0, 31, 20, blur_for_descriptor));
+	{
+#if 1
+		{
+			std::cout << "Detecting keypoints and describing features..." << std::endl;
+			const auto start_time(std::chrono::high_resolution_clock::now());
+			//orb->detectAndComputeAsync(gray1_gpu, cv::noArray(), keypoints1_gpu, descriptors1_gpu);
+			//orb->detectAndComputeAsync(gray1_gpu, mask1_gpu, keypoints1_gpu, descriptors1_gpu);
+			//orb->detectAndComputeAsync(gray1_gpu, cv::noArray(), keypoints1_gpu, descriptors1_gpu, false, stream);
+			orb->detectAndComputeAsync(gray1_gpu, mask1_gpu, keypoints1_gpu, descriptors1_gpu, false, stream);
+			stream.waitForCompletion();
+			//orb->detectAndComputeAsync(gray2_gpu, cv::noArray(), keypoints2_gpu, descriptors2_gpu);
+			//orb->detectAndComputeAsync(gray2_gpu, mask2_gpu, keypoints2_gpu, descriptors2_gpu);
+			//orb->detectAndComputeAsync(gray2_gpu, cv::noArray(), keypoints2_gpu, descriptors2_gpu, /*useProvidedKeypoints =*/ false, stream);
+			orb->detectAndComputeAsync(gray2_gpu, mask2_gpu, keypoints2_gpu, descriptors2_gpu, /*useProvidedKeypoints =*/ false, stream);
+			stream.waitForCompletion();
+			const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+			std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+			std::cout << "\t#keypoints detected in image1 = " << keypoints1_gpu.cols << std::endl;
+			std::cout << "\t#keypoints detected in image2 = " << keypoints2_gpu.cols << std::endl;
+			assert(keypoints1_gpu.cols == descriptors1_gpu.rows);
+			assert(keypoints2_gpu.cols == descriptors2_gpu.rows);
+		}
+
+		// Download to CPU
+		{
+			std::cout << "Downloading data to CPU..." << std::endl;
+			const auto start_time(std::chrono::high_resolution_clock::now());
+			orb->convert(keypoints1_gpu, keypoints1);
+			orb->convert(keypoints2_gpu, keypoints2);
+			//descriptors1_gpu.download(descriptors1);
+			//descriptors2_gpu.download(descriptors2);
+			const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+			std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+			std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
+			std::cout << "\t#keypoints detected in image2 = " << keypoints2.size() << std::endl;
+		}
+#else
+		std::cout << "Detecting keypoints and describing features..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		orb->detectAndCompute(gray1_gpu, cv::noArray(), keypoints1, descriptors1, /*useProvidedKeypoints =*/ false);
+		//orb->detectAndCompute(gray1_gpu, mask1, keypoints1, descriptors1, /*useProvidedKeypoints =*/ false);
+		orb->detectAndCompute(gray2_gpu, cv::noArray(), keypoints2, descriptors2, /*useProvidedKeypoints =*/ false);
+		//orb->detectAndCompute(gray2_gpu, mask2, keypoints2, descriptors2, /*useProvidedKeypoints =*/ false);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2 = " << keypoints2.size() << std::endl;
+#endif
+	}
+
+	//--------------------
+	// Match feature descriptors
+	std::vector<cv::DMatch> good_matches;
+	if (descriptors1_gpu.rows > 0 && descriptors2_gpu.rows > 0)
+	{
+		std::cout << "Matching feature descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
+		cv::cuda::GpuMat matches_gpu;
+#if 0
+		std::vector<cv::DMatch> init_matches;
+#if 1
+		matcher->matchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, cv::noArray(), cv::cuda::Stream::Null());
+		//matcher->matchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, cv::noArray(), stream);
+		//stream.waitForCompletion();
+
+		matcher->matchConvert(matches_gpu, init_matches);
+#else
+		matcher->match(descriptors1_gpu, descriptors2_gpu, init_matches, cv::noArray());
+#endif
+
+		// Sort
+		//const size_t max_matches(init_matches.size() / 2);
+		const size_t max_matches(std::min<size_t>(30, init_matches.size()));
+#if 1
+		auto match_it = init_matches.begin() + max_matches;
+		std::nth_element(init_matches.begin(), match_it, init_matches.end());
+#else
+		std::sort(init_matches.begin(), init_matches.end(), [](const auto &lhs, const auto &rhs) {
+			return lhs.distance < rhs.distance;
+		});
+		std::vector<cv::DMatch>::iterator match_it = init_matches.begin();
+		std::advance(match_it, max_matches);
+#endif
+
+		good_matches.assign(init_matches.begin(), match_it);
+#else
+		std::vector<std::vector<cv::DMatch>> init_matches;
+#if 1
+		//matcher->knnMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*k =*/ 2, cv::noArray(), cv::cuda::Stream::Null());
+		//matcher->radiusMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*maxDistance =*/ 5.0f, cv::noArray(), cv::cuda::Stream::Null());
+		matcher->knnMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*k =*/ 2, cv::noArray(), stream);
+		//matcher->radiusMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*maxDistance =*/ 100.0f, cv::noArray(), stream);
+		stream.waitForCompletion();
+
+		// Download matches to CPU
+		matcher->knnMatchConvert(matches_gpu, init_matches, /*compactResult =*/ false);
+		//matcher->radiusMatchConvert(matches_gpu, init_matches, /*compactResult =*/ false);
+#else
+		matcher->knnMatch(descriptors1_gpu, descriptors2_gpu, init_matches, /*k =*/ 2, cv::noArray(), /*compactResult =*/ false);
+		//matcher->radiusMatch(descriptors1_gpu, descriptors2_gpu, init_matches, /*maxDistance =*/ 100.0f, cv::noArray(), /*compactResult =*/ false);
+#endif
+
+		const float nnr(0.9f);  // Nearest neighbor ratio (typically 0.6 ~ 0.8)
+		good_matches.reserve(init_matches.size());
+		for (std::vector<std::vector<cv::DMatch>>::const_iterator it = init_matches.begin(); it != init_matches.end(); ++it)
+		{
+			// NOTE [info] >> it->size() == k if using knnMatch()
+
+			// Use nearest-neighbor ratio to determine "good" matches
+			if (it->size() > 1 && ((*it)[0].distance / (*it)[1].distance) < nnr)
+				good_matches.push_back((*it)[0]);  // Save good matches here
+		}
+#endif
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#initial matches = " << init_matches.size() << std::endl;
+		std::cout << "\t#good matches = " << good_matches.size() << std::endl;
+	}
+	else
+	{
+		std::cerr << "No valid feature descriptors to match" << std::endl;
+		return;
+	}
+
+	//--------------------
+	// Draw matches
+	cv::Mat img_matches;
+	cv::drawMatches(gray1, keypoints1, gray2, keypoints2, good_matches, img_matches);
+
+	// Show detected matches
+	cv::imshow("Matches", img_matches);
+	cv::waitKey(0);
+	cv::destroyAllWindows();
+}
+
+void orb_gpu_test()
+{
+	const std::string image_filepath1("../data/machine_vision/opencv/box.png");
+	const std::string image_filepath2("../data/machine_vision/opencv/box_in_scene.png");
+
+	cv::Mat gray1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
+	if (gray1.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath1 << std::endl;
+		return;
+	}
+	cv::Mat gray2(cv::imread(image_filepath2, cv::IMREAD_GRAYSCALE));
+	if (gray2.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
+		return;
+	}
+
+	//--------------------
+	cv::cuda::GpuMat gray1_gpu, gray2_gpu;
+	cv::cuda::GpuMat mask1_gpu, mask2_gpu;
+	{
+		std::cout << "Uploading data to GPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		gray1_gpu.upload(gray1);
+		gray2_gpu.upload(gray2);
+		//mask1_gpu.upload(mask1);
+		//mask2_gpu.upload(mask2);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data uploaded to GPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	// Detect keypoints and describe features
+	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;
+	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;
+	{
+		std::cout << "Detecting keypoints and describing features..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(500, 1.2f, 8, 31, 0, 2, 0, 31, 20, true));
+#if 0
+		orb->detectAndComputeAsync(gray1_gpu, cv::noArray(), keypoints1_gpu, descriptors1_gpu);
+		orb->detectAndComputeAsync(gray2_gpu, cv::noArray(), keypoints2_gpu, descriptors2_gpu);
+#else
+		cv::cuda::Stream stream;
+
+		orb->detectAndComputeAsync(gray1_gpu, mask1_gpu, keypoints1_gpu, descriptors1_gpu, false, stream);
+		stream.waitForCompletion();
+		orb->detectAndComputeAsync(gray2_gpu, mask2_gpu, keypoints2_gpu, descriptors2_gpu, false, stream);
+		stream.waitForCompletion();
+#endif
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1_gpu.cols << std::endl;
+		std::cout << "\t#keypoints detected in image2 = " << keypoints2_gpu.cols << std::endl;
+	}
+
+	// Download to CPU
+	std::vector<cv::KeyPoint> keypoints1, keypoints2;
+	//cv::Mat descriptors1, descriptors2;
+	{
+		std::cout << "Downloading data to CPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		orb->convert(keypoints1_gpu, keypoints1);
+		orb->convert(keypoints2_gpu, keypoints2);
+		//descriptors1_gpu.download(descriptors1);
+		//descriptors2_gpu.download(descriptors2);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2 = " << keypoints2.size() << std::endl;
+	}
+
+	//--------------------
+	// Match
+	std::vector<cv::DMatch> matches;
+	{
+		std::cout << "Matching feature descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+#if 0
+		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
+		matcher->match(descriptors1_gpu, descriptors2_gpu, matches_gpu);
+#else
+		if (descriptors2_gpu.rows > 0)
+		{
+			cv::cuda::GpuMat matches_gpu;
+
+			cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
+			matcher->knnMatchAsync(descriptors2_gpu, descriptors1_gpu, matches_gpu, 2, cv::noArray(), *stream);
+			stream.waitForCompletion();
+
+			// Download matches to CPU
+			std::vector<std::vector<cv::DMatch>> matches_before;
+			matcher->knnMatchConvert(matches_gpu, matches_before);
+
+			const float nnr(0.6f);  // Nearest neighbor ratio
+			for (std::vector<std::vector<cv::DMatch>>::const_iterator it = matches_before.begin(); it != matches_before.end(); ++it)
+			{
+				// Use nearest-neighbor ratio to determine "good" matches
+				if (it->size() > 1 && (*it)[0].distance / (*it)[1].distance < nnr)
+				{
+					cv::DMatch m = (*it)[0];
+					matches.push_back(m);  // Save good matches here
+				}
+			}
+		}
+#endif
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#matches = " << matches.size() << std::endl;
+	}
+
+	// Draw matches
+	cv::Mat img_matches;
+	cv::drawMatches(gray1, keypoints1, gray2, keypoints2, matches, img_matches);
+
+	// Show detected matches
+	cv::imshow("Matches", img_matches);
+	cv::waitKey(0);
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -793,8 +1241,11 @@ void feature_extraction_and_matching()
 {
 	//local::feature_extraction_and_matching();
 
-	//local::kaze_match_test1();
-	local::kaze_match_test2();
+	//local::kaze_match_test1();  // KAZE & AKAZE
+	//local::kaze_match_test2();  // KAZE & AKAZE
+
+	//local::surf_gpu_test();
+	local::orb_gpu_test();
 }
 
 }  // namespace my_opencv

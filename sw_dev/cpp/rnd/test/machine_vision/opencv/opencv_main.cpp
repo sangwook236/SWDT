@@ -213,7 +213,6 @@ void feature_detector_evaluation();
 void feature_description();
 void feature_extraction_and_matching();
 void feature_extraction_and_matching_by_signature();
-void feature_extraction_and_matching_using_gpu();
 void generic_description_and_matching();
 void retina_model();
 void bag_of_words();
@@ -352,9 +351,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::feature_detection();
 		//my_opencv::feature_detector_evaluation();
 		//my_opencv::feature_description();
-		//my_opencv::feature_extraction_and_matching();
+		//my_opencv::feature_extraction_and_matching();  // CPU & GPU.
 		//my_opencv::feature_extraction_and_matching_by_signature();
-		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // Not yet implemented.
 		//my_opencv::generic_description_and_matching();
 
 		//my_opencv::retina_model();
