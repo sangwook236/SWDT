@@ -284,6 +284,136 @@ def text_to_video_zero_example() -> None:
 		result = pipe(prompt=[prompt] * len(canny_edges), image=canny_edges, latents=latents).images
 		imageio.mimsave("./video.mp4", result, fps=4)
 
+# REF [site] >> https://huggingface.co/docs/diffusers/en/using-diffusers/text-img2vid
+def text_or_image_to_video_example() -> None:
+	import torch
+	import diffusers
+	from diffusers.utils import load_image, export_to_video, export_to_gif
+
+	if True:
+		# CogVideoX
+
+		prompt = "A vast, shimmering ocean flows gracefully under a twilight sky, its waves undulating in a mesmerizing dance of blues and greens. The surface glints with the last rays of the setting sun, casting golden highlights that ripple across the water. Seagulls soar above, their cries blending with the gentle roar of the waves. The horizon stretches infinitely, where the ocean meets the sky in a seamless blend of hues. Close-ups reveal the intricate patterns of the waves, capturing the fluidity and dynamic beauty of the sea in motion."
+		image = load_image(image="cogvideox_rocket.png")
+		pipe = diffusers.CogVideoXImageToVideoPipeline.from_pretrained(
+			"THUDM/CogVideoX-5b-I2V",
+			torch_dtype=torch.bfloat16
+		)
+		
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		video = pipe(
+			prompt=prompt,
+			image=image,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=49,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "output.mp4", fps=8)
+
+	if True:
+		# Stable Video Diffusion
+
+		#model_id = "stabilityai/stable-video-diffusion-img2vid"
+		model_id = "stabilityai/stable-video-diffusion-img2vid-xt"
+
+		pipeline = diffusers.StableVideoDiffusionPipeline.from_pretrained(
+			model_id, torch_dtype=torch.float16, variant="fp16"
+		)
+		pipeline.enable_model_cpu_offload()
+
+		image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/svd/rocket.png")
+		image = image.resize((1024, 576))
+
+		generator = torch.manual_seed(42)
+		frames = pipeline(image, decode_chunk_size=8, generator=generator).frames[0]
+		#frames = pipeline(image, decode_chunk_size=8, generator=generator, num_frames=25).frames[0]
+		export_to_video(frames, "generated.mp4", fps=7)
+
+	if True:
+		# I2VGen-XL
+
+		pipeline = diffusers.I2VGenXLPipeline.from_pretrained("ali-vilab/i2vgen-xl", torch_dtype=torch.float16, variant="fp16")
+		pipeline.enable_model_cpu_offload()
+
+		image_url = "https://huggingface.co/datasets/diffusers/docs-images/resolve/main/i2vgen_xl_images/img_0009.png"
+		image = load_image(image_url).convert("RGB")
+
+		prompt = "Papers were floating in the air on a table in the library"
+		negative_prompt = "Distorted, discontinuous, Ugly, blurry, low resolution, motionless, static, disfigured, disconnected limbs, Ugly faces, incomplete arms"
+		generator = torch.manual_seed(8888)
+
+		frames = pipeline(
+			prompt=prompt,
+			image=image,
+			num_inference_steps=50,
+			negative_prompt=negative_prompt,
+			guidance_scale=9.0,
+			generator=generator
+		).frames[0]
+		export_to_gif(frames, "i2v.gif")
+
+	if True:
+		# AnimateDiff
+
+		adapter = diffusers.MotionAdapter.from_pretrained("guoyww/animatediff-motion-adapter-v1-5-2", torch_dtype=torch.float16)
+
+		# Load a finetuned Stable Diffusion model with the AnimateDiffPipeline
+		pipeline = diffusers.AnimateDiffPipeline.from_pretrained("emilianJR/epiCRealism", motion_adapter=adapter, torch_dtype=torch.float16)
+		scheduler = diffusers.DDIMScheduler.from_pretrained(
+			"emilianJR/epiCRealism",
+			subfolder="scheduler",
+			clip_sample=False,
+			timestep_spacing="linspace",
+			beta_schedule="linear",
+			steps_offset=1,
+		)
+		pipeline.scheduler = scheduler
+		pipeline.enable_vae_slicing()
+		pipeline.enable_model_cpu_offload()
+
+		# Create a prompt and generate the video
+		output = pipeline(
+			prompt="A space rocket with trails of smoke behind it launching into space from the desert, 4k, high resolution",
+			negative_prompt="bad quality, worse quality, low resolution",
+			num_frames=16,
+			guidance_scale=7.5,
+			num_inference_steps=50,
+			generator=torch.Generator("cpu").manual_seed(49),
+		)
+		frames = output.frames[0]
+		export_to_gif(frames, "animation.gif")
+
+	if True:
+		# ModelscopeT2V
+
+		pipeline = diffusers.DiffusionPipeline.from_pretrained("damo-vilab/text-to-video-ms-1.7b", torch_dtype=torch.float16, variant="fp16")
+		pipeline.enable_model_cpu_offload()
+		pipeline.enable_vae_slicing()
+
+		prompt = "Confident teddy bear surfer rides the wave in the tropics"
+		video_frames = pipeline(prompt).frames[0]
+		export_to_video(video_frames, "modelscopet2v.mp4", fps=10)
+
+	# Configure model parameters:
+	#	Number of frames
+	#		The num_frames parameter determines how many video frames are generated per second.
+	#	Guidance scale
+	#		The guidance_scale parameter controls how closely aligned the generated video and text prompt or initial image is.
+	#		A higher guidance_scale value means your generated video is more aligned with the text prompt or initial image,
+	#		while a lower guidance_scale value means your generated video is less aligned which could give the model more "creativity" to interpret the conditioning input.
+	#	Negative prompt
+	#		A negative prompt deters the model from generating things you don't want it to.
+	#		This parameter is commonly used to improve overall generation quality by removing poor or bad features such as "low resolution" or "bad details".
+	#	Model-specific parameters
+	# Control video generation:
+	#	Text2Video-Zero
+	# Optimize
+
 # REF [site] >> https://huggingface.co/THUDM
 def cog_video_test() -> None:
 	# Models:
@@ -444,14 +574,56 @@ def cog_video_test() -> None:
 
 		export_to_video(video, "./output.mp4", fps=8)
 
+# REF [site] >> https://huggingface.co/stabilityai
+def stable_video_diffusion_example() -> None:
+	# Models:
+	#	stabilityai/stable-video-diffusion-img2vid
+	#	stabilityai/stable-video-diffusion-img2vid-xt
+	#	stabilityai/stable-video-diffusion-img2vid-xt-1-1
+	#	stabilityai/sv3d
+	#	stabilityai/sv4d
+
+	# REF [site] >> https://github.com/Stability-AI/generative-models
+	# REF [function] >> text_or_image_to_video_example()
+
+	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/ali-vilab
+def i2vgen_xl_example() -> None:
+	# Models:
+	#	ali-vilab/i2vgen-xl
+
+	import torch
+	import diffusers
+	from diffusers.utils import load_image, export_to_gif
+
+	repo_id = "ali-vilab/i2vgen-xl" 
+	pipeline = diffusers.I2VGenXLPipeline.from_pretrained(repo_id, torch_dtype=torch.float16, variant="fp16").to("cuda")
+
+	image_url = "https://github.com/ali-vilab/i2vgen-xl/blob/main/data/test_images/img_0009.png?download=true"
+	image = load_image(image_url).convert("RGB")
+	prompt = "Papers were floating in the air on a table in the library"
+
+	generator = torch.manual_seed(8888)
+	frames = pipeline(
+		prompt=prompt,
+		image=image,
+		generator=generator
+	).frames[0]
+
+	print(export_to_gif(frames))
+
 def main():
 	# Diffusion models
 	#	Refer to ./diffusion_model_test.py
 
-	text_to_video_example()
-	text_to_video_zero_example()
+	#text_to_video_example()
+	#text_to_video_zero_example()
+	text_or_image_to_video_example()  # Text- or image-to-video models
 
 	#cog_video_test()
+	#stable_video_diffusion_example()  # Not yet implemented
+	#i2vgen_xl_example()  # I2VGen-XL
 
 #--------------------------------------------------------------------
 

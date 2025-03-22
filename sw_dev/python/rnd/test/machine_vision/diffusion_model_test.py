@@ -295,26 +295,41 @@ def compvis_example():
 # REF [site] >> https://huggingface.co/stabilityai
 def stabilityai_example():
 	# Models:
-	#	stabilityai/stable-diffusion-2.
-	#	stabilityai/stable-diffusion-2-base.
-	#	stabilityai/stable-diffusion-2-depth.
-	#	stabilityai/stable-diffusion-2-inpainting.
-	#	stabilityai/stable-diffusion-2-1.
-	#	stabilityai/stable-diffusion-2-1-base.
-	#	stabilityai/stable-diffusion-2-1-unclip.
-	#	stabilityai/stable-diffusion-2-1-unclip-small.
-	#	stabilityai/stable-diffusion-xl-base-0.9.
-	#	stabilityai/stable-diffusion-xl-refiner-0.9.
-	#	stabilityai/stable-diffusion-xl-base-1.0.
-	#	stabilityai/stable-diffusion-xl-refiner-1.0.
-	#	stabilityai/stable-diffusion-xl-1.0-tensorrt.
-	#	stabilityai/sd-vae.
-	#	stabilityai/sd-x2-latent-upscaler.
-	#	stabilityai/sd-turbo.
-	#	stabilityai/sdxl-vae.
-	#	stabilityai/sdxl-turbo.
-	#	stabilityai/sdxl-turbo-tensorrt.
-	#	stabilityai/stable-video-diffusion-img2vid-xt-1-1.
+	#	stabilityai/stable-diffusion-2
+	#	stabilityai/stable-diffusion-2-base
+	#	stabilityai/stable-diffusion-2-depth
+	#	stabilityai/stable-diffusion-2-inpainting
+	#	stabilityai/stable-diffusion-2-1
+	#	stabilityai/stable-diffusion-2-1-base
+	#	stabilityai/stable-diffusion-2-1-unclip
+	#	stabilityai/stable-diffusion-2-1-unclip-small
+	#	stabilityai/stable-diffusion-xl-base-0.9
+	#	stabilityai/stable-diffusion-xl-refiner-0.9
+	#	stabilityai/stable-diffusion-xl-base-1.0
+	#	stabilityai/stable-diffusion-xl-refiner-1.0
+	#	stabilityai/stable-diffusion-xl-1.0-tensorrt
+	#
+	#	stabilityai/sd-vae
+	#	stabilityai/sd-x2-latent-upscaler
+	#	stabilityai/sd-turbo
+	#	stabilityai/sdxl-vae
+	#	stabilityai/sdxl-turbo
+	#	stabilityai/sdxl-turbo-tensorrt
+	#
+	#	stabilityai/stable-diffusion-3-medium
+	#	stabilityai/stable-diffusion-3-medium-diffusers
+	#	stabilityai/stable-diffusion-3-medium-tensorrt
+	#	stabilityai/stable-diffusion-3-medium_amdgpu
+	#
+	#	stabilityai/stable-diffusion-3.5-medium
+	#	stabilityai/stable-diffusion-3.5-large
+	#	stabilityai/stable-diffusion-3.5-large-turbo
+	#	stabilityai/stable-diffusion-3.5-large_amdgpu
+	#	stabilityai/stable-diffusion-3.5-large-turbo_amdgpu
+	#	stabilityai/stable-diffusion-3.5-large-controlnet
+	#	stabilityai/stable-diffusion-3.5-large-controlnet-blur
+	#	stabilityai/stable-diffusion-3.5-large-controlnet-canny
+	#	stabilityai/stable-diffusion-3.5-large-controlnet-depth
 
 	# REF [document] >>
 	#	https://huggingface.co/docs/diffusers/using-diffusers/sdxl
@@ -340,7 +355,7 @@ def stabilityai_example():
 			
 		image.save("./astronaut_rides_horse.png")
 
-	if True:
+	if False:
 		import requests
 
 		pipe = diffusers.StableDiffusionDepth2ImgPipeline.from_pretrained("stabilityai/stable-diffusion-2-depth", torch_dtype=torch.float16).to("cuda")
@@ -352,7 +367,7 @@ def stabilityai_example():
 		n_propmt = "bad, deformed, ugly, bad anotomy"
 		image = pipe(prompt=prompt, image=init_image, negative_prompt=n_propmt, strength=0.7).images[0]
 
-	if True:
+	if False:
 		pipe = diffusers.StableDiffusionInpaintPipeline.from_pretrained("stabilityai/stable-diffusion-2-inpainting", torch_dtype=torch.float16)
 		pipe.to("cuda")
 
@@ -363,7 +378,7 @@ def stabilityai_example():
 
 		image.save("./yellow_cat_on_park_bench.png")
 
-	if True:
+	if False:
 		model_id = "stabilityai/stable-diffusion-2-1"
 
 		# Use the DPMSolverMultistepScheduler (DPM-Solver++) scheduler here instead.
@@ -487,6 +502,7 @@ def stabilityai_example():
 			image=image,
 		).images[0]
 
+	#------------------------------
 	if False:
 		model = "CompVis/stable-diffusion-v1-4"
 		vae = diffusers.models.AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse")
@@ -570,6 +586,219 @@ def stabilityai_example():
 		prompt = "cat wizard, gandalf, lord of the rings, detailed, fantasy, cute, adorable, Pixar, Disney, 8k"
 
 		image = pipe(prompt, image=init_image, num_inference_steps=2, strength=0.5, guidance_scale=0.0).images[0]
+
+	#------------------------------
+	if False:
+		pipe = diffusers.StableDiffusion3Pipeline.from_pretrained("stabilityai/stable-diffusion-3-medium-diffusers", torch_dtype=torch.float16)
+		pipe = pipe.to("cuda")
+
+		image = pipe(
+			"A cat holding a sign that says hello world",
+			negative_prompt="",
+			num_inference_steps=28,
+			guidance_scale=7.0,
+		).images[0]
+		#image
+
+	#------------------------------
+	if True:
+		model_id = "stabilityai/stable-diffusion-3.5-medium"
+		#model_id = "stabilityai/stable-diffusion-3.5-large"
+
+		pipe = diffusers.StableDiffusion3Pipeline.from_pretrained(model_id, torch_dtype=torch.bfloat16)
+		pipe = pipe.to("cuda")
+
+		image = pipe(
+			"A capybara holding a sign that reads Hello World",
+			num_inference_steps=40,  # For stabilityai/stable-diffusion-3.5-medium
+			guidance_scale=4.5,  # For stabilityai/stable-diffusion-3.5-medium
+			#num_inference_steps=28,  # For stabilityai/stable-diffusion-3.5-large
+			#guidance_scale=3.5,  # For stabilityai/stable-diffusion-3.5-large
+		).images[0]
+		image.save("capybara.png")
+
+	if True:
+		# Quantizing the model with diffusers
+
+		# Install:
+		#	pip install bitsandbytes
+
+		model_id = "stabilityai/stable-diffusion-3.5-medium"
+		#model_id = "stabilityai/stable-diffusion-3.5-large"
+
+		nf4_config = diffusers.BitsAndBytesConfig(
+			load_in_4bit=True,
+			bnb_4bit_quant_type="nf4",
+			bnb_4bit_compute_dtype=torch.bfloat16
+		)
+		model_nf4 = diffusers.SD3Transformer2DModel.from_pretrained(
+			model_id,
+			subfolder="transformer",
+			quantization_config=nf4_config,
+			torch_dtype=torch.bfloat16
+		)
+
+		pipeline = diffusers.StableDiffusion3Pipeline.from_pretrained(
+			model_id, 
+			transformer=model_nf4,
+			torch_dtype=torch.bfloat16
+		)
+		pipeline.enable_model_cpu_offload()
+
+		prompt = "A whimsical and creative image depicting a hybrid creature that is a mix of a waffle and a hippopotamus, basking in a river of melted butter amidst a breakfast-themed landscape. It features the distinctive, bulky body shape of a hippo. However, instead of the usual grey skin, the creature's body resembles a golden-brown, crispy waffle fresh off the griddle. The skin is textured with the familiar grid pattern of a waffle, each square filled with a glistening sheen of syrup. The environment combines the natural habitat of a hippo with elements of a breakfast table setting, a river of warm, melted butter, with oversized utensils or plates peeking out from the lush, pancake-like foliage in the background, a towering pepper mill standing in for a tree.  As the sun rises in this fantastical world, it casts a warm, buttery glow over the scene. The creature, content in its butter river, lets out a yawn. Nearby, a flock of birds take flight"
+
+		image = pipeline(
+			prompt=prompt,
+			num_inference_steps=40,  # For stabilityai/stable-diffusion-3.5-medium
+			#num_inference_steps=28,  # For stabilityai/stable-diffusion-3.5-large
+			guidance_scale=4.5,
+			max_sequence_length=512,
+		).images[0]
+		image.save("whimsical.png")
+
+	if True:
+		pipe = diffusers.StableDiffusion3Pipeline.from_pretrained("stabilityai/stable-diffusion-3.5-large-turbo", torch_dtype=torch.bfloat16)
+		pipe = pipe.to("cuda")
+
+		image = pipe(
+			"A capybara holding a sign that reads Hello Fast World",
+			num_inference_steps=4,
+			guidance_scale=0.0,
+		).images[0]
+		image.save("capybara.png")
+
+	if True:
+		# Quantizing the model with diffusers
+
+		# Install:
+		#	pip install bitsandbytes
+
+		import transformers
+
+		model_id = "stabilityai/stable-diffusion-3.5-large-turbo"
+
+		nf4_config = diffusers.BitsAndBytesConfig(
+			load_in_4bit=True,
+			bnb_4bit_quant_type="nf4",
+			bnb_4bit_compute_dtype=torch.bfloat16
+		)
+		model_nf4 = diffusers.SD3Transformer2DModel.from_pretrained(
+			model_id,
+			subfolder="transformer",
+			quantization_config=nf4_config,
+			torch_dtype=torch.bfloat16
+		)
+
+		t5_nf4 = transformers.T5EncoderModel.from_pretrained("diffusers/t5-nf4", torch_dtype=torch.bfloat16)
+
+		pipeline = diffusers.StableDiffusion3Pipeline.from_pretrained(
+			model_id, 
+			transformer=model_nf4,
+			text_encoder_3=t5_nf4,
+			torch_dtype=torch.bfloat16
+		)
+		pipeline.enable_model_cpu_offload()
+
+		prompt = "A whimsical and creative image depicting a hybrid creature that is a mix of a waffle and a hippopotamus, basking in a river of melted butter amidst a breakfast-themed landscape. It features the distinctive, bulky body shape of a hippo. However, instead of the usual grey skin, the creature's body resembles a golden-brown, crispy waffle fresh off the griddle. The skin is textured with the familiar grid pattern of a waffle, each square filled with a glistening sheen of syrup. The environment combines the natural habitat of a hippo with elements of a breakfast table setting, a river of warm, melted butter, with oversized utensils or plates peeking out from the lush, pancake-like foliage in the background, a towering pepper mill standing in for a tree.  As the sun rises in this fantastical world, it casts a warm, buttery glow over the scene. The creature, content in its butter river, lets out a yawn. Nearby, a flock of birds take flight"
+
+		image = pipeline(
+			prompt=prompt,
+			num_inference_steps=4,
+			guidance_scale=0.0,
+			max_sequence_length=512,
+		).images[0]
+		image.save("whimsical.png")
+
+	if True:
+		# Using Controlnets in Diffusers
+
+		from diffusers.utils import load_image
+
+		controlnet = diffusers.SD3ControlNetModel.from_pretrained("stabilityai/stable-diffusion-3.5-large-controlnet-blur", torch_dtype=torch.float16)
+		pipe = diffusers.StableDiffusion3ControlNetPipeline.from_pretrained(
+			"stabilityai/stable-diffusion-3.5-large",
+			controlnet=controlnet,
+			torch_dtype=torch.float16
+		).to("cuda")
+
+		control_image = load_image("https://huggingface.co/datasets/diffusers/diffusers-images-docs/resolve/main/blur.png")
+		prompt = "generated ai art, a tiny, lost rubber ducky in an action shot close-up, surfing the humongous waves, inside the tube, in the style of Kelly Slater"
+
+		generator = torch.Generator(device="cpu").manual_seed(0)
+		image = pipe(
+			prompt, 
+			control_image=control_image, 
+			guidance_scale=3.5,
+			num_inference_steps=60,
+			generator=generator,
+			max_sequence_length=77,
+		).images[0]
+		image.save("blur-8b.jpg")
+
+	if True:
+		# Using Controlnets in Diffusers
+
+		from diffusers.utils import load_image
+		from diffusers.image_processor import VaeImageProcessor
+
+		class SD3CannyImageProcessor(VaeImageProcessor):
+			def __init__(self):
+				super().__init__(do_normalize=False)
+			def preprocess(self, image, **kwargs):
+				image = super().preprocess(image, **kwargs)
+				image = image * 255 * 0.5 + 0.5
+				return image
+			def postprocess(self, image, do_denormalize=True, **kwargs):
+				do_denormalize = [True] * image.shape[0]
+				image = super().postprocess(image, **kwargs, do_denormalize=do_denormalize)
+				return image
+
+		controlnet = diffusers.SD3ControlNetModel.from_pretrained("stabilityai/stable-diffusion-3.5-large-controlnet-canny", torch_dtype=torch.float16)
+		pipe = diffusers.StableDiffusion3ControlNetPipeline.from_pretrained(
+			"stabilityai/stable-diffusion-3.5-large",
+			controlnet=controlnet,
+			torch_dtype=torch.float16
+		).to("cuda")
+		pipe.image_processor = SD3CannyImageProcessor()
+
+		control_image = load_image("https://huggingface.co/datasets/diffusers/diffusers-images-docs/resolve/main/canny.png")
+		prompt =  "A Night time photo taken by Leica M11, portrait of a Japanese woman in a kimono, looking at the camera, Cherry blossoms"
+
+		generator = torch.Generator(device="cpu").manual_seed(0)
+		image = pipe(
+			prompt, 
+			control_image=control_image, 
+			controlnet_conditioning_scale=1.0,
+			guidance_scale=3.5,
+			num_inference_steps=60,
+			generator=generator,
+			max_sequence_length=77,
+		).images[0]
+		image.save("canny-8b.jpg")
+
+	if True:
+		# Using Controlnets in Diffusers
+
+		from diffusers.utils import load_image
+
+		controlnet = diffusers.SD3ControlNetModel.from_pretrained("stabilityai/stable-diffusion-3.5-large-controlnet-depth", torch_dtype=torch.float16)
+		pipe = diffusers.StableDiffusion3ControlNetPipeline.from_pretrained(
+			"stabilityai/stable-diffusion-3.5-large",
+			controlnet=controlnet,
+			torch_dtype=torch.float16,
+		).to("cuda")
+
+		control_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/marigold/marigold_einstein_lcm_depth.png")
+		generator = torch.Generator(device="cpu").manual_seed(0)
+		image = pipe(
+			prompt = "a photo of a man", 
+			control_image=control_image, 
+			guidance_scale=4.5,
+			num_inference_steps=40,
+			generator=generator,
+			max_sequence_length=77,
+		).images[0]
+		image.save("depth-8b.jpg")
 
 # REF [site] >> https://huggingface.co/docs/diffusers/en/api/pipelines/unidiffuser
 def uni_diffuser_example() -> None:
@@ -853,11 +1082,11 @@ def main():
 	#diffusers_dreambooth_training_example()  # DreamBooth. Not yet implemented
 
 	#compvis_example()  # Stable diffusion
-	#stabilityai_example()  # Stable diffusion
+	stabilityai_example()  # Stable diffusion
 
 	#uni_diffuser_example()  # UniDiffuser
 
-	playground_example()  # Playground v2 & v2.5
+	#playground_example()  # Playground v2 & v2.5
 
 	# 3D
 	#ldm3d_example()  # LDM3D
