@@ -1,15 +1,18 @@
-//#include "stdafx.h"
+#include <cassert>
+#include <cstdio>
 #include <stdexcept>
 #include <chrono>
 #include <algorithm>
 #include <vector>
 #include <list>
+#include <string>
 #include <iostream>
+#include <fstream>
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <opencv2/xfeatures2d/cuda.hpp>
-#include <opencv2/cudafeature2d.hpp>
+#include <opencv2/cudafeatures2d.hpp>
 
 #if 0
 #define DRAW_RICH_KEYPOINTS_MODE	0
@@ -250,7 +253,7 @@ void feature_extraction_and_matching()
 	cv::destroyWindow(windowName);
 }
 #else
-void feature_extraction_and_matching()
+void feature_extraction_and_matching_test()
 {
 	std::list<std::pair<std::string, std::string> > filename_pairs;
 #if 0
@@ -277,9 +280,9 @@ void feature_extraction_and_matching()
 #endif
 
 	//
-	cv::Ptr<cv::Feature2D> defaultDetector(cv::xfeatures2d::SIFT::create()), defaultDescriptor(cv::xfeatures2d::SIFT::create());
+	cv::Ptr<cv::Feature2D> defaultDetector(cv::SIFT::create()), defaultDescriptor(cv::SIFT::create());
 
-	cv::Ptr<cv::Feature2D> detector(cv::xfeatures2d::SIFT::create()), descriptor(detector);
+	cv::Ptr<cv::Feature2D> detector(cv::SIFT::create()), descriptor(detector);
 	//cv::Ptr<cv::Feature2D> detector(cv::xfeatures2d::SURF::create()), descriptor(detector);
 	//cv::Ptr<cv::Feature2D> detector(cv::BRISK::create()), descriptor(defaultDescriptor);
 	//cv::Ptr<cv::Feature2D> detector(cv::ORB::create()), descriptor(defaultDescriptor);
@@ -459,18 +462,18 @@ void draw_keypoints(cv::Mat& img, const std::vector<cv::KeyPoint>& kpts)
 	{
 		x = (int)(kpts[i].pt.x + .5);
 		y = (int)(kpts[i].pt.y + .5);
-		radius = kpts[i].size / 2.0;
-		cv::circle(img, cv::Point(x, y), 2.5*radius, cv::Scalar(0, 255, 0), 1);
-		cv::circle(img, cv::Point(x, y), 1.0, cv::Scalar(0, 0, 255), -1);
+		radius = kpts[i].size / 2.0f;
+		cv::circle(img, cv::Point(x, y), int(2.5f * radius), cv::Scalar(0, 255, 0), 1);
+		cv::circle(img, cv::Point(x, y), 1, cv::Scalar(0, 0, 255), -1);
 	}
 }
 
 // REF [site] >> https://github.com/pablofdezalc/test_kaze_akaze_opencv/blob/master/src/utils.cpp
-cv::Mat read_homography(const std::string& homography_path)
+cv::Mat read_homography(const std::string &homography_path)
 {
-	float h11 = 0.0, h12 = 0.0, h13 = 0.0;
-	float h21 = 0.0, h22 = 0.0, h23 = 0.0;
-	float h31 = 0.0, h32 = 0.0, h33 = 0.0;
+	float h11 = 0.0f, h12 = 0.0f, h13 = 0.0f;
+	float h21 = 0.0f, h22 = 0.0f, h23 = 0.0f;
+	float h31 = 0.0f, h32 = 0.0f, h33 = 0.0f;
 	const int tmp_buf_size = 256;
 	char tmp_buf[tmp_buf_size];
 
@@ -611,9 +614,310 @@ void draw_inliers(const cv::Mat& img1, const cv::Mat& imgN, cv::Mat& img_com, co
 	}
 }
 
-// REF [site] >> https://github.com/pablofdezalc/test_kaze_akaze_opencv/blob/master/test_kaze_match.cpp
-// REF [site] >> https://github.com/pablofdezalc/test_kaze_akaze_opencv/blob/master/test_akaze_match.cpp
-void kaze_match_test1()
+// REF [site] >> https://docs.opencv.org/4.11.0/d5/d6f/tutorial_feature_flann_matcher.html
+void surf_tutorial()
+{
+	const std::string image_filepath1("../data/box.png");
+	const std::string image_filepath2("../data/box_in_scene.png");
+
+	cv::Mat img1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
+	if (img1.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath1 << std::endl;
+		return;
+	}
+	cv::Mat img2(cv::imread(image_filepath2, cv::IMREAD_GRAYSCALE));
+	if (img2.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
+		return;
+	}
+
+	//--------------------
+	// Step 1: Detect the keypoints using SURF Detector, compute the descriptors
+	std::vector<cv::KeyPoint> keypoints1, keypoints2;
+	cv::Mat descriptors1, descriptors2;
+	{
+		const int minHessian = 400;
+		cv::Ptr<cv::xfeatures2d::SURF> detector = cv::xfeatures2d::SURF::create(minHessian);
+
+		std::cout << "Detecting keypoints and describing features..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		detector->detectAndCompute(img1, cv::noArray(), keypoints1, descriptors1);
+		detector->detectAndCompute(img2, cv::noArray(), keypoints2, descriptors2);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2 = " << keypoints1.size() << std::endl;
+	}
+
+	// Step 2: Matching descriptor vectors with a FLANN based matcher
+	std::vector<cv::DMatch> good_matches;
+	{
+		// Since SURF is a floating-point descriptor NORM_L2 is used
+		cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);  // FLANNBASED, BRUTEFORCE, BRUTEFORCE_L1, BRUTEFORCE_HAMMING, BRUTEFORCE_HAMMINGLUT, BRUTEFORCE_SL2
+		//cv::Ptr<cv::DescriptorMatcher> matcher = cv::FlannBasedMatcher::create();
+		//cv::Ptr<cv::DescriptorMatcher> matcher = cv::BFMatcher::create(cv::NORM_L2, /*crossCheck =*/ false);
+
+		std::cout << "Descriptor matcher: mask supported = " << std::boolalpha << matcher->isMaskSupported() << std::endl;
+
+		std::cout << "Matching feature descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		std::vector<std::vector<cv::DMatch>> knn_matches;
+		matcher->knnMatch(descriptors1, descriptors2, knn_matches, 2);
+
+		// Filter matches using the Lowe's ratio test
+		const float ratio_thresh = 0.7f;
+		for (size_t i = 0; i < knn_matches.size(); i++)
+		{
+			if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+			{
+				good_matches.push_back(knn_matches[i][0]);
+			}
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#KNN matches = " << knn_matches.size() << std::endl;
+		std::cout << "\t#good matches = " << good_matches.size() << std::endl;
+	}
+
+	//--------------------
+	// Draw matches
+	cv::Mat img_matches;
+	cv::drawMatches(
+		img1, keypoints1, img2, keypoints2, good_matches, img_matches,
+		cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
+	);
+
+	// Show detected matches
+	cv::imshow("Good Matches", img_matches);
+	cv::waitKey();
+	cv::destroyAllWindows();
+}
+
+// REF [site] >> https://docs.opencv.org/4.11.0/d7/dff/tutorial_feature_homography.htmlvoid feature_homography_tutorial()
+{
+	const std::string image_filepath1("../data/box.png");
+	const std::string image_filepath2("../data/box_in_scene.png");
+
+	cv::Mat img_object(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
+	if (img_object.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath1 << std::endl;
+		return;
+	}
+	cv::Mat img_scene(cv::imread(image_filepath2, cv::IMREAD_GRAYSCALE));
+	if (img_scene.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
+		return;
+	}
+
+	//--------------------
+	// Step 1: Detect the keypoints using SURF Detector, compute the descriptors
+	std::vector<cv::KeyPoint> keypoints_object, keypoints_scene;
+	cv::Mat descriptors_object, descriptors_scene;
+	{
+		const int minHessian = 400;
+		cv::Ptr<cv::xfeatures2d::SURF> detector = cv::xfeatures2d::SURF::create(minHessian);
+
+		std::cout << "Detecting keypoints and describing features..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		detector->detectAndCompute(img_object, cv::noArray(), keypoints_object, descriptors_object);
+		detector->detectAndCompute(img_scene, cv::noArray(), keypoints_scene, descriptors_scene);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in object = " << keypoints_object.size() << std::endl;
+		std::cout << "\t#keypoints detected in scene = " << keypoints_scene.size() << std::endl;
+	}
+
+	// Step 2: Matching descriptor vectors with a FLANN based matcher
+	std::vector<cv::DMatch> good_matches;
+	{
+		// Since SURF is a floating-point descriptor NORM_L2 is used
+		cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);  // FLANNBASED, BRUTEFORCE, BRUTEFORCE_L1, BRUTEFORCE_HAMMING, BRUTEFORCE_HAMMINGLUT, BRUTEFORCE_SL2
+		//cv::Ptr<cv::DescriptorMatcher> matcher = cv::FlannBasedMatcher::create();
+		//cv::Ptr<cv::DescriptorMatcher> matcher = cv::BFMatcher::create(cv::NORM_L2, /*crossCheck =*/ false);
+
+		std::cout << "Descriptor matcher: mask supported = " << std::boolalpha << matcher->isMaskSupported() << std::endl;
+
+		std::cout << "Matching feature descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		std::vector<std::vector<cv::DMatch>> knn_matches;
+		matcher->knnMatch(descriptors_object, descriptors_scene, knn_matches, 2);
+
+		// Filter matches using the Lowe's ratio test
+		const float ratio_thresh = 0.75f;
+		for (size_t i = 0; i < knn_matches.size(); i++)
+		{
+			if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+			{
+				good_matches.push_back(knn_matches[i][0]);
+			}
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#KNN matches = " << knn_matches.size() << std::endl;
+		std::cout << "\t#good matches = " << good_matches.size() << std::endl;
+	}
+
+	//--------------------
+	// Draw matches
+	cv::Mat img_matches;
+	drawMatches(
+		img_object, keypoints_object, img_scene, keypoints_scene, good_matches, img_matches,
+		cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
+	);
+
+	//--------------------
+	// Localize the object
+	std::vector<cv::Point2f> scene_corners(4);
+	{
+		std::vector<cv::Point2f> obj;
+		std::vector<cv::Point2f> scene;
+		for (size_t i = 0; i < good_matches.size(); i++)
+		{
+			// Get the keypoints from the good matches
+			obj.push_back(keypoints_object[good_matches[i].queryIdx].pt);
+			scene.push_back(keypoints_scene[good_matches[i].trainIdx].pt);
+		}
+
+		std::cout << "Finding omography..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		const cv::Mat H = cv::findHomography(obj, scene, cv::RANSAC);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Homography found: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+
+		// Get the corners from the image_1 ( the object to be "detected" )
+		const std::vector<cv::Point2f> obj_corners{
+			cv::Point2f(0, 0),
+			cv::Point2f((float)img_object.cols, 0),
+			cv::Point2f((float)img_object.cols, (float)img_object.rows),
+			cv::Point2f(0, (float)img_object.rows),
+		};
+		std::cout << "Performing perspective transform..." << std::endl;
+		const auto start_time_pt(std::chrono::high_resolution_clock::now());
+		cv::perspectiveTransform(obj_corners, scene_corners, H);
+		const auto elapsed_time_pt(std::chrono::high_resolution_clock::now() - start_time_pt);
+		std::cout << "Perspective transform performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time_pt).count() << " msecs." << std::endl;
+	}
+
+	//--------------------
+	// Draw lines between the corners (the mapped object in the scene - image_2 )
+	cv::line(
+		img_matches, scene_corners[0] + cv::Point2f((float)img_object.cols, 0),
+		scene_corners[1] + cv::Point2f((float)img_object.cols, 0), cv::Scalar(0, 255, 0), 4
+	);
+	cv::line(
+		img_matches, scene_corners[1] + cv::Point2f((float)img_object.cols, 0),
+		scene_corners[2] + cv::Point2f((float)img_object.cols, 0), cv::Scalar(0, 255, 0), 4
+	);
+	cv::line(
+		img_matches, scene_corners[2] + cv::Point2f((float)img_object.cols, 0),
+		scene_corners[3] + cv::Point2f((float)img_object.cols, 0), cv::Scalar(0, 255, 0), 4
+	);
+	cv::line(
+		img_matches, scene_corners[3] + cv::Point2f((float)img_object.cols, 0),
+		scene_corners[0] + cv::Point2f((float)img_object.cols, 0), cv::Scalar(0, 255, 0), 4
+	);
+
+	// Show detected matches
+	cv::imshow("Good Matches & Object Detection", img_matches);
+	cv::waitKey();
+	cv::destroyAllWindows();
+}
+
+// REF [site] >> https://docs.opencv.org/master/db/d70/tutorial_akaze_matching.html
+void kaze_matching_tutorial()
+{
+	const std::string img1_filename("../data/machine_vision/opencv/graf1.png");
+	const std::string imgN_filename("../data/machine_vision/opencv/graf3.png");
+	const std::string H_filename("../data/machine_vision/opencv/H1to3p.xml");
+
+	// Open the input image.
+	cv::Mat img1(cv::imread(img1_filename, cv::IMREAD_COLOR));
+	cv::Mat imgN(cv::imread(imgN_filename, cv::IMREAD_COLOR));
+	cv::Mat H1toN;
+	{
+		cv::FileStorage fs(H_filename, cv::FileStorage::READ);
+		if (fs.isOpened())
+			fs.getFirstTopLevelNode() >> H1toN;  // CV_64FC1.
+	}
+	//std::cout << "H1toN = " << H1toN << std::endl;
+
+	const float inlier_threshold = 2.5f;  // Distance threshold to identify inliers.
+	const float nn_match_ratio = 0.8f;  // Nearest neighbor matching ratio.
+
+	std::vector<cv::KeyPoint> keypoints1, keypointsN;
+	cv::Mat descriptors1, descriptorsN;
+
+	//cv::Ptr<cv::KAZE> kaze(cv::KAZE::create());
+	cv::Ptr<cv::AKAZE> akaze(cv::AKAZE::create());
+	akaze->detectAndCompute(img1, cv::noArray(), keypoints1, descriptors1);
+	akaze->detectAndCompute(imgN, cv::noArray(), keypointsN, descriptorsN);
+
+	//cv::BFMatcher matcher;  // For KAZE. (?)
+	cv::BFMatcher matcher(cv::NORM_HAMMING);  // For AKAZE.
+	std::vector<std::vector<cv::DMatch> > nn_matches;
+	matcher.knnMatch(descriptors1, descriptorsN, nn_matches, 2);
+
+	std::vector<cv::KeyPoint> matched1, matchedN, inliers1, inliersN;
+	std::vector<cv::DMatch> good_matches;
+	for (size_t i = 0; i < nn_matches.size(); ++i)
+	{
+		const cv::DMatch &first = nn_matches[i][0];
+		const float dist1 = nn_matches[i][0].distance;
+		const float dist2 = nn_matches[i][1].distance;
+
+		if (dist1 < nn_match_ratio * dist2)
+		{
+			matched1.push_back(keypoints1[first.queryIdx]);
+			matchedN.push_back(keypointsN[first.trainIdx]);
+		}
+	}
+
+	for (unsigned i = 0; i < matched1.size(); ++i)
+	{
+		cv::Mat col = cv::Mat::ones(3, 1, CV_64F);
+		col.at<double>(0) = matched1[i].pt.x;
+		col.at<double>(1) = matched1[i].pt.y;
+
+		col = H1toN * col;
+		col /= col.at<double>(2);
+		const double dist = std::sqrt(std::pow(col.at<double>(0) - matchedN[i].pt.x, 2) + std::pow(col.at<double>(1) - matchedN[i].pt.y, 2));
+
+		if (dist < inlier_threshold)
+		{
+			const int new_i = static_cast<int>(inliers1.size());
+			inliers1.push_back(matched1[i]);
+			inliersN.push_back(matchedN[i]);
+			good_matches.push_back(cv::DMatch(new_i, new_i, 0));
+		}
+	}
+
+	cv::Mat res;
+	cv::drawMatches(img1, inliers1, imgN, inliersN, good_matches, res);
+	//cv::imwrite("akaze_result.png", res);
+
+	const double inlier_ratio = inliers1.size() * 1.0 / matched1.size();
+	std::cout << "KAZE/AKAZE Matching Results" << std::endl;
+	std::cout << "*******************************" << std::endl;
+	std::cout << "# Keypoints 1:                        \t" << keypoints1.size() << std::endl;
+	std::cout << "# Keypoints 2:                        \t" << keypointsN.size() << std::endl;
+	std::cout << "# Matches:                            \t" << matched1.size() << std::endl;
+	std::cout << "# Inliers:                            \t" << inliers1.size() << std::endl;
+	std::cout << "# Inliers Ratio:                      \t" << inlier_ratio << std::endl;
+	std::cout << std::endl;
+
+	cv::imshow("KAZE/AKAZE Matching", res);
+	cv::waitKey();
+	cv::destroyAllWindows();
+}
+
+// REF [site] >>
+//	https://github.com/pablofdezalc/test_kaze_akaze_opencv/blob/master/test_kaze_match.cpp
+//	https://github.com/pablofdezalc/test_kaze_akaze_opencv/blob/master/test_akaze_match.cpp
+void kaze_match_test()
 {
 	const std::string img1_filename("../data/machine_vision/opencv/graf1.png");
 	const std::string imgN_filename("../data/machine_vision/opencv/graf3.png");
@@ -703,92 +1007,7 @@ void kaze_match_test1()
 
 	cv::imshow("KAZE/AKAZE Matching", img_com);
 	cv::waitKey(0);
-}
-
-// REF [site] >> https://docs.opencv.org/master/db/d70/tutorial_akaze_matching.html
-void kaze_match_test2()
-{
-	const std::string img1_filename("../data/machine_vision/opencv/graf1.png");
-	const std::string imgN_filename("../data/machine_vision/opencv/graf3.png");
-	const std::string H_filename("../data/machine_vision/opencv/H1to3p.xml");
-
-	// Open the input image.
-	cv::Mat img1(cv::imread(img1_filename, cv::IMREAD_COLOR));
-	cv::Mat imgN(cv::imread(imgN_filename, cv::IMREAD_COLOR));
-	cv::Mat H1toN;
-	{
-		cv::FileStorage fs(H_filename, cv::FileStorage::READ);
-		if (fs.isOpened())
-			fs.getFirstTopLevelNode() >> H1toN;  // CV_64FC1.
-	}
-	//std::cout << "H1toN = " << H1toN << std::endl;
-
-	const float inlier_threshold = 2.5f;  // Distance threshold to identify inliers.
-	const float nn_match_ratio = 0.8f;  // Nearest neighbor matching ratio.
-
-	std::vector<cv::KeyPoint> keypoints1, keypointsN;
-	cv::Mat descriptors1, descriptorsN;
-
-	//cv::Ptr<cv::KAZE> kaze(cv::KAZE::create());
-	cv::Ptr<cv::AKAZE> akaze(cv::AKAZE::create());
-	akaze->detectAndCompute(img1, cv::noArray(), keypoints1, descriptors1);
-	akaze->detectAndCompute(imgN, cv::noArray(), keypointsN, descriptorsN);
-
-	//cv::BFMatcher matcher;  // For KAZE. (?)
-	cv::BFMatcher matcher(cv::NORM_HAMMING);  // For AKAZE.
-	std::vector<std::vector<cv::DMatch> > nn_matches;
-	matcher.knnMatch(descriptors1, descriptorsN, nn_matches, 2);
-
-	std::vector<cv::KeyPoint> matched1, matchedN, inliers1, inliersN;
-	std::vector<cv::DMatch> good_matches;
-	for (size_t i = 0; i < nn_matches.size(); ++i)
-	{
-		const cv::DMatch &first = nn_matches[i][0];
-		const float dist1 = nn_matches[i][0].distance;
-		const float dist2 = nn_matches[i][1].distance;
-
-		if (dist1 < nn_match_ratio * dist2)
-		{
-			matched1.push_back(keypoints1[first.queryIdx]);
-			matchedN.push_back(keypointsN[first.trainIdx]);
-		}
-	}
-
-	for (unsigned i = 0; i < matched1.size(); ++i)
-	{
-		cv::Mat col = cv::Mat::ones(3, 1, CV_64F);
-		col.at<double>(0) = matched1[i].pt.x;
-		col.at<double>(1) = matched1[i].pt.y;
-
-		col = H1toN * col;
-		col /= col.at<double>(2);
-		const double dist = std::sqrt(std::pow(col.at<double>(0) - matchedN[i].pt.x, 2) + std::pow(col.at<double>(1) - matchedN[i].pt.y, 2));
-
-		if (dist < inlier_threshold)
-		{
-			const int new_i = static_cast<int>(inliers1.size());
-			inliers1.push_back(matched1[i]);
-			inliersN.push_back(matchedN[i]);
-			good_matches.push_back(cv::DMatch(new_i, new_i, 0));
-		}
-	}
-
-	cv::Mat res;
-	cv::drawMatches(img1, inliers1, imgN, inliersN, good_matches, res);
-	//cv::imwrite("akaze_result.png", res);
-
-	const double inlier_ratio = inliers1.size() * 1.0 / matched1.size();
-	std::cout << "KAZE/AKAZE Matching Results" << std::endl;
-	std::cout << "*******************************" << std::endl;
-	std::cout << "# Keypoints 1:                        \t" << keypoints1.size() << std::endl;
-	std::cout << "# Keypoints 2:                        \t" << keypointsN.size() << std::endl;
-	std::cout << "# Matches:                            \t" << matched1.size() << std::endl;
-	std::cout << "# Inliers:                            \t" << inliers1.size() << std::endl;
-	std::cout << "# Inliers Ratio:                      \t" << inlier_ratio << std::endl;
-	std::cout << std::endl;
-
-	cv::imshow("KAZE/AKAZE Matching", res);
-	cv::waitKey();
+	cv::destroyAllWindows();
 }
 
 void surf_gpu_test()
@@ -823,6 +1042,8 @@ void surf_gpu_test()
 
 	cv::cuda::SURF_CUDA surf;
 
+	std::cout << "SURF: descriptor size = " << surf.descriptorSize() << ", default norm = " << surf.defaultNorm() << std::endl;
+
 	// Detect keypoints & computing descriptors
 	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;
 	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;
@@ -839,15 +1060,19 @@ void surf_gpu_test()
 		assert(keypoints2_gpu.cols == descriptors2_gpu.rows);
 	}
 
-	// Match descriptors
+	// Match feature descriptors
 	std::vector<cv::DMatch> good_matches;
 	if (descriptors1_gpu.rows > 0 && descriptors2_gpu.rows > 0)
 	{
-		std::cout << "Matching descriptors..." << std::endl;
-		const auto start_time(std::chrono::high_resolution_clock::now());
 		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(surf.defaultNorm()));
 
+		std::cout << "Descriptor matcher: mask supported = " << std::boolalpha << matcher->isMaskSupported() << std::endl;
+
+		std::cout << "Matching feature descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
 #if 0
+		// Find the best matches
+
 		std::vector<cv::DMatch> init_matches;
 #if 0
 		matcher->match(descriptors1_gpu, descriptors2_gpu, init_matches, cv::noArray());
@@ -864,16 +1089,22 @@ void surf_gpu_test()
 #if 1
 		auto match_it = init_matches.begin() + max_matches;
 		std::nth_element(init_matches.begin(), match_it, init_matches.end());
+		//std::nth_element(init_matches.begin(), match_it, init_matches.end(), [](const auto &lhs, const auto &rhs) {
+		//	return lhs.distance < rhs.distance;
+		//});
 #else
-		std::sort(init_matches.begin(), init_matches.end(), [](const auto &lhs, const auto &rhs) {
-			return lhs.distance < rhs.distance;
-		});
+		std::sort(init_matches.begin(), init_matches.end());
+		//std::sort(init_matches.begin(), init_matches.end(), [](const auto &lhs, const auto &rhs) {
+		//	return lhs.distance < rhs.distance;
+		//});
 		std::vector<cv::DMatch>::iterator match_it = init_matches.begin();
 		std::advance(match_it, max_matches);
 #endif
 
 		good_matches.assign(init_matches.begin(), match_it);
 #else
+		// Find multiple matches by k-nearest neighbor search or radius search
+
 		cv::cuda::GpuMat matches_gpu;
 		matcher->knnMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*k =*/ 2, cv::noArray(), cv::cuda::Stream::Null());
 		//matcher->radiusMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*maxDistance =*/ 100.0f, cv::noArray(), cv::cuda::Stream::Null());
@@ -882,19 +1113,20 @@ void surf_gpu_test()
 		matcher->knnMatchConvert(matches_gpu, init_matches);
 		//matcher->radiusMatchConvert(matches_gpu, init_matches);
 
+		// REF [site] >> https://docs.opencv.org/4.11.0/d5/d6f/tutorial_feature_flann_matcher.html
 		const float nnr(0.8f);  // Nearest neighbor ratio (typically 0.6 ~ 0.8)
 		good_matches.reserve(init_matches.size());
-		for (std::vector<std::vector<cv::DMatch>>::const_iterator it = init_matches.begin(); it != init_matches.end(); ++it)
+		for (const auto &match: init_matches)
 		{
-			// NOTE [info] >> it->size() == k if using knnMatch()
+			// NOTE [info] >> match.size() == k if using knnMatch()
 
 			// Use nearest-neighbor ratio to determine "good" matches
-			if (it->size() > 1 && ((*it)[0].distance / (*it)[1].distance) < nnr)
-				good_matches.push_back((*it)[0]);  // Save good matches here
+			if (match.size() > 1 && match[0].distance < (nnr * match[1].distance))
+				good_matches.push_back(match[0]);  // Save good matches here
 		}
 #endif
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
-		std::cout << "Descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 		std::cout << "\t#initial matches = " << init_matches.size() << std::endl;
 		std::cout << "\t#good matches = " << good_matches.size() << std::endl;
 	}
@@ -912,30 +1144,40 @@ void surf_gpu_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		surf.downloadKeypoints(keypoints1_gpu, keypoints1);
 		surf.downloadKeypoints(keypoints2_gpu, keypoints2);
-		surf.downloadDescriptors(descriptors1_gpu, descriptors1);  // Descriptor's size = 128
-		surf.downloadDescriptors(descriptors2_gpu, descriptors2);  // Descriptor's size = 128
+		surf.downloadDescriptors(descriptors1_gpu, descriptors1);  // Descriptor size = 128
+		surf.downloadDescriptors(descriptors2_gpu, descriptors2);  // Descriptor size = 128
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
 		std::cout << "\t#keypoints detected in image2 = " << keypoints2.size() << std::endl;
-		assert(keypoints1.size() * 128 == descriptors1.size());
-		assert(keypoints2.size() * 128 == descriptors2.size());
+		assert(keypoints1.size() * surf.descriptorSize() == descriptors1.size());
+		assert(keypoints2.size() * surf.descriptorSize() == descriptors2.size());
 	}
 
 	//--------------------
 	// Draw the results
 	cv::Mat img_matches;
-	cv::drawMatches(cv::Mat(gray1), keypoints1, cv::Mat(gray2), keypoints2, good_matches, img_matches);
+	cv::drawMatches(
+		cv::Mat(gray1), keypoints1, cv::Mat(gray2), keypoints2, good_matches, img_matches,
+		cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
+	);
 
-	cv::imshow("Matches", img_matches);
+	cv::imshow("Good Matches", img_matches);
 	cv::waitKey(0);
 	cv::destroyAllWindows();
 }
 
 void orb_gpu_test()
 {
+#if 1
 	const std::string image_filepath1("../data/machine_vision/opencv/box.png");
 	const std::string image_filepath2("../data/machine_vision/opencv/box_in_scene.png");
+#else
+	const std::string image_filepath1("../data/machine_vision/opencv/melon_target.png");
+	const std::string image_filepath2("../data/machine_vision/opencv/melon_1.png");
+	//const std::string image_filepath2("../data/machine_vision/opencv/melon_2.png");
+	//const std::string image_filepath2("../data/machine_vision/opencv/melon_3.png");
+#endif
 
 	cv::Mat gray1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
 	if (gray1.empty())
@@ -951,6 +1193,8 @@ void orb_gpu_test()
 	}
 
 	//--------------------
+	cv::cuda::Stream stream;
+
 	// Upload to GPU
 	cv::cuda::GpuMat gray1_gpu, gray2_gpu;
 	cv::cuda::GpuMat mask1_gpu, mask2_gpu;
@@ -960,22 +1204,28 @@ void orb_gpu_test()
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		gray1_gpu.upload(gray1);
 		gray2_gpu.upload(gray2);
+		//gray1_gpu.upload(gray1, stream1);
+		//gray2_gpu.upload(gray2, stream2);
 		//mask1_gpu.upload(mask1);
 		//mask2_gpu.upload(mask2);
+		//mask1_gpu.upload(mask1, stream1);
+		//mask2_gpu.upload(mask2, stream2);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Data uploaded to GPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 	}
 
-	cv::cuda::Stream stream;
+	const int num_features(500);
+	const bool blur_for_descriptor(false);
+	cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(num_features, 1.2f, 8, 31, 0, 2, 0, 31, 20, blur_for_descriptor));
+
+	std::cout << "ORB: descriptor size = " << orb->descriptorSize() << ", descriptor type = " << orb->descriptorType() << ", default norm = " << orb->defaultNorm() << std::endl;
 
 	// Detect keypoints and describe features
-	const int num_features(500);
-	const bool blur_for_descriptor = false;
-	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;  // Size = [6, num_features]
-	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;  // Size = [num_features, 32]
+	// Keypoint size = [6, num_features], descriptor size = [num_features, 32]
+	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;
+	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;
 	std::vector<cv::KeyPoint> keypoints1, keypoints2;
 	cv::Mat descriptors1, descriptors2;
-	cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(num_features, 1.2f, 8, 31, 0, 2, 0, 31, 20, blur_for_descriptor));
 	{
 #if 1
 		{
@@ -1007,6 +1257,8 @@ void orb_gpu_test()
 			orb->convert(keypoints2_gpu, keypoints2);
 			//descriptors1_gpu.download(descriptors1);
 			//descriptors2_gpu.download(descriptors2);
+			//descriptors1_gpu.download(descriptors1, stream1);
+			//descriptors2_gpu.download(descriptors2, stream2);
 			const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 			std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 			std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
@@ -1031,11 +1283,16 @@ void orb_gpu_test()
 	std::vector<cv::DMatch> good_matches;
 	if (descriptors1_gpu.rows > 0 && descriptors2_gpu.rows > 0)
 	{
+		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
+
+		std::cout << "Descriptor matcher: mask supported = " << std::boolalpha << matcher->isMaskSupported() << std::endl;
+
 		std::cout << "Matching feature descriptors..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
 		cv::cuda::GpuMat matches_gpu;
 #if 0
+		// Find the best matches
+
 		std::vector<cv::DMatch> init_matches;
 #if 1
 		matcher->matchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, cv::noArray(), cv::cuda::Stream::Null());
@@ -1053,16 +1310,22 @@ void orb_gpu_test()
 #if 1
 		auto match_it = init_matches.begin() + max_matches;
 		std::nth_element(init_matches.begin(), match_it, init_matches.end());
+		//std::nth_element(init_matches.begin(), match_it, init_matches.end(), [](const auto &lhs, const auto &rhs) {
+		//	return lhs.distance < rhs.distance;
+		//});
 #else
-		std::sort(init_matches.begin(), init_matches.end(), [](const auto &lhs, const auto &rhs) {
-			return lhs.distance < rhs.distance;
-		});
+		std::sort(init_matches.begin(), init_matches.end());
+		//std::sort(init_matches.begin(), init_matches.end(), [](const auto &lhs, const auto &rhs) {
+		//	return lhs.distance < rhs.distance;
+		//});
 		std::vector<cv::DMatch>::iterator match_it = init_matches.begin();
 		std::advance(match_it, max_matches);
 #endif
 
 		good_matches.assign(init_matches.begin(), match_it);
 #else
+		// Find multiple matches by k-nearest neighbor search or radius search
+
 		std::vector<std::vector<cv::DMatch>> init_matches;
 #if 1
 		//matcher->knnMatchAsync(descriptors1_gpu, descriptors2_gpu, matches_gpu, /*k =*/ 2, cv::noArray(), cv::cuda::Stream::Null());
@@ -1079,15 +1342,16 @@ void orb_gpu_test()
 		//matcher->radiusMatch(descriptors1_gpu, descriptors2_gpu, init_matches, /*maxDistance =*/ 100.0f, cv::noArray(), /*compactResult =*/ false);
 #endif
 
+		// REF [site] >> https://docs.opencv.org/4.11.0/d5/d6f/tutorial_feature_flann_matcher.html
 		const float nnr(0.9f);  // Nearest neighbor ratio (typically 0.6 ~ 0.8)
 		good_matches.reserve(init_matches.size());
-		for (std::vector<std::vector<cv::DMatch>>::const_iterator it = init_matches.begin(); it != init_matches.end(); ++it)
+		for (const auto &match: init_matches)
 		{
-			// NOTE [info] >> it->size() == k if using knnMatch()
+			// NOTE [info] >> match.size() == k if using knnMatch()
 
 			// Use nearest-neighbor ratio to determine "good" matches
-			if (it->size() > 1 && ((*it)[0].distance / (*it)[1].distance) < nnr)
-				good_matches.push_back((*it)[0]);  // Save good matches here
+			if (match.size() > 1 && match[0].distance < (nnr * match[1].distance))
+				good_matches.push_back(match[0]);  // Save good matches here
 		}
 #endif
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
@@ -1104,18 +1368,22 @@ void orb_gpu_test()
 	//--------------------
 	// Draw matches
 	cv::Mat img_matches;
-	cv::drawMatches(gray1, keypoints1, gray2, keypoints2, good_matches, img_matches);
+	cv::drawMatches(
+		gray1, keypoints1, gray2, keypoints2, good_matches, img_matches,
+		cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
+	);
 
 	// Show detected matches
-	cv::imshow("Matches", img_matches);
+	cv::imshow("Good Matches", img_matches);
 	cv::waitKey(0);
 	cv::destroyAllWindows();
 }
 
-void orb_gpu_test()
+// REF [site] >> https://developer.ridgerun.com/wiki/index.php/How_to_use_OpenCV_CUDA_Streams
+void orb_gpu_stream_test()
 {
-	const std::string image_filepath1("../data/machine_vision/opencv/box.png");
-	const std::string image_filepath2("../data/machine_vision/opencv/box_in_scene.png");
+	const std::string image_filepath1("../data/box.png");
+	const std::string image_filepath2("../data/box_in_scene.png");
 
 	cv::Mat gray1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
 	if (gray1.empty())
@@ -1130,106 +1398,466 @@ void orb_gpu_test()
 		return;
 	}
 
+	cv::Mat gray2_90, gray2_180, gray2_270;
+	cv::rotate(gray2, gray2_90, cv::ROTATE_90_CLOCKWISE);
+	cv::rotate(gray2, gray2_180, cv::ROTATE_180);
+	cv::rotate(gray2, gray2_270, cv::ROTATE_90_COUNTERCLOCKWISE);
+	std::vector<cv::Mat> gray2s{gray2, gray2_90, gray2_180, gray2_270};
+
 	//--------------------
-	cv::cuda::GpuMat gray1_gpu, gray2_gpu;
-	cv::cuda::GpuMat mask1_gpu, mask2_gpu;
+#if 1
+	cv::cuda::Stream stream1;
+	std::vector<cv::cuda::Stream> stream2s(gray2s.size());
+#else
+	// For testing
+	cv::cuda::Stream stream1(cv::cuda::Stream::Null());
+	std::vector<cv::cuda::Stream> stream2s(gray2s.size(), cv::cuda::Stream::Null());
+#endif
+
+	// Upload to GPU
+	cv::cuda::GpuMat gray1_gpu, mask1_gpu;
+	std::vector<cv::cuda::GpuMat> gray2s_gpu(gray2s.size()), mask2s_gpu(gray2s.size());
 	{
 		std::cout << "Uploading data to GPU..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		gray1_gpu.upload(gray1);
-		gray2_gpu.upload(gray2);
+		//gray1_gpu.upload(gray1);
+		gray1_gpu.upload(gray1, stream1);
 		//mask1_gpu.upload(mask1);
-		//mask2_gpu.upload(mask2);
+		//mask1_gpu.upload(mask1, stream1);
+
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			//gray2s_gpu[idx].upload(gray2s[idx]);
+			gray2s_gpu[idx].upload(gray2s[idx], stream2s[idx]);
+			//mask2s_gpu[idx].upload(mask2s[idx]);
+			//mask2s_gpu[idx].upload(mask2s[idx], stream2s[idx]);
+		}
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Data uploaded to GPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 	}
 
+	const int num_features(500);
+	const bool blur_for_descriptor(false);
+	cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(num_features, 1.2f, 8, 31, 0, 2, 0, 31, 20, blur_for_descriptor));
+
+	std::cout << "ORB: descriptor size = " << orb->descriptorSize() << ", descriptor type = " << orb->descriptorType() << ", default norm = " << orb->defaultNorm() << std::endl;
+
 	// Detect keypoints and describe features
-	cv::cuda::GpuMat keypoints1_gpu, keypoints2_gpu;
-	cv::cuda::GpuMat descriptors1_gpu, descriptors2_gpu;
+	// Keypoint size = [6, num_features], descriptor size = [num_features, 32]
+	cv::cuda::GpuMat keypoints1_gpu, descriptors1_gpu;
+	std::vector<cv::cuda::GpuMat> keypoints2s_gpu(gray2s.size()), descriptors2s_gpu(gray2s.size());
 	{
 		std::cout << "Detecting keypoints and describing features..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(500, 1.2f, 8, 31, 0, 2, 0, 31, 20, true));
-#if 0
-		orb->detectAndComputeAsync(gray1_gpu, cv::noArray(), keypoints1_gpu, descriptors1_gpu);
-		orb->detectAndComputeAsync(gray2_gpu, cv::noArray(), keypoints2_gpu, descriptors2_gpu);
-#else
-		cv::cuda::Stream stream;
-
-		orb->detectAndComputeAsync(gray1_gpu, mask1_gpu, keypoints1_gpu, descriptors1_gpu, false, stream);
-		stream.waitForCompletion();
-		orb->detectAndComputeAsync(gray2_gpu, mask2_gpu, keypoints2_gpu, descriptors2_gpu, false, stream);
-		stream.waitForCompletion();
-#endif
+		orb->detectAsync(gray1_gpu, keypoints1_gpu, /*mask =*/ cv::noArray(), stream1);
+		orb->computeAsync(gray1_gpu, keypoints1_gpu, descriptors1_gpu, stream1);
+		//orb->detectAndComputeAsync(gray1_gpu, /*mask =*/ cv::noArray(), keypoints1_gpu, descriptors1_gpu, /*useProvidedKeypoints =*/ false, stream1);
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			orb->detectAsync(gray2s_gpu[idx], keypoints2s_gpu[idx], /*mask =*/ cv::noArray(), stream2s[idx]);
+			orb->computeAsync(gray2s_gpu[idx], keypoints2s_gpu[idx], descriptors2s_gpu[idx], stream2s[idx]);
+			//orb->detectAndComputeAsync(gray2s_gpu[idx], /*mask =*/ cv::noArray(), keypoints2s_gpu[idx], descriptors2s_gpu[idx], /*useProvidedKeypoints =*/ false, stream2[idx]);
+		}
+		stream1.waitForCompletion();
+		for (auto &stream2: stream2s)
+			stream2.waitForCompletion();
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
-		std::cout << "\t#keypoints detected in image1 = " << keypoints1_gpu.cols << std::endl;
-		std::cout << "\t#keypoints detected in image2 = " << keypoints2_gpu.cols << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1_gpu.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2s = ";
+		for (const auto &kps: keypoints2s_gpu)
+			std::cout << kps.size() << ", ";
+		std::cout << std::endl;
 	}
 
 	// Download to CPU
-	std::vector<cv::KeyPoint> keypoints1, keypoints2;
-	//cv::Mat descriptors1, descriptors2;
+	std::vector<cv::KeyPoint> keypoints1;
+	std::vector<std::vector<cv::KeyPoint>> keypoints2s(gray2s.size());
+	cv::Mat descriptors1;
+	std::vector<cv::Mat> descriptors2s(gray2s.size());
 	{
 		std::cout << "Downloading data to CPU..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		orb->convert(keypoints1_gpu, keypoints1);
-		orb->convert(keypoints2_gpu, keypoints2);
-		//descriptors1_gpu.download(descriptors1);
-		//descriptors2_gpu.download(descriptors2);
+		descriptors1_gpu.download(descriptors1, stream1);
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			orb->convert(keypoints2s_gpu[idx], keypoints2s[idx]);
+			descriptors2s_gpu[idx].download(descriptors2s[idx], stream2s[idx]);
+		}
+		stream1.waitForCompletion();
+		for (auto &stream2: stream2s)
+			stream2.waitForCompletion();
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
-		std::cout << "\t#keypoints detected in image2 = " << keypoints2.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2s = ";
+		for (const auto &kps: keypoints2s)
+			std::cout << kps.size() << ", ";
+		std::cout << std::endl;
 	}
 
 	//--------------------
-	// Match
-	std::vector<cv::DMatch> matches;
+	// Match feature descriptors
+	std::vector<std::vector<cv::DMatch>> good_matches(gray2s.size());
+	if (descriptors1_gpu.rows > 0)
 	{
+		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
+
+		std::cout << "Descriptor matcher: mask supported = " << std::boolalpha << matcher->isMaskSupported() << std::endl;
+
 		std::cout << "Matching feature descriptors..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
+		std::vector<cv::cuda::GpuMat> matches_gpu(gray2s.size());
 #if 0
-		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
-		matcher->match(descriptors1_gpu, descriptors2_gpu, matches_gpu);
+		// Find the best matches
+
+		std::vector<std::vector<cv::DMatch>> init_matches(gray2s.size());
+#if 1
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+			if (descriptors2s_gpu[idx].rows > 0)
+				matcher->matchAsync(descriptors1_gpu, descriptors2s_gpu[idx], matches_gpu[idx], cv::noArray(), stream2s[idx]);
+		for (auto &stream2: stream2s)
+			stream2.waitForCompletion();
+
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+			matcher->matchConvert(matches_gpu[idx], init_matches[idx]);
 #else
-		if (descriptors2_gpu.rows > 0)
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+			matcher->match(descriptors1_gpu, descriptors2s_gpu[idx], init_matches[idx], cv::noArray());
+#endif
+
+		// Sort
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
 		{
-			cv::cuda::GpuMat matches_gpu;
+			auto &matches = init_matches[idx];
 
-			cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
-			matcher->knnMatchAsync(descriptors2_gpu, descriptors1_gpu, matches_gpu, 2, cv::noArray(), *stream);
-			stream.waitForCompletion();
+			//const size_t max_matches(matches.size() / 2);
+			const size_t max_matches(std::min<size_t>(30, matches.size()));
+#if 1
+			auto match_it = matches.begin() + max_matches;
+			std::nth_element(matches.begin(), match_it, matches.end());
+			//std::nth_element(matches.begin(), match_it, matches.end(), [](const auto &lhs, const auto &rhs) {
+			//	return lhs.distance < rhs.distance;
+			//});
+#else
+			std::sort(matches.begin(), matches.end());
+			//std::sort(matches.begin(), matches.end(), [](const auto &lhs, const auto &rhs) {
+			//	return lhs.distance < rhs.distance;
+			//});
+			std::vector<cv::DMatch>::iterator match_it = matches.begin();
+			std::advance(match_it, max_matches);
+#endif
 
+			good_matches[idx].assign(matches.begin(), match_it);
+		}
+#else
+		// Find multiple matches by k-nearest neighbor search or radius search
+
+		std::vector < std::vector<std::vector<cv::DMatch>>> init_matches(gray2s.size());
+#if 1
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			matcher->knnMatchAsync(descriptors1_gpu, descriptors2s_gpu[idx], matches_gpu[idx], /*k =*/ 2, cv::noArray(), stream2s[idx]);
+			//matcher->radiusMatchAsync(descriptors1_gpu, descriptors2s_gpu[idx], matches_gpu[idx], /*maxDistance =*/ 100.0f, cv::noArray(), stream2s[idx]);
+		}
+		for (auto &stream2: stream2s)
+			stream2.waitForCompletion();
+
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
 			// Download matches to CPU
-			std::vector<std::vector<cv::DMatch>> matches_before;
-			matcher->knnMatchConvert(matches_gpu, matches_before);
+			matcher->knnMatchConvert(matches_gpu[idx], init_matches[idx], /*compactResult =*/ false);
+			//matcher->radiusMatchConvert(matches_gpu[idx], init_matches[idx], /*compactResult =*/ false);
+		}
+#else
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			matcher->knnMatch(descriptors1_gpu, descriptors2s_gpu[idx], init_matches[idx], /*k =*/ 2, cv::noArray(), /*compactResult =*/ false);
+			//matcher->radiusMatch(descriptors1_gpu, descriptors2s_gpu[idx], init_matches[idx], /*maxDistance =*/ 100.0f, cv::noArray(), /*compactResult =*/ false);
+		}
+#endif
 
-			const float nnr(0.6f);  // Nearest neighbor ratio
-			for (std::vector<std::vector<cv::DMatch>>::const_iterator it = matches_before.begin(); it != matches_before.end(); ++it)
+		// REF [site] >> https://docs.opencv.org/4.11.0/d5/d6f/tutorial_feature_flann_matcher.html
+		const float nnr(0.9f);  // Nearest neighbor ratio (typically 0.6 ~ 0.8)
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			const auto &matches = init_matches[idx];
+
+			good_matches[idx].reserve(matches.size());
+			for (const auto &match: matches)
 			{
+				// NOTE [info] >> match.size() == k if using knnMatch()
+
 				// Use nearest-neighbor ratio to determine "good" matches
-				if (it->size() > 1 && (*it)[0].distance / (*it)[1].distance < nnr)
-				{
-					cv::DMatch m = (*it)[0];
-					matches.push_back(m);  // Save good matches here
-				}
+				if (match.size() > 1 && match[0].distance < (nnr * match[1].distance))
+					good_matches[idx].push_back(match[0]);  // Save good matches here
 			}
 		}
 #endif
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
-		std::cout << "\t#matches = " << matches.size() << std::endl;
+		std::cout << "\t#initial matches = ";
+		for (const auto &matches: init_matches)
+			std::cout << matches.size() << ", ";
+		std::cout << std::endl;
+		std::cout << "\t#good matches = ";
+		for (const auto &matches: good_matches)
+			std::cout << matches.size() << ", ";
+		std::cout << std::endl;
+	}
+	else
+	{
+		std::cerr << "No valid feature descriptors to match" << std::endl;
+		return;
 	}
 
+	//--------------------
 	// Draw matches
-	cv::Mat img_matches;
-	cv::drawMatches(gray1, keypoints1, gray2, keypoints2, matches, img_matches);
+	for (size_t idx = 0; idx < gray2s.size(); ++idx)
+	{
+		cv::Mat img_matches;
+		cv::drawMatches(
+			gray1, keypoints1, gray2s[idx], keypoints2s[idx], good_matches[idx], img_matches,
+			cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
+		);
 
-	// Show detected matches
-	cv::imshow("Matches", img_matches);
+		// Show detected matches
+		cv::imshow("Good Matches (" + std::to_string(idx * 90) + " degree(s))", img_matches);
+	}
 	cv::waitKey(0);
+	cv::destroyAllWindows();
+}
+
+// REF [site] >> https://developer.ridgerun.com/wiki/index.php/How_to_use_OpenCV_CUDA_Streams
+void orb_gpu_without_stream_test()
+{
+	const std::string image_filepath1("../data/box.png");
+	const std::string image_filepath2("../data/box_in_scene.png");
+
+	cv::Mat gray1(cv::imread(image_filepath1, cv::IMREAD_GRAYSCALE));
+	if (gray1.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath1 << std::endl;
+		return;
+	}
+	cv::Mat gray2(cv::imread(image_filepath2, cv::IMREAD_GRAYSCALE));
+	if (gray2.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
+		return;
+	}
+
+	cv::Mat gray2_90, gray2_180, gray2_270;
+	cv::rotate(gray2, gray2_90, cv::ROTATE_90_CLOCKWISE);
+	cv::rotate(gray2, gray2_180, cv::ROTATE_180);
+	cv::rotate(gray2, gray2_270, cv::ROTATE_90_COUNTERCLOCKWISE);
+	std::vector<cv::Mat> gray2s{gray2, gray2_90, gray2_180, gray2_270};
+
+	//--------------------
+	// Upload to GPU
+	cv::cuda::GpuMat gray1_gpu, mask1_gpu;
+	std::vector<cv::cuda::GpuMat> gray2s_gpu(gray2s.size()), mask2s_gpu(gray2s.size());
+	{
+		std::cout << "Uploading data to GPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		//gray1_gpu.upload(gray1);
+		gray1_gpu.upload(gray1);
+		//mask1_gpu.upload(mask1);
+		//mask1_gpu.upload(mask1);
+
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			//gray2s_gpu[idx].upload(gray2s[idx]);
+			gray2s_gpu[idx].upload(gray2s[idx]);
+			//mask2s_gpu[idx].upload(mask2s[idx]);
+			//mask2s_gpu[idx].upload(mask2s[idx]);
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data uploaded to GPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+	}
+
+	const int num_features(500);
+	const bool blur_for_descriptor(false);
+	cv::Ptr<cv::cuda::ORB> orb(cv::cuda::ORB::create(num_features, 1.2f, 8, 31, 0, 2, 0, 31, 20, blur_for_descriptor));
+
+	std::cout << "ORB: descriptor size = " << orb->descriptorSize() << ", descriptor type = " << orb->descriptorType() << ", default norm = " << orb->defaultNorm() << std::endl;
+
+	// Detect keypoints and describe features
+	// Keypoint size = [6, num_features], descriptor size = [num_features, 32]
+	cv::cuda::GpuMat keypoints1_gpu, descriptors1_gpu;
+	std::vector<cv::cuda::GpuMat> keypoints2s_gpu(gray2s.size()), descriptors2s_gpu(gray2s.size());
+	{
+		std::cout << "Detecting keypoints and describing features..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		orb->detectAsync(gray1_gpu, keypoints1_gpu, /*mask =*/ cv::noArray());
+		orb->computeAsync(gray1_gpu, keypoints1_gpu, descriptors1_gpu);
+		//orb->detectAndComputeAsync(gray1_gpu, /*mask =*/ cv::noArray(), keypoints1_gpu, descriptors1_gpu, /*useProvidedKeypoints =*/ false);
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			orb->detectAsync(gray2s_gpu[idx], keypoints2s_gpu[idx], /*mask =*/ cv::noArray());
+			orb->computeAsync(gray2s_gpu[idx], keypoints2s_gpu[idx], descriptors2s_gpu[idx]);
+			//orb->detectAndComputeAsync(gray2s_gpu[idx], /*mask =*/ cv::noArray(), keypoints2s_gpu[idx], descriptors2s_gpu[idx], /*useProvidedKeypoints =*/ false);
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Keypoints detected and features described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1_gpu.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2s = ";
+		for (const auto &kps: keypoints2s_gpu)
+			std::cout << kps.size() << ", ";
+		std::cout << std::endl;
+	}
+
+	// Download to CPU
+	std::vector<cv::KeyPoint> keypoints1;
+	std::vector<std::vector<cv::KeyPoint>> keypoints2s(gray2s.size());
+	cv::Mat descriptors1;
+	std::vector<cv::Mat> descriptors2s(gray2s.size());
+	{
+		std::cout << "Downloading data to CPU..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		orb->convert(keypoints1_gpu, keypoints1);
+		descriptors1_gpu.download(descriptors1);
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			orb->convert(keypoints2s_gpu[idx], keypoints2s[idx]);
+			descriptors2s_gpu[idx].download(descriptors2s[idx]);
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Data downloaded to CPU: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#keypoints detected in image1 = " << keypoints1.size() << std::endl;
+		std::cout << "\t#keypoints detected in image2s = ";
+		for (const auto &kps: keypoints2s)
+			std::cout << kps.size() << ", ";
+		std::cout << std::endl;
+	}
+
+	//--------------------
+	// Match feature descriptors
+	std::vector<std::vector<cv::DMatch>> good_matches(gray2s.size());
+	if (descriptors1_gpu.rows > 0)
+	{
+		cv::Ptr<cv::cuda::DescriptorMatcher> matcher(cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING));
+
+		std::cout << "Descriptor matcher: mask supported = " << std::boolalpha << matcher->isMaskSupported() << std::endl;
+
+		std::cout << "Matching feature descriptors..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		std::vector<cv::cuda::GpuMat> matches_gpu(gray2s.size());
+#if 0
+		// Find the best matches
+
+		std::vector<std::vector<cv::DMatch>> init_matches(gray2s.size());
+#if 1
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+			if (descriptors2s_gpu[idx].rows > 0)
+				matcher->matchAsync(descriptors1_gpu, descriptors2s_gpu[idx], matches_gpu[idx], cv::noArray());
+
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+			matcher->matchConvert(matches_gpu[idx], init_matches[idx]);
+#else
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+			matcher->match(descriptors1_gpu, descriptors2s_gpu[idx], init_matches[idx], cv::noArray());
+#endif
+
+		// Sort
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			auto &matches = init_matches[idx];
+
+			//const size_t max_matches(matches.size() / 2);
+			const size_t max_matches(std::min<size_t>(30, matches.size()));
+#if 1
+			auto match_it = matches.begin() + max_matches;
+			std::nth_element(matches.begin(), match_it, matches.end());
+			//std::nth_element(matches.begin(), match_it, matches.end(), [](const auto &lhs, const auto &rhs) {
+			//	return lhs.distance < rhs.distance;
+			//});
+#else
+			std::sort(matches.begin(), matches.end());
+			//std::sort(matches.begin(), matches.end(), [](const auto &lhs, const auto &rhs) {
+			//	return lhs.distance < rhs.distance;
+			//});
+			std::vector<cv::DMatch>::iterator match_it = matches.begin();
+			std::advance(match_it, max_matches);
+#endif
+
+			good_matches[idx].assign(matches.begin(), match_it);
+		}
+#else
+		// Find multiple matches by k-nearest neighbor search or radius search
+
+		std::vector < std::vector<std::vector<cv::DMatch>>> init_matches(gray2s.size());
+#if 1
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			matcher->knnMatchAsync(descriptors1_gpu, descriptors2s_gpu[idx], matches_gpu[idx], /*k =*/ 2, cv::noArray());
+			//matcher->radiusMatchAsync(descriptors1_gpu, descriptors2s_gpu[idx], matches_gpu[idx], /*maxDistance =*/ 100.0f, cv::noArray());
+		}
+
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			// Download matches to CPU
+			matcher->knnMatchConvert(matches_gpu[idx], init_matches[idx], /*compactResult =*/ false);
+			//matcher->radiusMatchConvert(matches_gpu[idx], init_matches[idx], /*compactResult =*/ false);
+		}
+#else
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			matcher->knnMatch(descriptors1_gpu, descriptors2s_gpu[idx], init_matches[idx], /*k =*/ 2, cv::noArray(), /*compactResult =*/ false);
+			//matcher->radiusMatch(descriptors1_gpu, descriptors2s_gpu[idx], init_matches[idx], /*maxDistance =*/ 100.0f, cv::noArray(), /*compactResult =*/ false);
+		}
+#endif
+
+		// REF [site] >> https://docs.opencv.org/4.11.0/d5/d6f/tutorial_feature_flann_matcher.html
+		const float nnr(0.9f);  // Nearest neighbor ratio (typically 0.6 ~ 0.8)
+		for (size_t idx = 0; idx < gray2s.size(); ++idx)
+		{
+			const auto &matches = init_matches[idx];
+
+			good_matches[idx].reserve(matches.size());
+			for (const auto &match: matches)
+			{
+				// NOTE [info] >> match.size() == k if using knnMatch()
+
+				// Use nearest-neighbor ratio to determine "good" matches
+				if (match.size() > 1 && match[0].distance < (nnr * match[1].distance))
+					good_matches[idx].push_back(match[0]);  // Save good matches here
+			}
+		}
+#endif
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\t#initial matches = ";
+		for (const auto &matches: init_matches)
+			std::cout << matches.size() << ", ";
+		std::cout << std::endl;
+		std::cout << "\t#good matches = ";
+		for (const auto &matches: good_matches)
+			std::cout << matches.size() << ", ";
+		std::cout << std::endl;
+	}
+	else
+	{
+		std::cerr << "No valid feature descriptors to match" << std::endl;
+		return;
+	}
+
+	//--------------------
+	// Draw matches
+	for (size_t idx = 0; idx < gray2s.size(); ++idx)
+	{
+		cv::Mat img_matches;
+		cv::drawMatches(
+			gray1, keypoints1, gray2s[idx], keypoints2s[idx], good_matches[idx], img_matches,
+			cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
+		);
+
+		// Show detected matches
+		cv::imshow("Good Matches (" + std::to_string(idx * 90) + " degree(s))", img_matches);
+	}
+	cv::waitKey(0);
+	cv::destroyAllWindows();
 }
 
 }  // namespace local
@@ -1239,13 +1867,20 @@ namespace my_opencv {
 
 void feature_extraction_and_matching()
 {
-	//local::feature_extraction_and_matching();
+	//local::feature_extraction_and_matching_test();  // Uses homography & unwarping
 
-	//local::kaze_match_test1();  // KAZE & AKAZE
-	//local::kaze_match_test2();  // KAZE & AKAZE
+	//-----
+	//local::surf_tutorial();
+	local::feature_homography_tutorial();
+
+	//local::kaze_matching_tutorial();  // KAZE & AKAZE
+	//local::kaze_match_test();  // KAZE & AKAZE
 
 	//local::surf_gpu_test();
-	local::orb_gpu_test();
+	//local::orb_gpu_test();
+
+	//local::orb_gpu_stream_test();  // Processes multiple images at once
+	//local::orb_gpu_without_stream_test();  // For comparison
 }
 
 }  // namespace my_opencv
