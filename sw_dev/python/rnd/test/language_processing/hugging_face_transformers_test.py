@@ -3872,6 +3872,100 @@ def phi_3_example():
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
+# REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/ernie
+def ernie_example():
+	if False:
+		# Initializing a ERNIE nghuyong/ernie-3.0-base-zh style configuration
+		configuration = transformers.ErnieConfig()
+
+		# Initializing a model (with random weights) from the nghuyong/ernie-3.0-base-zh style configuration
+		model = transformers.ErnieModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.ErnieModel.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs)
+
+		last_hidden_states = outputs.last_hidden_state
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.ErnieForPreTraining.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs)
+
+		prediction_logits = outputs.prediction_logits
+		seq_relationship_logits = outputs.seq_relationship_logits
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.ErnieForCausalLM.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+		outputs = model(**inputs, labels=inputs["input_ids"])
+
+		loss = outputs.loss
+		logits = outputs.logits
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.ErnieForMaskedLM.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+		inputs = tokenizer("The capital of France is [MASK].", return_tensors="pt")
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		# Retrieve index of [MASK]
+		mask_token_index = (inputs.input_ids == tokenizer.mask_token_id)[0].nonzero(as_tuple=True)[0]
+
+		predicted_token_id = logits[0, mask_token_index].argmax(axis=-1)
+		tokenizer.decode(predicted_token_id)
+
+		labels = tokenizer("The capital of France is Paris.", return_tensors="pt")["input_ids"]
+		# Mask labels of non-[MASK] tokens
+		labels = torch.where(inputs.input_ids == tokenizer.mask_token_id, labels, -100)
+
+		outputs = model(**inputs, labels=labels)
+		print(round(outputs.loss.item(), 2))
+
+	if True:
+		from transformers import AutoTokenizer, ErnieForNextSentencePrediction
+		import torch
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.ErnieForNextSentencePrediction.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+		prompt = "In Italy, pizza served in formal settings, such as at a restaurant, is presented unsliced."
+		next_sentence = "The sky is blue due to the shorter wavelength of blue light."
+		encoding = tokenizer(prompt, next_sentence, return_tensors="pt")
+
+		outputs = model(**encoding, labels=torch.LongTensor([1]))
+		logits = outputs.logits
+		assert logits[0, 0] < logits[0, 1]  # Next sentence was random
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.ErnieForMultipleChoice.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+		prompt = "In Italy, pizza served in formal settings, such as at a restaurant, is presented unsliced."
+		choice0 = "It is eaten with a fork and a knife."
+		choice1 = "It is eaten while held in the hand."
+		labels = torch.tensor(0).unsqueeze(0)  # Choice0 is correct (according to Wikipedia ;)), batch size 1
+
+		encoding = tokenizer([prompt, prompt], [choice0, choice1], return_tensors="pt", padding=True)
+		outputs = model(**{k: v.unsqueeze(0) for k, v in encoding.items()}, labels=labels)  # Batch size is 1
+
+		# The linear classifier still needs to be trained
+		loss = outputs.loss
+		logits = outputs.logits
+
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_example():
 	raise NotImplementedError
@@ -4199,6 +4293,101 @@ def deepseek_llm_example():
 
 		result = tokenizer.decode(outputs[0][input_tensor.shape[1]:], skip_special_tokens=True)
 		print(result)
+
+# REF [site] >> https://huggingface.co/LGAI-EXAONE
+def exaone_example():
+	# Models:
+	#	LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct
+	#	LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct-AWQ
+	#
+	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct
+	# 	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+	# 	LGAI-EXAONE/EXAONE-3.5-32B-Instruct
+	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct-AWQ
+	# 	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-AWQ
+	# 	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-AWQ
+	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct-GGUF
+	# 	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF
+	# 	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-GGUF
+
+	if False:
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(
+				"LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct",
+				torch_dtype=torch.bfloat16,
+				trust_remote_code=True,
+				device_map="auto"
+			)
+			tokenizer = transformers.AutoTokenizer.from_pretrained("LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct")
+		else:
+			from awq import AutoAWQForCausalLM
+
+			model = awq.AutoAWQForCausalLM.from_pretrained(
+				"LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct-AWQ",
+				torch_dtype=torch.float16,
+				device_map="auto"
+			)
+			tokenizer = transformers.AutoTokenizer.from_pretrained("LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct-AWQ")
+
+		prompt = "Explain how wonderful you are"
+
+		messages = [
+			{"role": "system", "content": "You are EXAONE model from LG AI Research, a helpful assistant."},
+			{"role": "user", "content": prompt},
+		]
+		input_ids = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_tensors="pt",
+		)
+
+		output = model.generate(
+			input_ids.to("cuda"),
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=128,
+		)
+		print(tokenizer.decode(output[0]))
+
+	if True:
+		model_name = "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct"
+		#model_name = "LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct"
+		#model_name = "LGAI-EXAONE/EXAONE-3.5-32B-Instruct"
+		#model_name = "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct-AWQ"
+		#model_name = "LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-AWQ"
+		#model_name = "LGAI-EXAONE/EXAONE-3.5-32B-Instruct-AWQ"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype=torch.bfloat16,
+			trust_remote_code=True,
+			device_map="auto"
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		# Choose your prompt
+		prompt = "Explain how wonderful you are"  # English example
+		#prompt = "스스로를 자랑해 봐"  # Korean example
+
+		messages = [
+			{"role": "system", 
+			"content": "You are EXAONE model from LG AI Research, a helpful assistant."},
+			{"role": "user", "content": prompt}
+		]
+		input_ids = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_tensors="pt"
+		)
+
+		output = model.generate(
+			input_ids.to("cuda"),
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=128,
+			do_sample=False,
+		)
+		print(tokenizer.decode(output[0]))
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
@@ -5691,6 +5880,92 @@ def s1_example():
 
 	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 	print(response)
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
+def exaone_deep_example():
+	# Models:
+	#	LGAI-EXAONE/EXAONE-Deep-2.4B
+	#	LGAI-EXAONE/EXAONE-Deep-7.8B
+	#	LGAI-EXAONE/EXAONE-Deep-32B
+	#	LGAI-EXAONE/EXAONE-Deep-2.4B-AWQ
+	#	LGAI-EXAONE/EXAONE-Deep-7.8B-AWQ
+	#	LGAI-EXAONE/EXAONE-Deep-32B-AWQ
+	#	LGAI-EXAONE/EXAONE-Deep-2.4B-GGUF
+	#	LGAI-EXAONE/EXAONE-Deep-7.8B-GGUF
+	#	LGAI-EXAONE/EXAONE-Deep-32B-GGUF
+
+	from threading import Thread
+
+	model_name = "LGAI-EXAONE/EXAONE-Deep-2.4B"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-7.8B"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-32B"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-2.4B-AWQ"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-7.8B-AWQ"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-32B-AWQ"
+	streaming = True  # Choose the streaming option
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype=torch.bfloat16,
+		trust_remote_code=True,
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	# Choose your prompt:
+	#	Math example (AIME 2024)
+	prompt = r"""Let $x,y$ and $z$ be positive real numbers that satisfy the following system of equations:
+\[\log_2\left({x \over yz}\right) = {1 \over 2}\]\[\log_2\left({y \over xz}\right) = {1 \over 3}\]\[\log_2\left({z \over xy}\right) = {1 \over 4}\]
+Then the value of $\left|\log_2(x^4y^3z^2)\right|$ is $\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$.
+
+Please reason step by step, and put your final answer within \boxed{}."""
+	#	Korean MCQA example (CSAT Math 2025)
+	prompt = r"""Question : $a_1 = 2$인 수열 $\{a_n\}$과 $b_1 = 2$인 등차수열 $\{b_n\}$이 모든 자연수 $n$에 대하여\[\sum_{k=1}^{n} \frac{a_k}{b_{k+1}} = \frac{1}{2} n^2\]을 만족시킬 때, $\sum_{k=1}^{5} a_k$의 값을 구하여라.
+
+Options :
+A) 120
+B) 125
+C) 130
+D) 135
+E) 140
+
+Please reason step by step, and you should write the correct option alphabet (A, B, C, D or E) within \\boxed{}."""
+
+	messages = [
+		{"role": "user", "content": prompt}
+	]
+	input_ids = tokenizer.apply_chat_template(
+		messages,
+		tokenize=True,
+		add_generation_prompt=True,
+		return_tensors="pt"
+	)
+
+	if streaming:
+		streamer = transformers.TextIteratorStreamer(tokenizer)
+		thread = Thread(target=model.generate, kwargs=dict(
+			input_ids=input_ids.to("cuda"),
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=32768,
+			do_sample=True,
+			temperature=0.6,
+			top_p=0.95,
+			streamer=streamer
+		))
+		thread.start()
+
+		for text in streamer:
+			print(text, end="", flush=True)
+	else:
+		output = model.generate(
+			input_ids.to("cuda"),
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=32768,
+			do_sample=True,
+			temperature=0.6,
+			top_p=0.95,
+		)
+		print(tokenizer.decode(output[0]))
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -9973,10 +10248,12 @@ def main():
 	#open_elm_example()  # OpenELM. Not yet tested.
 	#aya_example()  # Aya. Not yet tested.
 	#phi_3_example()  # phi-3. Not yet tested.
+	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram, ERNIE-health. Not yet tested.
 	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
 	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio. Not yet tested.
 	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL. Not yet tested.
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3. Not yet tested.
+	#exaone_example()  # EXAONE 3.0, EXAONE 3.5. Not yet tested.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -10017,6 +10294,7 @@ def main():
 	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
 	#open_r1_example()  # OpenR1. Not yet completed.
 	#s1_example()  # s1. Not yet tested.
+	#exaone_deep_example()  # EXAONE Deep. Not yet tested.
 
 	#--------------------
 	# Vision.
