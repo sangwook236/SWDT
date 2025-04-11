@@ -744,7 +744,7 @@ void surf_tutorial()
 		std::cout << "Matching feature descriptors..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		std::vector<std::vector<cv::DMatch>> knn_matches;
-		matcher->knnMatch(descriptors_object, descriptors_scene, knn_matches, 2);
+		matcher->knnMatch(descriptors_object, descriptors_scene, knn_matches, 2, cv::noArray(), false);
 
 		// Filter matches using the Lowe's ratio test
 		const float ratio_thresh = 0.75f;
@@ -757,14 +757,14 @@ void surf_tutorial()
 		}
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
-		std::cout << "\t#KNN matches = " << knn_matches.size() << std::endl;
+		std::cout << "\t#k-NN matches = " << knn_matches.size() << std::endl;
 		std::cout << "\t#good matches = " << good_matches.size() << std::endl;
 	}
 
 	//--------------------
 	// Draw matches
 	cv::Mat img_matches;
-	drawMatches(
+	cv::drawMatches(
 		img_object, keypoints_object, img_scene, keypoints_scene, good_matches, img_matches,
 		cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS
 	);
@@ -773,18 +773,29 @@ void surf_tutorial()
 	// Localize the object
 	std::vector<cv::Point2f> scene_corners(4);
 	{
-		std::vector<cv::Point2f> obj;
-		std::vector<cv::Point2f> scene;
-		for (size_t i = 0; i < good_matches.size(); i++)
+		std::vector<cv::Point2f> obj_pts;
+		std::vector<cv::Point2f> scene_pts;
+		obj_pts.reserve(good_matches.size());
+		scene_pts.reserve(good_matches.size());
+#if 0
+		for (size_t i = 0; i < good_matches.size(); ++i)
 		{
 			// Get the keypoints from the good matches
-			obj.push_back(keypoints_object[good_matches[i].queryIdx].pt);
-			scene.push_back(keypoints_scene[good_matches[i].trainIdx].pt);
+			obj_pts.push_back(keypoints_object[good_matches[i].queryIdx].pt);
+			scene_pts.push_back(keypoints_scene[good_matches[i].trainIdx].pt);
 		}
+#else
+		for (const auto &gm: good_matches)
+		{
+			// Get the keypoints from the good matches
+			obj_pts.push_back(keypoints_object[gm.queryIdx].pt);
+			scene_pts.push_back(keypoints_scene[gm.trainIdx].pt);
+		}
+#endif
 
-		std::cout << "Finding omography..." << std::endl;
+		std::cout << "Finding homography..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		const cv::Mat H = cv::findHomography(obj, scene, cv::RANSAC);
+		const cv::Mat &H = cv::findHomography(obj_pts, scene_pts, cv::RANSAC, 3.0, cv::noArray(), 2000, 0.995);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Homography found: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 

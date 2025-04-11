@@ -804,23 +804,27 @@ void grabcut_test()
 // REF [site] >>
 //	https://en.wikipedia.org/wiki/DBSCAN
 //	https://github.com/Eleobert/dbscan/blob/master/dbscan.cpp
-auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, const size_t min_pts)
+auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double radius, const size_t min_pts, const double octree_resolution)
 {
-	const double octree_resolution = 5.0;
 	pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> octree(octree_resolution);
 	octree.setInputCloud(cloud);
 	octree.addPointsFromInputCloud();
 
 	const auto &num_points = cloud->size();
 	std::vector<std::vector<size_t>> clusters;
-	std::vector<char> visited(num_points, 0);  // 0: undefined, 1: noise, 2: clustered
+	std::vector<char> visited(num_points, 0);  // 0: undefined, 1: noisy, 2: clustered
 	pcl::Indices k_indices, k_sub_indices;
 	std::vector<float> k_sqr_distances;
+
 	for (size_t pt_idx = 0; pt_idx < num_points; ++pt_idx)
+//#pragma omp parallel for private(k_indices, k_sub_indices, k_sqr_distances) shared(octree, cloud, visited)  // Not correctly working
+//	for (int pt_idx = 0; pt_idx < num_points; ++pt_idx)
 	{
 		if (visited[pt_idx]) continue;
 
-		octree.radiusSearch(cloud->points[pt_idx], eps, k_indices, k_sqr_distances);
+		octree.radiusSearch(cloud->points[pt_idx], radius, k_indices, k_sqr_distances);
+		//octree.nearestKSearch(cloud->points[pt_idx], k, k_indices, k_sqr_distances);
+		//octree.approxNearestSearch(cloud->points[pt_idx], k_index, k_sqr_distance);
 
 		if (k_indices.size() < min_pts)  // Noise
 		{
@@ -830,6 +834,7 @@ auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, 
 		visited[pt_idx] = 2;
 
 		std::vector<size_t> cluster({pt_idx});
+//		std::vector<size_t> cluster({size_t(pt_idx)});
 		while (!k_indices.empty())
 		{
 			const auto neighbor_idx(k_indices.back());
@@ -844,9 +849,11 @@ auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, 
 			visited[neighbor_idx] = 2;
 			cluster.push_back(neighbor_idx);
 
-			octree.radiusSearch(cloud->points[neighbor_idx], eps, k_sub_indices, k_sqr_distances);
+			octree.radiusSearch(cloud->points[neighbor_idx], radius, k_sub_indices, k_sqr_distances);
+			//octree.nearestKSearch(cloud->points[neighbor_idx], k, k_sub_indices, k_sqr_distances);
+			//octree.approxNearestSearch(cloud->points[neighbor_idx], k_index, k_sqr_distance);
 
-#if 1
+#if 0
 			// For checking
 			if (k_sub_indices.size() >= min_pts)
 			{
@@ -861,7 +868,9 @@ auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, 
 							if (std::find(clust.begin(), clust.end(), idx) != clust.end())
 							{
 								pcl::Indices k_indices_tmp;
-								octree.radiusSearch(cloud->points[idx], eps, k_indices_tmp, k_sqr_distances);
+								octree.radiusSearch(cloud->points[idx], radius, k_indices_tmp, k_sqr_distances);
+								//octree.nearestKSearch(cloud->points[idx], k, k_indices_tmp, k_sqr_distances);
+								//octree.approxNearestSearch(cloud->points[idx], k_index_tmp, k_sqr_distance);
 								std::cout << "Candidate point #" << idx << " (neighbor of point #" << neighbor_idx << ") of cluster #" << clusters.size() << " is already assigned to cluster #" << clust_idx << ": #neighbors = " << k_indices_tmp.size() << std::endl;
 								//break;
 							}
@@ -882,6 +891,7 @@ auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, 
 #endif
 		}
 
+//#pragma omp critical
 		if (cluster.size() >= min_pts)
 			clusters.emplace_back(std::move(cluster));
 	}
@@ -904,24 +914,30 @@ auto dbscan(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, 
 // REF [site] >>
 //	https://en.wikipedia.org/wiki/DBSCAN
 //	https://github.com/Eleobert/dbscan/blob/master/dbscan.cpp
-auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double eps, const size_t min_pts)
+auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const float radius, const size_t min_pts)
 {
-	const auto radius = float(eps);
-	const auto max_elements = int(cloud->size());
+	//const int k(1);  // OctreeGPU::knnSearch is supported only for k == 1
+	const int max_search_results(std::max<int>(cloud->size() / 1000, 100));
+	//std::cout << "#max search results = " << max_search_results << std::endl;
 
 	pcl::gpu::Octree::PointCloud cloud_device;
 	cloud_device.upload(cloud->points);
 
 	pcl::gpu::Octree octree_device;
 	octree_device.setCloud(cloud_device);
+	//std::cout << "Building an octree on GPU..." << std::endl;
+	//const auto start_time(std::chrono::high_resolution_clock::now());
 	octree_device.build();
+	//const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+	//std::cout << "An octree built on GPU: " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
 
 	pcl::gpu::Octree::Queries queries_device;
 	pcl::gpu::NeighborIndices result_device;
+	//pcl::gpu::Octree::ResultSqrDists sqr_distance_device;
 
 	const auto &num_points = cloud->size();
 	std::vector<std::vector<size_t>> clusters;
-	std::vector<char> visited(num_points, 0);  // 0: undefined, 1: noise, 2: clustered
+	std::vector<char> visited(num_points, 0);  // 0: undefined, 1: noisy, 2: clustered
 	std::list<int> k_indices;
 	std::vector<int> k_indices_sizes, k_indices_data, k_sub_indices_sizes, k_sub_indices_data;
 	for (size_t pt_idx = 0; pt_idx < num_points; ++pt_idx)
@@ -929,14 +945,18 @@ auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double e
 		if (visited[pt_idx]) continue;
 
 		std::vector<pcl::PointXYZ> queries({cloud->points[pt_idx]});  // TODO [check] >>
-		queries_device.upload(queries);
-		result_device.create(queries_device.size(), max_elements);
+		queries_device.upload(queries);  // Slow
+		result_device.create(queries_device.size(), max_search_results);  // Slow
 
-		octree_device.radiusSearch(queries_device, radius, max_elements, result_device);
+		octree_device.radiusSearch(queries_device, radius, max_search_results, result_device);
+		//octree_device.nearestKSearchBatch(queries_device, k, result_device);
+		//octree_device.approxNearestSearch(queries_device, result_device, sqr_distance_device);
 
 		//std::vector<int> k_indices_sizes, k_indices_data;
-		result_device.sizes.download(k_indices_sizes);
-		result_device.data.download(k_indices_data);
+		result_device.sizes.download(k_indices_sizes);  // Slow
+		result_device.data.download(k_indices_data);  // Slow
+		//assert(result_device.sizes.size() == result_device.data.size());
+		assert(queries_device.size() == k_indices_sizes.size());
 		if (k_indices_sizes[0] < min_pts)  // Noise
 		{
 			visited[pt_idx] = 1;
@@ -953,8 +973,8 @@ auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double e
 		{
 			std::vector<pcl::PointXYZ> queries;  // TODO [check] >>
 			queries.reserve(k_indices.size());
-			std::vector<int> query_point_indices;  // For checking
-			query_point_indices.reserve(k_indices.size());  // For checking
+			//std::vector<int> query_point_indices;  // For checking
+			//query_point_indices.reserve(k_indices.size());  // For checking
 			for (const auto &neighbor_idx: k_indices)
 			{
 				if (1 == visited[neighbor_idx])  // If noise
@@ -968,30 +988,33 @@ auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double e
 				cluster.push_back(neighbor_idx);
 
 				queries.push_back(cloud->points[neighbor_idx]);
-				query_point_indices.push_back(neighbor_idx);  // For checking
+				//query_point_indices.push_back(neighbor_idx);  // For checking
 			}
 			k_indices.clear();
 
 			if (!queries.empty())
 			{
-				queries_device.upload(queries);
-				result_device.create(queries_device.size(), max_elements);
+				queries_device.upload(queries);  // Slow
+				result_device.create(queries_device.size(), max_search_results);  // Slow
 
-				octree_device.radiusSearch(queries_device, radius, max_elements, result_device);
+				octree_device.radiusSearch(queries_device, radius, max_search_results, result_device);
+				//octree_device.nearestKSearchBatch(queries_device, k, result_device);
+				//octree_device.approxNearestSearch(queries_device, result_device, sqr_distance_device);
 
 				//std::vector<int> k_sub_indices_sizes, k_sub_indices_data;  // Too slow
-				result_device.sizes.download(k_sub_indices_sizes);
-				result_device.data.download(k_sub_indices_data);
+				result_device.sizes.download(k_sub_indices_sizes);  // Slow
+				result_device.data.download(k_sub_indices_data);  // Slow
+				//assert(result_device.sizes.size() == result_device.data.size());
 				assert(queries_device.size() == k_sub_indices_sizes.size());
 
-#if 1
+#if 0
 				// For checking
 				for (auto &clust: clusters)
 					std::sort(clust.begin(), clust.end());
 				for (std::size_t si = 0; si < k_sub_indices_sizes.size(); ++si)
 					for (std::size_t sj = 0; sj < k_sub_indices_sizes[si]; ++sj)
 					{
-						const auto &idx = k_sub_indices_data[si * max_elements + sj];
+						const auto &idx = k_sub_indices_data[si * max_search_results + sj];
 						if (2 == visited[idx])
 						{
 							size_t clust_idx = 0;
@@ -1001,8 +1024,10 @@ auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double e
 								{
 									std::vector<pcl::PointXYZ> queries({cloud->points[idx]});  // TODO [check] >>
 									queries_device.upload(queries);
-									result_device.create(queries_device.size(), max_elements);
-									octree_device.radiusSearch(queries_device, radius, max_elements, result_device);
+									result_device.create(queries_device.size(), max_search_results);
+									octree_device.radiusSearch(queries_device, radius, max_search_results, result_device);
+									//octree_device.nearestKSearchBatch(queries_device, k, result_device);
+									//octree_device.approxNearestSearch(queries_device, result_device, sqr_distance_device);
 									std::vector<int> k_indices_sizes_tmp;  // TODO [check] >>
 									result_device.sizes.download(k_indices_sizes_tmp);
 									std::cout << "Candidate point #" << idx << " (neighbor of point #" << query_point_indices[si] << ") of cluster #" << clusters.size() << " is already assigned to cluster #" << clust_idx << ": #neighbors = " << k_indices_sizes_tmp[0] << std::endl;
@@ -1017,13 +1042,14 @@ auto dbscan_gpu(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, const double e
 				for (std::size_t si = 0; si < k_sub_indices_sizes.size(); ++si)
 					if (k_sub_indices_sizes[si] >= min_pts)
 #if 1
-						for (std::size_t sj = 0; sj < k_sub_indices_sizes[si]; ++sj)
-							k_indices.push_back(k_sub_indices_data[si * max_elements + sj]);
+						//for (std::size_t sj = 0; sj < k_sub_indices_sizes[si]; ++sj)
+						//	k_indices.push_back(k_sub_indices_data[si * max_search_results + sj]);
+						std::copy(&k_sub_indices_data[si * max_search_results], &k_sub_indices_data[si * max_search_results] + k_sub_indices_sizes[si], std::back_inserter(k_indices));
 #else
 					{
 						auto it_begin = k_indices_data.begin(), it_end = k_indices_data.begin();
-						std::advance(it_begin, si * max_elements);
-						std::advance(it_end, si * max_elements + k_indices_sizes[si]);
+						std::advance(it_begin, si * max_search_results);
+						std::advance(it_end, si * max_search_results + k_indices_sizes[si]);
 #if 1
 						std::copy(it_begin, it_end, std::back_inserter(k_indices));
 #else
@@ -1080,9 +1106,10 @@ void dbscan_test()
 	{
 		std::cout << "Clustering points by DBSCAN algorithm..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		const double eps = 10.0;  // The radius for searching neighbor points of octree
-		const size_t min_pts = 8;  // The minimum number of points required to form a dense region
-		clusters = dbscan(cloud, eps, min_pts);
+		const double radius(10.0);  // The radius for searching neighbor points of octree
+		const size_t min_pts(8);  // The minimum number of points required to form a dense region
+		const double octree_resolution(5.0);
+		clusters = dbscan(cloud, radius, min_pts, octree_resolution);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Points clustered by DBSCAN algorithm (#clusters = " << clusters.size() << "): " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
 
@@ -1227,9 +1254,9 @@ void dbscan_gpu_test()
 	{
 		std::cout << "Clustering points by DBSCAN (GPU) algorithm..." << std::endl;
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		const double eps = 10.0;  // The radius for searching neighbor points of octree
-		const size_t min_pts = 8;  // The minimum number of points required to form a dense region
-		clusters = dbscan_gpu(cloud, eps, min_pts);
+		const double radius(10.0);  // The radius for searching neighbor points of octree
+		const size_t min_pts(8);  // The minimum number of points required to form a dense region
+		clusters = dbscan_gpu(cloud, radius, min_pts);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Points clustered by DBSCAN (GPU) algorithm (#clusters = " << clusters.size() << "): " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time).count() / 1000.0f << " msecs." << std::endl;
 
@@ -1377,7 +1404,7 @@ void segmentation()
 
 	// DBSCAN
 	//local::dbscan_test();
-	//local::dbscan_gpu_test();  // Too slow
+	//local::dbscan_gpu_test();  // Slow
 }
 
 }  // namespace my_pcl
