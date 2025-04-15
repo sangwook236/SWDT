@@ -944,7 +944,7 @@ void transformation_estimation_test()
 	throw std::runtime_error("Not yet implemented");
 
 	/*
-#if 
+#if 1
 	pcl::registration::TransformationEstimation2D<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
 #elif 0
 	pcl::registration::TransformationEstimation3Point<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;

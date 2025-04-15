@@ -2335,8 +2335,20 @@ def llama3_example():
 	#	meta-llama/Meta-Llama-3.1-405B
 	#	meta-llama/Meta-Llama-3.1-405B-Instruct
 	#	meta-llama/Meta-Llama-3.1-405B-FP8
+	#
+	#	meta-llama/Llama-3.2-1B
+	#	meta-llama/Llama-3.2-3B
+	#	meta-llama/Llama-3.2-1B-Instruct
+	#	meta-llama/Llama-3.2-3B-Instruct
+	#	meta-llama/Llama-3.2-1B-Instruct-QLORA_INT4_EO8
+	#	meta-llama/Llama-3.2-3B-Instruct-QLORA_INT4_EO8
+	#	meta-llama/Llama-3.2-1B-Instruct-SpinQuant_INT4_EO8
+	#	meta-llama/Llama-3.2-1B-Instruct-SpinQuant_INT4_EO8
+	#
+	#	meta-llama/Llama-3.3-70B-Instruct
+	#	meta-llama/Llama-3.3-70B-Instruct-evals
 
-	if True:
+	if False:
 		# To download original checkpoints, see the example command below leveraging huggingface-cli:
 		#	huggingface-cli download meta-llama/Meta-Llama-3-8B --include "original/*" --local-dir Meta-Llama-3-8B
 		#	huggingface-cli download meta-llama/Meta-Llama-3.1-8B --include "original/*" --local-dir Meta-Llama-3.1-8B
@@ -2350,7 +2362,7 @@ def llama3_example():
 		outputs = pipeline("Hey how are you doing today?")
 		print(outputs[0]["generated_text"])
 
-	if True:
+	if False:
 		# Transformers pipeline
 
 		# To download original checkpoints, see the example command below leveraging huggingface-cli:
@@ -2387,7 +2399,7 @@ def llama3_example():
 		)
 		print(outputs[0]["generated_text"][-1])
 
-	if True:
+	if False:
 		# Transformers AutoModelForCausalLM
 
 		model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
@@ -2427,7 +2439,7 @@ def llama3_example():
 		response = outputs[0][input_ids.shape[-1]:]
 		print(tokenizer.decode(response, skip_special_tokens=True))
 
-	if True:
+	if False:
 		# Use with llama
 		#	huggingface-cli download meta-llama/Meta-Llama-3.1-8B-Instruct --include "original/*" --local-dir Meta-Llama-3.1-8B-Instruct
 
@@ -2453,7 +2465,7 @@ def llama3_example():
 		)
 		print(outputs[0]["generated_text"][-1])
 
-	if True:
+	if False:
 		# Use with bitsandbytes
 
 		model_id = "meta-llama/Meta-Llama-3.1-70B-Instruct"
@@ -2469,11 +2481,223 @@ def llama3_example():
 
 		print(tokenizer.decode(output[0], skip_special_tokens=True))
 
+	if False:
+		model_id = "meta-llama/Llama-3.2-1B"
+		#model_id = "meta-llama/Llama-3.2-3B"
+
+		pipe = transformers.pipeline(
+			"text-generation", 
+			model=model_id, 
+			torch_dtype=torch.bfloat16, 
+			device_map="auto"
+		)
+
+		pipe("The key to life is")
+
+	if False:
+		model_id = "meta-llama/Llama-3.2-1B-Instruct"
+		#model_id = "meta-llama/Llama-3.2-3B-Instruct"
+
+		pipe = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			torch_dtype=torch.bfloat16,
+			device_map="auto",
+		)
+		messages = [
+			{"role": "system", "content": "You are a pirate chatbot who always responds in pirate speak!"},
+			{"role": "user", "content": "Who are you?"},
+		]
+
+		outputs = pipe(
+			messages,
+			max_new_tokens=256,
+		)
+		print(outputs[0]["generated_text"][-1])
+
+	if True:
+		model_id = "meta-llama/Llama-3.3-70B-Instruct"
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device_map="auto",
+		)
+
+		messages = [
+			{"role": "system", "content": "You are a pirate chatbot who always responds in pirate speak!"},
+			{"role": "user", "content": "Who are you?"},
+		]
+
+		outputs = pipeline(
+			messages,
+			max_new_tokens=256,
+		)
+		print(outputs[0]["generated_text"][-1])
+
+	if True:
+		# Tool use with transformers
+
+		# LLaMA-3.3 supports multiple tool use formats. You can see a full guide to prompt formatting here.
+		# Tool use is also supported through chat templates in Transformers. Here is a quick example showing a single simple tool:
+
+		model_id = "meta-llama/Llama-3.3-70B-Instruct"
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		# First, define a tool
+		def get_current_temperature(location: str) -> float:
+			"""
+			Get the current temperature at a location.
+			
+			Args:
+				location: The location to get the temperature for, in the format "City, Country"
+			Returns:
+				The current temperature at the specified location in the specified units, as a float.
+			"""
+			return 22.  # A real function should probably actually get the temperature!
+
+		# Next, create a chat and apply the chat template
+		messages = [
+			{"role": "system", "content": "You are a bot that responds to weather queries."},
+			{"role": "user", "content": "Hey, what's the temperature in Paris right now?"}
+		]
+
+		inputs = tokenizer.apply_chat_template(messages, tools=[get_current_temperature], add_generation_prompt=True)
+
+		# You can then generate text from this input as normal. If the model generates a tool call, you should add it to the chat like so:
+		tool_call = {"name": "get_current_temperature", "arguments": {"location": "Paris, France"}}
+		messages.append({"role": "assistant", "tool_calls": [{"type": "function", "function": tool_call}]})
+
+		# and then call the tool and append the result, with the tool role, like so:
+		messages.append({"role": "tool", "name": "get_current_temperature", "content": "22.0"})
+
+		outputs = pipeline(
+			inputs,
+			max_new_tokens=256,
+		)
+		print(outputs[0]["generated_text"][-1])
+
+	if True:
+		# Use with bitsandbytes
+
+		model_id = "meta-llama/Llama-3.3-70B-Instruct"
+		quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+
+		quantized_model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id, device_map="auto", torch_dtype=torch.bfloat16, quantization_config=quantization_config)
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		input_text = "What are we having for dinner?"
+		input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+		output = quantized_model.generate(**input_ids, max_new_tokens=10)
+
+		print(tokenizer.decode(output[0], skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/meta-llama
+def llama4_example():
+	# Models:
+	#	meta-llama/Llama-4-Scout-17B-16E
+	#	meta-llama/Llama-4-Scout-17B-16E-Instruct
+	#	meta-llama/Llama-4-Maverick-17B-128E
+	#	meta-llama/Llama-4-Maverick-17B-128E-Instruct
+	#	meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
+	#	meta-llama/Llama-4-Scout-17B-16E-Original
+	#	meta-llama/Llama-4-Scout-17B-16E-Instruct-Original
+	#	meta-llama/Llama-4-Maverick-17B-128E-Original
+	#	meta-llama/Llama-4-Maverick-17B-128E-Instruct-Original
+	#	meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8-Original
+
+	if True:
+		model_id = "meta-llama/Llama-4-Scout-17B-16E"
+		#model_id = "meta-llama/Llama-4-Maverick-17B-128E"
+
+		pipe = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			device_map="auto",
+			torch_dtype=torch.bfloat16,
+		)
+
+		output = pipe("Roses are red,", max_new_tokens=200)
+
+	if True:
+		model_id = "meta-llama/Llama-4-Scout-17B-16E-Instruct"
+		#model_id = "meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.Llama4ForConditionalGeneration.from_pretrained(
+			model_id,
+			attn_implementation="flex_attention",
+			device_map="auto",
+			torch_dtype=torch.bfloat16,
+		)
+
+		url1 = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/0052a70beed5bf71b92610a43a52df6d286cd5f3/diffusers/rabbit.jpg"
+		url2 = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/datasets/cat_style_layout.png"
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "url": url1},
+					{"type": "image", "url": url2},
+					{"type": "text", "text": "Can you describe how these two images are similar, and how they differ?"},
+				]
+			},
+		]
+
+		inputs = processor.apply_chat_template(
+			messages,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+		).to(model.device)
+
+		outputs = model.generate(
+			**inputs,
+			max_new_tokens=256,
+		)
+
+		response = processor.batch_decode(outputs[:, inputs["input_ids"].shape[-1]:])[0]
+		print(response)
+		print(outputs[0])
+
+	if True:
+		model_id = "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		messages = [
+			{"role": "user", "content": "Who are you?"},
+		]
+		inputs = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt", return_dict=True)
+
+		model = transformers.Llama4ForConditionalGeneration.from_pretrained(
+			model_id,
+			tp_plan="auto",
+			torch_dtype="auto",
+		)
+
+		outputs = model.generate(**inputs.to(model.device), max_new_tokens=100)
+		outputs = tokenizer.batch_decode(outputs[:, inputs["input_ids"].shape[-1]:])
+		print(outputs[0])
+
 # REF [site] >> https://huggingface.co/meta-llama
 def llama_guard_example():
 	# Models:
 	#	meta-llama/LlamaGuard-7b
 	#	meta-llama/Meta-Llama-Guard-2-8B
+	#	meta-llama/Llama-Guard-3-1B
+	#	meta-llama/Llama-Guard-3-1B-INT4
 	#	meta-llama/Llama-Guard-3-8B
 	#	meta-llama/Llama-Guard-3-8B-INT8
 	#	meta-llama/Prompt-Guard-86M
@@ -7812,6 +8036,66 @@ def deepseek_vl_example():
 		answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
 		print(f"{prepare_inputs['sft_format'][0]}", answer)
 
+# REF [site] >> https://huggingface.co/meta-llama
+def llama_vision_example():
+	# Models:
+	#	meta-llama/Llama-3.2-11B-Vision
+	#	meta-llama/Llama-3.2-11B-Vision-Instruct
+	#	meta-llama/Llama-3.2-90B-Vision
+	#	meta-llama/Llama-3.2-90B-Vision-Instruct
+	#	meta-llama/Llama-Guard-3-11B-Vision
+
+	if True:
+		model_id = "meta-llama/Llama-3.2-11B-Vision"
+		#model_id = "meta-llama/Llama-3.2-90B-Vision"
+
+		model = transformers.MllamaForConditionalGeneration.from_pretrained(
+			model_id,
+			torch_dtype=torch.bfloat16,
+			device_map="auto",
+		)
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/0052a70beed5bf71b92610a43a52df6d286cd5f3/diffusers/rabbit.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		prompt = "<|image|><|begin_of_text|>If I had to write a haiku for this one"
+		inputs = processor(image, prompt, return_tensors="pt").to(model.device)
+
+		output = model.generate(**inputs, max_new_tokens=30)
+		print(processor.decode(output[0]))
+
+	if True:
+		model_id = "meta-llama/Llama-3.2-11B-Vision-Instruct"
+		#model_id = "meta-llama/Llama-3.2-90B-Vision-Instruct"
+
+		model = transformers.MllamaForConditionalGeneration.from_pretrained(
+			model_id,
+			torch_dtype=torch.bfloat16,
+			device_map="auto",
+		)
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/0052a70beed5bf71b92610a43a52df6d286cd5f3/diffusers/rabbit.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		messages = [
+			{"role": "user", "content": [
+				{"type": "image"},
+				{"type": "text", "text": "If I had to write a haiku for this one, it would be: "}
+			]}
+		]
+		input_text = processor.apply_chat_template(messages, add_generation_prompt=True)
+		inputs = processor(
+			image,
+			input_text,
+			add_special_tokens=False,
+			return_tensors="pt"
+		).to(model.device)
+
+		output = model.generate(**inputs, max_new_tokens=30)
+		print(processor.decode(output[0]))
+
 # REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
 def llava_example():
 	if False:
@@ -10228,6 +10512,7 @@ def main():
 	#llama_example()  # LLaMA.
 	#llama2_example()  # Llama 2. Model parallelism.
 	#llama3_example()  # Llama 3 & Llama 3.1.
+	llama4_example()  # Llama 4.
 	#llama_guard_example()  # Llama Guard.
 	#open_llama_example()  # OpenLLaMA.
 
@@ -10242,7 +10527,7 @@ def main():
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
-	gemma_example()  # Gemma, Gemma 2, Gemma 3, Not yet tested.
+	#gemma_example()  # Gemma, Gemma 2, Gemma 3, Not yet tested.
 	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2. Not yet tested.
 	#data_gemma_example()  # DataGemma. Not yet tested.
 	#open_elm_example()  # OpenELM. Not yet tested.
@@ -10336,6 +10621,7 @@ def main():
 	#vila_example()  # VILA. Not yet implemented.
 	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL. Not yet tested.
 	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2. Not yet tested.
+	#llama_vision_example()  # Llama 3.2 Version. Not yet tested.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.

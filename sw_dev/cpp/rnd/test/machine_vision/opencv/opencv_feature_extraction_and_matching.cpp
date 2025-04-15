@@ -695,7 +695,8 @@ void surf_tutorial()
 	cv::destroyAllWindows();
 }
 
-// REF [site] >> https://docs.opencv.org/4.11.0/d7/dff/tutorial_feature_homography.htmlvoid feature_homography_tutorial()
+// REF [site] >> https://docs.opencv.org/4.11.0/d7/dff/tutorial_feature_homography.html
+void feature_homography_tutorial()
 {
 	const std::string image_filepath1("../data/box.png");
 	const std::string image_filepath2("../data/box_in_scene.png");
@@ -712,6 +713,8 @@ void surf_tutorial()
 		std::cerr << "Image file not found, " << image_filepath2 << std::endl;
 		return;
 	}
+
+	cv::rotate(img_object, img_object, cv::ROTATE_90_CLOCKWISE);
 
 	//--------------------
 	// Step 1: Detect the keypoints using SURF Detector, compute the descriptors
@@ -748,13 +751,19 @@ void surf_tutorial()
 
 		// Filter matches using the Lowe's ratio test
 		const float ratio_thresh = 0.75f;
-		for (size_t i = 0; i < knn_matches.size(); i++)
+#if 0
+		for (size_t i = 0; i < knn_matches.size(); ++i)
 		{
 			if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
-			{
 				good_matches.push_back(knn_matches[i][0]);
-			}
 		}
+#else
+		for (const auto &match: knn_matches)
+		{
+			if (match[0].distance < ratio_thresh * match[1].distance)
+				good_matches.push_back(match[0]);
+		}
+#endif
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Feature descriptors matched: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
 		std::cout << "\t#k-NN matches = " << knn_matches.size() << std::endl;
