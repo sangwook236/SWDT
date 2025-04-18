@@ -194,7 +194,7 @@ void contour();
 
 void image_similarity();
 
-void outlier_removal();
+void robust_estimation();
 
 void line();
 void hough_transform();
@@ -329,12 +329,13 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::distance_measure();
 		//my_opencv::distance_transform();
 		//my_opencv::distance_transform_using_edge_info();
-		//my_opencv::outlier_removal();
 
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::contour();
 
 		//my_opencv::image_similarity();
+
+		//my_opencv::robust_estimation();
 
 		my_opencv::line();
 		//my_opencv::hough_transform();

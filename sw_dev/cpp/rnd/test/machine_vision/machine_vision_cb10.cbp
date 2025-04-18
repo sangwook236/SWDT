@@ -274,7 +274,7 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="opencv/opencv_optical_flow_using_gpu.cpp" />
-		<Unit filename="opencv/opencv_outlier_removal.cpp">
+		<Unit filename="opencv/opencv_robust_estimation.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

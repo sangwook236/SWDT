@@ -294,8 +294,16 @@ void match_features_using_ransac()
 
 namespace my_opencv {
 
-void outlier_removal()
+void robust_estimation()
 {
+	// USAC: Improvement of Random Sample Consensus in OpenCV
+	//	https://docs.opencv.org/4.x/de/d3e/tutorial_usac.html
+	//	https://github.com/opencv/opencv/blob/4.x/samples/cpp/epipolar_lines.cpp
+	//	https://github.com/opencv/opencv/blob/4.x/samples/cpp/essential_mat_reconstr.cpp
+	// Features2D + Homography to find a known object
+	//	https://docs.opencv.org/4.x/d7/dff/tutorial_feature_homography.html
+	//	feature_homography_tutorial() in ./opencv_feature_extraction_and_matching.cpp
+
 	local::match_features_using_ransac();
 }
 

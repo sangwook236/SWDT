@@ -186,7 +186,7 @@
     <ClCompile Include="opencv\opencv_optical_flow.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_outlier_removal.cpp">
+    <ClCompile Include="opencv\opencv_robust_estimation.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_pca.cpp">
