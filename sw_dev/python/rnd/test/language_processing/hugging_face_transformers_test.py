@@ -6191,6 +6191,69 @@ Please reason step by step, and you should write the correct option alphabet (A,
 		)
 		print(tokenizer.decode(output[0]))
 
+# REF [site] >> https://huggingface.co/nvidia
+def llama_nemotron_example():
+	# Models:
+	#	nvidia/Llama-3.1-Nemotron-Nano-8B-v1
+	#	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
+	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1
+	#	nvidia/Llama-Nemotron-Post-Training-Dataset
+
+	if True:
+		# Reasoning on
+
+		if True:
+			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
+			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
+		else:
+			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		tokenizer.pad_token_id = tokenizer.eos_token_id
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			tokenizer=tokenizer,
+			max_new_tokens=32768,
+			temperature=0.6,
+			top_p=0.95,
+			**model_kwargs
+		)
+
+		# Thinking can be "on" or "off"
+		thinking = "on"
+
+		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+
+	if True:
+		# Reasoning off
+	
+		if True:
+			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
+			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
+		else:
+			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		tokenizer.pad_token_id = tokenizer.eos_token_id
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			tokenizer=tokenizer,
+			max_new_tokens=32768,
+			do_sample=False,
+			**model_kwargs
+		)
+
+		# Thinking can be "on" or "off"
+		thinking = "off"
+
+		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
 	import datasets
@@ -10491,7 +10554,7 @@ def main():
 	#sequence_classification_using_bert()
 
 	#korean_bert_example()  # BERT multilingual & KoBERT.
-	#skt_bert_test()  # KoBERT. Not yet tested.
+	#skt_bert_test()  # KoBERT.
 	#klue_bert_test()  # Not yet completed.
 
 	#-----
@@ -10511,8 +10574,8 @@ def main():
 
 	#llama_example()  # LLaMA.
 	#llama2_example()  # Llama 2. Model parallelism.
-	#llama3_example()  # Llama 3 & Llama 3.1.
-	llama4_example()  # Llama 4.
+	#llama3_example()  # Llama 3, Llama 3.1, Llama 3.2, & Llama 3.3.
+	#llama4_example()  # Llama 4.
 	#llama_guard_example()  # Llama Guard.
 	#open_llama_example()  # OpenLLaMA.
 
@@ -10526,19 +10589,19 @@ def main():
 
 	#mistral_example()  # Mistral-7B.
 	#mixtral_example()  # Mixtral-8x7B.
-	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO. Not yet tested.
-	#gemma_example()  # Gemma, Gemma 2, Gemma 3, Not yet tested.
-	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2. Not yet tested.
-	#data_gemma_example()  # DataGemma. Not yet tested.
-	#open_elm_example()  # OpenELM. Not yet tested.
-	#aya_example()  # Aya. Not yet tested.
-	#phi_3_example()  # phi-3. Not yet tested.
-	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram, ERNIE-health. Not yet tested.
+	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO.
+	#gemma_example()  # Gemma, Gemma 2, Gemma 3.
+	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2.
+	#data_gemma_example()  # DataGemma.
+	#open_elm_example()  # OpenELM.
+	#aya_example()  # Aya.
+	#phi_3_example()  # phi-3.
+	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram, ERNIE-health.
 	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
-	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio. Not yet tested.
-	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL. Not yet tested.
-	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3. Not yet tested.
-	#exaone_example()  # EXAONE 3.0, EXAONE 3.5. Not yet tested.
+	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio.
+	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL.
+	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
+	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -10549,8 +10612,8 @@ def main():
 	#-----
 	# Math.
 
-	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math. Not yet tested.
-	#deepseek_math_example()  # DeepSeek-Math. Not yet tested.
+	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math.
+	#deepseek_math_example()  # DeepSeek-Math.
 
 	#-----
 	# Code.
@@ -10565,21 +10628,22 @@ def main():
 	#codeparrot_example()  # CodeParrot.
 	#code_llama_example()  # Code Llama.
 	#code_gemma_example()  # CodeGemma.
-	#star_coder_example()  # StarCoder. Not yet tested.
-	#replit_example()  # Replit. Not yet tested.
+	#star_coder_example()  # StarCoder.
+	#replit_example()  # Replit.
 	#phi_example()  # phi-1, phi-1.5, & phi-2.
-	#codestral_example()  # Codestral. Not yet tested.
-	#qwen_coder_example()  # Qwen2.5-Coder. Not yet tested.
-	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2. Not yet tested.
+	#codestral_example()  # Codestral.
+	#qwen_coder_example()  # Qwen2.5-Coder.
+	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2.
 
 	#-----
 	# Reasoning.
 
-	#qwen_qwq_example()  # QwQ. Not yet tested.
+	#qwen_qwq_example()  # QwQ.
 	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
 	#open_r1_example()  # OpenR1. Not yet completed.
-	#s1_example()  # s1. Not yet tested.
-	#exaone_deep_example()  # EXAONE Deep. Not yet tested.
+	#s1_example()  # s1.
+	#exaone_deep_example()  # EXAONE Deep.
+	llama_nemotron_example()  # Llama Nemotron.
 
 	#--------------------
 	# Vision.
@@ -10589,13 +10653,13 @@ def main():
 	#vit_example()  # ViT.
 	#deit_example()  # DeiT.
 
-	#dino_example()  # DINO & DINOv2. Not yet tested.
-	#dpt_example()  # Dense Prediction Transformer (DPT). Not yet tested.
+	#dino_example()  # DINO & DINOv2.
+	#dpt_example()  # Dense Prediction Transformer (DPT).
 
 	#-----
 	# Visual reasoning.
 
-	#qwen_qvq_example()  # QVQ. Not yet tested.
+	#qwen_qvq_example()  # QVQ.
 
 	#--------------------
 	# Multimodal.
@@ -10619,9 +10683,9 @@ def main():
 	#fuyu_example()  # Fuyu.
 	#pixtral_example()  # Pixtral. Not yet implemented.
 	#vila_example()  # VILA. Not yet implemented.
-	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL. Not yet tested.
-	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2. Not yet tested.
-	#llama_vision_example()  # Llama 3.2 Version. Not yet tested.
+	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL.
+	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2.
+	#llama_vision_example()  # Llama 3.2 Version.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
@@ -10634,8 +10698,8 @@ def main():
 	#-----
 	# Audio and language.
 
-	#audiogen_example()  # AudioGen. Not yet tested.
-	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio. Not yet tested.
+	#audiogen_example()  # AudioGen.
+	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio.
 
 	#-----
 	# Vision and audio.
@@ -10710,8 +10774,8 @@ def main():
 	#--------------------
 	# Reinforcement learning.
 
-	#decision_transformer_example()  # Decision transformer. Not yet tested.
-	#trajectory_transformer_example()  # Trajectory transformer. Not yet tested.
+	#decision_transformer_example()  # Decision transformer.
+	#trajectory_transformer_example()  # Trajectory transformer.
 
 	#--------------------
 	# World model.
@@ -10732,7 +10796,7 @@ def main():
 	#stack_llama_2_sft_llama2_example()  # Not yet implemented.
 	#stack_llama_2_dpo_llama2_example()  # Not yet implemented.
 
-	#trl_train_small_llm_example()  # XGen-7B + SFT. Not yet tested.
+	#trl_train_small_llm_example()  # XGen-7B + SFT.
 	#dpo_train_example()  # Mistral-7B + DPO.
 
 	#--------------------
