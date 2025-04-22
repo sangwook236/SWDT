@@ -4096,8 +4096,25 @@ def phi_3_example():
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
-# REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/ernie
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/ernie
+#	https://huggingface.co/nghuyong
 def ernie_example():
+	# Models:
+	#	nghuyong/ernie-1.0-base-zh
+	#
+	#	nghuyong/ernie-2.0-base-en
+	#	nghuyong/ernie-2.0-large-en
+	#
+	#	nghuyong/ernie-3.0-nano-zh
+	#	nghuyong/ernie-3.0-micro-zh
+	#	nghuyong/ernie-3.0-mini-zh
+	#	nghuyong/ernie-3.0-base-zh
+	#	nghuyong/ernie-3.0-xbase-zh
+	#	nghuyong/ernie-3.0-medium-zh
+	#
+	#	nghuyong/ernie-gram-zh
+
 	if False:
 		# Initializing a ERNIE nghuyong/ernie-3.0-base-zh style configuration
 		configuration = transformers.ErnieConfig()
@@ -4137,7 +4154,7 @@ def ernie_example():
 		loss = outputs.loss
 		logits = outputs.logits
 
-	if True:
+	if False:
 		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
 		model = transformers.ErnieForMaskedLM.from_pretrained("nghuyong/ernie-1.0-base-zh")
 
@@ -4159,7 +4176,7 @@ def ernie_example():
 		outputs = model(**inputs, labels=labels)
 		print(round(outputs.loss.item(), 2))
 
-	if True:
+	if False:
 		from transformers import AutoTokenizer, ErnieForNextSentencePrediction
 		import torch
 
@@ -4174,7 +4191,7 @@ def ernie_example():
 		logits = outputs.logits
 		assert logits[0, 0] < logits[0, 1]  # Next sentence was random
 
-	if True:
+	if False:
 		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
 		model = transformers.ErnieForMultipleChoice.from_pretrained("nghuyong/ernie-1.0-base-zh")
 
@@ -4189,6 +4206,33 @@ def ernie_example():
 		# The linear classifier still needs to be trained
 		loss = outputs.loss
 		logits = outputs.logits
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-1.0-base-zh")
+		model = transformers.AutoModel.from_pretrained("nghuyong/ernie-1.0-base-zh")
+
+	if False:
+		model_id = "nghuyong/ernie-2.0-base-en"
+		#model_id = "nghuyong/ernie-2.0-large-en"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModel.from_pretrained(model_id)
+
+	if True:
+		#model_id = "nghuyong/ernie-3.0-nano-zh"
+		#model_id = "nghuyong/ernie-3.0-micro-zh"
+		#model_id = "nghuyong/ernie-3.0-mini-zh"
+		#model_id = "nghuyong/ernie-3.0-base-zh"
+		model_id = "nghuyong/ernie-3.0-xbase-zh"
+		#model_id = "nghuyong/ernie-3.0-medium-zh"
+
+		tokenizer = transformers.BertTokenizer.from_pretrained(model_id)
+		#model = transformers.ErnieForMaskedLM.from_pretrained(model_id)
+		model = transformers.ErnieModel.from_pretrained(model_id)
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-gram-zh")
+		model = transformers.AutoModel.from_pretrained("nghuyong/ernie-gram-zh")
 
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_example():
@@ -10034,6 +10078,16 @@ def biogpt_example():
 		loss = model(**inputs, labels=labels).loss
 
 # REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/ernie
+#	https://huggingface.co/nghuyong
+def ernie_health_example():
+	# Models:
+	#	nghuyong/ernie-3.0-nano-zh
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-health-zh")
+	model = transformers.AutoModel.from_pretrained("nghuyong/ernie-health-zh")
+
+# REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/decision_transformer
 #	https://huggingface.co/edbeeching
 #	https://github.com/huggingface/transformers/blob/main/examples/research_projects/decision_transformer/run_decision_transformer.py
@@ -10596,7 +10650,7 @@ def main():
 	#open_elm_example()  # OpenELM.
 	#aya_example()  # Aya.
 	#phi_3_example()  # phi-3.
-	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram, ERNIE-health.
+	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram.
 	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
 	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio.
 	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL.
@@ -10770,6 +10824,7 @@ def main():
 	# Biomedical.
 
 	#biogpt_example()  # BioGPT.
+	#ernie_health_example()  # ERNIE-health.
 
 	#--------------------
 	# Reinforcement learning.
