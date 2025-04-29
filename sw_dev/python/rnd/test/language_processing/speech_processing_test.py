@@ -480,6 +480,100 @@ def tensor_speech_tts_example():
 			energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
 		)
 
+# REF [site] >>
+#	https://huggingface.co/sesame
+#	https://github.com/SesameAILabs/csm
+def sesame_example():
+	# Models:
+	#	sesame/csm-1b
+
+	# Install:
+	#	git clone git@github.com:SesameAILabs/csm.git
+	#	cd csm
+	#	pip install -r requirements.txt
+
+	import torch
+	import torchaudio
+	from generator import load_csm_1b
+	from generator import Segment
+	
+	if torch.backends.mps.is_available():
+		device = "mps"
+	elif torch.cuda.is_available():
+		device = "cuda"
+	else:
+		device = "cpu"
+
+	generator = load_csm_1b(device=device)
+
+	if False:
+		# Generate a sentence
+
+		audio = generator.generate(
+			text="Hello from Sesame.",
+			speaker=0,
+			context=[],
+			max_audio_length_ms=10_000,
+		)
+
+		torchaudio.save("audio.wav", audio.unsqueeze(0).cpu(), generator.sample_rate)
+	else:
+		# CSM sounds best when provided with context.
+		# You can prompt or provide context to the model using a Segment for each speaker utterance.
+
+		speakers = [0, 1, 0, 0]
+		transcripts = [
+			"Hey how are you doing.",
+			"Pretty good, pretty good.",
+			"I'm great.",
+			"So happy to be speaking to you.",
+		]
+		audio_paths = [
+			"utterance_0.wav",
+			"utterance_1.wav",
+			"utterance_2.wav",
+			"utterance_3.wav",
+		]
+
+		def load_audio(audio_path):
+			audio_tensor, sample_rate = torchaudio.load(audio_path)
+			audio_tensor = torchaudio.functional.resample(
+				audio_tensor.squeeze(0), orig_freq=sample_rate, new_freq=generator.sample_rate
+			)
+			return audio_tensor
+
+		segments = [
+			Segment(text=transcript, speaker=speaker, audio=load_audio(audio_path))
+			for transcript, speaker, audio_path in zip(transcripts, speakers, audio_paths)
+		]
+		audio = generator.generate(
+			text="Me too, this is some cool stuff huh?",
+			speaker=1,
+			context=segments,
+			max_audio_length_ms=10_000,
+		)
+
+		torchaudio.save("audio.wav", audio.unsqueeze(0).cpu(), generator.sample_rate)
+
+# REF [site] >> https://huggingface.co/nari-labs
+def nari_labs_example():
+	# Models:
+	#	nari-labs/Dia-1.6B
+
+	# Install:
+	#	pip install git+https://github.com/nari-labs/dia.git
+
+	import soundfile as sf
+	from dia.model import Dia
+
+	model = Dia.from_pretrained("nari-labs/Dia-1.6B")
+
+	text = "[S1] Dia is an open weights text to dialogue model. [S2] You get full control over scripts and voices. [S1] Wow. Amazing. (laughs) [S2] Try it now on Git hub or Hugging Face."
+
+	output = model.generate(text)
+
+	sf.write("simple.mp3", output, 44100)
+
 # REF [site] >> https://huggingface.co/microsoft
 def microsoft_voice_conversion_example():
 	import numpy as np
@@ -506,7 +600,9 @@ def microsoft_voice_conversion_example():
 	sf.write("./speecht5_vc.wav", speech.numpy(), samplerate=16000)
 
 def main():
-	# Speech recognition.
+	# Speech recognition:
+	#	- Automatic speech recognition (ASR).
+	#	- Speech-to-Text (STT).
 
 	#microsoft_asr_example()  # SpeechT5.
 	#nvidia_asr_example()  # Conformer, Citrinet, Parakeet, Canary.
@@ -514,12 +610,15 @@ def main():
 	#speech_brain_asr_example()  # Whisper. Error.
 
 	#-----
-	# Speech synthesis.
+	# Speech synthesis:
+	#	- Text-to-Speech (TTS).
 
 	#microsoft_tts_example()  # SpeechT5.
 	#nvidia_tts_example()  # FastPitch + HiFiGAN.
 	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
 	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN.
+	#sesame_example()  # CSM.
+	nari_labs_example()  # Dia.
 
 	#-----
 	# Speech-to-speech.
