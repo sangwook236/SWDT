@@ -4477,6 +4477,248 @@ def qwen2_5_example():
 
 		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen3
+#	https://huggingface.co/Qwen
+def qwen3_example():
+	# Models:
+	#	Qwen/Qwen3-0.6B
+	#	Qwen/Qwen3-1.7B
+	#	Qwen/Qwen3-4B
+	#	Qwen/Qwen3-8B
+	#	Qwen/Qwen3-14B
+	#	Qwen/Qwen3-30B-A3B
+	#	Qwen/Qwen3-32B
+	#	Qwen/Qwen3-235B-A22B
+	#	Qwen/Qwen3-0.6B-FP8
+	#	Qwen/Qwen3-1.7B-FP8
+	#	Qwen/Qwen3-4B-FP8
+	#	Qwen/Qwen3-8B-FP8
+	#	Qwen/Qwen3-14B-FP8
+	#	Qwen/Qwen3-30B-A3B-FP8
+	#	Qwen/Qwen3-32B-FP8
+	#	Qwen/Qwen3-235B-A22B-FP8
+	#	Qwen/Qwen3-0.6B-Base
+	#	Qwen/Qwen3-1.7B-Base
+	#	Qwen/Qwen3-4B-Base
+	#	Qwen/Qwen3-8B-Base
+	#	Qwen/Qwen3-14B-Base
+	#	Qwen/Qwen3-30B-A3B-Base
+
+	if False:
+		model = transformers.Qwen3ForCausalLM.from_pretrained("Qwen/Qwen3-8B")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Qwen/Qwen3-8B")
+
+		prompt = "Hey, are you conscious? Can you talk to me?"
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+		tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+	if False:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("Qwen/Qwen3-8B")
+		model = transformers.Qwen3ForTokenClassification.from_pretrained("Qwen/Qwen3-8B")
+
+		inputs = tokenizer(
+			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
+		)
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that
+		# there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
+
+	#model_name = "Qwen/Qwen3-0.6B"
+	#model_name = "Qwen/Qwen3-1.7B"
+	#model_name = "Qwen/Qwen3-4B"
+	model_name = "Qwen/Qwen3-8B"
+	#model_name = "Qwen/Qwen3-14B"
+	#model_name = "Qwen/Qwen3-30B-A3B"
+	#model_name = "Qwen/Qwen3-32B"
+	#model_name = "Qwen/Qwen3-235B-A22B"
+	#model_name = "Qwen/Qwen3-0.6B-FP8"
+	#model_name = "Qwen/Qwen3-1.7B-FP8"
+	#model_name = "Qwen/Qwen3-4B-FP8"
+	#model_name = "Qwen/Qwen3-8B-FP8"
+	#model_name = "Qwen/Qwen3-14B-FP8"
+	#model_name = "Qwen/Qwen3-30B-A3B-FP8"
+	#model_name = "Qwen/Qwen3-32B-FP8"
+	#model_name = "Qwen/Qwen3-235B-A22B-FP8"
+
+	if True:
+		# Load the tokenizer and the model
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto"
+		)
+
+		# Prepare the model input
+		prompt = "Give me a short introduction to large language model."
+		messages = [
+			{"role": "user", "content": prompt}
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+			enable_thinking=True  # Switches between thinking and non-thinking modes. Default is True.
+			#enable_thinking=False  # Setting enable_thinking=False disables thinking mode
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		# Conduct text completion
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=32768
+		)
+		output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist() 
+
+		# Parsing thinking content
+		try:
+			# rindex finding 151668 (</think>)
+			index = len(output_ids) - output_ids[::-1].index(151668)
+		except ValueError:
+			index = 0
+
+		thinking_content = tokenizer.decode(output_ids[:index], skip_special_tokens=True).strip("\n")
+		content = tokenizer.decode(output_ids[index:], skip_special_tokens=True).strip("\n")
+
+		print("thinking content:", thinking_content)
+		print("content:", content)
+
+	if True:
+		# Advanced Usage: Switching Between Thinking and Non-Thinking Modes via User Input
+
+		# An example of a multi-turn conversation
+
+		class QwenChatbot:
+			def __init__(self, model_name):
+				self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+				self.model = transformers.AutoModelForCausalLM.from_pretrained(model_name)
+				self.history = []
+
+			def generate_response(self, user_input):
+				messages = self.history + [{"role": "user", "content": user_input}]
+
+				text = self.tokenizer.apply_chat_template(
+					messages,
+					tokenize=False,
+					add_generation_prompt=True
+				)
+
+				inputs = self.tokenizer(text, return_tensors="pt")
+				response_ids = self.model.generate(**inputs, max_new_tokens=32768)[0][len(inputs.input_ids[0]):].tolist()
+				response = self.tokenizer.decode(response_ids, skip_special_tokens=True)
+
+				# Update history
+				self.history.append({"role": "user", "content": user_input})
+				self.history.append({"role": "assistant", "content": response})
+
+				return response
+
+		# Example Usage
+		chatbot = QwenChatbot(model_name)
+
+		# First input (without /think or /no_think tags, thinking mode is enabled by default)
+		user_input_1 = "How many r's in strawberries?"
+		print(f"User: {user_input_1}")
+		response_1 = chatbot.generate_response(user_input_1)
+		print(f"Bot: {response_1}")
+		print("----------------------")
+
+		# Second input with /no_think
+		user_input_2 = "Then, how many r's in blueberries? /no_think"
+		print(f"User: {user_input_2}")
+		response_2 = chatbot.generate_response(user_input_2)
+		print(f"Bot: {response_2}") 
+		print("----------------------")
+
+		# Third input with /think
+		user_input_3 = "Really? /think"
+		print(f"User: {user_input_3}")
+		response_3 = chatbot.generate_response(user_input_3)
+		print(f"Bot: {response_3}")
+
+	if True:
+		# Agentic Use
+		#	Qwen3 excels in tool calling capabilities.
+		#	We recommend using Qwen-Agent to make the best use of agentic ability of Qwen3.
+		#	Qwen-Agent encapsulates tool-calling templates and tool-calling parsers internally, greatly reducing coding complexity.
+
+		from qwen_agent.agents import Assistant
+
+		# Define LLM
+		llm_cfg = {
+			#"model": "Qwen3-0.6B",
+			#"model": "Qwen3-1.7B",
+			#"model": "Qwen3-4B",
+			"model": "Qwen3-8B",
+			#"model": "Qwen3-14B",
+			#"model": "Qwen3-30B-A3B",
+			#"model": "Qwen3-32B",
+			#"model": "Qwen3-235B-A22B",
+			#"model": "Qwen3-0.6B-FP8",
+			#"model": "Qwen3-1.7B-FP8",
+			#"model": "Qwen3-4B-FP8",
+			#"model": "Qwen3-8B-FP8",
+			#"model": "Qwen3-14B-FP8",
+			#"model": "Qwen3-30B-A3B-FP8",
+			#"model": "Qwen3-32B-FP8",
+			#"model": "Qwen3-235B-A22B-FP8",
+
+			# Use the endpoint provided by Alibaba Model Studio:
+			#"model_type": "qwen_dashscope",
+			#"api_key": os.getenv("DASHSCOPE_API_KEY"),
+
+			# Use a custom endpoint compatible with OpenAI API:
+			"model_server": "http://localhost:8000/v1",  # api_base
+			"api_key": "EMPTY",
+
+			# Other parameters:
+			#"generate_cfg": {
+			#	# Add: When the response content is `<think>this is the thought</think>this is the answer;
+			#	# Do not add: When the response has been separated by reasoning_content and content.
+			#	"thought_in_content": True,
+			#},
+		}
+
+		# Define Tools
+		tools = [
+			{
+				"mcpServers": {  # You can specify the MCP configuration file
+					"time": {
+						"command": "uvx",
+						"args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
+					},
+					"fetch": {
+						"command": "uvx",
+						"args": ["mcp-server-fetch"]
+					}
+				}
+			},
+			"code_interpreter",  # Built-in tools
+		]
+
+		# Define agent
+		bot = Assistant(llm=llm_cfg, function_list=tools)
+
+		# Streaming generation
+		messages = [{"role": "user", "content": "https://qwenlm.github.io/blog/ Introduce the latest developments of Qwen"}]
+		for responses in bot.run(messages=messages):
+			pass
+		print(responses)
+
 # REF [site] >> https://huggingface.co/deepseek-ai
 def deepseek_llm_example():
 	# Models:
@@ -6911,6 +7153,88 @@ def kosmos_example():
 
 		# Draw the bounding bboxes
 		draw_entity_boxes_on_image(image, entities, show=True)
+
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_omni_example():
+	# Models:
+	#	Qwen/Qwen2.5-Omni-3B
+	#	Qwen/Qwen2.5-Omni-7B
+
+	# Install:
+	#	pip install qwen-omni-utils[decord] -U
+
+	import soundfile as sf
+
+	from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
+	from qwen_omni_utils import process_mm_info
+
+	model_id = "Qwen/Qwen2.5-Omni-3B"
+	#model_id = "Qwen/Qwen2.5-Omni-7B"
+
+	if True:
+		# Default: Load the model on the available device(s)
+		model = Qwen2_5OmniForConditionalGeneration.from_pretrained(model_id, torch_dtype="auto", device_map="auto")
+	else:
+		# We recommend enabling flash_attention_2 for better acceleration and memory saving
+		# FlashAttention-2 can only be used when a model is loaded in torch.float16 or torch.bfloat16.
+		model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
+			model_id,
+			torch_dtype="auto",
+			#torch_dtype=torch.bfloat16,
+			device_map="auto",
+			attn_implementation="flash_attention_2",
+		)
+
+	# The model supports both text and audio outputs, if users do not need audio outputs, they can call model.disable_talker() after init the model.
+	# This option will save about ~2GB of GPU memory but the return_audio option for generate function will only allow to be set at False.
+	#model.disable_talker()
+
+	processor = Qwen2_5OmniProcessor.from_pretrained(model_id)
+
+	conversation = [
+		{
+			"role": "system",
+			"content": [
+				{"type": "text", "text": "You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech."}
+			],
+		},
+		{
+			"role": "user",
+			"content": [
+				{"type": "video", "video": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2.5-Omni/draw.mp4"},
+			],
+		},
+	]
+
+	# Set use audio in video
+	USE_AUDIO_IN_VIDEO = True
+
+	# Preparation for inference
+	text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
+	audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+	inputs = processor(text=text, audio=audios, images=images, videos=videos, return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+	inputs = inputs.to(model.device).to(model.dtype)
+
+	if True:
+		# Inference: Generation of the output text and audio
+		text_ids, audio = model.generate(**inputs, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+	elif False:
+		# Users can use the speaker parameter of generate function to specify the voice type.
+		# By default, if speaker is not specified, the default voice type is Chelsie.
+		text_ids, audio = model.generate(**inputs, speaker="Chelsie")
+		#text_ids, audio = model.generate(**inputs, speaker="Ethan")
+	else:
+		# In order to obtain a flexible experience, we recommend that users can decide whether to return audio when generate function is called.
+		# If return_audio is set to False, the model will only return text outputs to get text responses faster.
+		text_ids = model.generate(**inputs, return_audio=False)
+
+	text = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
+	print(text)
+	sf.write(
+		"output.wav",
+		audio.reshape(-1).detach().cpu().numpy(),
+		samplerate=24000,
+	)
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
@@ -9817,9 +10141,10 @@ def main():
 	#aya_example()  # Aya.
 	#phi_3_example()  # phi-3.
 	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram.
-	#qwen_example()  # Qwen, Qwen-VL, Qwen-Audio. Not yet implemented.
-	#qwen2_example()  # Qwen2, Qwen2-Math, Qwen2-VL, Qwen2-Audio.
-	#qwen2_5_example()  # Qwen2.5, Qwen2.5-Math, Qwen2.5-Coder, Qwen2.5-VL.
+	#qwen_example()  # Qwen. Not yet implemented.
+	#qwen2_example()  # Qwen2.
+	#qwen2_5_example()  # Qwen2.5.
+	#qwen3_example()  # Qwen3.
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
 
@@ -9885,6 +10210,7 @@ def main():
 	# Multimodal.
 
 	#kosmos_example()  # Kosmos-2.
+	#qwen_omni_example()  # Qwen2.5-Omni.
 
 	#-----
 	# Vision and language.
@@ -9961,12 +10287,12 @@ def main():
 	#	Speech synthesis.
 	#	Speech-to-speech.
 
-	# Refer to ./speech_processing_test.py.
+	# Refer to speech_processing_test.py.
 
 	#--------------------
 	# Sequence processing.
 
-	# Refer to ./sequence_processing_test.py.
+	# Refer to sequence_processing_test.py.
 
 	#--------------------
 	# Biomedical.
@@ -9984,6 +10310,11 @@ def main():
 	# World model.
 
 	#cosmos_example()  # Not yet implemented.
+
+	#--------------------
+	# AI agents.
+
+	# Refer to ai_agent_test.py.
 
 	#--------------------
 	# Transformer Reinforcement Learning (TRL).

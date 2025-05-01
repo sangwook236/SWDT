@@ -96,6 +96,7 @@ def main():
 	# LangGraph
 	#	Refer to langchain_test.py
 
+	# Refer to qwen3_example() in hugging_face_transformers_test.py
 	qwen_agent_example()  # Qwen-Agent
 
 #--------------------------------------------------------------------
