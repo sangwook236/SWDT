@@ -51,6 +51,7 @@
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="cgal/cgal_main.cpp" />
+		<Unit filename="cgal/cgal_mesh.cpp" />
 		<Unit filename="cgal/cgal_polygon.cpp" />
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />

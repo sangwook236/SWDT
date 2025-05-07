@@ -181,6 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cgal\cgal_main.cpp" />
+    <ClCompile Include="cgal\cgal_mesh.cpp" />
     <ClCompile Include="cgal\cgal_polygon.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />

@@ -86,6 +86,7 @@
 
 [-] Gemini Code Assist.
 	https://codeassist.google/
+	https://developers.google.com/gemini-code-assist/docs/overview
 	https://cloud.google.com/gemini/docs/codeassist/overview
 	https://cloud.google.com/gemini/docs/codeassist/write-code-gemini
 
