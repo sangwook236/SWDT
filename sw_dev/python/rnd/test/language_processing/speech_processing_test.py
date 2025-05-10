@@ -26,32 +26,38 @@ def microsoft_asr_example():
 # REF [site] >> https://huggingface.co/nvidia
 def nvidia_asr_example():
 	# Models:
-	#	en, es, uk, fr, it, de, pl, hr, be, ca, ua, ru, zh.
+	#	en, es, uk, fr, it, de, pl, hr, be, ca, ua, ru, zh
 	#
-	#	nvidia/stt_en_conformer_ctc_small.
-	#	nvidia/stt_en_conformer_ctc_large.
-	#	nvidia/stt_en_conformer_transducer_large.
-	#	nvidia/stt_en_conformer_transducer_xlarge.
-	#	nvidia/stt_en_fastconformer_ctc_large.
-	#	nvidia/stt_en_fastconformer_ctc_xlarge.
-	#	nvidia/stt_en_fastconformer_transducer_large.
-	#	nvidia/stt_en_fastconformer_transducer_xlarge.
-	#	nvidia/stt_en_fastconformer_transducer_xxlarge.
-	#	nvidia/stt_en_fastconformer_hybrid_large_pc.
-	#	nvidia/stt_en_citrinet_256_ls.
-	#	nvidia/stt_en_citrinet_384_ls.
-	#	nvidia/stt_en_citrinet_512_ls.
-	#	nvidia/stt_en_citrinet_768_ls.
-	#	nvidia/stt_en_citrinet_1024_ls.
-	#	nvidia/stt_en_citrinet_1024_gamma_0_25.
+	#	nvidia/stt_en_conformer_ctc_small
+	#	nvidia/stt_en_conformer_ctc_large
+	#	nvidia/stt_en_conformer_transducer_large
+	#	nvidia/stt_en_conformer_transducer_xlarge
+	#	nvidia/stt_en_fastconformer_ctc_large
+	#	nvidia/stt_en_fastconformer_ctc_xlarge
+	#	nvidia/stt_en_fastconformer_transducer_large
+	#	nvidia/stt_en_fastconformer_transducer_xlarge
+	#	nvidia/stt_en_fastconformer_transducer_xxlarge
+	#	nvidia/stt_en_fastconformer_hybrid_large_pc
+	#	nvidia/stt_en_citrinet_256_ls
+	#	nvidia/stt_en_citrinet_384_ls
+	#	nvidia/stt_en_citrinet_512_ls
+	#	nvidia/stt_en_citrinet_768_ls
+	#	nvidia/stt_en_citrinet_1024_ls
+	#	nvidia/stt_en_citrinet_1024_gamma_0_25
 	#
-	#	nvidia/parakeet-rnnt-0.6b.
-	#	nvidia/parakeet-rnnt-1.1b.
-	#	nvidia/parakeet-ctc-0.6b.
-	#	nvidia/parakeet-ctc-1.1b.
-	#	nvidia/parakeet-tdt-1.1b.
+	#	nvidia/parakeet-rnnt-0.6b
+	#	nvidia/parakeet-rnnt-1.1b
+	#	nvidia/parakeet-ctc-0.6b
+	#	nvidia/parakeet-ctc-1.1b
+	#	nvidia/parakeet-tdt-1.1b
+	#	nvidia/parakeet-tdt_ctc-110m
+	#	nvidia/parakeet-tdt_ctc-1.1b
+	#	nvidia/parakeet-tdt_ctc-0.6b-ja
+	#	nvidia/parakeet-tdt-0.6b-v2
 	#
-	#	nvidia/canary-1b.
+	#	nvidia/canary-180m-flash
+	#	nvidia/canary-1b
+	#	nvidia/canary-1b-flash
 
 	if False:
 		# Install:
@@ -85,6 +91,22 @@ def nvidia_asr_example():
 
 	if True:
 		# Install:
+		#	pip install nemo_toolkit['all']
+
+		#model_name = "nvidia/parakeet-tdt_ctc-110m"
+		#model_name = "nvidia/parakeet-tdt_ctc-1.1b"
+		model_name = "nvidia/parakeet-tdt-0.6b-v2"
+
+		import nemo.collections.asr as nemo_asr
+		asr_model = nemo_asr.models.ASRModel.from_pretrained(model_name=model_name)
+
+		# Get a sample file.
+		#	wget https://dldata-public.s3.us-east-2.amazonaws.com/2086-149220-0033.wav
+		output = asr_model.transcribe(["./2086-149220-0033.wav"])
+		print(output[0].text)
+
+	if True:
+		# Install:
 		#	pip install git+https://github.com/NVIDIA/NeMo.git@r1.23.0#egg=nemo_toolkit[asr]
 
 		from nemo.collections.asr.models import EncDecMultiTaskModel
@@ -97,11 +119,17 @@ def nvidia_asr_example():
 		decode_cfg.beam.beam_size = 1
 		canary_model.change_decoding_strategy(decode_cfg)
 
+		# Input Format
+		#	Input to Canary can be either a list of paths to audio files or a jsonl manifest file.
+		#	Canary default behaviour is English ASR.
+		#	To use Canary for transcribing other supported languages or perform Speech-to-Text translation, specify the input as jsonl manifest file, where each line in the file is a dictionary containing the following fields:
+
 		if True:
 			predicted_text = canary_model.transcribe(
 				paths2audio_files=["path1.wav", "path2.wav"],
 				batch_size=16,  # Batch size to run the inference with
-			)
+				#pnc="yes",  # Generate output with Punctuation and Capitalization
+			)[0].text
 			print(predicted_text)
 
 		if True:
@@ -115,14 +143,14 @@ def nvidia_asr_example():
 				"source_lang": "en",  # Language of the audio input, set `source_lang`==`target_lang` for ASR, choices=['en','de','es','fr']
 				"target_lang": "en",  # Language of the text output, choices=['en','de','es','fr']
 				"pnc": "yes",  # Whether to have PnC output, choices=['yes', 'no']
-				"answer": "na", 
+				"answer": "na",
 			}
 			'''
 
 			predicted_text = canary_model.transcribe(
 				"/path/to/input_manifest.json",
 				batch_size=16,  # Batch size to run the inference with
-			)
+			)[0].text
 			print(predicted_text)
 
 		if True:
@@ -132,19 +160,72 @@ def nvidia_asr_example():
 			{
 				"audio_filepath": "/path/to/audio.wav",  # Path to the audio file
 				"duration": 1000,  # Duration of the audio, can be set to `None` if using NeMo main branch
-				"taskname": "s2t_translation", # r1.23 only recognizes "s2t_translation", but "ast" is supported if using the NeMo main branch
-				"source_lang": "en", # Language of the audio input, choices=['en','de','es','fr']
-				"target_lang": "de", # Language of the text output, choices=['en','de','es','fr']
+				"taskname": "s2t_translation",  # r1.23 only recognizes "s2t_translation", but "ast" is supported if using the NeMo main branch
+				"source_lang": "en",  # Language of the audio input, choices=['en','de','es','fr']
+				"target_lang": "de",  # Language of the text output, choices=['en','de','es','fr']
 				"pnc": "yes",  # Whether to have PnC output, choices=['yes', 'no']
-				"answer": "na" 
+				"answer": "na"
 			}
 			'''
 
 			predicted_text = canary_model.transcribe(
 				"/path/to/input_manifest.json",
 				batch_size=16,  # Batch size to run the inference with
-			)
+			)[0].text
 			print(predicted_text)
+
+	if True:
+		from nemo.collections.asr.models import EncDecMultiTaskModel
+
+		#model_name = "nvidia/canary-180m-flash"
+		model_name = "nvidia/canary-1b-flash"
+
+		# Load model
+		canary_model = EncDecMultiTaskModel.from_pretrained(model_name)
+
+		# Update decode params
+		decode_cfg = canary_model.cfg.decoding
+		decode_cfg.beam.beam_size = 1
+		canary_model.change_decoding_strategy(decode_cfg)
+
+		if True:
+			output = canary_model.transcribe(
+				["path1.wav", "path2.wav"],
+				batch_size=16,  # Batch size to run the inference with
+				pnc="yes",  # Generate output with Punctuation and Capitalization
+			)
+
+			predicted_text = output[0].text
+
+		if True:
+			# canary-1b-flash can also generate word and segment level timestamps
+
+			output = canary_model.transcribe(
+				["filepath.wav"],
+				timestamps="yes",  # Generate output with timestamps
+				#timestamps=True,  # Generate output with timestamps
+			)
+
+			predicted_text = output[0].text
+			word_level_timestamps = output[0].timestamp["word"]
+			segment_level_timestamps = output[0].timestamp["segment"]
+
+		if True:
+			'''
+			# Example of a line in input_manifest.json
+			{
+				"audio_filepath": "/path/to/audio.wav",  # Path to the audio file
+				"source_lang": "en",  # Language of the audio input, set `source_lang`==`target_lang` for ASR, choices=['en','de','es','fr']
+				"target_lang": "en",  # Language of the text output, choices=['en','de','es','fr']
+				"pnc": "yes",  # Whether to have PnC output, choices=['yes', 'no']
+				"timestamp": "yes",  # Whether to output word-level timestamps, choices=['yes', 'no']
+			}
+			'''
+
+			output = canary_model.transcribe(
+				"/path/to/input_manifest.json",
+				batch_size=16,  # Batch size to run the inference with
+			)
 
 def openai_asr_example():
 	# Models:
