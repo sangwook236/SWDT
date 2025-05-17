@@ -228,6 +228,271 @@ def smolagents_guided_tour():
 def smolagents_building_good_agents_tutorial():
 	raise NotImplementedError
 
+# REF [site] >> https://huggingface.co/docs/smolagents/reference/models
+def smolagents_models_example():
+	if True:
+		# Custom model
+		#	You're free to create and use your own models to power your agent.
+		#	You could subclass the base Model class to create a model for your agent.
+		#	The main criteria is to subclass the generate method, with these two criteria:
+		#		- It follows the messages format (List[Dict[str, str]]) for its input messages, and it returns an object with a .content attribute.
+		#		- It stops generating outputs at the sequences passed in the argument stop_sequences.
+
+		from huggingface_hub import login, InferenceClient
+		from smolagents import Model
+
+		login("<YOUR_HUGGINGFACEHUB_API_TOKEN>")
+
+		model_id = "meta-llama/Llama-3.3-70B-Instruct"
+
+		client = InferenceClient(model=model_id)
+
+		class CustomModel(Model):
+			def generate(messages, stop_sequences=["Task"]):
+				response = client.chat_completion(messages, stop=stop_sequences, max_tokens=1024)
+				answer = response.choices[0].message
+				return answer
+
+		custom_model = CustomModel()
+
+	if True:
+		# TransformersModel
+		#	For convenience, we have added a TransformersModel that implements the points above by building a local transformers pipeline for the model_id given at initialization.
+
+		from smolagents import TransformersModel
+
+		model = TransformersModel(model_id="HuggingFaceTB/SmolLM-135M-Instruct")
+		print(model([{"role": "user", "content": [{"type": "text", "text": "Ok!"}]}], stop_sequences=["great"]))
+
+		engine = TransformersModel(
+			model_id="Qwen/Qwen2.5-Coder-32B-Instruct",
+			device="cuda",
+			max_new_tokens=5000,
+		)
+		messages = [{"role": "user", "content": "Explain quantum mechanics in simple terms."}]
+		response = engine(messages, stop_sequences=["END"])
+		print(response)
+
+	if True:
+		# InferenceClientModel
+		#	The HfApiModel wraps huggingface_hub's InferenceClient for the execution of the LLM.
+		#	It supports all Inference Providers available on the Hub: Cerebras, Cohere, Fal, Fireworks, HF-Inference, Hyperbolic, Nebius, Novita, Replicate, SambaNova, Together, and more.
+
+		from smolagents import InferenceClientModel
+
+		messages = [
+			{"role": "user", "content": [{"type": "text", "text": "Hello, how are you?"}]}
+		]
+		model = InferenceClientModel(provider="novita")
+		print(model(messages))
+
+		engine = InferenceClientModel(
+			model_id="Qwen/Qwen2.5-Coder-32B-Instruct",
+			provider="together",
+			token="your_hf_token_here",
+			max_tokens=5000,
+		)
+		messages = [{"role": "user", "content": "Explain quantum mechanics in simple terms."}]
+		response = engine(messages, stop_sequences=["END"])
+		print(response)
+
+	if True:
+		# LiteLLMModel
+		#	The LiteLLMModel leverages LiteLLM to support 100+ LLMs from various providers.
+		#	You can pass kwargs upon model initialization that will then be used whenever using the model, for instance below we pass temperature.
+
+		from smolagents import LiteLLMModel
+
+		messages = [
+			{"role": "user", "content": [{"type": "text", "text": "Hello, how are you?"}]}
+		]
+		model = LiteLLMModel(model_id="anthropic/claude-3-5-sonnet-latest", temperature=0.2, max_tokens=10)
+		print(model(messages))
+
+	if True:
+		# LiteLLMRouterModel
+		#	The LiteLLMRouterModel is a wrapper around the LiteLLM Router that leverages advanced routing strategies: load-balancing across multiple deployments, prioritizing critical requests via queueing, and implementing basic reliability measures such as cooldowns, fallbacks, and exponential backoff retries.
+
+		import os
+		from smolagents import CodeAgent, WebSearchTool, LiteLLMRouterModel
+
+		messages = [
+			{"role": "user", "content": [{"type": "text", "text": "Hello, how are you?"}]}
+		]
+		model = LiteLLMRouterModel(
+			model_id="llama-3.3-70b",
+			model_list=[
+				{
+					"model_name": "llama-3.3-70b",
+					"litellm_params": {"model": "groq/llama-3.3-70b", "api_key": os.getenv("GROQ_API_KEY")},
+				},
+				{
+					"model_name": "llama-3.3-70b",
+					"litellm_params": {"model": "cerebras/llama-3.3-70b", "api_key": os.getenv("CEREBRAS_API_KEY")},
+				},
+			],
+			client_kwargs={
+				"routing_strategy": "simple-shuffle",
+			},
+		)
+		print(model(messages))
+
+		os.environ["OPENAI_API_KEY"] = ""
+		os.environ["AWS_ACCESS_KEY_ID"] = ""
+		os.environ["AWS_SECRET_ACCESS_KEY"] = ""
+		os.environ["AWS_REGION"] = ""
+		llm_loadbalancer_model_list = [
+			{
+				"model_name": "model-group-1",
+				"litellm_params": {
+					"model": "gpt-4o-mini",
+					"api_key": os.getenv("OPENAI_API_KEY"),
+				},
+			},
+			{
+				"model_name": "model-group-1",
+				"litellm_params": {
+					"model": "bedrock/anthropic.claude-3-sonnet-20240229-v1:0",
+					"aws_access_key_id": os.getenv("AWS_ACCESS_KEY_ID"),
+					"aws_secret_access_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
+					"aws_region_name": os.getenv("AWS_REGION"),
+				},
+			},
+		]
+		model = LiteLLMRouterModel(
+			model_id="model-group-1",
+			model_list=llm_loadbalancer_model_list,
+			client_kwargs={
+				"routing_strategy": "simple-shuffle"
+			}
+		)
+		agent = CodeAgent(tools=[WebSearchTool()], model=model)
+		agent.run("How many seconds would it take for a leopard at full speed to run through Pont des Arts?")
+
+	if True:
+		# OpenAIServerModel
+		#	This class lets you call any OpenAIServer compatible model.
+		#	Here's how you can set it (you can customise the api_base url to point to another server):
+
+		import os
+		from smolagents import OpenAIServerModel
+
+		model = OpenAIServerModel(
+			model_id="gpt-4o",
+			api_base="https://api.openai.com/v1",
+			api_key=os.environ["OPENAI_API_KEY"],
+		)
+
+	if True:
+		# AzureOpenAIServerModel
+		#	AzureOpenAIServerModel allows you to connect to any Azure OpenAI deployment.
+
+		import os
+		from smolagents import AzureOpenAIServerModel
+
+		model = AzureOpenAIServerModel(
+			model_id=os.environ.get("AZURE_OPENAI_MODEL"),
+			azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+			api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+			api_version=os.environ.get("OPENAI_API_VERSION")
+		)
+
+	if True:
+		# AmazonBedrockServerModel
+		#	AmazonBedrockServerModel helps you connect to Amazon Bedrock and run your agent with any available models.
+
+		import os
+		from smolagents import AmazonBedrockServerModel
+
+		model = AmazonBedrockServerModel(
+			model_id=os.environ.get("AMAZON_BEDROCK_MODEL_ID"),
+		)
+
+	if True:
+		# MLXModel
+
+		from smolagents import MLXModel
+
+		model = MLXModel(model_id="HuggingFaceTB/SmolLM-135M-Instruct")
+		print(model([{"role": "user", "content": "Ok!"}], stop_sequences=["great"]))
+
+		engine = MLXModel(
+			model_id="mlx-community/Qwen2.5-Coder-32B-Instruct-4bit",
+			max_tokens=10000,
+		)
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "text", "text": "Explain quantum mechanics in simple terms."}
+				]
+			}
+		]
+		response = engine(messages, stop_sequences=["END"])
+		print(response)
+
+	if True:
+		# VLLMModel
+		#	Model to use vLLM for fast LLM inference and serving.
+
+		from smolagents import VLLMModel
+
+		model = VLLMModel(model_id="HuggingFaceTB/SmolLM-135M-Instruct")
+		print(model([{"role": "user", "content": "Ok!"}], stop_sequences=["great"]))
+		
+# REF [site] >> https://huggingface.co/docs/smolagents/v1.15.0/en/reference/tools
+def smolagents_tools_example():
+	if True:
+		from smolagents import Tool
+
+		image_generator = Tool.from_space(
+			space_id="black-forest-labs/FLUX.1-schnell",
+			name="image-generator",
+			description="Generate an image from a prompt"
+		)
+		image = image_generator("Generate an image of a cool surfer in Tahiti")
+
+		face_swapper = Tool.from_space(
+			"tuan2308/face-swap",
+			"face_swapper",
+			"Tool that puts the face shown on the first image on the second image. You can give it paths to images.",
+		)
+		image = face_swapper('./aymeric.jpeg', './ruth.jpg')
+
+	if True:
+		from smolagents import ToolCollection, CodeAgent
+
+		image_tool_collection = ToolCollection.from_hub("huggingface-tools/diffusion-tools-6630bb19a942c2306a2cdb6f")
+		agent = CodeAgent(tools=[*image_tool_collection.tools], add_base_tools=True)
+
+		agent.run("Please draw me a picture of rivers and lakes.")
+
+	if True:
+		# Example with a Stdio MCP server
+
+		import os
+		from smolagents import ToolCollection, CodeAgent
+		from mcp import StdioServerParameters
+
+		server_parameters = StdioServerParameters(
+			command="uv",
+			args=["--quiet", "pubmedmcp@0.1.3"],
+			env={"UV_PYTHON": "3.12", **os.environ},
+		)
+
+		with ToolCollection.from_mcp(server_parameters, trust_remote_code=True) as tool_collection:
+			agent = CodeAgent(tools=[*tool_collection.tools], add_base_tools=True)
+			agent.run("Please find a remedy for hangover.")
+
+	if True:
+		# Example with an SSE MCP server
+
+		from smolagents import ToolCollection, CodeAgent
+
+		with ToolCollection.from_mcp({"url": "http://127.0.0.1:8000/sse"}, trust_remote_code=True) as tool_collection:
+			agent = CodeAgent(tools=[*tool_collection.tools], add_base_tools=True)
+			agent.run("Please find a remedy for hangover.")
+
 # REF [site] >> https://github.com/QwenLM/Qwen-Agent
 def qwen_agent_example():
 	# Install:
@@ -331,8 +596,12 @@ def main():
 	#	https://smolagents.org/
 	#	https://huggingface.co/docs/smolagents/index
 	#	https://github.com/huggingface/smolagents
+
 	smolagents_guided_tour()
 	#smolagents_building_good_agents_tutorial()  # Not yet implemented
+
+	#smolagents_models_example()
+	#smolagents_tools_example()
 
 	# Refer to qwen3_example() in hugging_face_transformers_test.py
 	qwen_agent_example()  # Qwen-Agent
