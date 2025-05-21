@@ -46,7 +46,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 if(NOT CMAKE_CXX_STANDARD)
 	set(CMAKE_CXX_STANDARD 17)
+	set(CMAKE_CXX_STANDARD_REQUIRED True)
 endif()
+#set(CMAKE_RELEASE_POSTFIX "")
 #set(CMAKE_DEBUG_POSTFIX d)
 
 if(APPLE)
@@ -56,6 +58,7 @@ elseif(UNIX AND NOT APPLE AND NOT CYGWIN)
 #	set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
 #	set(OpenCV_DIR "/usr/lib/x86_64-linux-gnu/cmake/opencv4")
 elseif(WIN32 AND NOT CYGWIN)
+#	set(CUDA_TOOLKIT_ROOT_DIR "$ENV{CUDA_PATH}")
 endif()
 
 #--------------------
@@ -63,12 +66,13 @@ find_package(Threads REQUIRED)
 #find_package(OpenMP REQUIRED)
 #find_package(OpenGL REQUIRED)
 #find_package(CUDA REQUIRED)
-#find_package(Boost 1.86 REQUIRED thread timer)
+#find_package(Boost 1.86 REQUIRED system thread timer)
 #find_package(Log4cxx REQUIRED)
 #find_package(glog REQUIRED)
 #find_package(gflags REQUIRED)
 #find_package(GTest REQUIRED)  # ${GTest_FOUND}, ${GMock_FOUND}
 #find_package(ZLIB REQUIRED)
+find_package(Eigen3 REQUIRED)  # ${Eigen3_FOUND}, ${EIGEN3_FOUND}
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)  # ${Qt5_FOUND}, ${Qt5Core_FOUND}, ${Qt5Gui_FOUND}, ${Qt5Widgets_FOUND}
 #find_package(OpenCV 4.10.0 REQUIRED)
@@ -85,7 +89,7 @@ find_package(Threads REQUIRED)
 #include_directories(${GFLAGS_INCLUDE_DIR})
 #include_directories(${GTEST_INCLUDE_DIRS})
 #include_directories(${ZLIB_INCLUDE_DIRS})
-#include_directories(/usr/include/eigen3)
+include_directories(${EIGEN3_INCLUDE_DIRS})  # ${EIGEN3_INCLUDE_DIR}, ${EIGEN3_INCLUDE_DIRS}
 #include_directories(${GSL_INCLUDE_DIRS})
 #include_directories(${Qt5Core_INCLUDE_DIRS})  # ${Qt5Core_INCLUDE_DIRS}, ${Qt5Gui_INCLUDE_DIRS}, ${Qt5Widgets_INCLUDE_DIRS}
 #include_directories(${OpenCV_INCLUDE_DIRS})
@@ -107,9 +111,10 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 #--------------------
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-	set(CMAKE_CXX_FLAGS "-target x86_64-w64-mingw32 -std=c++17 -Wall -Wextra")
-#	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-gnu -std=c++17 -Wall -Wextra")
-#	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-msvc -std=c++17 -Wall -Wextra")
+	set(CMAKE_CXX_FLAGS "-target x86_64-w64-mingw32 -std=c++17 -Wall -Wextra -Wpedantic")
+#	set(CMAKE_CXX_FLAGS "-target x86_64-w64-mingw32 -std=c++17 -Wall -Wextra -Wpedantic -pthread")
+#	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-gnu -std=c++17 -Wall -Wextra -Wpedantic -pthread")
+#	set(CMAKE_CXX_FLAGS "-target x86_64-pc-windows-msvc -std=c++17 -Wall -Wextra -Wpedantic -pthread")
 	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
@@ -119,8 +124,9 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 		add_compile_options(-fopenmp)
 	endif(OpenMP_CXX_FOUND)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-	set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-#	set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wno-deprecated-declarations")
+	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic")
+#	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -pthread")
+#	set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wpedantic -Wno-deprecated-declarations")
 	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
@@ -181,6 +187,7 @@ set(LIBS
 #	${GFLAGS_LIBRARIES}
 #	${GTEST_BOTH_LIBRARIES}  # ${GTEST_LIBRARIES}, ${GTEST_MAIN_LIBRARIES}, ${GTEST_BOTH_LIBRARIES}, ${GMOCK_LIBRARIES}, ${GMOCK_MAIN_LIBRARIES}
 #	${ZLIB_LIBRARIES}
+#	Eigen3::Eigen
 #	Qt5::Core Qt5::Gui Qt5::Widgets
 #	${OpenCV_LIBRARIES}
 )
@@ -192,7 +199,8 @@ add_executable(${TARGET} ${SRCS} ${HDRS})
 #cuda_add_library(${TARGET} SHARED ${SRCS} ${HDRS})
 #cuda_add_library(${TARGET} STATIC ${SRCS} ${HDRS})
 
-target_link_libraries(${TARGET} ${LIBS})
+#target_link_libraries(${TARGET} ${LIBS})
+target_link_libraries(${TARGET} PRIVATE ${LIBS})
 set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 
 #--------------------
