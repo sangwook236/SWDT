@@ -3949,24 +3949,175 @@ def aya_example():
 
 # REF [site] >>
 #	https://huggingface.co/microsoft
+#	https://huggingface.co/docs/transformers/main/en/model_doc/phi
+def phi_example():
+	# Models:
+	#	microsoft/phi-1: ~2.84GB
+	#	microsoft/phi-1_5: ~2.84GB
+	#	microsoft/phi-2
+
+	torch.set_default_device("cuda")
+
+	if False:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1", trust_remote_code=True)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1", trust_remote_code=True)
+
+		inputs = tokenizer('''def print_prime(n):
+"""
+Print all primes between 1 and n
+"""''', return_tensors="pt", return_attention_mask=False)
+
+		if True:
+			outputs = model.generate(**inputs, max_length=200)
+		else:
+			with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
+				outputs = model.generate(**inputs, max_length=200)
+
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
+
+		inputs = tokenizer('''```python
+def print_prime(n):
+	"""
+	Print all primes between 1 and n
+	"""''', return_tensors="pt", return_attention_mask=False)
+
+		if True:
+			outputs = model.generate(**inputs, max_length=200)
+		else:
+			with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
+				outputs = model.generate(**inputs, max_length=200)
+
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if True:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-2", torch_dtype="auto", trust_remote_code=True)
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=True)
+
+		inputs = tokenizer('''def print_prime(n):
+"""
+Print all primes between 1 and n
+"""''', return_tensors="pt", return_attention_mask=False)
+
+		outputs = model.generate(**inputs, max_length=200)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if False:
+		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-2")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-2")
+
+		inputs = tokenizer("Can you help me write a formal email to a potential business partner proposing a joint venture?", return_tensors="pt", return_attention_mask=False)
+
+		outputs = model.generate(**inputs, max_length=30)
+		text = tokenizer.batch_decode(outputs)[0]
+		print(text)
+
+	if True:
+		# Define the model and tokenizer.
+		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1_5")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5")
+
+		# Feel free to change the prompt to your liking.
+		prompt = "If I were an AI that had just achieved"
+
+		# Apply the tokenizer.
+		tokens = tokenizer(prompt, return_tensors="pt")
+
+		# Use the model to generate new tokens.
+		generated_output = model.generate(**tokens, use_cache=True, max_new_tokens=10)
+		text = tokenizer.batch_decode(generated_output)[0]
+		print(text)
+
+	if True:
+		# Install:
+		#	pip install -U flash-attn --no-build-isolation
+
+		# Define the model and tokenizer and push the model and tokens to the GPU.
+		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1_5", torch_dtype=torch.float16, attn_implementation="flash_attention_2").to("cuda")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5")
+
+		# Feel free to change the prompt to your liking.
+		prompt = "If I were an AI that had just achieved"
+
+		# Apply the tokenizer.
+		tokens = tokenizer(prompt, return_tensors="pt").to("cuda")
+
+		# Use the model to generate new tokens.
+		generated_output = model.generate(**tokens, use_cache=True, max_new_tokens=10)
+		text = tokenizer.batch_decode(generated_output)[0]
+		print(text)
+
+	if False:
+		# Initializing a Phi-1 style configuration
+		configuration = transformers.PhiConfig.from_pretrained("microsoft/phi-1")
+
+		# Initializing a model from the configuration
+		model = transformers.PhiModel(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1")
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1")
+
+		prompt = "This is an example script ."
+		inputs = tokenizer(prompt, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(inputs.input_ids, max_length=30)
+		text = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(text)
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1")
+		model = transformers.PhiForTokenClassification.from_pretrained("microsoft/phi-1")
+
+		inputs = tokenizer(
+			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
+		)
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that
+		# there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
+
+# REF [site] >>
+#	https://huggingface.co/microsoft
 #	https://huggingface.co/docs/transformers/main/en/model_doc/phi3
 def phi_3_example():
 	# Models:
 	#	microsoft/Phi-3-mini-4k-instruct
-	#	microsoft/Phi-3-mini-128k-instruct
 	#	microsoft/Phi-3-mini-4k-instruct-onnx
+	#	microsoft/Phi-3-mini-4k-instruct-onnx-web
+	#	microsoft/Phi-3-mini-4k-instruct-gguf
+	#	microsoft/Phi-3-mini-128k-instruct
 	#	microsoft/Phi-3-mini-128k-instruct-onnx
 	#	microsoft/Phi-3-small-8k-instruct
-	#	microsoft/Phi-3-small-128k-instruct
 	#	microsoft/Phi-3-small-8k-instruct-onnx-cuda
+	#	microsoft/Phi-3-small-128k-instruct
 	#	microsoft/Phi-3-small-128k-instruct-onnx-cuda
 	#	microsoft/Phi-3-medium-4k-instruct
-	#	microsoft/Phi-3-medium-128k-instruct
 	#	microsoft/Phi-3-medium-4k-instruct-onnx-cpu
-	#	microsoft/Phi-3-medium-128k-instruct-onnx-cpu
 	#	microsoft/Phi-3-medium-4k-instruct-onnx-cuda
-	#	microsoft/Phi-3-medium-128k-instruct-onnx-cuda
 	#	microsoft/Phi-3-medium-4k-instruct-onnx-directml
+	#	microsoft/Phi-3-medium-128k-instruct
+	#	microsoft/Phi-3-medium-128k-instruct-onnx-cpu
+	#	microsoft/Phi-3-medium-128k-instruct-onnx-cuda
 	#	microsoft/Phi-3-medium-128k-instruct-onnx-directml
 
 	"""
@@ -4095,6 +4246,138 @@ def phi_3_example():
 
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
+
+# REF [site] >> https://huggingface.co/microsoft
+def phi_3_5_example():
+	# Models:
+	#	microsoft/Phi-3.5-mini-instruct
+	#	microsoft/Phi-3.5-mini-instruct-onnx
+	#	microsoft/Phi-3.5-MoE-instruct
+
+	# Input Formats
+	# Given the nature of the training data, the Phi-3.5-mini-instruct model is best suited for prompts using the chat format as follows:
+	#	<|system|>
+	#	You are a helpful assistant.<|end|>
+	#	<|user|>
+	#	How to explain Internet for a medieval knight?<|end|>
+	#	<|assistant|>
+
+	torch.random.manual_seed(0)
+
+	model_id = "microsoft/Phi-3.5-mini-instruct"
+	#model_id = "microsoft/Phi-3.5-MoE-instruct"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_id,
+		device_map="cuda",
+		torch_dtype="auto",
+		trust_remote_code=True,
+		#trust_remote_code=False,
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+	messages = [
+		{"role": "system", "content": "You are a helpful AI assistant."},
+		{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"},
+		{"role": "assistant", "content": "Sure! Here are some ways to eat bananas and dragonfruits together: 1. Banana and dragonfruit smoothie: Blend bananas and dragonfruits together with some milk and honey. 2. Banana and dragonfruit salad: Mix sliced bananas and dragonfruits together with some lemon juice and honey."},
+		{"role": "user", "content": "What about solving an 2x + 3 = 7 equation?"},
+	]
+
+	pipe = transformers.pipeline(
+		"text-generation",
+		model=model,
+		tokenizer=tokenizer,
+		#device=device,
+	)
+
+	generation_args = {
+		"max_new_tokens": 500,
+		"return_full_text": False,
+		"temperature": 0.0,
+		"do_sample": False,
+	}
+
+	output = pipe(messages, **generation_args)
+	print(output[0]["generated_text"])
+
+# REF [site] >> https://huggingface.co/microsoft
+def phi_4_example():
+	# Models:
+	#	microsoft/Phi-4-mini-instruct
+	#	microsoft/Phi-4-mini-instruct-onnx
+	#	microsoft/phi-4
+	#	microsoft/phi-4-onnx
+	#	microsoft/phi-4-gguf
+
+	if True:
+		# Input Formats
+		#	Given the nature of the training data, the Phi-4-mini-instruct model is best suited for prompts using specific formats. Below are the two primary formats:
+		#	Chat format
+		#		This format is used for general conversation and instructions:
+		#			<|system|>Insert System Message<|end|><|user|>Insert User Message<|end|><|assistant|>
+		#	Tool-enabled function-calling format
+		#		This format is used when the user wants the model to provide function calls based on the given tools. The user should provide the available tools in the system prompt, wrapped by <|tool|> and <|/tool|> tokens. The tools should be specified in JSON format, using a JSON dump structure.
+		# 		Example:
+		#			<|system|>You are a helpful assistant with some tools.<|tool|>[{"name": "get_weather_updates", "description": "Fetches weather updates for a given city using the RapidAPI Weather API.", "parameters": {"city": {"description": "The name of the city for which to retrieve weather information.", "type": "str", "default": "London"}}}]<|/tool|><|end|><|user|>What is the weather like in Paris today?<|end|><|assistant|>
+
+		torch.random.manual_seed(0)
+
+		model_path = "microsoft/Phi-4-mini-instruct"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_path,
+			device_map="auto",
+			torch_dtype="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
+		
+		messages = [
+			{"role": "system", "content": "You are a helpful AI assistant."},
+			{"role": "user", "content": "Can you provide ways to eat combinations of bananas and dragonfruits?"},
+			{"role": "assistant", "content": "Sure! Here are some ways to eat bananas and dragonfruits together: 1. Banana and dragonfruit smoothie: Blend bananas and dragonfruits together with some milk and honey. 2. Banana and dragonfruit salad: Mix sliced bananas and dragonfruits together with some lemon juice and honey."},
+			{"role": "user", "content": "What about solving an 2x + 3 = 7 equation?"},
+		]
+		
+		pipe = transformers.pipeline(
+			"text-generation",
+			model=model,
+			tokenizer=tokenizer,
+		)
+		
+		generation_args = {
+			"max_new_tokens": 500,
+			"return_full_text": False,
+			"temperature": 0.0,
+			"do_sample": False,
+		}
+		
+		output = pipe(messages, **generation_args)
+		print(output[0]['generated_text'])
+
+	if True:
+		# Input Formats
+		#	Given the nature of the training data, phi-4 is best suited for prompts using the chat format as follows:
+		#		<|system|>You are a helpful assistant.<|end|><|im_start|>system<|im_sep|>
+		#		You are a medieval knight and must provide explanations to modern people.<|im_end|>
+		#		<|im_start|>user<|im_sep|>
+		#		How should I explain the Internet?<|im_end|>
+		#		<|im_start|>assistant<|im_sep|>
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model="microsoft/phi-4",
+			model_kwargs={"torch_dtype": "auto"},
+			device_map="auto",
+		)
+
+		messages = [
+			{"role": "system", "content": "You are a medieval knight and must provide explanations to modern people."},
+			{"role": "user", "content": "How should I explain the Internet?"},
+		]
+
+		outputs = pipeline(messages, max_new_tokens=128)
+		print(outputs[0]["generated_text"][-1])
 
 # REF [site] >>
 #	https://huggingface.co/docs/transformers/en/model_doc/ernie
@@ -5078,6 +5361,354 @@ def rag_facebook_example():
 		# Should give 54 => google says either 44 or 51
 
 # REF [site] >> https://huggingface.co/Qwen
+def qwen_qwq_example():
+	# Models:
+	#	Qwen/QwQ-32B-Preview
+
+	model_name = "Qwen/QwQ-32B-Preview"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	prompt = "How many r in strawberry."
+	messages = [
+		{"role": "system", "content": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step."},
+		{"role": "user", "content": prompt}
+	]
+	text = tokenizer.apply_chat_template(
+		messages,
+		tokenize=False,
+		add_generation_prompt=True
+	)
+	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+	generated_ids = model.generate(
+		**model_inputs,
+		max_new_tokens=512
+	)
+	generated_ids = [
+		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+	]
+
+	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+	print(response)
+
+# REF [site] >>
+#	https://huggingface.co/deepseek-ai
+#	https://github.com/deepseek-ai/DeepSeek-R1
+def deepseek_r_example():
+	# Models:
+	#	deepseek-ai/DeepSeek-R1
+	#	deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+	#	deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+	#	deepseek-ai/DeepSeek-R1-Zero
+
+	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/open-r1
+def open_r1_example():
+	# Models:
+	#	open-r1/OpenR1-Qwen-7B
+
+	from transformers import AutoModelForCausalLM, AutoTokenizer
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	model_name = "open-r1/OpenR1-Qwen-7B"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	prompt = "Find the value of $x$ that satisfies the equation $4x+5 = 6x+7$."
+
+	messages = [
+		{"role": "system", "content": "Please reason step by step, and put your final answer within \\boxed{}."},
+		{"role": "user", "content": prompt}
+	]
+
+	# FIXME [implement] >> do something
+
+	raise NotImplementedError
+
+# REF [site] >>
+#	https://huggingface.co/simplescaling
+#	https://github.com/simplescaling/s1
+def s1_example():
+	# Models:
+	#	simplescaling/s1-32B
+	#	simplescaling/s1.1-32B
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	model_name = "simplescaling/s1.1-32B"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	prompt = "How many r in raspberry"
+	messages = [
+		{"role": "system", "content": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step."},
+		{"role": "user", "content": prompt}
+	]
+	text = tokenizer.apply_chat_template(
+		messages,
+		tokenize=False,
+		add_generation_prompt=True
+	)
+	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+	generated_ids = model.generate(
+		**model_inputs,
+		max_new_tokens=512
+	)
+	generated_ids = [
+		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+	]
+
+	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+	print(response)
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
+def exaone_deep_example():
+	# Models:
+	#	LGAI-EXAONE/EXAONE-Deep-2.4B
+	#	LGAI-EXAONE/EXAONE-Deep-7.8B
+	#	LGAI-EXAONE/EXAONE-Deep-32B
+	#	LGAI-EXAONE/EXAONE-Deep-2.4B-AWQ
+	#	LGAI-EXAONE/EXAONE-Deep-7.8B-AWQ
+	#	LGAI-EXAONE/EXAONE-Deep-32B-AWQ
+	#	LGAI-EXAONE/EXAONE-Deep-2.4B-GGUF
+	#	LGAI-EXAONE/EXAONE-Deep-7.8B-GGUF
+	#	LGAI-EXAONE/EXAONE-Deep-32B-GGUF
+
+	from threading import Thread
+
+	model_name = "LGAI-EXAONE/EXAONE-Deep-2.4B"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-7.8B"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-32B"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-2.4B-AWQ"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-7.8B-AWQ"
+	#model_name = "LGAI-EXAONE/EXAONE-Deep-32B-AWQ"
+	streaming = True  # Choose the streaming option
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype=torch.bfloat16,
+		trust_remote_code=True,
+		device_map="auto"
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	# Choose your prompt:
+	#	Math example (AIME 2024)
+	prompt = r"""Let $x,y$ and $z$ be positive real numbers that satisfy the following system of equations:
+\[\log_2\left({x \over yz}\right) = {1 \over 2}\]\[\log_2\left({y \over xz}\right) = {1 \over 3}\]\[\log_2\left({z \over xy}\right) = {1 \over 4}\]
+Then the value of $\left|\log_2(x^4y^3z^2)\right|$ is $\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$.
+
+Please reason step by step, and put your final answer within \boxed{}."""
+	#	Korean MCQA example (CSAT Math 2025)
+	prompt = r"""Question : $a_1 = 2$인 수열 $\{a_n\}$과 $b_1 = 2$인 등차수열 $\{b_n\}$이 모든 자연수 $n$에 대하여\[\sum_{k=1}^{n} \frac{a_k}{b_{k+1}} = \frac{1}{2} n^2\]을 만족시킬 때, $\sum_{k=1}^{5} a_k$의 값을 구하여라.
+
+Options :
+A) 120
+B) 125
+C) 130
+D) 135
+E) 140
+
+Please reason step by step, and you should write the correct option alphabet (A, B, C, D or E) within \\boxed{}."""
+
+	messages = [
+		{"role": "user", "content": prompt}
+	]
+	input_ids = tokenizer.apply_chat_template(
+		messages,
+		tokenize=True,
+		add_generation_prompt=True,
+		return_tensors="pt"
+	)
+
+	if streaming:
+		streamer = transformers.TextIteratorStreamer(tokenizer)
+		thread = Thread(target=model.generate, kwargs=dict(
+			input_ids=input_ids.to("cuda"),
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=32768,
+			do_sample=True,
+			temperature=0.6,
+			top_p=0.95,
+			streamer=streamer
+		))
+		thread.start()
+
+		for text in streamer:
+			print(text, end="", flush=True)
+	else:
+		output = model.generate(
+			input_ids.to("cuda"),
+			eos_token_id=tokenizer.eos_token_id,
+			max_new_tokens=32768,
+			do_sample=True,
+			temperature=0.6,
+			top_p=0.95,
+		)
+		print(tokenizer.decode(output[0]))
+
+# REF [site] >> https://huggingface.co/nvidia
+def llama_nemotron_example():
+	# Models:
+	#	nvidia/Llama-3.1-Nemotron-Nano-8B-v1
+	#	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
+	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1
+	#	nvidia/Llama-Nemotron-Post-Training-Dataset
+
+	if True:
+		# Reasoning on
+
+		if True:
+			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
+			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
+		else:
+			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		tokenizer.pad_token_id = tokenizer.eos_token_id
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			tokenizer=tokenizer,
+			max_new_tokens=32768,
+			temperature=0.6,
+			top_p=0.95,
+			**model_kwargs
+		)
+
+		# Thinking can be "on" or "off"
+		thinking = "on"
+
+		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+
+	if True:
+		# Reasoning off
+	
+		if True:
+			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
+			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
+		else:
+			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		tokenizer.pad_token_id = tokenizer.eos_token_id
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			tokenizer=tokenizer,
+			max_new_tokens=32768,
+			do_sample=False,
+			**model_kwargs
+		)
+
+		# Thinking can be "on" or "off"
+		thinking = "off"
+
+		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+
+# REF [site] >> https://huggingface.co/microsoft
+def phi_4_reasoning_example():
+	# Models:
+	#	microsoft/Phi-4-mini-reasoning
+	#	microsoft/Phi-4-reasoning
+	#	microsoft/Phi-4-reasoning-plus
+
+	if True:
+		# Input Formats
+		#	Given the nature of the training data, the Phi-4-mini-instruct model is best suited for prompts using specific formats. Below are the two primary formats:
+		#	Chat format
+		#		This format is used for general conversation and instructions:
+		#		<|system|>Your name is Phi, an AI math expert developed by Microsoft.<|end|><|user|>How to solve 3*x^2+4*x+5=1?<|end|><|assistant|>
+
+		torch.random.manual_seed(0)
+
+		model_id = "microsoft/Phi-4-mini-reasoning"
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="cuda",
+			torch_dtype="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		messages = [{
+			"role": "user",
+			"content": "How to solve 3*x^2+4*x+5=1?"
+		}]   
+		inputs = tokenizer.apply_chat_template(
+			messages,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+
+		outputs = model.generate(
+			**inputs.to(model.device),
+			max_new_tokens=32768,
+			temperature=0.8,
+			top_p=0.95,
+			do_sample=True,
+		)
+		outputs = tokenizer.batch_decode(outputs[:, inputs["input_ids"].shape[-1]:])
+
+		print(outputs[0])
+
+	if True:
+		# Input Formats
+		#	Given the nature of the training data, always use ChatML template with the following system prompt for inference:
+		#		<|im_start|>system<|im_sep|>
+		#		You are Phi, a language model trained by Microsoft to help users. Your role as an assistant involves thoroughly exploring questions through a systematic thinking process before providing the final precise and accurate solutions. This requires engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, backtracing, and iteration to develop well-considered thinking process. Please structure your response into two main sections: Thought and Solution using the specified format: <think> {Thought section} </think> {Solution section}. In the Thought section, detail your reasoning process in steps. Each step should include detailed considerations such as analysing questions, summarizing relevant findings, brainstorming new ideas, verifying the accuracy of the current steps, refining any errors, and revisiting previous steps. In the Solution section, based on various attempts, explorations, and reflections from the Thought section, systematically present the final solution that you deem correct. The Solution section should be logical, accurate, and concise and detail necessary steps needed to reach the conclusion. Now, try to solve the following question through the above guidelines:<|im_end|>
+		#		<|im_start|>user<|im_sep|>
+		#		What is the derivative of x^2?<|im_end|>
+		#		<|im_start|>assistant<|im_sep|>
+
+		model_id = "microsoft/Phi-4-reasoning"
+		#model_id = "microsoft/Phi-4-reasoning-plus"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype="auto")
+
+		messages = [
+			{"role": "system", "content": "You are Phi, a language model trained by Microsoft to help users. Your role as an assistant involves thoroughly exploring questions through a systematic thinking process before providing the final precise and accurate solutions. This requires engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, backtracing, and iteration to develop well-considered thinking process. Please structure your response into two main sections: Thought and Solution using the specified format: <think> {Thought section} </think> {Solution section}. In the Thought section, detail your reasoning process in steps. Each step should include detailed considerations such as analysing questions, summarizing relevant findings, brainstorming new ideas, verifying the accuracy of the current steps, refining any errors, and revisiting previous steps. In the Solution section, based on various attempts, explorations, and reflections from the Thought section, systematically present the final solution that you deem correct. The Solution section should be logical, accurate, and concise and detail necessary steps needed to reach the conclusion. Now, try to solve the following question through the above guidelines:"},
+			{"role": "user", "content": "What is the derivative of x^2?"},
+		]
+		inputs = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, return_tensors="pt")
+
+		outputs = model.generate(
+			inputs.to(model.device),
+			max_new_tokens=4096,
+			temperature=0.8,
+			top_k=50,
+			top_p=0.95,
+			do_sample=True,
+		)
+		print(tokenizer.decode(outputs[0]))
+
+# REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
 	# Models:
 	#	Qwen/Qwen2-Math-1.5B
@@ -5214,6 +5845,244 @@ def deepseek_math_example():
 
 		result = tokenizer.decode(outputs[0][input_tensor.shape[1]:], skip_special_tokens=True)
 		print(result)
+
+# REF [site] >> https://huggingface.co/deepseek-ai
+def deepseek_prover_example():
+	# Models:
+	#	deepseek-ai/DeepSeek-Prover-V1
+	#
+	#	deepseek-ai/DeepSeek-Prover-V1.5-Base
+	#	deepseek-ai/DeepSeek-Prover-V1.5-SFT
+	#	deepseek-ai/DeepSeek-Prover-V1.5-RL
+	#
+	#	deepseek-ai/DeepSeek-Prover-V2-7B
+	#	deepseek-ai/DeepSeek-Prover-V2-7B-SFT
+
+	torch.manual_seed(30)
+
+	if True:
+		model_id = "DeepSeek-Prover-V2-7B"
+		#model_id = "DeepSeek-Prover-V2-671B"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		formal_statement = """
+import Mathlib
+import Aesop
+
+set_option maxHeartbeats 0
+
+open BigOperators Real Nat Topology Rat
+
+/-- What is the positive difference between $120\%$ of 30 and $130\%$ of 20? Show that it is 10.-/
+theorem mathd_algebra_10 : abs ((120 : ℝ) / 100 * 30 - 130 / 100 * 20) = 10 := by
+sorry
+""".strip()
+
+		prompt = """
+Complete the following Lean 4 code:
+
+```lean4
+{}
+```
+
+Before producing the Lean 4 code to formally prove the given theorem, provide a detailed proof plan outlining the main proof steps and strategies.
+The plan should highlight key ideas, intermediate lemmas, and proof structures that will guide the construction of the final formal proof.
+""".strip()
+
+		chat = [
+			{"role": "user", "content": prompt.format(formal_statement)},
+		]
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype=torch.bfloat16, trust_remote_code=True)
+		inputs = tokenizer.apply_chat_template(chat, tokenize=True, add_generation_prompt=True, return_tensors="pt").to(model.device)
+
+		start = time.time()
+		outputs = model.generate(inputs, max_new_tokens=8192)
+		print(tokenizer.batch_decode(outputs))
+		print(time.time() - start)
+
+# REF [site] >> https://huggingface.co/nvidia
+def ace_math_example():
+	# Models:
+	#	nvidia/AceInstruct-1.5B
+	#	nvidia/AceInstruct-7B
+	#	nvidia/AceInstruct-72B
+	#	nvidia/AceMath-1.5B-Instruct
+	#	nvidia/AceMath-7B-Instruct
+	#	nvidia/AceMath-72B-Instruct
+	#	nvidia/AceMath-7B-RM
+	#	nvidia/AceMath-72B-RM
+	#
+	#	nvidia/AceMath-RL-Nemotron-7B
+
+	if True:
+		# General Instruction Models
+
+		model_name = "AceInstruct-1.5B"
+		#model_name = "AceInstruct-7B"
+		#model_name = "AceInstruct-72B"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype="auto", device_map="auto")
+
+		prompt = "Tell me something about artificial intelligence."
+		messages = [{"role": "user", "content": prompt}]
+
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to("cuda")
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=1024
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if True:
+		# AceMath Instruction Models
+
+		model_name = "nvidia/AceMath-1.5B-Instruct"
+		#model_name = "nvidia/AceMath-RL-Nemotron-7B"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype="auto", device_map="auto")
+
+		prompt = "Jen enters a lottery by picking $4$ distinct numbers from $S=\\{1,2,3,\\cdots,9,10\\}.$ $4$ numbers are randomly chosen from $S.$ She wins a prize if at least two of her numbers were $2$ of the randomly chosen numbers, and wins the grand prize if all four of her numbers were the randomly chosen numbers. The probability of her winning the grand prize given that she won a prize is $\\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$."
+		messages = [{"role": "user", "content": prompt}]
+
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to("cuda")
+
+		if True:
+			generated_ids = model.generate(
+				**model_inputs,
+				max_new_tokens=2048
+			)
+		else:
+			generated_ids = model.generate(
+				**model_inputs,
+				max_new_tokens=32768,
+				temperature=0.6,
+				top_p=0.95
+			)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if True:
+		# AceMath Reward Models
+
+		model_name = "nvidia/AceMath-7B-RM"
+		#model_name = "nvidia/AceMath-72B-RM"
+
+		device = "auto"  # The device to load the model onto
+
+		model = transformers.AutoModelForSequenceClassification.from_pretrained(
+			model_name,
+			device_map=device,
+			num_labels=1,
+			torch_dtype=torch.bfloat16,
+			trust_remote_code=True,
+		).eval()
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+
+		prompt = """Compute
+\[\sum_{n = 1}^\infty \frac{F_{n + 1}}{F_n F_{n + 2}},\]where $F_n$ denotes the $n$th Fibonacci number, so $F_0 = 0$ and $F_1 = 1.$"""
+
+		resp_1 = """To compute \[\sum_{n=1}^\infty \frac{F_{n+1}}{F_n F_{n+2}},\] where \( F_n \) is the \(n\)-th Fibonacci number, we will use the recurrence relation \( F_{n+2} = F_{n+1} + F_n \) and properties of Fibonacci numbers.\n\n---\n\n### Step 1: Simplify the General Term\n\nThe given term is\n\[\frac{F_{n+1}}{F_n F_{n+2}}.\]\n\nUsing the Fibonacci recurrence relation \( F_{n+2} = F_{n+1} + F_n \), we rewrite \( \frac{1}{F_{n+2}} \) as\n\[\frac{1}{F_{n+2}} = \frac{1}{F_{n+1} + F_n}.\]\n\nThus, the term becomes\n\[\frac{F_{n+1}}{F_n F_{n+2}} = \frac{F_{n+1}}{F_n (F_{n+1} + F_n)}.\]\n\nNow, separate the fraction into partial fractions:\n\[\frac{F_{n+1}}{F_n (F_{n+1} + F_n)} = \frac{1}{F_n} - \frac{1}{F_{n+1}}.\]\n\n---\n\n### Step 2: Write the Series\n\nThe series becomes\n\[\sum_{n=1}^\infty \frac{F_{n+1}}{F_n F_{n+2}} = \sum_{n=1}^\infty \left( \frac{1}{F_n} - \frac{1}{F_{n+1}} \right).\]\n\nThis is a **telescoping series**, where most terms cancel out. Writing the first few terms explicitly:\n\[\sum_{n=1}^\infty \left( \frac{1}{F_n} - \frac{1}{F_{n+1}} \right) = \left( \frac{1}{F_1} - \frac{1}{F_2} \right) + \left( \frac{1}{F_2} - \frac{1}{F_3} \right) + \left( \frac{1}{F_3} - \frac{1}{F_4} \right) + \cdots.\]\n\nAll intermediate terms cancel, leaving:\n\[\frac{1}{F_1} - \lim_{n \to \infty} \frac{1}{F_{n+1}}.\]\n\n---\n\n### Step 3: Evaluate the Remaining Terms\n\n- The first Fibonacci number \( F_1 = 1 \), so \( \frac{1}{F_1} = 1 \).\n- As \( n \to \infty \), \( F_{n+1} \to \infty \), so \( \frac{1}{F_{n+1}} \to 0 \).\n\nThus, the sum is:\n\[\sum_{n=1}^\infty \frac{F_{n+1}}{F_n F_{n+2}} = 1 - 0 = 1.\]\n\n---\n\n### Final Answer:\n\n\[\boxed{1}\]"""
+
+		chat = [
+			{"role": "system", "content": "Please reason step by step, and check your final answer within \\boxed{}."},
+			{"role": "user", "content": prompt},
+			{"role": "assistant", "content": resp_1}
+		]
+
+		conversation_str = tokenizer.apply_chat_template(
+			chat, 
+			tokenize=False, 
+			add_generation_prompt=False
+		)
+
+		input_ids = tokenizer.encode(
+			conversation_str,
+			return_tensors="pt",
+			add_special_tokens=False
+		).to(model.device)
+
+		outputs = model(input_ids=input_ids)
+		print(outputs[0][0])
+
+# REF [site] >> https://huggingface.co/nvidia
+def open_math_example():
+	# Models:
+	#	nvidia/OpenMath-Mistral-7B-v0.1
+	#	nvidia/OpenMath-Mistral-7B-v0.1-hf
+	#	nvidia/OpenMath-Llama-2-70b
+	#	nvidia/OpenMath-Llama-2-70b-hf
+	#	nvidia/OpenMath-CodeLlama-7b-Python
+	#	nvidia/OpenMath-CodeLlama-7b-Python-hf
+	#	nvidia/OpenMath-CodeLlama-13b-Python
+	#	nvidia/OpenMath-CodeLlama-13b-Python-hf
+	#	nvidia/OpenMath-CodeLlama-34b-Python
+	#	nvidia/OpenMath-CodeLlama-34b-Python-hf
+	#	nvidia/OpenMath-CodeLlama-70b-Python
+	#	nvidia/OpenMath-CodeLlama-70b-Python-hf
+	#
+	#	nvidia/OpenMath2-Llama3.1-8B
+	#	nvidia/OpenMath2-Llama3.1-8B-nemo
+	#	nvidia/OpenMath2-Llama3.1-70B
+	#	nvidia/OpenMath2-Llama3.1-70B-nemo
+	#
+	#	nvidia/OpenMath-Nemotron-1.5B
+	#	nvidia/OpenMath-Nemotron-7B
+	#	nvidia/OpenMath-Nemotron-14B
+	#	nvidia/OpenMath-Nemotron-14B-Kaggle
+	#	nvidia/OpenMath-Nemotron-32B
+
+	if True:
+		#model_id = "nvidia/OpenMath2-Llama3.1-8B"
+		#model_id = "nvidia/OpenMath2-Llama3.1-8B-nemo"
+		#model_id = "nvidia/OpenMath2-Llama3.1-70B"
+		#model_id = "nvidia/OpenMath2-Llama3.1-70B-nemo"
+		model_id = "nvidia/OpenMath-Nemotron-1.5B"
+		#model_id = "nvidia/OpenMath-Nemotron-7B"
+		#model_id = "nvidia/OpenMath-Nemotron-14B"
+		#model_id = "nvidia/OpenMath-Nemotron-32B"
+
+		pipeline = transformers.pipeline(
+			"text-generation",
+			model=model_id,
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device_map="auto",
+		)
+
+		messages = [
+			{
+				"role": "user", 
+				"content": "Solve the following math problem. Make sure to put the answer (and only answer) inside \\boxed{}.\n\n" + 
+				"What is the minimum value of $a^2+6a-7$?"},
+		]
+
+		outputs = pipeline(
+			messages,
+			max_new_tokens=4096,
+		)
+		print(outputs[0]["generated_text"][-1]['content'])
 
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
@@ -5810,155 +6679,6 @@ def replit_example():
 		generated_code = tokenizer.decode(y[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
 		print(generated_code)
 
-# REF [site] >>
-#	https://huggingface.co/microsoft
-#	https://huggingface.co/docs/transformers/main/en/model_doc/phi
-def phi_example():
-	# Models:
-	#	microsoft/phi-1: ~2.84GB.
-	#	microsoft/phi-1_5: ~2.84GB.
-	#	microsoft/phi-2.
-
-	torch.set_default_device("cuda")
-
-	if False:
-		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1", trust_remote_code=True)
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1", trust_remote_code=True)
-
-		inputs = tokenizer('''def print_prime(n):
-	"""
-	Print all primes between 1 and n
-	"""''', return_tensors="pt", return_attention_mask=False)
-
-		if True:
-			outputs = model.generate(**inputs, max_length=200)
-		else:
-			with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
-				outputs = model.generate(**inputs, max_length=200)
-
-		text = tokenizer.batch_decode(outputs)[0]
-		print(text)
-
-	if True:
-		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5", trust_remote_code=True)
-
-		inputs = tokenizer('''```python
-def print_prime(n):
-	"""
-	Print all primes between 1 and n
-	"""''', return_tensors="pt", return_attention_mask=False)
-
-		if True:
-			outputs = model.generate(**inputs, max_length=200)
-		else:
-			with torch.autocast(model.device.type, dtype=torch.float16, enabled=True):
-				outputs = model.generate(**inputs, max_length=200)
-
-		text = tokenizer.batch_decode(outputs)[0]
-		print(text)
-
-	if True:
-		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-2", torch_dtype="auto", trust_remote_code=True)
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=True)
-
-		inputs = tokenizer('''def print_prime(n):
-	"""
-	Print all primes between 1 and n
-	"""''', return_tensors="pt", return_attention_mask=False)
-
-		outputs = model.generate(**inputs, max_length=200)
-		text = tokenizer.batch_decode(outputs)[0]
-		print(text)
-
-	if False:
-		model = transformers.AutoModelForCausalLM.from_pretrained("microsoft/phi-2")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-2")
-
-		inputs = tokenizer("Can you help me write a formal email to a potential business partner proposing a joint venture?", return_tensors="pt", return_attention_mask=False)
-
-		outputs = model.generate(**inputs, max_length=30)
-		text = tokenizer.batch_decode(outputs)[0]
-		print(text)
-
-	if True:
-		# Define the model and tokenizer.
-		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1_5")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5")
-
-		# Feel free to change the prompt to your liking.
-		prompt = "If I were an AI that had just achieved"
-
-		# Apply the tokenizer.
-		tokens = tokenizer(prompt, return_tensors="pt")
-
-		# Use the model to generate new tokens.
-		generated_output = model.generate(**tokens, use_cache=True, max_new_tokens=10)
-		text = tokenizer.batch_decode(generated_output)[0]
-		print(text)
-
-	if True:
-		# Install:
-		#	pip install -U flash-attn --no-build-isolation
-
-		# Define the model and tokenizer and push the model and tokens to the GPU.
-		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1_5", torch_dtype=torch.float16, attn_implementation="flash_attention_2").to("cuda")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1_5")
-
-		# Feel free to change the prompt to your liking.
-		prompt = "If I were an AI that had just achieved"
-
-		# Apply the tokenizer.
-		tokens = tokenizer(prompt, return_tensors="pt").to("cuda")
-
-		# Use the model to generate new tokens.
-		generated_output = model.generate(**tokens, use_cache=True, max_new_tokens=10)
-		text = tokenizer.batch_decode(generated_output)[0]
-		print(text)
-
-	if False:
-		# Initializing a Phi-1 style configuration
-		configuration = transformers.PhiConfig.from_pretrained("microsoft/phi-1")
-
-		# Initializing a model from the configuration
-		model = transformers.PhiModel(configuration)
-
-		# Accessing the model configuration
-		configuration = model.config
-
-	if True:
-		model = transformers.PhiForCausalLM.from_pretrained("microsoft/phi-1")
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1")
-
-		prompt = "This is an example script ."
-		inputs = tokenizer(prompt, return_tensors="pt")
-
-		# Generate
-		generate_ids = model.generate(inputs.input_ids, max_length=30)
-		text = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
-		print(text)
-
-	if True:
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/phi-1")
-		model = transformers.PhiForTokenClassification.from_pretrained("microsoft/phi-1")
-
-		inputs = tokenizer(
-			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
-		)
-
-		with torch.no_grad():
-			logits = model(**inputs).logits
-
-		predicted_token_class_ids = logits.argmax(-1)
-
-		# Note that tokens are classified rather then input words which means that
-		# there might be more predicted token classes than words.
-		# Multiple token classes might account for the same word
-		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
-
-		labels = predicted_token_class_ids
-		loss = model(**inputs, labels=labels).loss
-
 # REF [site] >> https://huggingface.co/mistralai
 def codestral_example():
 	# Models:
@@ -6270,275 +6990,86 @@ def main():
 		outputs = model.generate(inputs, max_new_tokens=512, do_sample=False, top_k=50, top_p=0.95, num_return_sequences=1, eos_token_id=tokenizer.eos_token_id)
 		print(tokenizer.decode(outputs[0][len(inputs[0]):], skip_special_tokens=True))
 
-# REF [site] >> https://huggingface.co/Qwen
-def qwen_qwq_example():
-	# Models:
-	#	Qwen/QwQ-32B-Preview
-
-	model_name = "Qwen/QwQ-32B-Preview"
-
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		model_name,
-		torch_dtype="auto",
-		device_map="auto"
-	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-
-	prompt = "How many r in strawberry."
-	messages = [
-		{"role": "system", "content": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step."},
-		{"role": "user", "content": prompt}
-	]
-	text = tokenizer.apply_chat_template(
-		messages,
-		tokenize=False,
-		add_generation_prompt=True
-	)
-	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
-
-	generated_ids = model.generate(
-		**model_inputs,
-		max_new_tokens=512
-	)
-	generated_ids = [
-		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
-	]
-
-	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-	print(response)
-
-# REF [site] >>
-#	https://huggingface.co/deepseek-ai
-#	https://github.com/deepseek-ai/DeepSeek-R1
-def deepseek_r_example():
-	# Models:
-	#	deepseek-ai/DeepSeek-R1
-	#	deepseek-ai/DeepSeek-R1-Distill-Llama-8B
-	#	deepseek-ai/DeepSeek-R1-Distill-Llama-70B
-	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
-	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
-	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-	#	deepseek-ai/DeepSeek-R1-Zero
-
-	raise NotImplementedError
-
-# REF [site] >> https://huggingface.co/open-r1
-def open_r1_example():
-	# Models:
-	#	open-r1/OpenR1-Qwen-7B
-
-	from transformers import AutoModelForCausalLM, AutoTokenizer
-
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	model_name = "open-r1/OpenR1-Qwen-7B"
-
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		model_name,
-		torch_dtype="auto",
-		device_map="auto"
-	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-
-	prompt = "Find the value of $x$ that satisfies the equation $4x+5 = 6x+7$."
-
-	messages = [
-		{"role": "system", "content": "Please reason step by step, and put your final answer within \\boxed{}."},
-		{"role": "user", "content": prompt}
-	]
-
-	# FIXME [implement] >> do something
-
-	raise NotImplementedError
-
-# REF [site] >>
-#	https://huggingface.co/simplescaling
-#	https://github.com/simplescaling/s1
-def s1_example():
-	# Models:
-	#	simplescaling/s1-32B
-	#	simplescaling/s1.1-32B
-
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	model_name = "simplescaling/s1.1-32B"
-
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		model_name,
-		torch_dtype="auto",
-		device_map="auto"
-	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-
-	prompt = "How many r in raspberry"
-	messages = [
-		{"role": "system", "content": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step."},
-		{"role": "user", "content": prompt}
-	]
-	text = tokenizer.apply_chat_template(
-		messages,
-		tokenize=False,
-		add_generation_prompt=True
-	)
-	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
-
-	generated_ids = model.generate(
-		**model_inputs,
-		max_new_tokens=512
-	)
-	generated_ids = [
-		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
-	]
-
-	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-	print(response)
-
-# REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
-def exaone_deep_example():
-	# Models:
-	#	LGAI-EXAONE/EXAONE-Deep-2.4B
-	#	LGAI-EXAONE/EXAONE-Deep-7.8B
-	#	LGAI-EXAONE/EXAONE-Deep-32B
-	#	LGAI-EXAONE/EXAONE-Deep-2.4B-AWQ
-	#	LGAI-EXAONE/EXAONE-Deep-7.8B-AWQ
-	#	LGAI-EXAONE/EXAONE-Deep-32B-AWQ
-	#	LGAI-EXAONE/EXAONE-Deep-2.4B-GGUF
-	#	LGAI-EXAONE/EXAONE-Deep-7.8B-GGUF
-	#	LGAI-EXAONE/EXAONE-Deep-32B-GGUF
-
-	from threading import Thread
-
-	model_name = "LGAI-EXAONE/EXAONE-Deep-2.4B"
-	#model_name = "LGAI-EXAONE/EXAONE-Deep-7.8B"
-	#model_name = "LGAI-EXAONE/EXAONE-Deep-32B"
-	#model_name = "LGAI-EXAONE/EXAONE-Deep-2.4B-AWQ"
-	#model_name = "LGAI-EXAONE/EXAONE-Deep-7.8B-AWQ"
-	#model_name = "LGAI-EXAONE/EXAONE-Deep-32B-AWQ"
-	streaming = True  # Choose the streaming option
-
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		model_name,
-		torch_dtype=torch.bfloat16,
-		trust_remote_code=True,
-		device_map="auto"
-	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-
-	# Choose your prompt:
-	#	Math example (AIME 2024)
-	prompt = r"""Let $x,y$ and $z$ be positive real numbers that satisfy the following system of equations:
-\[\log_2\left({x \over yz}\right) = {1 \over 2}\]\[\log_2\left({y \over xz}\right) = {1 \over 3}\]\[\log_2\left({z \over xy}\right) = {1 \over 4}\]
-Then the value of $\left|\log_2(x^4y^3z^2)\right|$ is $\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$.
-
-Please reason step by step, and put your final answer within \boxed{}."""
-	#	Korean MCQA example (CSAT Math 2025)
-	prompt = r"""Question : $a_1 = 2$인 수열 $\{a_n\}$과 $b_1 = 2$인 등차수열 $\{b_n\}$이 모든 자연수 $n$에 대하여\[\sum_{k=1}^{n} \frac{a_k}{b_{k+1}} = \frac{1}{2} n^2\]을 만족시킬 때, $\sum_{k=1}^{5} a_k$의 값을 구하여라.
-
-Options :
-A) 120
-B) 125
-C) 130
-D) 135
-E) 140
-
-Please reason step by step, and you should write the correct option alphabet (A, B, C, D or E) within \\boxed{}."""
-
-	messages = [
-		{"role": "user", "content": prompt}
-	]
-	input_ids = tokenizer.apply_chat_template(
-		messages,
-		tokenize=True,
-		add_generation_prompt=True,
-		return_tensors="pt"
-	)
-
-	if streaming:
-		streamer = transformers.TextIteratorStreamer(tokenizer)
-		thread = Thread(target=model.generate, kwargs=dict(
-			input_ids=input_ids.to("cuda"),
-			eos_token_id=tokenizer.eos_token_id,
-			max_new_tokens=32768,
-			do_sample=True,
-			temperature=0.6,
-			top_p=0.95,
-			streamer=streamer
-		))
-		thread.start()
-
-		for text in streamer:
-			print(text, end="", flush=True)
-	else:
-		output = model.generate(
-			input_ids.to("cuda"),
-			eos_token_id=tokenizer.eos_token_id,
-			max_new_tokens=32768,
-			do_sample=True,
-			temperature=0.6,
-			top_p=0.95,
-		)
-		print(tokenizer.decode(output[0]))
-
 # REF [site] >> https://huggingface.co/nvidia
-def llama_nemotron_example():
+def open_code_reasoning_example():
 	# Models:
-	#	nvidia/Llama-3.1-Nemotron-Nano-8B-v1
-	#	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1
-	#	nvidia/Llama-Nemotron-Post-Training-Dataset
+	#	nvidia/OpenCodeReasoning-Nemotron-7B
+	#	nvidia/OpenCodeReasoning-Nemotron-14B
+	#	nvidia/OpenCodeReasoning-Nemotron-32B
+	#	nvidia/OpenCodeReasoning-Nemotron-32B-IOI
 
 	if True:
-		# Reasoning on
-
-		if True:
-			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
-			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
-			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
-		else:
-			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
-			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
-		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
-		tokenizer.pad_token_id = tokenizer.eos_token_id
+		model_id = "nvidia/OpenCodeReasoning-Nemotron-7B"
+		#model_id = "nvidia/OpenCodeReasoning-Nemotron-14B"
+		#model_id = "nvidia/OpenCodeReasoning-Nemotron-32B"
+		#model_id = "nvidia/OpenCodeReasoning-Nemotron-32B-IOI"
 
 		pipeline = transformers.pipeline(
 			"text-generation",
 			model=model_id,
-			tokenizer=tokenizer,
-			max_new_tokens=32768,
-			temperature=0.6,
-			top_p=0.95,
-			**model_kwargs
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device_map="auto",
 		)
 
-		# Thinking can be "on" or "off"
-		thinking = "on"
+		prompt = """You are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.
 
-		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+Please use python programming language only.
+
+You must use ```python for just the final solution code block with the following format:
+```python
+# Your code here
+```
+
+{user}
+"""
+
+		messages = [
+			{
+				"role": "user",
+				"content": prompt.format(user="Write a program to calculate the sum of the first $N$ fibonacci numbers")
+			},
+		]
+
+		outputs = pipeline(
+			messages,
+			max_new_tokens=32768,
+		)
+		print(outputs[0]["generated_text"][-1]['content'])
 
 	if True:
-		# Reasoning off
-	
-		if True:
-			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
-			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
-			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
-		else:
-			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
-			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
-		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
-		tokenizer.pad_token_id = tokenizer.eos_token_id
+		model_id = "nvidia/OpenCodeReasoning-Nemotron-32B-IOI"
 
 		pipeline = transformers.pipeline(
 			"text-generation",
 			model=model_id,
-			tokenizer=tokenizer,
-			max_new_tokens=32768,
-			do_sample=False,
-			**model_kwargs
+			model_kwargs={"torch_dtype": torch.bfloat16},
+			device_map="auto",
 		)
 
-		# Thinking can be "on" or "off"
-		thinking = "off"
+		prompt = """You are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.
 
-		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+Please use c++ programming language only.
+
+You must use ```cpp for just the final solution code block with the following format:
+```cpp
+// Your code here
+```
+
+{user}
+"""
+
+		messages = [
+			{
+				"role": "user",
+				"content": prompt.format(user="Write a program to calculate the sum of the first $N$ fibonacci numbers")
+			},
+		]
+
+		outputs = pipeline(
+			messages,
+			max_new_tokens=32768,
+		)
+		print(outputs[0]["generated_text"][-1]['content'])
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -7235,6 +7766,119 @@ def qwen_omni_example():
 		audio.reshape(-1).detach().cpu().numpy(),
 		samplerate=24000,
 	)
+
+# REF [site] >>
+#	https://huggingface.co/microsoft
+#	https://huggingface.co/microsoft/Phi-4-multimodal-instruct/blob/main/sample_inference_phi4mm.py
+def phi_4_multimodal_example():
+	# Models:
+	#	microsoft/Phi-4-multimodal-instruct
+	#	microsoft/Phi-4-multimodal-instruct-onnx
+
+	# Input Formats
+	#	Given the nature of the training data, the Phi-4-multimodal-instruct model is best suited for prompts using the chat format as follows:
+	#	Text chat format
+	#		This format is used for general conversation and instructions:
+	#			<|system|>You are a helpful assistant.<|end|><|user|>How to explain Internet for a medieval knight?<|end|><|assistant|>
+	#	Tool-enabled function-calling format
+	#		This format is used when the user wants the model to provide function calls based on the given tools. The user should provide the available tools in the system prompt, wrapped by <|tool|> and <|/tool|> tokens. The tools should be specified in JSON format, using a JSON dump structure.
+	# 		Example:
+	#			<|system|>You are a helpful assistant with some tools.<|tool|>[{"name": "get_weather_updates", "description": "Fetches weather updates for a given city using the RapidAPI Weather API.", "parameters": {"city": {"description": "The name of the city for which to retrieve weather information.", "type": "str", "default": "London"}}}]<|/tool|><|end|><|user|>What is the weather like in Paris today?<|end|><|assistant|>
+	#	Vision-Language Format
+	#		This format is used for conversation with image:
+	#			<|user|><|image_1|>Describe the image in detail.<|end|><|assistant|>
+	#		For multiple images, the user needs to insert multiple image placeholders in the prompt as below:
+	#			<|user|><|image_1|><|image_2|><|image_3|>Summarize the content of the images.<|end|><|assistant|>
+	#	Speech-Language Format
+	#		This format is used for various speech and audio tasks:
+	#			<|user|><|audio_1|>{task prompt}<|end|><|assistant|>
+	#		The task prompt can vary for different task. Automatic Speech Recognition:
+	#			<|user|><|audio_1|>Transcribe the audio clip into text.<|end|><|assistant|>
+	#		Automatic Speech Translation:
+	#			<|user|><|audio_1|>Translate the audio to {lang}.<|end|><|assistant|>
+	#		Automatic Speech Translation with chain-of-thoughts:
+	#			<|user|><|audio_1|>Transcribe the audio to text, and then translate the audio to {lang}. Use <sep> as a separator between the original transcript and the translation.<|end|><|assistant|>
+	#		Spoken-query Question Answering:
+	#			<|user|><|audio_1|><|end|><|assistant|>
+	#	Vision-Speech Format
+	#		This format is used for conversation with image and audio. The audio may contain query related to the image:
+	#			<|user|><|image_1|><|audio_1|><|end|><|assistant|>
+	#		For multiple images, the user needs to insert multiple image placeholders in the prompt as below:
+	#			<|user|><|image_1|><|image_2|><|image_3|><|audio_1|><|end|><|assistant|>
+
+	# Load the model locally
+
+	import io
+	import soundfile as sf
+	from urllib.request import urlopen
+
+	# Define model path
+	model_path = "microsoft/Phi-4-multimodal-instruct"
+
+	# Load model and processor
+	processor = transformers.AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_path, 
+		device_map="cuda", 
+		torch_dtype="auto", 
+		trust_remote_code=True,
+		# If you do not use Ampere or later GPUs, change attention to "eager"
+		_attn_implementation="flash_attention_2",
+	).cuda()
+
+	# Load generation config
+	generation_config = transformers.GenerationConfig.from_pretrained(model_path)
+
+	# Define prompt structure
+	user_prompt = "<|user|>"
+	assistant_prompt = "<|assistant|>"
+	prompt_suffix = "<|end|>"
+
+	# Part 1: Image Processing
+	print("\n--- IMAGE PROCESSING ---")
+	image_url = "https://www.ilankelman.org/stopsigns/australia.jpg"
+	prompt = f"{user_prompt}<|image_1|>What is shown in this image?{prompt_suffix}{assistant_prompt}"
+	print(f">>> Prompt\n{prompt}")
+
+	# Download and open image
+	image = Image.open(requests.get(image_url, stream=True).raw)
+	inputs = processor(text=prompt, images=image, return_tensors="pt").to("cuda:0")
+
+	# Generate response
+	generate_ids = model.generate(
+		**inputs,
+		max_new_tokens=1000,
+		generation_config=generation_config,
+	)
+	generate_ids = generate_ids[:, inputs["input_ids"].shape[1]:]
+	response = processor.batch_decode(
+		generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+	)[0]
+	print(f">>> Response\n{response}")
+
+	# Part 2: Audio Processing
+	print("\n--- AUDIO PROCESSING ---")
+	audio_url = "https://upload.wikimedia.org/wikipedia/commons/b/b0/Barbara_Sahakian_BBC_Radio4_The_Life_Scientific_29_May_2012_b01j5j24.flac"
+	speech_prompt = "Transcribe the audio to text, and then translate the audio to French. Use <sep> as a separator between the original transcript and the translation."
+	prompt = f"{user_prompt}<|audio_1|>{speech_prompt}{prompt_suffix}{assistant_prompt}"
+	print(f">>> Prompt\n{prompt}")
+
+	# Downlowd and open audio file
+	audio, samplerate = sf.read(io.BytesIO(urlopen(audio_url).read()))
+
+	# Process with the model
+	inputs = processor(text=prompt, audios=[(audio, samplerate)], return_tensors="pt").to("cuda:0")
+
+	generate_ids = model.generate(
+		**inputs,
+		max_new_tokens=1000,
+		generation_config=generation_config,
+	)
+	generate_ids = generate_ids[:, inputs["input_ids"].shape[1]:]
+	response = processor.batch_decode(
+		generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+	)[0]
+	print(f">>> Response\n{response}")
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
@@ -7939,39 +8583,120 @@ def phi_3_vision_example():
 	#	microsoft/Phi-3-vision-128k-instruct
 	#	microsoft/Phi-3-vision-128k-instruct-onnx-cpu
 	#	microsoft/Phi-3-vision-128k-instruct-onnx-cuda
+	#
+	#	microsoft/Phi-3.5-vision-instruct
+	#	microsoft/Phi-3.5-vision-instruct-onnx
 
-	model_id = "microsoft/Phi-3-vision-128k-instruct"
+	if False:
+		model_id = "microsoft/Phi-3-vision-128k-instruct"
 
-	model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="cuda", trust_remote_code=True, torch_dtype="auto", _attn_implementation="flash_attention_2")  # Use _attn_implementation='eager' to disable flash attention
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="cuda", trust_remote_code=True, torch_dtype="auto", _attn_implementation="flash_attention_2")  # Use _attn_implementation='eager' to disable flash attention
 
-	processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+		processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
-	messages = [ 
-		{"role": "user", "content": "<|image_1|>\nWhat is shown in this image?"},
-		{"role": "assistant", "content": "The chart displays the percentage of respondents who agree with various statements about their preparedness for meetings. It shows five categories: 'Having clear and pre-defined goals for meetings', 'Knowing where to find the information I need for a meeting', 'Understanding my exact role and responsibilities when I'm invited', 'Having tools to manage admin tasks like note-taking or summarization', and 'Having more focus time to sufficiently prepare for meetings'. Each category has an associated bar indicating the level of agreement, measured on a scale from 0% to 100%."},
-		{"role": "user", "content": "Provide insightful questions to spark discussion."}
-	]
+		messages = [ 
+			{"role": "user", "content": "<|image_1|>\nWhat is shown in this image?"},
+			{"role": "assistant", "content": "The chart displays the percentage of respondents who agree with various statements about their preparedness for meetings. It shows five categories: 'Having clear and pre-defined goals for meetings', 'Knowing where to find the information I need for a meeting', 'Understanding my exact role and responsibilities when I'm invited', 'Having tools to manage admin tasks like note-taking or summarization', and 'Having more focus time to sufficiently prepare for meetings'. Each category has an associated bar indicating the level of agreement, measured on a scale from 0% to 100%."},
+			{"role": "user", "content": "Provide insightful questions to spark discussion."}
+		]
 
-	url = "https://assets-c4akfrf5b4d3f4b7.z01.azurefd.net/assets/2024/04/BMDataViz_661fb89f3845e.png"
-	image = Image.open(requests.get(url, stream=True).raw)
+		url = "https://assets-c4akfrf5b4d3f4b7.z01.azurefd.net/assets/2024/04/BMDataViz_661fb89f3845e.png"
+		image = Image.open(requests.get(url, stream=True).raw)
 
-	prompt = processor.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+		prompt = processor.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
-	inputs = processor(prompt, [image], return_tensors="pt").to("cuda:0")
+		inputs = processor(prompt, [image], return_tensors="pt").to("cuda:0")
 
-	generation_args = {
-		"max_new_tokens": 500,
-		"temperature": 0.0,
-		"do_sample": False,
-	}
+		generation_args = {
+			"max_new_tokens": 500,
+			"temperature": 0.0,
+			"do_sample": False,
+		}
 
-	generate_ids = model.generate(**inputs, eos_token_id=processor.tokenizer.eos_token_id, **generation_args)
+		generate_ids = model.generate(**inputs, eos_token_id=processor.tokenizer.eos_token_id, **generation_args)
 
-	# Remove input tokens 
-	generate_ids = generate_ids[:, inputs['input_ids'].shape[1]:]
-	response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		# Remove input tokens 
+		generate_ids = generate_ids[:, inputs["input_ids"].shape[1]:]
+		response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 
-	print(response)
+		print(response)
+
+	if True:
+		# Input Formats
+		#	Given the nature of the training data, the Phi-3.5-vision model is best suited for prompts using the chat format as follows:
+		#	Single image:
+		#		<|user|>\n<|image_1|>\n{prompt}<|end|>\n<|assistant|>\n
+		#	Multi-turn conversations:
+		#		<|user|>\n<|image_1|>\n{prompt_1}<|end|>\n<|assistant|>\n{response_1}<|end|>\n<|user|>\n{prompt_2}<|end|>\n<|assistant|>\n
+		#	For multi-image usage, add multiple image placeholders in the front of the prompts. <|image_{}|> index should start from 1.
+		#	One example of prompt is shown as follows:
+		#		<|user|>\n<|image_1|>\n<|image_2|>\n<|image_3|>\n<|image_4|>\n{prompt}<|end|>\n<|assistant|>\n
+
+		# Load the model locally
+
+		from transformers import AutoModelForCausalLM 
+		from transformers import AutoProcessor 
+
+		model_id = "microsoft/Phi-3.5-vision-instruct" 
+
+		# Note: set _attn_implementation='eager' if you don't have flash_attn installed
+		model = AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="cuda",
+			trust_remote_code=True,
+			torch_dtype="auto",
+			_attn_implementation="flash_attention_2"
+		)
+
+		# For best performance, use num_crops=4 for multi-frame, num_crops=16 for single-frame.
+		processor = AutoProcessor.from_pretrained(
+			model_id,
+			trust_remote_code=True,
+			num_crops=4
+		) 
+
+		images = []
+		placeholder = ""
+
+		# Note: if OOM, you might consider reduce number of frames in this example.
+		for i in range(1,20):
+			url = f"https://image.slidesharecdn.com/azureintroduction-191206101932/75/Introduction-to-Microsoft-Azure-Cloud-{i}-2048.jpg"
+			images.append(Image.open(requests.get(url, stream=True).raw))
+			placeholder += f"<|image_{i}|>\n"
+
+		messages = [
+			{"role": "user", "content": placeholder + "Summarize the deck of slides."},
+		]
+
+		prompt = processor.tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True
+		)
+
+		inputs = processor(prompt, images, return_tensors="pt").to("cuda:0")
+
+		generation_args = { 
+			"max_new_tokens": 1000,
+			"temperature": 0.0,
+			"do_sample": False,
+		} 
+
+		generate_ids = model.generate(
+			**inputs,
+			eos_token_id=processor.tokenizer.eos_token_id,
+			**generation_args
+		)
+
+		# Remove input tokens
+		generate_ids = generate_ids[:, inputs["input_ids"].shape[1]:]
+		response = processor.batch_decode(
+			generate_ids,
+			skip_special_tokens=True,
+			clean_up_tokenization_spaces=False
+		)[0]
+
+		print(response)
 
 # REF [site] >> https://huggingface.co/docs/transformers/main/en/model_doc/paligemma
 def pali_gemma_example():
@@ -9402,181 +10127,6 @@ def tapex_example():
 		output_id = int(outputs.logits[0].argmax(dim=0))
 		print(model.config.id2label[output_id])  # Outut: "Refused".
 
-# REF [site] >> https://huggingface.co/microsoft
-def trocr_example():
-	# Models:
-	#	microsoft/trocr-base-handwritten.
-	#	microsoft/trocr-base-printed.
-	#	microsoft/trocr-base-stage1: ~1.54GB.
-	#	microsoft/trocr-small-handwritten.
-	#	microsoft/trocr-small-printed.
-	#	microsoft/trocr-small-stage1.
-	#	microsoft/trocr-large-handwritten.
-	#	microsoft/trocr-large-printed.
-	#	microsoft/trocr-large-stage1.
-	#	microsoft/trocr-base-str: ~1.34GB.
-	#	microsoft/trocr-large-str.
-
-	if True:
-		# Load image from the IIIT-5k dataset.
-		url = "https://i.postimg.cc/ZKwLg2Gw/367-14.png"
-		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
-
-		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-str")
-		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-str")
-		pixel_values = processor(images=image, return_tensors="pt").pixel_values
-
-		generated_ids = model.generate(pixel_values)
-
-		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-		print(f"Generated text: {generated_text}.")
-
-	if True:
-		# Load image from the IAM database.
-		url = "https://fki.tic.heia-fr.ch/static/img/a01-122-02-00.jpg"
-		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
-
-		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
-		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
-		pixel_values = processor(images=image, return_tensors="pt").pixel_values
-
-		generated_ids = model.generate(pixel_values)
-
-		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-		print(f"Generated text: {generated_text}.")
-
-	if True:
-		# Load image from the IAM database (actually this model is meant to be used on printed text).
-		url = "https://fki.tic.heia-fr.ch/static/img/a01-122-02-00.jpg"
-		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
-
-		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
-		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
-		pixel_values = processor(images=image, return_tensors="pt").pixel_values
-
-		generated_ids = model.generate(pixel_values)
-
-		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-		print(f"Generated text: {generated_text}.")
-
-	if True:
-		# Load image from the IAM database.
-		url = "https://fki.tic.heia-fr.ch/static/img/a01-122-02-00.jpg"
-		image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
-
-		processor = transformers.TrOCRProcessor.from_pretrained("microsoft/trocr-base-stage1")
-		model = transformers.VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-stage1")
-
-		# Training.
-		pixel_values = processor(images=image, return_tensors="pt").pixel_values  # Batch size 1.
-		decoder_input_ids = torch.tensor([[model.config.decoder.decoder_start_token_id]])
-		outputs = model(pixel_values=pixel_values, decoder_input_ids=decoder_input_ids)  # ['loss', 'logits', 'past_key_values', 'decoder_hidden_states', 'decoder_attentions', 'cross_attentions', 'encoder_last_hidden_state', 'encoder_hidden_states', 'encoder_attentions'].
-
-# REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/biogpt
-def biogpt_example():
-	if False:
-		# Initializing a BioGPT microsoft/biogpt style configuration
-		configuration = transformers.BioGptConfig()
-
-		# Initializing a model from the microsoft/biogpt style configuration
-		model = transformers.BioGptModel(configuration)
-
-		# Accessing the model configuration
-		configuration = model.config
-
-	if True:
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/biogpt")
-		model = transformers.BioGptModel.from_pretrained("microsoft/biogpt")
-
-		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
-		outputs = model(**inputs)
-
-		last_hidden_states = outputs.last_hidden_state
-
-	if True:
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/biogpt")
-		model = transformers.BioGptForCausalLM.from_pretrained("microsoft/biogpt")
-
-		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
-		outputs = model(**inputs, labels=inputs["input_ids"])
-		loss = outputs.loss
-		logits = outputs.logits
-
-	if True:
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/biogpt")
-		model = transformers.BioGptForTokenClassification.from_pretrained("microsoft/biogpt")
-
-		inputs = tokenizer(
-			"HuggingFace is a company based in Paris and New York", add_special_tokens=False, return_tensors="pt"
-		)
-
-		with torch.no_grad():
-			logits = model(**inputs).logits
-
-		predicted_token_class_ids = logits.argmax(-1)
-
-		# Note that tokens are classified rather then input words which means that
-		# there might be more predicted token classes than words.
-		# Multiple token classes might account for the same word
-		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
-
-		labels = predicted_token_class_ids
-		loss = model(**inputs, labels=labels).loss
-
-	if True:
-		# Example of single-label classification
-
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/biogpt")
-		model = transformers.BioGptForSequenceClassification.from_pretrained("microsoft/biogpt")
-
-		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
-
-		with torch.no_grad():
-			logits = model(**inputs).logits
-
-		predicted_class_id = logits.argmax().item()
-
-		# To train a model on `num_labels` classes, you can pass `num_labels=num_labels` to `.from_pretrained(...)`
-		num_labels = len(model.config.id2label)
-		model = transformers.BioGptForSequenceClassification.from_pretrained("microsoft/biogpt", num_labels=num_labels)
-
-		labels = torch.tensor([1])
-		loss = model(**inputs, labels=labels).loss
-
-	if True:
-		# Example of multi-label classification
-
-		tokenizer = transformers.AutoTokenizer.from_pretrained("microsoft/biogpt")
-		model = transformers.BioGptForSequenceClassification.from_pretrained("microsoft/biogpt", problem_type="multi_label_classification")
-
-		inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
-
-		with torch.no_grad():
-			logits = model(**inputs).logits
-
-		predicted_class_ids = torch.arange(0, logits.shape[-1])[torch.sigmoid(logits).squeeze(dim=0) > 0.5]
-
-		# To train a model on `num_labels` classes, you can pass `num_labels=num_labels` to `.from_pretrained(...)`
-		num_labels = len(model.config.id2label)
-		model = transformers.BioGptForSequenceClassification.from_pretrained(
-			"microsoft/biogpt", num_labels=num_labels, problem_type="multi_label_classification"
-		)
-
-		labels = torch.sum(
-			torch.nn.functional.one_hot(predicted_class_ids[None, :].clone(), num_classes=num_labels), dim=1
-		).to(torch.float)
-		loss = model(**inputs, labels=labels).loss
-
-# REF [site] >>
-#	https://huggingface.co/docs/transformers/en/model_doc/ernie
-#	https://huggingface.co/nghuyong
-def ernie_health_example():
-	# Models:
-	#	nghuyong/ernie-3.0-nano-zh
-
-	tokenizer = transformers.AutoTokenizer.from_pretrained("nghuyong/ernie-health-zh")
-	model = transformers.AutoModel.from_pretrained("nghuyong/ernie-health-zh")
-
 # REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/decision_transformer
 #	https://huggingface.co/edbeeching
@@ -10139,7 +10689,10 @@ def main():
 	#data_gemma_example()  # DataGemma.
 	#open_elm_example()  # OpenELM.
 	#aya_example()  # Aya.
-	#phi_3_example()  # phi-3.
+	#phi_example()  # Phi-1, Phi-1.5, Phi-2.
+	#phi_3_example()  # Phi-3.
+	#phi_3_5_example()  # Phi-3.5.
+	phi_4_example()  # Phi-4.
 	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram.
 	#qwen_example()  # Qwen. Not yet implemented.
 	#qwen2_example()  # Qwen2.
@@ -10155,10 +10708,28 @@ def main():
 	#rag_facebook_example()
 
 	#-----
+	# Reasoning.
+
+	#qwen_qwq_example()  # QwQ.
+	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
+	#open_r1_example()  # OpenR1. Not yet completed.
+	#s1_example()  # s1.
+	#exaone_deep_example()  # EXAONE Deep.
+	#llama_nemotron_example()  # Llama Nemotron.
+	#phi_4_reasoning_example()  # Phi-4-reasoning.
+
+	#-----
 	# Math.
 
 	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math.
 	#deepseek_math_example()  # DeepSeek-Math.
+
+	#-----
+	# Math reasoning.
+
+	#deepseek_prover_example()  # DeepSeek-Prover.
+	#ace_math_example()  # AceMath, AceMath-RL.
+	#open_math_example()  # OpenMath, OpenMath2.
 
 	#-----
 	# Code.
@@ -10175,20 +10746,14 @@ def main():
 	#code_gemma_example()  # CodeGemma.
 	#star_coder_example()  # StarCoder.
 	#replit_example()  # Replit.
-	#phi_example()  # phi-1, phi-1.5, & phi-2.
 	#codestral_example()  # Codestral.
 	#qwen_coder_example()  # Qwen2.5-Coder.
 	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2.
 
 	#-----
-	# Reasoning.
+	# Code reasoning.
 
-	#qwen_qwq_example()  # QwQ.
-	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
-	#open_r1_example()  # OpenR1. Not yet completed.
-	#s1_example()  # s1.
-	#exaone_deep_example()  # EXAONE Deep.
-	llama_nemotron_example()  # Llama Nemotron.
+	#open_code_reasoning_example()  # OpenCodeReasoning.
 
 	#--------------------
 	# Vision.
@@ -10211,6 +10776,7 @@ def main():
 
 	#kosmos_example()  # Kosmos-2.
 	#qwen_omni_example()  # Qwen2.5-Omni.
+	#phi_4_multimodal_example()  # Phi-4-multimodal.
 
 	#-----
 	# Vision and language.
@@ -10224,14 +10790,14 @@ def main():
 	#blip_example()  # BLIP.
 	#openflamingo_example()  # OpenFlamingo.
 
-	#phi_3_vision_example()  # Phi-3-vision.
+	#phi_3_vision_example()  # Phi-3-vision, Phi-3.5-vision.
 	#pali_gemma_example()  # PaliGemma, PaliGemma 2.
 	#fuyu_example()  # Fuyu.
 	#pixtral_example()  # Pixtral. Not yet implemented.
 	#vila_example()  # VILA. Not yet implemented.
 	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL.
 	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2.
-	#llama_vision_example()  # Llama 3.2 Version.
+	#llama_vision_example()  # Llama 3.2 Vision.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
@@ -10279,7 +10845,7 @@ def main():
 	#--------------------
 	# Text.
 
-	#trocr_example()  # TrOCR.
+	# Refer to ./ocr_test.py.
 
 	#--------------------
 	# Speech processing.
@@ -10287,7 +10853,7 @@ def main():
 	#	Speech synthesis.
 	#	Speech-to-speech.
 
-	# Refer to speech_processing_test.py.
+	# Refer to ./speech_processing_test.py.
 
 	#--------------------
 	# Sequence processing.
@@ -10297,8 +10863,7 @@ def main():
 	#--------------------
 	# Biomedical.
 
-	#biogpt_example()  # BioGPT.
-	#ernie_health_example()  # ERNIE-health.
+	# Refer to biomedical_llm_test.py.
 
 	#--------------------
 	# Reinforcement learning.
@@ -10339,7 +10904,7 @@ def main():
 
 	#--------------------
 	# Fine-tune LLMs.
-	#	${SWR_HOME}/test/language_processing/llm_fine_tuning_test.py
+	#	Refer to ${SWR_HOME}/test/language_processing/llm_fine_tuning_test.py.
 
 #--------------------------------------------------------------------
 
