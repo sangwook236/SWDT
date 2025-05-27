@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import requests, time
-from PIL import Image
-import torch
-import transformers
-
 # REF [site] >> https://huggingface.co/microsoft
 def trocr_example():
 	# Models:
@@ -20,6 +15,11 @@ def trocr_example():
 	#	microsoft/trocr-large-stage1
 	#	microsoft/trocr-base-str: ~1.34GB
 	#	microsoft/trocr-large-str
+
+	import requests
+	from PIL import Image
+	import torch
+	import transformers
 
 	if True:
 		# Load image from the IIIT-5k dataset.
@@ -76,11 +76,67 @@ def trocr_example():
 		decoder_input_ids = torch.tensor([[model.config.decoder.decoder_start_token_id]])
 		outputs = model(pixel_values=pixel_values, decoder_input_ids=decoder_input_ids)  # ['loss', 'logits', 'past_key_values', 'decoder_hidden_states', 'decoder_attentions', 'cross_attentions', 'encoder_last_hidden_state', 'encoder_hidden_states', 'encoder_attentions'].
 
-# REF [iste] >> https://huggingface.co/allenai
+# REF [function] >> donut_example() in hugging_face_transformers_test.py
+def donut_ocr_test():
+	from PIL import Image
+	import transformers
+
+	# Step 1: Load the Donut model and processor
+	def load_model():
+		"""
+		Load the Donut model and processor for OCR tasks.
+		"""
+		model_name = "naver-clova-ix/donut-base"
+		processor = transformers.DonutProcessor.from_pretrained(model_name)
+		model = transformers.VisionEncoderDecoderModel.from_pretrained(model_name)
+		return processor, model
+
+	# Step 2: Perform OCR using the Donut model
+	def perform_ocr_with_llm(image_path, processor, model):
+		"""
+		Perform OCR on an image using the Donut model.
+		"""
+		try:
+			# Load the image
+			image = Image.open(image_path).convert("RGB")
+
+			# Preprocess the image
+			pixel_values = processor(image, return_tensors="pt").pixel_values
+
+			# Generate text from the image
+			outputs = model.generate(pixel_values, max_length=512, num_beams=4)
+			generated_text = processor.batch_decode(outputs, skip_special_tokens=True)[0]
+
+			return generated_text
+		except Exception as ex:
+			print(f"Error during OCR: {ex}")
+			return None
+
+	# Path to the input image
+	image_path = "./sample_image.png"  # Replace with your image file
+
+	# Load the model and processor
+	print("Loading model...")
+	processor, model = load_model()
+
+	# Perform OCR
+	print("Performing OCR...")
+	extracted_text = perform_ocr_with_llm(image_path, processor, model)
+
+	# Print the extracted text
+	if extracted_text:
+		print("\nExtracted Text:")
+		print(extracted_text)
+
+# REF [site] >> https://huggingface.co/allenai
 def olmocr_example():
 	# Models:
 	#	allenai/olmOCR-7B-0225-preview
 	#	allenai/olmOCR-7B-0225-preview-GGUF
+
+	from PIL import Image
+	import torch
+	import transformers
 
 	if True:
 		# Install:
@@ -152,60 +208,16 @@ def olmocr_example():
 		print(text_output)
 		# ['{"primary_language":"en","is_rotation_valid":true,"rotation_correction":0,"is_table":false,"is_diagram":false,"natural_text":"Molmo and PixMo:\\nOpen Weights and Open Data\\nfor State-of-the']
 
-# REF [function] >> donut_example() in hugging_face_transformers_test.py
-def donut_ocr_test():
-	# Step 1: Load the Donut model and processor
-	def load_model():
-		"""
-		Load the Donut model and processor for OCR tasks.
-		"""
-		model_name = "naver-clova-ix/donut-base"
-		processor = transformers.DonutProcessor.from_pretrained(model_name)
-		model = transformers.VisionEncoderDecoderModel.from_pretrained(model_name)
-		return processor, model
-
-	# Step 2: Perform OCR using the Donut model
-	def perform_ocr_with_llm(image_path, processor, model):
-		"""
-		Perform OCR on an image using the Donut model.
-		"""
-		try:
-			# Load the image
-			image = Image.open(image_path).convert("RGB")
-
-			# Preprocess the image
-			pixel_values = processor(image, return_tensors="pt").pixel_values
-
-			# Generate text from the image
-			outputs = model.generate(pixel_values, max_length=512, num_beams=4)
-			generated_text = processor.batch_decode(outputs, skip_special_tokens=True)[0]
-
-			return generated_text
-		except Exception as ex:
-			print(f"Error during OCR: {ex}")
-			return None
-
-	# Path to the input image
-	image_path = "./sample_image.png"  # Replace with your image file
-
-	# Load the model and processor
-	print("Loading model...")
-	processor, model = load_model()
-
-	# Perform OCR
-	print("Performing OCR...")
-	extracted_text = perform_ocr_with_llm(image_path, processor, model)
-
-	# Print the extracted text
-	if extracted_text:
-		print("\nExtracted Text:")
-		print(extracted_text)
-
 # REF [function] >> pali_gemma_example() in hugging_face_transformers_test.py
 def pali_gemma_ocr_test():
+	import requests, time
+	from PIL import Image
+	import torch
+	import transformers
+
 	# Check if CUDA is available and set the device
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	print(f"Using device: {device}")
+	print(f"Device: {device}")
 
 	# 1. Load Model and Processor
 	print("Loading model and processor...")
@@ -271,14 +283,108 @@ def pali_gemma_ocr_test():
 	#plt.axis("off")
 	#plt.show()
 
+# REF [site] >> https://apidog.com/kr/blog/qwen-2-5-72b-open-source-ocr-kr/
+def qwen_ocr_web_api_test():
+	# Install Ollama:
+	#	On Linux:
+	#		curl -sSL https://ollama.com/download.sh | sh
+	# Pull a model:
+	#	ollama pull qwen2.5:72b
+
+	import requests
+	import base64
+
+	# Encode an image to base64
+	def encode_image(image_path):
+		with open(image_path, "rb") as image_file:
+			return base64.b64encode(image_file.read()).decode("utf-8")
+
+	# Image
+	image_path = "path/to/document.jpg"
+	base64_image = encode_image(image_path)
+
+	# OCR prompts
+	#	일반 문서의 경우: "이 문서에서 텍스트를 추출하고 JSON 형식으로 포맷하세요."
+	#	청구서의 경우: "청구서 번호, 날짜, 공급업체, 품목 및 총액을 포함하여 모든 청구서 세부 정보를 구조화된 JSON으로 추출하십시오."
+	#	양식의 경우: "이 양식에서 모든 필드와 해당 값을 추출하고 JSON 형식으로 포맷하십시오."
+	#	표의 경우: "이 표 데이터를 추출하고 JSON 배열 구조로 변환하십시오."
+
+	# API request
+	api_url = "<http://localhost:11434/api/generate>"
+	payload = {
+		"model": "qwen2.5:72b",
+		"prompt": "이 문서에서 텍스트를 추출하고 JSON 형식으로 포맷하세요.",
+		"images": [base64_image],
+		"stream": False
+	}
+
+	# Send the request
+	response = requests.post(api_url, json=payload)
+	result = response.json()
+
+	print(result["response"])
+def qwen_ocr_python_test():
+	# Install Ollama:
+	#	On Linux:
+	#		curl -sSL https://ollama.com/download.sh | sh
+	# Pull a model:
+	#	ollama pull qwen2.5:72b
+
+	# Install:
+	#	pip install ollama
+
+	import base64, json
+	import ollama
+
+	# Encode an image to base64
+	def encode_image(image_path):
+		with open(image_path, "rb") as image_file:
+			return base64.b64encode(image_file.read()).decode("utf-8")
+
+	# Image
+	image_path = "path/to/document.jpg"
+	base64_image = encode_image(image_path)
+
+	client = ollama.Client(
+		host="http://localhost:11434",
+		#headers={"x-some-header": "some-value"},
+	)
+
+	# OCR prompts
+	#	일반 문서의 경우: "이 문서에서 텍스트를 추출하고 JSON 형식으로 포맷하세요."
+	#	청구서의 경우: "청구서 번호, 날짜, 공급업체, 품목 및 총액을 포함하여 모든 청구서 세부 정보를 구조화된 JSON으로 추출하십시오."
+	#	양식의 경우: "이 양식에서 모든 필드와 해당 값을 추출하고 JSON 형식으로 포맷하십시오."
+	#	표의 경우: "이 표 데이터를 추출하고 JSON 배열 구조로 변환하십시오."
+
+	# Generate
+	response = client.generate(
+		model="qwen2.5:72b",
+		prompt="이 문서에서 텍스트를 추출하고 JSON 형식으로 포맷하세요",
+		images=[base64_image],
+		stream=False,
+	)
+
+	#result = response.json()  # Deprecated
+	result = json.loads(response.model_dump_json())
+	#print("Keys:", result.keys())
+
+	#print(result)
+	print(result["response"])
+
 def main():
-	# LLM OCR
-
 	#trocr_example()  # TrOCR
-	#olmocr_example()  # olmOCR
 
-	#donut_ocr_test()
-	pali_gemma_ocr_test()
+	#donut_ocr_test()  # Donut
+
+	#-----
+	# VLM OCR
+	#	Mistral OCR (commercial)
+
+	#olmocr_example()  # olmOCR. Use Qwen2-VL
+
+	#pali_gemma_ocr_test()  # PaliGemma
+	#qwen_ocr_web_api_test()  # Qwen2.5
+	qwen_ocr_python_test()  # Qwen2.5
 
 #--------------------------------------------------------------------
 
