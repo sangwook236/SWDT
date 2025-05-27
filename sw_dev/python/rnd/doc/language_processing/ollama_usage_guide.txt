@@ -3,6 +3,7 @@
 		https://ollama.com/
 		https://github.com/ollama/ollama
 
+		https://ollama.com/search
 		https://ollama.com/library
 
 [-] Usage.
@@ -27,7 +28,7 @@
 	- Import from PyTorch or Safetensors.
 		https://github.com/ollama/ollama/blob/main/docs/import.md
 
-	- Customize a prompt
+	- Customize a prompt.
 		Models from the Ollama library can be customized with a prompt. For example, to customize the llama3 model:
 			ollama pull llama3
 		Create a Modelfile:
@@ -50,21 +51,24 @@
 	https://github.com/ollama/ollama
 
 	- CLI.
-		Create a model.
-			ollama create is used to create a model from a Modelfile.
-				ollama create mymodel -f ./Modelfile
+		ollama --help
+		ollama push --help
 
-		Pull a model.
+		Create a model:
+			ollama create mymodel -f ./Modelfile
+				ollama create is used to create a model from a Modelfile.
+
+		Pull a model:
 			ollama pull llama3
 				This command can also be used to update a local model. Only the diff will be pulled.
 
-		Remove a model.
+		Remove a model:
 			ollama rm llama3
 
-		Copy a model.
+		Copy a model:
 			ollama cp llama3 my-model
 
-		Multiline input.
+		Multiline input:
 			For multiline input, you can wrap text with """:
 
 			>>> """Hello,
@@ -72,18 +76,20 @@
 			... """
 			I'm a basic program that prints the famous "Hello, world!" message to the console.
 
-		Multimodal models.
+		Multimodal models:
 			>>> What's in this image? /Users/jmorgan/Desktop/smile.png
 			The image features a yellow smiley face, which is likely the central focus of the picture.
 
-		Pass the prompt as an argument.
-			$ ollama run llama3 "Summarize this file: $(cat README.md)"
-			Ollama is a lightweight, extensible framework for building and running language models on the local machine. It provides a simple API for creating, running, and managing models, as well as a library of pre-built models that can be easily used in a variety of applications.
+		Pass the prompt as an argument:
+			ollama run llama3 "Summarize this file: $(cat README.md)"
 
-		List models on your computer.
+			Ollama is a lightweight, extensible framework for building and running language models on the local machine.
+			It provides a simple API for creating, running, and managing models, as well as a library of pre-built models that can be easily used in a variety of applications.
+
+		List models on your computer:
 			ollama list
 
-		Start Ollama.
+		Start Ollama:
 			ollama serve is used when you want to start ollama without running the desktop application.
 
 	- REST API.
@@ -91,13 +97,13 @@
 
 		Ollama has a REST API for running and managing models.
 
-		Generate a response.
+		Generate a response:
 			curl http://localhost:11434/api/generate -d '{
 				"model": "llama3",
 				"prompt":"Why is the sky blue?"
 			}'
 
-		Chat with a model.
+		Chat with a model:
 			curl http://localhost:11434/api/chat -d '{
 				"model": "llama3",
 				"messages": [
