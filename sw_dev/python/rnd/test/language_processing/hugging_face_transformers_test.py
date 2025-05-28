@@ -10476,6 +10476,9 @@ def main():
 
 	# REF [site] >> https://huggingface.co/docs/transformers/index
 
+	#import huggingface_hub
+	#huggingface_hub.login(token="<huggingface_token>")
+
 	#quick_tour()
 
 	#transformers_test()

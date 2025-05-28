@@ -19,6 +19,7 @@ def quickstart():
 
 		llm = LLM(model="facebook/opt-125m")
 		#llm = LLM(model="google/flan-t5-xxl")
+		#llm = LLM("facebook/opt-13b", tensor_parallel_size=4)
 
 		outputs = llm.generate(prompts, sampling_params)
 
