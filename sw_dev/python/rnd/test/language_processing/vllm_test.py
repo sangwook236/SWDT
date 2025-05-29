@@ -160,6 +160,14 @@ def main():
 	#		Offline inference
 	#		Online serving
 
+	# Offline inference
+	#	quickstart()
+	#	pali_gemma_ocr_vllm_test() in ./ocr_test.py
+
+	# Online serving
+	#	quickstart()
+	#	rolmocr_example() in ./ocr_test.py
+
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:

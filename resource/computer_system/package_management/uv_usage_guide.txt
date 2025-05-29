@@ -1,0 +1,364 @@
+[-] General.
+	- Site.
+		https://docs.astral.sh/uv/
+		https://github.com/astral-sh/uv
+
+[-] Usage.
+	https://docs.astral.sh/uv/
+
+	uv help
+	uv help run
+	uv run --help
+
+	- Python versions.
+		https://docs.astral.sh/uv/guides/install-python/
+		https://docs.astral.sh/uv/concepts/python-versions/
+		https://github.com/astral-sh/uv
+
+		Install the latest Python version:
+			uv python install
+		Install a specific Python version:
+			uv python install 3.12
+		Install multiple Python versions:
+			uv python install 3.10 3.11 3.12
+		Install an alternative Python implementation, e.g., PyPy:
+			uv python install pypy@3.10
+
+		Reinstall uv-managed Python versions:
+			uv python install --reinstall
+
+		View available and installed Python versions:
+			uv python list
+
+		Automatic Python downloads:
+			Python does not need to be explicitly installed to use uv.
+			By default, uv will automatically download Python versions when they are required.
+			For example, the following would download Python 3.12 if it was not installed:
+				uvx python@3.12 -c "print('hello world')"
+
+			Even if a specific Python version is not requested, uv will download the latest version on demand.
+			For example, if there are no Python versions on your system, the following will install Python before creating a new virtual environment:
+				uv venv
+
+		Download Python versions as needed:
+			uv venv --python 3.12.0
+			uv run --python pypy@3.8 -- python --version
+
+		Use a specific Python version in the current directory:
+			uv python pin 3.11
+
+	- The pip interface.
+		https://docs.astral.sh/uv/pip/
+
+		uv provides a drop-in replacement for common pip, pip-tools, and virtualenv commands.
+		uv extends their interfaces with advanced features, such as dependency version overrides, platform-independent resolutions, reproducible resolutions, alternative resolution strategies, and more.
+		Migrate to uv without changing your existing workflows — and experience a 10-100x speedup — with the uv pip interface.
+
+		Compile requirements into a platform-independent requirements file:
+			uv pip compile docs/requirements.in \
+				--universal \
+				--output-file docs/requirements.txt
+		Create a virtual environment:
+			uv venv
+		Install the locked requirements:
+			uv pip sync docs/requirements.txt
+
+		Use Python environments:
+			https://docs.astral.sh/uv/pip/environments/
+
+			Create a virtual environment:
+				Create a virtual environment at .venv:
+					uv venv
+				Create a virtual environment at my-name:
+					uv venv my-name
+				Create a virtual environment with Python 3.11:
+					uv venv --python 3.11
+
+			Use a virtual environment:
+				uv venv
+				uv pip install ruff
+					Install a package in the new virtual environment.
+
+			Activate an environment:
+				On Linux:
+					source .venv/bin/activate
+				On Windows:
+					.venv\Scripts\activate
+
+			Deactivate an environment:
+				deactivate
+
+		Manage packages:
+			https://docs.astral.sh/uv/pip/packages
+
+			Install a package:
+				Install a package into the virtual environment, e.g., Flask:
+					uv pip install flask
+				Install a package with optional dependencies enabled, e.g., Flask with the "dotenv" extra:
+					uv pip install "flask[dotenv]"
+				Install multiple packages, e.g., Flask and Ruff:
+					uv pip install flask ruff
+				Install a package with a constraint, e.g., Ruff v0.2.0 or newer:
+					uv pip install 'ruff>=0.2.0'
+				Install a package at a specific version, e.g., Ruff v0.3.0:
+					uv pip install 'ruff==0.3.0'
+				Install a package from the disk:
+					uv pip install "ruff @ ./projects/ruff"
+				Install a package from GitHub:
+					uv pip install "git+https://github.com/astral-sh/ruff"
+				Install a package from GitHub at a specific reference:
+					https://docs.astral.sh/uv/configuration/authentication
+
+					uv pip install "git+https://github.com/astral-sh/ruff@v0.2.0"
+						Install a tag.
+					uv pip install "git+https://github.com/astral-sh/ruff@1fadefa67b26508cc59cf38e6130bde2243c929d"
+						Install a commit.
+					uv pip install "git+https://github.com/astral-sh/ruff@main"
+						Install a branch.
+
+			Editable packages:
+				Editable packages do not need to be reinstalled for changes to their source code to be active.
+
+				Install the current project as an editable package:
+					uv pip install -e .
+				Install a project in another directory as an editable package:
+					uv pip install -e "ruff @ ./project/ruff"
+
+			Install packages from files:
+				Multiple packages can be installed at once from standard file formats.
+
+				Install from a requirements.txt file:
+					uv pip install -r requirements.txt
+				Install from a pyproject.toml file:
+					uv pip install -r pyproject.toml
+				Install from a pyproject.toml file with optional dependencies enabled, e.g., the "foo" extra:
+					uv pip install -r pyproject.toml --extra foo
+				Install from a pyproject.toml file with all optional dependencies enabled:
+					uv pip install -r pyproject.toml --all-extras
+				Install dependency groups in the current project directory's pyproject.toml, for example the group foo:
+					uv pip install --group foo
+				Specify the project directory where groups should be sourced from:
+					uv pip install --project some/path/ --group foo --group bar
+				Specify a path to a pyproject.toml for each group:
+					uv pip install --group some/path/pyproject.toml:foo --group other/pyproject.toml:bar
+
+			Uninstall a package:
+				Uninstall a package, e.g., Flask:
+					uv pip uninstall flask
+				Uninstall multiple packages, e.g., Flask and Ruff:
+					uv pip uninstall flask ruff
+
+[-] Projects.
+	https://docs.astral.sh/uv/guides/projects/
+	https://github.com/astral-sh/uv
+
+	uv supports managing Python projects, which define their dependencies in a pyproject.toml file.
+
+	- Create a new project.
+		https://docs.astral.sh/uv/concepts/projects/init/
+
+		You can create a new Python project using the uv init command:
+			uv init <PROJECT_NAME>>
+			cd <PROJECT_NAME>
+		Alternatively, you can initialize a project in the working directory:
+			mkdir <PROJECT_NAME>
+			cd <PROJECT_NAME>
+			uv init
+
+		uv will create the following files:
+			.
+			├── .python-version
+			├── README.md
+			├── main.py
+			└── pyproject.toml
+
+	- Update the project's environment.
+		https://docs.astral.sh/uv/concepts/projects/sync/
+
+		uv sync
+
+	- Update the project's lockfile.
+		https://docs.astral.sh/uv/concepts/projects/sync/
+
+		uv lock
+
+		Upgrade a package:
+			uv lock --upgrade-package <PACKAGE_NAME>
+				uv lock --upgrade-package requests
+
+	- Add dependencies to the project.
+		https://docs.astral.sh/uv/concepts/projects/dependencies/
+
+		uv add <PACKAGE_NAME>
+			uv add requests
+			uv add 'requests==2.31.0'
+				Specify a version constraint.
+			uv add git+https://github.com/psf/requests
+				Add a git dependency.
+			uv add -r requirements.txt -c constraints.txt
+				Add all dependencies from `requirements.txt`.
+
+	- Remove dependencies from the project.
+		https://docs.astral.sh/uv/concepts/projects/dependencies/
+
+		uv remove <PACKAGE_NAME>
+
+	- Run a command or script.
+		https://docs.astral.sh/uv/concepts/projects/run/
+
+		uv run <COMMAND>
+			uv add flask
+			uv run -- flask run -p 3000
+		uv run <SCRIPT>
+			uv run main.py
+
+		Alternatively, you can use uv sync to manually update the environment then activate it before executing a command:
+			On Linux:
+				uv sync
+				source .venv/bin/activate
+				flask run -p 3000
+				python example.py
+			On Windows:
+				uv sync
+				.venv\Scripts\activate
+				flask run -p 3000
+				python example.py
+
+	- Build distributions.
+		https://docs.astral.sh/uv/concepts/projects/build/
+
+		uv build can be used to build source distributions and binary distributions (wheel) for your project.
+		By default, uv build will build the project in the current directory, and place the built artifacts in a dist/ subdirectory:
+
+		uv build
+		ls dist/
+
+[-] Scripts.
+	https://docs.astral.sh/uv/guides/scripts/
+	https://github.com/astral-sh/uv
+
+	- Run a script without dependencies.
+		If your script has no dependencies, you can execute it with uv run:
+			uv run example.py
+		If your script depends on a module in the standard library, there's nothing more to do:
+			uv run example.py
+		Arguments may be provided to the script:
+			uv run example.py test
+			uv run example.py hello world!
+
+		Your script can be read directly from stdin:
+			echo 'print("hello world!")' | uv run -
+		If your shell supports here-documents:
+			uv run - <<EOF
+			print("hello world!")
+			EOF
+
+	- Run a script with dependencies.
+		Request the dependency using the --with option:
+			uv run --no-project example.py
+				ModuleNotFoundError: no module named 'rich'
+			uv run --with rich example.py
+				example.py requires rich.
+			Constraints can be added to the requested dependency if specific versions are needed:
+				uv run --with 'rich>12,<13' example.py
+
+	- Create a Python script.
+		Python recently added a standard format for inline script metadata.
+		It allows for selecting Python versions and defining dependencies.
+		Use uv init --script to initialize scripts with the inline metadata:
+			uv init --script example.py --python 3.12
+
+	- Declare script dependencies.
+		The inline metadata format allows the dependencies for a script to be declared in the script itself.
+		uv supports adding and updating inline script metadata for you. Use uv add --script to declare the dependencies for the script:
+			uv add --script example.py requests
+			uv add --script example.py 'requests<3' 'rich'
+
+[-] Tools.
+	https://docs.astral.sh/uv/guides/tools/
+	https://docs.astral.sh/uv/concepts/tools/
+	https://github.com/astral-sh/uv
+
+	- Run tools.
+		The uvx command invokes a tool without installing it.
+			uv tool run ruff
+			uvx ruff
+
+		Arguments can be provided after the tool name:
+			uvx pycowsay hello from uv
+			uvx pycowsay 'hello world!'
+
+		Sometimes the package and command names differ.
+		The --from option can be used to invoke a command from a specific package, e.g., http which is provided by httpie:
+			uvx --from httpie http
+
+		Run a tool at a specific version:
+			uvx ruff@0.3.0 check
+		Run a tool at the latest version:
+			uvx ruff@latest check
+		The --from option can also be used to specify package versions, as above:
+			uvx --from 'ruff==0.3.0' ruff check
+		Constrain to a range of versions:
+			uvx --from 'ruff>0.2.0,<0.3.0' ruff check
+
+	- Install a tool with uv tool install.
+		uv tool install ruff
+		ruff --version
+
+[-] Configuration.
+	https://docs.astral.sh/uv/configuration/
+	https://docs.astral.sh/uv/configuration/files/
+
+	- Project structure.
+		https://docs.astral.sh/uv/guides/projects/
+		https://docs.astral.sh/uv/concepts/projects/layout/
+
+		uv will create a virtual environment and uv.lock file in the root of your project the first time you run a project command, i.e., uv run, uv sync, or uv lock.
+			.
+			├── .venv
+			│   ├── bin
+			│   ├── lib
+			│   └── pyvenv.cfg
+			├── .python-version
+			├── README.md
+			├── main.py
+			├── pyproject.toml
+			└── uv.lock
+
+		pyproject.toml
+			The pyproject.toml contains metadata about your project.
+		.python-version
+			The .python-version file contains the project's default Python version.
+			This file tells uv which Python version to use when creating the project's virtual environment.
+		.venv
+			The .venv folder contains your project's virtual environment, a Python environment that is isolated from the rest of your system.
+			This is where uv will install your project's dependencies.
+			https://docs.astral.sh/uv/concepts/projects/layout/#the-project-environment
+		uv.lock
+			uv.lock is a cross-platform lockfile that contains exact information about your project's dependencies.
+			Unlike the pyproject.toml which is used to specify the broad requirements of your project, the lockfile contains the exact resolved versions that are installed in the project environment.
+			This file should be checked into version control, allowing for consistent and reproducible installations across machines.
+			uv.lock is a human-readable TOML file but is managed by uv and should not be edited manually.
+			https://docs.astral.sh/uv/concepts/projects/layout/#the-lockfile
+
+[-] Installation.
+	https://docs.astral.sh/uv/getting-started/installation/
+	https://github.com/astral-sh/uv
+
+	- Install.
+		Install uv with our standalone installers:
+			On macOS and Linux:
+				curl -LsSf https://astral.sh/uv/install.sh | sh
+				wget -qO- https://astral.sh/uv/install.sh | sh
+			On Windows:
+				powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+		from PyPI:
+			Using pip:
+				pip install uv
+			Using pipx:
+				pipx install uv
+
+	- Update.
+		If installed via the standalone installer, uv can update itself to the latest version:
+			uv self update

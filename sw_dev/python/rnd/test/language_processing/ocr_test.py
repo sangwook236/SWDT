@@ -208,8 +208,57 @@ def olmocr_example():
 		print(text_output)
 		# ['{"primary_language":"en","is_rotation_valid":true,"rotation_correction":0,"is_table":false,"is_diagram":false,"natural_text":"Molmo and PixMo:\\nOpen Weights and Open Data\\nfor State-of-the']
 
+# REF [site] >> https://huggingface.co/reducto
+def rolmocr_example():
+	# Models:
+	#	reducto/RolmOCR
+
+	# 1. Host your model with vLLM (OpenAI-compatible API):
+	#	export VLLM_USE_V1=1
+	#	vllm serve reducto/RolmOCR
+	#	vllm serve reducto/RolmOCR --tensor-parallel-size 4
+
+	# 2. Call the model via OpenAI-compatible server
+
+	from openai import OpenAI
+	import base64
+
+	client = OpenAI(api_key="EMPTY", base_url="http://localhost:8000/v1")
+
+	# This model is a fine-tuned version of Qwen/Qwen2.5-VL-7B-Instruct on the full allenai/olmOCR-mix-0225 dataset
+	model = "reducto/RolmOCR"
+
+	def encode_image(image_path):
+		with open(image_path, "rb") as image_file:
+			return base64.b64encode(image_file.read()).decode("utf-8")
+
+	def ocr_page_with_rolm(img_base64):
+		response = client.chat.completions.create(
+			model=model,
+			messages=[{
+				"role": "user",
+				"content": [
+					{
+						"type": "image_url",
+						"image_url": {"url": f"data:image/png;base64,{img_base64}"},
+					},
+					{
+						"type": "text",
+						"text": "Return the plain text representation of this document as if you were reading it naturally.\n",
+					},
+				],
+			}],
+			temperature=0.2,
+			max_tokens=4096
+		)
+		return response.choices[0].message.content
+
+	test_img_path = "path/to/image.png"
+	img_base64 = encode_image(test_img_path)
+	print(ocr_page_with_rolm(img_base64))
+
 # REF [function] >> pali_gemma_example() in hugging_face_transformers_test.py
-def pali_gemma_ocr_test():
+def pali_gemma_ocr_transformers_test():
 	import requests, time
 	from PIL import Image
 	import torch
@@ -225,6 +274,7 @@ def pali_gemma_ocr_test():
 	# Model ID for PaliGemma
 	# Other options include: google/paligemma-3b-pt-224, google/paligemma-3b-mix-448 etc.
 	model_id = "google/paligemma-3b-mix-224"
+	#model_id = "google/paligemma-28b-mix-224"
 
 	# Load the model, automatically moving it to the available device
 	model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(
@@ -282,6 +332,35 @@ def pali_gemma_ocr_test():
 	#plt.title("Input Image")
 	#plt.axis("off")
 	#plt.show()
+
+# REF [site] >> https://docs.vllm.ai/en/v0.5.2/getting_started/examples/paligemma_example.html
+def pali_gemma_ocr_vllm_test():
+	from PIL import Image
+	from vllm import LLM
+
+	import huggingface_hub
+	huggingface_hub.login(token="<huggingface_token>")
+
+	model_id = "google/paligemma-3b-mix-224"
+	#model_id = "google/paligemma2-28b-mix-224"
+
+	img_path = "path/to/image.png"
+
+	llm = LLM(model=model_id)
+
+	prompt = "ocr"
+	image = Image.open(img_path)
+
+	outputs = llm.generate({
+		"prompt": prompt,
+		"multi_modal_data": {
+			"image": image
+		},
+	})
+
+	for o in outputs:
+		generated_text = o.outputs[0].text
+		print(generated_text)
 
 # REF [site] >> https://apidog.com/kr/blog/qwen-2-5-72b-open-source-ocr-kr/
 def qwen_ocr_web_api_test():
@@ -380,11 +459,14 @@ def main():
 	# VLM OCR
 	#	Mistral OCR (commercial)
 
-	#olmocr_example()  # olmOCR. Use Qwen2-VL
+	#olmocr_example()  # olmOCR (transformers). Use Qwen2-VL
+	#rolmocr_example()  # RolmOCR (vLLM). Use Qwen2.5-VL
 
-	#pali_gemma_ocr_test()  # PaliGemma
-	#qwen_ocr_web_api_test()  # Qwen2.5
-	qwen_ocr_python_test()  # Qwen2.5
+	#pali_gemma_ocr_transformers_test()  # PaliGemma (transformers)
+	#pali_gemma_ocr_vllm_test()  # PaliGemma (vLLM)
+
+	#qwen_ocr_web_api_test()  # Qwen2.5 (Ollama)
+	qwen_ocr_python_test()  # Qwen2.5 (Ollama)
 
 #--------------------------------------------------------------------
 
