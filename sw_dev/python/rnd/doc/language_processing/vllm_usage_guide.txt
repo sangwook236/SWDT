@@ -8,6 +8,9 @@
 [-] Usage.
 	https://docs.vllm.ai/en/latest/getting_started/quickstart.html
 
+	vllm --help
+	vllm serve --help
+
 	- Install.
 		Using uv:
 			uv venv --python 3.12 --seed

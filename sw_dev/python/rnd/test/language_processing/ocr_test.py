@@ -143,28 +143,63 @@ def olmocr_example():
 		#	pip install olmocr
 
 		import base64
-		import urllib.request
 		from io import BytesIO
 
-		from olmocr.data.renderpdf import render_pdf_to_base64png
-		from olmocr.prompts import build_finetuning_prompt
-		from olmocr.prompts.anchor import get_anchor_text
+		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+		print(f"Device: {device}.")
+		print(f"Number of available devices: {torch.cuda.device_count()}")
 
 		# Initialize the model
-		model = transformers.Qwen2VLForConditionalGeneration.from_pretrained("allenai/olmOCR-7B-0225-preview", torch_dtype=torch.bfloat16).eval()
+		if False:
+			model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+				"allenai/olmOCR-7B-0225-preview",
+				torch_dtype=torch.bfloat16
+			).eval()
+			model.to(device)
+		else:
+			model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+				"allenai/olmOCR-7B-0225-preview",
+				torch_dtype=torch.bfloat16,
+				#torch_dtype="auto",  # Automatically use all available GPUs
+				device_map="auto",  # Use all available GPUs
+				#offload_folder="./offload",  # Add this line to enable CPU offloading
+				#offload_state_dict=True,  # Add this line for state dict offloading
+			).eval()
 		processor = transformers.AutoProcessor.from_pretrained("Qwen/Qwen2-VL-7B-Instruct")
-		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-		model.to(device)
 
-		# Grab a sample PDF
-		urllib.request.urlretrieve("https://molmo.allenai.org/paper.pdf", "./paper.pdf")
+		if True:
+			import urllib.request
+			from olmocr.data.renderpdf import render_pdf_to_base64png
+			from olmocr.prompts import build_finetuning_prompt
+			from olmocr.prompts.anchor import get_anchor_text
 
-		# Render page 1 to an image
-		image_base64 = render_pdf_to_base64png("./paper.pdf", 1, target_longest_image_dim=1024)
+			pdf_filepath: str = "./paper.pdf"
 
-		# Build the prompt, using document metadata
-		anchor_text = get_anchor_text("./paper.pdf", 1, pdf_engine="pdfreport", target_length=4000)
-		prompt = build_finetuning_prompt(anchor_text)
+			# Grab a sample PDF
+			urllib.request.urlretrieve("https://molmo.allenai.org/paper.pdf", pdf_filepath)
+
+			# Render page 1 to an image
+			image_base64 = render_pdf_to_base64png(pdf_filepath, 1, target_longest_image_dim=1024)
+
+			# Build the prompt, using document metadata
+			anchor_text = get_anchor_text(pdf_filepath, 1, pdf_engine="pdfreport", target_length=4000)
+			prompt = build_finetuning_prompt(anchor_text)
+			#print(f"Prompt:\n{prompt}")
+		else:
+			# FIXME [check] >>
+
+			import base64
+
+			# Encode an image to base64
+			def encode_image(image_path):
+				with open(image_path, "rb") as image_file:
+					return base64.b64encode(image_file.read()).decode("utf-8")
+
+			# Image
+			image_path = "./ocr_data_240708/ocr_data_01_bar.png"
+			image_base64 = encode_image(image_path)
+
+			prompt = "ocr"
 
 		# Build the full prompt
 		messages = [
@@ -264,6 +299,9 @@ def pali_gemma_ocr_transformers_test():
 	import torch
 	import transformers
 
+	#import huggingface_hub
+	#huggingface_hub.login(token="<huggingface_token>")
+
 	# Check if CUDA is available and set the device
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}")
@@ -274,7 +312,7 @@ def pali_gemma_ocr_transformers_test():
 	# Model ID for PaliGemma
 	# Other options include: google/paligemma-3b-pt-224, google/paligemma-3b-mix-448 etc.
 	model_id = "google/paligemma-3b-mix-224"
-	#model_id = "google/paligemma-28b-mix-224"
+	#model_id = "google/paligemma2-28b-mix-224"
 
 	# Load the model, automatically moving it to the available device
 	model = transformers.PaliGemmaForConditionalGeneration.from_pretrained(
@@ -338,8 +376,8 @@ def pali_gemma_ocr_vllm_test():
 	from PIL import Image
 	from vllm import LLM
 
-	import huggingface_hub
-	huggingface_hub.login(token="<huggingface_token>")
+	#import huggingface_hub
+	#huggingface_hub.login(token="<huggingface_token>")
 
 	model_id = "google/paligemma-3b-mix-224"
 	#model_id = "google/paligemma2-28b-mix-224"
@@ -402,6 +440,7 @@ def qwen_ocr_web_api_test():
 	result = response.json()
 
 	print(result["response"])
+
 def qwen_ocr_python_test():
 	# Install Ollama:
 	#	On Linux:

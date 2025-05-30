@@ -77,17 +77,25 @@
 			I'm a basic program that prints the famous "Hello, world!" message to the console.
 
 		Multimodal models:
-			>>> What's in this image? /Users/jmorgan/Desktop/smile.png
-			The image features a yellow smiley face, which is likely the central focus of the picture.
+			ollama run llava "What's in this image? /Users/jmorgan/Desktop/smile.png"
+				Output: The image features a yellow smiley face, which is likely the central focus of the picture.
 
 		Pass the prompt as an argument:
 			ollama run llama3 "Summarize this file: $(cat README.md)"
+				Output: Ollama is a lightweight, extensible framework for building and running language models on the local machine.
+				It provides a simple API for creating, running, and managing models, as well as a library of pre-built models that can be easily used in a variety of applications.
 
-			Ollama is a lightweight, extensible framework for building and running language models on the local machine.
-			It provides a simple API for creating, running, and managing models, as well as a library of pre-built models that can be easily used in a variety of applications.
+		Show model information:
+			ollama show llama3.2
 
 		List models on your computer:
 			ollama list
+
+		List which models are currently loaded:
+			ollama ps
+
+		Stop a model which is currently running:
+			ollama stop llama3.2
 
 		Start Ollama:
 			ollama serve is used when you want to start ollama without running the desktop application.
