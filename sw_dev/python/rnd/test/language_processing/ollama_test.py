@@ -150,10 +150,14 @@ def main():
 	# Install Ollama:
 	#	On Linux:
 	#		curl -sSL https://ollama.com/download.sh | sh
-	# Pull a model:
+	# Run a model:
 	#	ollama pull llama3.2
-	# Run a model: (optional)
+	#	ollama list
 	#	ollama run llama3.2
+	#	/bye
+	#	ollama ps
+	#	ollama stop llama3.2
+	#	ollama rm llama3.2
 
 	# Install:
 	#	pip install ollama
@@ -162,7 +166,9 @@ def main():
 	#examples()  # Not yet implemented
 
 	# Web API
-	#	REF [function] >> qwen_ocr_web_api_test() in ./ocr_test.py
+	#	qwen_ocr_web_api_test() & llama_ocr_example() in ./ocr_test.py
+	# Python API
+	#	qwen_vl_ocr_python_test() & llama_ocr_example() in ./ocr_test.py
 
 #--------------------------------------------------------------------
 

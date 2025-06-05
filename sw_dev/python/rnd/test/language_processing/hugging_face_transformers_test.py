@@ -5406,12 +5406,15 @@ def qwen_qwq_example():
 def deepseek_r_example():
 	# Models:
 	#	deepseek-ai/DeepSeek-R1
+	#	deepseek-ai/DeepSeek-R1-Zero
 	#	deepseek-ai/DeepSeek-R1-Distill-Llama-8B
 	#	deepseek-ai/DeepSeek-R1-Distill-Llama-70B
 	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
 	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
 	#	deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-	#	deepseek-ai/DeepSeek-R1-Zero
+	#
+	#	deepseek-ai/DeepSeek-R1-0528
+	#	deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
 
 	raise NotImplementedError
 
