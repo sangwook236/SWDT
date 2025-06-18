@@ -4,6 +4,10 @@
 
 		https://tortoisegit.org/
 
+	- Documentation.
+		https://git-scm.com/docs
+		https://git-scm.com/book
+
 	- Config files.
 		Local config file:
 			${WORKING_COPY}/.git/config
@@ -25,6 +29,18 @@
 		git config --system --edit
 		git config --worktree --edit
 		git config --file <filename> --edit
+
+		Alias:
+			https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
+
+			git config --global alias.co checkout
+			git config --global alias.br branch
+			git config --global alias.ci commit
+			git config --global alias.st status
+
+			git config --global alias.unstage 'reset HEAD --'
+			git config --global alias.last 'log -1 HEAD'
+			git config --global alias.visual '!gitk'
 
 	- Set user info.
 		Edit config files:
