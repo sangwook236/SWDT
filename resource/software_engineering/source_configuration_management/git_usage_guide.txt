@@ -21,6 +21,271 @@
 			${GIT_HOME}/etc/gitconfig
 
 [-] Usage.
+	- Internals.
+		.git/
+			config
+			description
+			HEAD
+			hooks/
+			info/
+			objects/
+			refs/
+		.gitignore
+		.gitmodules
+
+		Objects:
+			https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
+
+			.git/objects
+
+		References:
+			https://git-scm.com/book/en/v2/Git-Internals-Git-References
+
+			.git/refs
+
+	- Three trees.
+		https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
+
+		HEAD: Last commit snapshot.
+			Saved in .git directory.
+
+			git cat-file -p HEAD
+			git ls-tree -r HEAD
+		Index: Proposed next commit snapshot.
+			Saved in .git directory.
+			Staging area.
+
+			git ls-files -s
+		Working directory, working tree: Sandbox.
+
+		Working directory --(git add)--> Index --(git commit)--> HEAD.
+		  Changes not staged for commit    Changes to be committed
+		  Untracked files
+
+		git status:
+			Subsections:
+				Changes to be committed
+				Changes not staged for commit
+				Untracked files
+
+		git reset:
+			Move HEAD (--soft)
+				git reset --soft HEAD~
+			Update the Index (--mixed, default option)
+				git reset [--mixed] HEAD~
+			Update the Working Directory (--hard)
+				git reset --hard HEAD~
+
+			git reset file.txt
+				= git reset --mixed HEAD file.txt
+			git reset eb34bf file.txt
+				eb43bf: commit
+
+	- Revision.
+		https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection
+
+		RefLog shortnames:
+			A reflog: a log of where your HEAD and branch references have been for the last few months.
+				git reflog
+				git log -g master
+
+			git show HEAD@{5}
+				The fifth prior value of the HEAD of your repository
+			git show master@{yesterday}
+				Sees where your master branch was yesterday
+
+		Ancestry references:
+			If you place a ^ (caret) at the end of a reference, Git resolves it to mean the parent of that commit.
+
+			git show HEAD^
+			git show d921970^
+			git show d921970^2
+				The second parent of d921970.
+
+			git show HEAD~
+				HEAD~ and HEAD^ are equivalent
+			git show HEAD~3
+			git show HEAD~~~
+				HEAD~~~ = HEAD~3
+
+		Commit ranges:
+			Double dot:
+				Resolves a range of commits that are reachable from one commit but aren’t reachable from another.
+
+				git log master..experiment
+					All commits reachable from experiment that aren't reachable from master.
+				git log experiment..master
+					Shows you everything in master not reachable from experiment.
+				git log origin/master..HEAD
+
+				Git allows you to do this by using either the ^ character or --not before any reference from which you don't want to see reachable commits.
+					git log refA..refB
+					git log ^refA refB
+					git log refB --not refA
+					git log refA refB ^refC
+					git log refA refB --not refC
+
+			Triple dot:
+				Specifies all the commits that are reachable by either of two references but not by both of them.
+
+				git log master...experiment
+
+	- Log.
+		git log
+		git log --merge
+		git log -p
+		git log --abbrev-commit --pretty=oneline
+		git log --graph --oneline --decorate --all
+		git log --pretty=format:'%h %s' --graph
+
+	- Merge.
+		https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+		https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging
+
+		Trivial merge.
+		Fast-forward merge.
+		3-way merge algorithm.
+
+		Merge strategies:
+			ort or recursive
+				Recursive merge.
+			resolve
+			octopus
+			ours
+			subtree
+				Subtree merging.
+
+		git merge <BRANCH>
+
+		git merge -s <STRATEGY> <BRANCH>
+		git merge -s ours <BRANCH>
+		git merge -s theirs <BRANCH>
+
+		git merge -X <STRATEGY_OPTION> <BRANCH>
+		git merge -Xignore-space-change <BRANCH>
+		git merge -Xignore-all-space <BRANCH>
+		git merge -Xours <BRANCH>
+		git merge -Xtheirs <BRANCH>
+
+		git merge --abort
+			Abort the current conflict resolution process, and try to reconstruct the pre-merge state. 
+
+	- Conflict.
+		https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging
+
+	- Rebase.
+		https://git-scm.com/book/en/v2/Git-Branching-Rebasing
+
+	- Reset.
+		https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
+
+	- Revert.
+		https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging
+
+	- Submodules.
+		https://git-scm.com/book/en/v2/Git-Tools-Submodules
+		https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging
+
+		Submodules allow you to keep a Git repository as a subdirectory of another Git repository.
+		This lets you clone another repository into your project and keep your commits separate.
+
+		git submodule add https://github.com/chaconinc/DbConnector
+
+		git diff --cached DbConnector
+			Although DbConnector is a subdirectory in your working directory, Git sees it as a submodule and doesn't track its contents when you're not in that directory.
+			Instead, Git sees it as a particular commit from that repository.
+		git diff --cached --submodule
+
+		Cloning a project with submodules:
+			git clone https://github.com/chaconinc/MainProject
+				The DbConnector directory is there, but empty.
+			git submodule init
+			git submodule update
+
+			git submodule update --init
+				If you already cloned the project and forgot --recurse-submodules, you can combine the git submodule init and git submodule update steps by running git submodule update --init.
+			git submodule update --init --recursive
+				To also initialize, fetch and checkout any nested submodules, you can use the foolproof git submodule update --init --recursive.
+
+			git clone --recurse-submodules https://github.com/chaconinc/MainProject
+				There is another way to do this which is a little simpler, however.
+				If you pass --recurse-submodules to the git clone command, it will automatically initialize and update each submodule in the repository, including nested submodules if any of the submodules in the repository have submodules themselves.
+
+		Working on a project with submodules:
+			Pulling in Upstream Changes from the Submodule Remote:
+				The simplest model of using submodules in a project would be if you were simply consuming a subproject and wanted to get updates from it from time to time but were not actually modifying anything in your checkout.
+
+				cd <SUBMODULE-DIR>
+				git fetch
+				git merge origin/master
+
+				Go back into the main project.
+				git diff --submodule
+
+				An easier way:
+					git submodule update --remote DbConnector
+					git submodule update --remote
+						Updates all of your submodules.
+
+			Pulling Upstream Changes from the Project Remote:
+				git pull
+					By default, the git pull command recursively fetches submodules changes. However, it does not update the submodules.
+				git status
+
+				git submodule update --init --recursive
+				git status
+
+		Working on a submodule:
+			In order to set up your submodule to be easier to go in and hack on, you need to do two things.
+			You need to go into each submodule and check out a branch to work on.
+			Then you need to tell Git what to do if you have made changes and later git submodule update --remote pulls in new work from upstream.
+			The options are that you can merge them into your local work, or you can try to rebase your local work on top of the new changes.
+
+			cd DbConnector/
+			git checkout stable
+			cd ..
+			git submodule update --remote --merge
+
+			If you forget the --rebase or --merge, Git will just update the submodule to whatever is on the server and reset your project to a detached HEAD state.
+			If this happens, don't worry, you can simply go back into the directory and check out your branch again (which will still contain your work) and merge or rebase origin/stable (or whatever remote branch you want) manually.
+
+		Publishing submodule changes:
+			you can ask Git to check that all your submodules have been pushed properly before pushing the main project.
+			The git push command takes the --recurse-submodules argument which can be set to either "check" or "on-demand".
+
+			git push --recurse-submodules=check
+				The "check" option will make push simply fail if any of the committed submodule changes haven't been pushed.
+			git push --recurse-submodules=on-demand
+
+		Merging submodule changes:
+			If you change a submodule reference at the same time as someone else, you may run into some problems.
+			That is, if the submodule histories have diverged and are committed to diverging branches in a superproject, it may take a bit of work for you to fix.
+			If one of the commits is a direct ancestor of the other (a fast-forward merge), then Git will simply choose the latter for the merge, so that works fine.
+			Git will not attempt even a trivial merge for you, however.
+			If the submodule commits diverge and need to be merged, you will get something that looks like this:
+			...
+
+			If a merge commit exists in the submodule directory that contains both commits in its history, Git will suggest it to you as a possible solution.
+
+		Submodule tips:
+			git submodule foreach
+				git submodule foreach 'git stash'
+				git submodule foreach 'git checkout -b featureA'
+				git diff; git submodule foreach 'git diff'
+
+			Aliases:
+				git config alias.sdiff '!'"git diff && git submodule foreach 'git diff'"
+				git config alias.spush 'push --recurse-submodules=on-demand'
+				git config alias.supdate 'submodule update --remote --merge'
+
+		git log -p --submodule
+
+		git diff-tree -p rack_branch
+		git diff-tree -p rack_remote/master
+
+[-] Configuration.
+	https://git-scm.com/book/en/v2/Appendix-C:-Git-Commands-Setup-and-Config
+
 	- Edit configs.
 		git config --edit
 			Edit local config file.
@@ -28,9 +293,9 @@
 		git config --global --edit
 		git config --system --edit
 		git config --worktree --edit
-		git config --file <filename> --edit
+		git config --file <FILENAME> --edit
 
-		Alias:
+		Aliases:
 			https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
 
 			git config --global alias.co checkout
@@ -125,6 +390,16 @@
 
 		git config http.postBuffer 524288000
 		git config --get http.postBuffer
+
+[-] Environments.
+	- GUI.
+		https://git-scm.com/book/en/v2/Appendix-A:-Git-in-Other-Environments-Graphical-Interfaces
+
+		Visual Studio:
+			https://git-scm.com/book/en/v2/Appendix-A:-Git-in-Other-Environments-Git-in-Visual-Studio
+
+		Visual Studio Code (vscode):
+			https://git-scm.com/book/en/v2/Appendix-A:-Git-in-Other-Environments-Git-in-Visual-Studio-Code
 
 [-] Installation (Windows).
 	https://github.com/PowerShell/Win32-OpenSSH/wiki/Setting-up-a-Git-server-on-Windows-using-Git-for-Windows-and-Win32_OpenSSH
