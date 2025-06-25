@@ -5185,6 +5185,116 @@ def exaone_example():
 		)
 		print(tokenizer.decode(output[0]))
 
+# REF [site] >> https://huggingface.co/HuggingFaceTB
+def smol_lm_example():
+	# Models:
+	#	HuggingFaceTB/SmolLM-135M
+	#	HuggingFaceTB/SmolLM-135M-Instruct
+	#	HuggingFaceTB/SmolLM-360M
+	#	HuggingFaceTB/SmolLM-360M-Instruct
+	#	HuggingFaceTB/SmolLM-1.7B
+	#	HuggingFaceTB/SmolLM-1.7B-Instruct
+	#
+	#	HuggingFaceTB/SmolLM2-135M
+	#	HuggingFaceTB/SmolLM2-135M-Instruct
+	#	HuggingFaceTB/SmolLM2-360M
+	#	HuggingFaceTB/SmolLM2-360M-Instruct
+	#	HuggingFaceTB/SmolLM2-1.7B
+	#	HuggingFaceTB/SmolLM2-1.7B-Instruct
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		checkpoint = "HuggingFaceTB/SmolLM-135M"
+		#checkpoint = "HuggingFaceTB/SmolLM-360M"
+		#checkpoint = "HuggingFaceTB/SmolLM-1.7B"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+		elif False:
+			# For multiple GPUs:
+			#	pip install accelerate
+
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto")  # Using full precision
+			#model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto", torch_dtype=torch.bfloat16)  # Using torch.bfloat16
+		else:
+			# Install:
+			#	pip install bitsandbytes accelerate
+
+			quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, quantization_config=quantization_config)
+
+		inputs = tokenizer.encode("def print_hello_world():", return_tensors="pt").to(device)
+		outputs = model.generate(inputs)
+		print(tokenizer.decode(outputs[0]))
+
+	if False:
+		checkpoint = "HuggingFaceTB/SmolLM-135M-Instruct"
+		#checkpoint = "HuggingFaceTB/SmolLM-360M-Instruct"
+		#checkpoint = "HuggingFaceTB/SmolLM-1.7B-Instruct"
+
+		tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+		else:
+			# For multiple GPUs:
+			#	pip install accelerate
+
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto")
+
+		messages = [{"role": "user", "content": "What is the capital of France."}]
+		input_text=tokenizer.apply_chat_template(messages, tokenize=False)
+		print(input_text)
+		inputs = tokenizer.encode(input_text, return_tensors="pt").to(device)
+		outputs = model.generate(inputs, max_new_tokens=50, temperature=0.2, top_p=0.9, do_sample=True)
+		print(tokenizer.decode(outputs[0]))
+
+	if True:
+		checkpoint = "HuggingFaceTB/SmolLM2-135M"
+		#checkpoint = "HuggingFaceTB/SmolLM2-360M"
+		#checkpoint = "HuggingFaceTB/SmolLM2-1.7B"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+		else:
+			# For multiple GPUs:
+			#	pip install accelerate
+
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto")  # Using full precision
+			#model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto", torch_dtype=torch.bfloat16)  # Using torch.bfloat16
+
+		inputs = tokenizer.encode("Gravity is", return_tensors="pt").to(device)
+		outputs = model.generate(inputs)
+
+		print(tokenizer.decode(outputs[0]))
+
+	if True:
+		checkpoint = "HuggingFaceTB/SmolLM2-135M-Instruct"
+		#checkpoint = "HuggingFaceTB/SmolLM2-360M-Instruct"
+		#checkpoint = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+		else:
+			# For multiple GPUs:
+			#	pip install accelerate
+
+			model = transformers.AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto")
+
+		messages = [{"role": "user", "content": "What is gravity?"}]
+		#messages = [{"role": "user", "content": "What is the capital of France."}]
+		input_text=tokenizer.apply_chat_template(messages, tokenize=False)
+		print(input_text)
+
+		inputs = tokenizer.encode(input_text, return_tensors="pt").to(device)
+		outputs = model.generate(inputs, max_new_tokens=50, temperature=0.2, top_p=0.9, do_sample=True)
+
+		print(tokenizer.decode(outputs[0]))
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -7885,6 +7995,352 @@ def phi_4_multimodal_example():
 		generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
 	)[0]
 	print(f">>> Response\n{response}")
+
+# REF [site] >> https://huggingface.co/HuggingFaceTB
+def smol_vlm_example():
+	# Models:
+	#	HuggingFaceTB/SmolVLM-256M-Base
+	#	HuggingFaceTB/SmolVLM-256M-Instruct
+	#	HuggingFaceTB/SmolVLM-500M-Base
+	#	HuggingFaceTB/SmolVLM-500M-Instruct
+	#
+	#	HuggingFaceTB/SmolVLM-Base
+	#	HuggingFaceTB/SmolVLM-Instruct
+	#	HuggingFaceTB/SmolVLM-Instruct-DPO
+	#	HuggingFaceTB/SmolVLM-Synthetic
+	#
+	#	HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+	#	HuggingFaceTB/SmolVLM2-500M-Video-Instruct
+	#	HuggingFaceTB/SmolVLM2-2.2B-Instruct
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	if False:
+		from transformers.image_utils import load_image
+
+		model_name = "HuggingFaceTB/SmolVLM-Base"
+
+		# Load images
+		image1 = load_image("https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg")
+		image2 = load_image("https://huggingface.co/spaces/merve/chameleon-7b/resolve/main/bee.jpg")
+
+		# Initialize processor and model
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+		if True:
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				torch_dtype=torch.bfloat16,
+				_attn_implementation="flash_attention_2" if device == "cuda" else "eager",
+			).to(device)
+		elif False:
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				torch_dtype=torch.bfloat16,
+			).to(device)
+		else:
+			quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				quantization_config=quantization_config,
+			)
+
+		# Create input messages
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image"},
+					{"type": "image"},
+					{"type": "text", "text": "Can you describe the two images?"}
+				]
+			},
+		]
+
+		# Prepare inputs
+		prompt = processor.apply_chat_template(messages, add_generation_prompt=True)
+		inputs = processor(text=prompt, images=[image1, image2], return_tensors="pt")
+		inputs = inputs.to(device)
+
+		# Generate outputs
+		generated_ids = model.generate(**inputs, max_new_tokens=500)
+		generated_texts = processor.batch_decode(
+			generated_ids,
+			skip_special_tokens=True,
+		)
+
+		print(generated_texts[0])
+		"""
+		User:<image>Can you describe the two images?
+		Assistant: I can describe the first one, but I can't describe the second one.
+		"""
+
+	if False:
+		from transformers.image_utils import load_image
+
+		#model_name = "HuggingFaceTB/SmolVLM-256M-Instruct"
+		#model_name = "HuggingFaceTB/SmolVLM-500M-Instruct"
+		model_name = "HuggingFaceTB/SmolVLM-Instruct"
+
+		# Load images
+		image = load_image("https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg")
+
+		# Initialize processor and model
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+		if True:
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				torch_dtype=torch.bfloat16,
+				_attn_implementation="flash_attention_2" if device == "cuda" else "eager",
+			).to(device)
+		elif False:
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				torch_dtype=torch.bfloat16,
+			).to(device)
+		else:
+			quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				quantization_config=quantization_config,
+			)
+
+		# Create input messages
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image"},
+					{"type": "text", "text": "Can you describe this image?"}
+				]
+			},
+		]
+
+		# Prepare inputs
+		prompt = processor.apply_chat_template(messages, add_generation_prompt=True)
+		inputs = processor(text=prompt, images=[image], return_tensors="pt")
+		inputs = inputs.to(device)
+
+		# Generate outputs
+		generated_ids = model.generate(**inputs, max_new_tokens=500)
+		generated_texts = processor.batch_decode(
+			generated_ids,
+			skip_special_tokens=True,
+		)
+
+		print(generated_texts[0])
+		"""
+		Assistant: The image depicts a large, historic statue of liberty, located in New York City. The statue is a green, cylindrical structure with a human figure at the top, holding a torch. The statue is situated on a pedestal that resembles the statue of liberty, which is located on a small island in the middle of a body of water. The water surrounding the island is calm, reflecting the blue sky and the statue.
+		In the background, there are several tall buildings, including the Empire State Building, which is visible in the distance. These buildings are made of glass and steel, and they are positioned in a grid-like pattern, giving them a modern look. The sky is clear, with a few clouds visible, indicating fair weather.
+		The statue is surrounded by trees, which are green and appear to be healthy. There are also some small structures, possibly houses or buildings, visible in the distance. The overall scene suggests a peaceful and serene environment, typical of a cityscape.
+		The image is taken during the daytime, likely during the day of the statue's installation. The lighting is bright, casting a strong shadow on the statue and the water, which enhances the visibility of the statue and the surrounding environment.
+		To summarize, the image captures a significant historical statue of liberty, situated on a small island in the middle of a body of water, surrounded by trees and buildings. The sky is clear, with a few clouds visible, indicating fair weather. The statue is green and cylindrical, with a human figure holding a torch, and is surrounded by trees, indicating a peaceful and well-maintained environment. The overall scene is one of tranquility and historical significance.
+		"""
+
+	if False:
+		from transformers.image_utils import load_image
+
+		model_name = "HuggingFaceTB/SmolVLM-Instruct"
+		#model_name = "HuggingFaceTB/SmolVLM-Synthetic"
+
+		# Load images
+		image1 = load_image("https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg")
+		image2 = load_image("https://huggingface.co/spaces/merve/chameleon-7b/resolve/main/bee.jpg")
+
+		# Initialize processor and model
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+		if True:
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				torch_dtype=torch.bfloat16,
+				_attn_implementation="flash_attention_2" if device == "cuda" else "eager",
+			).to(device)
+		elif False:
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				torch_dtype=torch.bfloat16,
+			).to(device)
+		else:
+			quantization_config = transformers.BitsAndBytesConfig(load_in_8bit=True)
+			model = transformers.AutoModelForVision2Seq.from_pretrained(
+				model_name,
+				quantization_config=quantization_config,
+			)
+
+		# Create input messages
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image"},
+					{"type": "image"},
+					{"type": "text", "text": "Can you describe the two images?"}
+				]
+			},
+		]
+
+		# Prepare inputs
+		prompt = processor.apply_chat_template(messages, add_generation_prompt=True)
+		inputs = processor(text=prompt, images=[image1, image2], return_tensors="pt")
+		inputs = inputs.to(device)
+
+		# Generate outputs
+		generated_ids = model.generate(**inputs, max_new_tokens=500)
+		generated_texts = processor.batch_decode(
+			generated_ids,
+			skip_special_tokens=True,
+		)
+
+		print(generated_texts[0])
+		"""
+		Assistant: The first image shows a green statue of the Statue of Liberty standing on a stone pedestal in front of a body of water. 
+		The statue is holding a torch in its right hand and a tablet in its left hand. The water is calm and there are no boats or other objects visible. 
+		The sky is clear and there are no clouds. The second image shows a bee on a pink flower. 
+		The bee is black and yellow and is collecting pollen from the flower. The flower is surrounded by green leaves.
+		"""
+
+	if False:
+		model_name = "HuggingFaceTB/SmolVLM-Instruct"
+
+		# Load images
+		image1 = load_image("https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg")
+		image2 = load_image("https://huggingface.co/spaces/merve/chameleon-7b/resolve/main/bee.jpg")
+
+		# Initialize processor, model and load PEFT adapter
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+		model = transformers.AutoModelForVision2Seq.from_pretrained(
+			model_name,
+			torch_dtype=torch.bfloat16,
+			_attn_implementation="flash_attention_2" if device == "cuda" else "eager",
+		).to(device)
+		model.load_adapter("HuggingFaceTB/SmolVLM-Instruct-DPO")
+
+		# Create input messages
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image"},
+					{"type": "image"},
+					{"type": "text", "text": "Can you describe the two images?"}
+				]
+			},
+		]
+
+		# Prepare inputs
+		prompt = processor.apply_chat_template(messages, add_generation_prompt=True)
+		inputs = processor(text=prompt, images=[image1, image2], return_tensors="pt")
+		inputs = inputs.to(device)
+
+		# Generate outputs
+		generated_ids = model.generate(**inputs, max_new_tokens=500)
+		generated_texts = processor.batch_decode(
+			generated_ids,
+			skip_special_tokens=True,
+		)
+
+		print(generated_texts[0])
+
+	if True:
+		from transformers import AutoProcessor, AutoModelForImageTextToText
+		import torch
+
+		model_path = "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
+		#model_path = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
+		#model_path = "HuggingFaceTB/SmolVLM2-2.2B-Instruct"
+
+		processor = transformers.AutoProcessor.from_pretrained(model_path)
+		model = transformers.AutoModelForImageTextToText.from_pretrained(
+			model_path,
+			torch_dtype=torch.bfloat16,
+			_attn_implementation="flash_attention_2"
+		).to(device)
+
+		if True:
+			# Simple Inference
+
+			messages = [
+				{
+					"role": "user",
+					"content": [
+						{"type": "image", "url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg"},
+						{"type": "text", "text": "Can you describe this image?"},
+					]
+				},
+			]
+
+			inputs = processor.apply_chat_template(
+				messages,
+				add_generation_prompt=True,
+				tokenize=True,
+				return_dict=True,
+				return_tensors="pt",
+			).to(model.device, dtype=torch.bfloat16)
+
+			generated_ids = model.generate(**inputs, do_sample=False, max_new_tokens=64)
+			generated_texts = processor.batch_decode(
+				generated_ids,
+				skip_special_tokens=True,
+			)
+			print(generated_texts[0])
+
+		if True:
+			# Video Inference
+
+			messages = [
+				{
+					"role": "user",
+					"content": [
+						{"type": "video", "path": "path_to_video.mp4"},
+						{"type": "text", "text": "Describe this video in detail"}
+					]
+				},
+			]
+
+			inputs = processor.apply_chat_template(
+				messages,
+				add_generation_prompt=True,
+				tokenize=True,
+				return_dict=True,
+				return_tensors="pt",
+			).to(model.device, dtype=torch.bfloat16)
+
+			generated_ids = model.generate(**inputs, do_sample=False, max_new_tokens=64)
+			generated_texts = processor.batch_decode(
+				generated_ids,
+				skip_special_tokens=True,
+			)
+
+			print(generated_texts[0])
+
+		if True:
+			# Multi-image Interleaved Inference
+
+			messages = [
+				{
+					"role": "user",
+					"content": [
+						{"type": "text", "text": "What is the similarity between these two images?"},
+						{"type": "image", "url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/bee.jpg"},
+						{"type": "image", "url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/0052a70beed5bf71b92610a43a52df6d286cd5f3/diffusers/rabbit.jpg"},            
+					]
+				},
+			]
+			inputs = processor.apply_chat_template(
+				messages,
+				add_generation_prompt=True,
+				tokenize=True,
+				return_dict=True,
+				return_tensors="pt",
+			).to(model.device, dtype=torch.bfloat16)
+
+			generated_ids = model.generate(**inputs, do_sample=False, max_new_tokens=64)
+			generated_texts = processor.batch_decode(
+				generated_ids,
+				skip_special_tokens=True,
+			)
+
+			print(generated_texts[0])
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
@@ -10598,7 +11054,7 @@ def main():
 	#phi_example()  # Phi-1, Phi-1.5, Phi-2.
 	#phi_3_example()  # Phi-3.
 	#phi_3_5_example()  # Phi-3.5.
-	phi_4_example()  # Phi-4.
+	#phi_4_example()  # Phi-4.
 	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram.
 	#qwen_example()  # Qwen. Not yet implemented.
 	#qwen2_example()  # Qwen2.
@@ -10606,6 +11062,7 @@ def main():
 	#qwen3_example()  # Qwen3.
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
+	smol_lm_example()  # SmolLM, SmolLM2.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -10683,6 +11140,7 @@ def main():
 	#kosmos_example()  # Kosmos-2.
 	#qwen_omni_example()  # Qwen2.5-Omni.
 	#phi_4_multimodal_example()  # Phi-4-multimodal.
+	#smol_vlm_example()  # SmolVLM, SmolVLM2.
 
 	#-----
 	# Vision and language.
