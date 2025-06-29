@@ -576,6 +576,61 @@ Please show the image using `plt.show()`."""
 		# Append the bot responses to the chat history.
 		messages.extend(response)
 
+# REF [site] >>
+def devstral_example():
+	# Models:
+	#	mistralai/Devstral-Small-2505
+
+	# Install:
+	#	pip install mistral-common --upgrade
+
+	from mistral_common.protocol.instruct.messages import SystemMessage, UserMessage
+	from mistral_common.protocol.instruct.request import ChatCompletionRequest
+	from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+	from huggingface_hub import hf_hub_download
+
+	def load_system_prompt(repo_id: str, filename: str) -> str:
+		file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+		with open(file_path, "r") as file:
+			system_prompt = file.read()
+		return system_prompt
+
+	model_id = "mistralai/Devstral-Small-2505"
+
+	tekken_file = hf_hub_download(repo_id=model_id, filename="tekken.json")
+	SYSTEM_PROMPT = load_system_prompt(model_id, "SYSTEM_PROMPT.txt")
+
+	tokenizer = MistralTokenizer.from_file(tekken_file)
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+
+	tokenized = tokenizer.encode_chat_completion(
+		ChatCompletionRequest(
+			messages=[
+				SystemMessage(content=SYSTEM_PROMPT),
+				UserMessage(content="<your-command>"),
+			],
+		)
+	)
+
+	output = model.generate(
+		input_ids=torch.tensor([tokenized.tokens]),
+		max_new_tokens=1000,
+	)[0]
+
+	decoded_output = tokenizer.decode(output[len(tokenized.tokens):])
+	print(decoded_output)
+
+# REF [site] >>
+#	https://github.com/SWE-bench/SWE-smith
+#	https://huggingface.co/SWE-bench
+def swe_agent_example():
+	# Models:
+	#	SWE-bench/SWE-agent-LM-7B
+	#	SWE-bench/SWE-agent-LM-32B
+
+	raise NotImplementedError
+
 def main():
 	# Protocol:
 	#	Model Context Protocol (MCP)
@@ -605,6 +660,13 @@ def main():
 
 	# Refer to qwen3_example() in hugging_face_transformers_test.py
 	qwen_agent_example()  # Qwen-Agent
+
+	#devstral_example()  # Devstral-Small
+
+	#-----
+	# Programming
+
+	#swe_agent_example()  # SWE-agent. Not yet implemented
 
 #--------------------------------------------------------------------
 
