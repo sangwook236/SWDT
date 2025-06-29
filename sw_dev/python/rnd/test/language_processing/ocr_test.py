@@ -430,9 +430,6 @@ def pali_gemma_ocr_transformers_test():
 	import torch
 	import transformers
 
-	#import huggingface_hub
-	#huggingface_hub.login(token="<huggingface_token>")
-
 	# Check if CUDA is available and set the device
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}")
@@ -509,9 +506,6 @@ def pali_gemma_ocr_vllm_test():
 	import time
 	from PIL import Image
 	from vllm import LLM
-
-	#import huggingface_hub
-	#huggingface_hub.login(token="<huggingface_token>")
 
 	model_id = "google/paligemma-3b-mix-224"
 	#model_id = "google/paligemma2-28b-mix-224"
@@ -691,9 +685,6 @@ Provide only the transcription without any additional comments."""
 		image_path = "./images/WalmartReceipt.png"
 		#image_path = "./images/dl1.jpg"
 		#image_path = "./images/dl2.png"
-		#image_path = "./ocr_data_240708/ocr_data_01.png"
-		#image_path = "./ocr_data_240708/ocr_data_01_bar.png"
-		#image_path = "./ocr_data_240708/ocr_data_01_box.png"
 
 		base64_image = encode_image_to_base64(image_path)
 		payload = {
@@ -732,12 +723,9 @@ Provide only the transcription without any additional comments."""
 Provide only the transcription without any additional comments."""
 
 		model_id = "llama3.2-vision"
-		#image_path = "./images/WalmartReceipt.png"
+		image_path = "./images/WalmartReceipt.png"
 		#image_path = "./images/dl1.jpg"
 		#image_path = "./images/dl2.png"
-		#image_path = "./ocr_data_240708/ocr_data_01.png"
-		image_path = "./ocr_data_240708/ocr_data_01_bar.png"
-		#image_path = "./ocr_data_240708/ocr_data_01_box.png"
 
 		print("Performing OCR...")
 		start_time = time.time()
@@ -840,10 +828,10 @@ def phi_3_ocr_example():
 	# Note: set _attn_implementation="eager" if you don't have flash_attn installed
 	model = transformers.AutoModelForCausalLM.from_pretrained(
 		model_id,
+		torch_dtype="auto",
 		device_map="auto",
 		#device_map="cuda",
 		trust_remote_code=True,
-		torch_dtype="auto",
 		_attn_implementation="flash_attention_2"
 	)
 
@@ -887,6 +875,8 @@ def phi_3_ocr_example():
 		clean_up_tokenization_spaces=False
 	)[0]
 
+	print(response)
+
 # REF [site] >> https://github.com/TechExpertTutorials/Phi4OCR
 def phi_4_ocr_example():
 	# Install:
@@ -910,13 +900,17 @@ def phi_4_ocr_example():
 
 	model = transformers.AutoModelForCausalLM.from_pretrained(
 		model_name,
-		device_map="cuda",
 		torch_dtype="auto",
+		device_map="auto",
+		#device_map="cuda",
 		trust_remote_code=True,
 		_attn_implementation="flash_attention_2",
 	).eval().cuda()
 
-	processor = transformers.AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
+	processor = transformers.AutoProcessor.from_pretrained(
+		model_name,
+		trust_remote_code=True,
+	)
 
 	# Example image URL containing text
 	try:
@@ -926,7 +920,7 @@ def phi_4_ocr_example():
 		exit()
 
 	# Prepare the input
-	prompt = f"<|user|><|image_1|>{prompt}<|end|><|assistant|>"
+	prompt = f"<|user|><|image_1|>{message}<|end|><|assistant|>"
 	inputs = processor(text=prompt, images=image, return_tensors="pt").to("cuda")
 
 	# Generate the OCR output
@@ -1006,7 +1000,7 @@ def qwen_vl_ocr_example():
 	print(f"OCR performed: {time.time() - start_time} secs.")
 
 	generated_ids_trimmed = [
-		out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
 	]
 
 	output_text = processor.batch_decode(
@@ -1118,6 +1112,95 @@ def deepseek_vl_ocr_example():
 	response = tokenizer.decode(outputs[0].tolist(), skip_special_tokens=True)
 	print(response)
 
+def phi_3_ocr_test():
+	import time
+	from PIL import Image
+	import torch
+	import transformers
+
+	image_path = "path/to/document_image.png"
+
+	#model_name = "microsoft/Phi-3.5-vision-128k-instruct"  # Error
+	model_name = "microsoft/Phi-3.5-vision-instruct"
+
+	processor = transformers.AutoProcessor.from_pretrained(
+		model_name,
+		trust_remote_code=True,
+	)
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype=torch.float16,
+		#torch_dtype="auto",
+		device_map="auto",
+		trust_remote_code=True,
+	)
+
+	def extract_text(image_path):
+		"""Extract all text from a document image."""
+		images = [Image.open(image_path)]
+
+		prompt = "<|image_1|>\nExtract all text from this document image. Return only the extracted text."
+
+		inputs = processor(
+			text=prompt,
+			images=images,
+			return_tensors="pt"
+		).to(model.device)
+
+		with torch.no_grad():
+			output = model.generate(
+				**inputs,
+				max_new_tokens=1024,
+				do_sample=False,
+			)
+
+		extracted_text = processor.decode(output[0], skip_special_tokens=True)
+		# Remove the prompt from the response
+		extracted_text = extracted_text.replace(prompt, "").strip()
+
+		return extracted_text
+
+	def extract_key_value_pairs(image_path):
+		"""Extract key-value pairs from tables or text in the document image."""
+		images = [Image.open(image_path)]
+
+		prompt = "<|image_1|>\nExtract all key-value pairs from this document image. Format the output as JSON with keys and values."
+
+		inputs = processor(
+			text=prompt,
+			images=images,
+			return_tensors="pt"
+		).to(model.device)
+
+		with torch.no_grad():
+			output = model.generate(
+				**inputs,
+				max_new_tokens=1024,
+				do_sample=False
+			)
+
+		extracted_pairs = processor.decode(output[0], skip_special_tokens=True)
+		# Remove the prompt from the response
+		extracted_pairs = extracted_pairs.replace(prompt, "").strip()
+
+		return extracted_pairs
+
+	# Extract text
+	print("Extracting text...")
+	start_time = time.time()
+	text = extract_text(image_path)
+	print(f"Text extracted: {time.time() - start_time} secs.")
+
+	print(text)
+	
+	# Extract key-value pairs
+	start_time = time.time()
+	print("Extracting key-value pairs...")
+	kv_pairs = extract_key_value_pairs(image_path)
+	print(f"Key-value pairs extracted: {time.time() - start_time} secs.")
+
+	print(kv_pairs)
+
 def main():
 	#trocr_example()  # TrOCR
 
@@ -1133,21 +1216,27 @@ def main():
 	# VLM OCR
 	#	Mistral OCR (commercial)
 
+	# For Hugging Face models
+	#import huggingface_hub
+	#huggingface_hub.login(token="<huggingface_token>")
+
 	#olmocr_example()  # olmOCR (transformers). Use Qwen2-VL
 	#rolmocr_example()  # RolmOCR (vLLM). Use Qwen2.5-VL
 
 	#pali_gemma_ocr_transformers_test()  # PaliGemma (transformers)
 	#pali_gemma_ocr_vllm_test()  # PaliGemma (vLLM)
 
-	qwen_vl_ocr_web_api_test()  # Qwen2.5-VL (Ollama)
+	#qwen_vl_ocr_web_api_test()  # Qwen2.5-VL (Ollama)
 	#qwen_vl_ocr_python_test()  # Qwen2.5-VL (Ollama)
 
-	#llama_ocr_example()  # Llama 3.2 Vision (Ollama)
+	llama_ocr_example()  # Llama 3.2 Vision (Ollama)
 	#gemma_ocr_example()  # Gemma 3 (transformers)
 	#phi_3_ocr_example()  # Phi-3.5-vision (transformers)
 	#phi_4_ocr_example()  # Phi-4-multimodal (transformers)
 	#qwen_vl_ocr_example()  # Qwen2.5-VL (transformers)
 	#deepseek_vl_ocr_example()  # DeepSeek-VL2 (transformers)
+
+	#phi_3_ocr_test()  # Phi-3.5-vision (transformers)
 
 #--------------------------------------------------------------------
 

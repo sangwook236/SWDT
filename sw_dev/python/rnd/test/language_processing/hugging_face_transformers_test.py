@@ -3091,11 +3091,9 @@ def mistral_example():
 	#	mistralai/Mistral-7B-Instruct-v0.3
 	#	mistralai/Mistral-Nemo-Base-2407
 	#	mistralai/Mistral-Nemo-Instruct-2407
-	#	mistralai/Mistral-Small-Instruct-2409
+	#	mistralai/Mistral-Nemo-Instruct-FP8-2407
 	#	mistralai/Mistral-Large-Instruct-2407
-
-	# Install:
-	#	pip install mistralai
+	#	mistralai/Mistral-Large-Instruct-2411
 
 	device = "cuda"  # The device to load the model onto
 
@@ -3109,7 +3107,7 @@ def mistral_example():
 		# Accessing the model configuration
 		configuration = model.config
 
-	if True:
+	if False:
 		model_id = "mistralai/Mistral-7B-v0.1"
 
 		if True:
@@ -3141,6 +3139,36 @@ def mistral_example():
 			print(decoded)
 
 	if True:
+		# Inference
+
+		# Install:
+		#	pip install mistral-common --upgrade
+
+		from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+		from mistral_common.protocol.instruct.messages import UserMessage
+		from mistral_common.protocol.instruct.request import ChatCompletionRequest
+		
+		tokenizer = MistralTokenizer.v1()
+		
+		completion_request = ChatCompletionRequest(messages=[UserMessage(content="Explain Machine Learning to me in a nutshell.")])
+		tokens = tokenizer.encode_chat_completion(completion_request).tokens
+
+		#model_id = "mistralai/Mistral-7B-Instruct-v0.1"
+		model_id = "mistralai/Mistral-7B-Instruct-v0.2"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		model.to(device)
+		
+		generated_ids = model.generate(tokens, max_new_tokens=1000, do_sample=True)
+
+		# Decode with mistral tokenizer
+		result = tokenizer.decode(generated_ids[0].tolist())
+		print(result)
+
+	if True:
+		# Instruction
+
+		#model_id = "mistralai/Mistral-7B-Instruct-v0.1"
 		model_id = "mistralai/Mistral-7B-Instruct-v0.2"
 
 		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
@@ -3159,6 +3187,165 @@ def mistral_example():
 		generated_ids = model.generate(model_inputs, max_new_tokens=1000, do_sample=True)
 		decoded = tokenizer.batch_decode(generated_ids)
 		print(decoded[0])
+
+	if True:
+		model_id = "mistralai/Mistral-7B-v0.3"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+
+		inputs = tokenizer("Hello my name is", return_tensors="pt")
+
+		outputs = model.generate(**inputs, max_new_tokens=20)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+	if True:
+		model_id = "mistralai/Mistral-7B-Instruct-v0.3"
+
+		messages = [
+			{"role": "system", "content": "You are a pirate chatbot who always responds in pirate speak!"},
+			{"role": "user", "content": "Who are you?"},
+		]
+		chatbot = transformers.pipeline("text-generation", model=model_id)
+		chatbot(messages)
+
+	if True:
+		# Function calling
+
+		model_id = "mistralai/Mistral-7B-Instruct-v0.3"
+
+		def get_current_weather(location: str, format: str):
+			"""
+			Get the current weather
+
+			Args:
+				location: The city and state, e.g. San Francisco, CA
+				format: The temperature unit to use. Infer this from the users location. (choices: ["celsius", "fahrenheit"])
+			"""
+			pass
+
+		tokenizer = torch.AutoTokenizer.from_pretrained(model_id)
+
+		conversation = [{"role": "user", "content": "What's the weather like in Paris?"}]
+		tools = [get_current_weather]
+
+		# Format and tokenize the tool use prompt 
+		inputs = tokenizer.apply_chat_template(
+			conversation,
+			tools=tools,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+
+		model = torch.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto")
+
+		inputs.to(model.device)
+		outputs = model.generate(**inputs, max_new_tokens=1000)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+	if True:
+		model_id = "mistralai/Mistral-Nemo-Base-2407"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		inputs = tokenizer("Hello my name is", return_tensors="pt")
+
+		outputs = model.generate(**inputs, max_new_tokens=20)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+	if True:
+		model_id = "mistralai/Mistral-Nemo-Instruct-2407"
+		model_id = "mistralai/Mistral-Large-Instruct-2407"
+
+		messages = [
+			{"role": "system", "content": "You are a pirate chatbot who always responds in pirate speak!"},
+			{"role": "user", "content": "Who are you?"},
+		]
+		chatbot = transformers.pipeline("text-generation", model=model_id, max_new_tokens=128)
+		chatbot(messages)
+
+	if True:
+		# Function calling
+
+		model_id = "mistralai/Mistral-Nemo-Instruct-2407"
+		model_id = "mistralai/Mistral-Large-Instruct-2407"
+
+		def get_current_weather(location: str, format: str):
+			"""
+			Get the current weather
+
+			Args:
+				location: The city and state, e.g. San Francisco, CA
+				format: The temperature unit to use. Infer this from the users location. (choices: ["celsius", "fahrenheit"])
+			"""
+			pass
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto")
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		conversation = [{"role": "user", "content": "What's the weather like in Paris?"}]
+		tools = [get_current_weather]
+
+		# Format and tokenize the tool use prompt 
+		inputs = tokenizer.apply_chat_template(
+			conversation,
+			tools=tools,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+		inputs.to(model.device)
+
+		outputs = model.generate(**inputs, max_new_tokens=1000)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/model_doc/mistral
+#	https://huggingface.co/mistralai
+def mistral_small_example():
+	# Models:
+	#	mistralai/Mistral-Small-Instruct-2409
+	#
+	#	mistralai/Mistral-Small-24B-Base-2501
+	#	mistralai/Mistral-Small-24B-Instruct-2501
+	#
+	#	mistralai/Mistral-Small-3.1-24B-Base-2503
+	#	mistralai/Mistral-Small-3.1-24B-Instruct-2503
+	#
+	#	mistralai/Mistral-Small-3.2-24B-Instruct-2506
+
+	device = "cuda"
+
+	if False:
+		model_id = "mistralai/Mistral-Small-Instruct-2409"
+
+		tokenizer = transformers.LlamaTokenizerFast.from_pretrained(model_id)
+		tokenizer.pad_token = tokenizer.eos_token
+
+		model = transformers.MistralForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16)
+		model = model.to(device)
+
+		prompt = "How often does the letter r occur in Mistral?"
+		messages = [
+			{"role": "user", "content": prompt},
+		]
+		model_input = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
+
+		gen = model.generate(model_input, max_new_tokens=150)
+
+		dec = tokenizer.batch_decode(gen)
+		print(dec)
+
+	if True:
+		model_id = "mistralai/Mistral-Small-24B-Instruct-2501"
+
+		messages = [
+			{"role": "user", "content": "Give me 5 non-formal ways to say 'See you later' in French."},
+		]
+		chatbot = transformers.pipeline("text-generation", model=model_id, max_new_tokens=256, torch_dtype=torch.bfloat16)
+		chatbot(messages)
 
 # REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/mixtral
@@ -3184,46 +3371,137 @@ def mixtral_example():
 
 	if True:
 		model_id = "mistralai/Mixtral-8x7B-v0.1"
-
-		if True:
-			model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
-			tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
-		elif False:
-			# Combining Mistral and Flash Attention 2
-			#	pip install -U flash-attn --no-build-isolation
-			model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, attn_implementation="flash_attention_2")
-			tokenizer = AutoTokenizer.from_pretrained(model_id)
-		else:
-			tokenizer = transformers.LlamaTokenizer.from_pretrained(model_id)
-			model = transformers.MixtralForCausalLM.from_pretrained(model_id)
-		model.to(device)
-
-		if True:
-			prompt = "My favourite condiment is"
-			model_inputs = tokenizer([prompt], return_tensors="pt").to(device)
-
-			generated_ids = model.generate(**model_inputs, max_new_tokens=100, do_sample=True)
-			decoded = tokenizer.batch_decode(generated_ids)[0]
-			print(decoded)
-		else:
-			prompt = "Hey, are you conscious? Can you talk to me?"
-			inputs = tokenizer(prompt, return_tensors="pt")
-
-			generate_ids = model.generate(inputs.input_ids, max_length=30)
-			decoded = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
-			print(decoded)
-
-	if True:
-		model_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+		#model_id = "mistralai/Mixtral-8x22B-v0.1"
 
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
-		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
-		model.to(device)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		elif False:
+			# In half-precision
+			#	Note float16 precision only works on GPU devices
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16).to(device)
+		elif False:
+			# Lower precision using (8-bit & 4-bit) using bitsandbytes
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, load_in_4bit=True)
+		elif False:
+			# Load the model with Flash Attention 2
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, use_flash_attention_2=True)
 
 		text = "Hello my name is"
 		inputs = tokenizer(text, return_tensors="pt")
+		#inputs = tokenizer(text, return_tensors="pt").to(model.device)
 
 		outputs = model.generate(**inputs, max_new_tokens=20)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+	if True:
+		# Inference
+
+		# Install:
+		#	pip install mistral-common --upgrade
+
+		from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+		from mistral_common.protocol.instruct.messages import UserMessage
+		from mistral_common.protocol.instruct.request import ChatCompletionRequest
+
+		tokenizer = MistralTokenizer.v1()
+
+		completion_request = ChatCompletionRequest(messages=[UserMessage(content="Explain Machine Learning to me in a nutshell.")])
+		tokens = tokenizer.encode_chat_completion(completion_request).tokens
+
+		model_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+		model.to(device)
+		
+		generated_ids = model.generate(tokens, max_new_tokens=1000, do_sample=True)
+
+		# Decode with mistral tokenizer
+		result = tokenizer.decode(generated_ids[0].tolist())
+		print(result)
+
+	if True:
+		# Instruction
+
+		model_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		if True:
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, device_map="auto")
+		elif False:
+			# In half-precision
+			#	Note float16 precision only works on GPU devices
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, device_map="auto")
+		elif False:
+			# Lower precision using (8-bit & 4-bit) using bitsandbytes
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, load_in_4bit=True, device_map="auto")
+		elif False:
+			# Load the model with Flash Attention 2
+			model = transformers.AutoModelForCausalLM.from_pretrained(model_id, use_flash_attention_2=True, device_map="auto")
+
+		messages = [
+			{"role": "user", "content": "What is your favourite condiment?"},
+			{"role": "assistant", "content": "Well, I'm quite partial to a good squeeze of fresh lemon juice. It adds just the right amount of zesty flavour to whatever I'm cooking up in the kitchen!"},
+			{"role": "user", "content": "Do you have mayonnaise recipes?"}
+		]
+
+		inputs = tokenizer.apply_chat_template(messages, return_tensors="pt").to(model.device)
+
+		outputs = model.generate(inputs, max_new_tokens=20)
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+
+	if True:
+		# Inference
+
+		model_id = "mistralai/Mixtral-8x22B-Instruct-v0.1"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		chat = [{"role": "user", "content": "Explain Machine Learning to me in a nutshell."}]
+		tokens = tokenizer.apply_chat_template(chat, return_dict=True, return_tensors="pt", add_generation_prompt=True)
+
+		# You can also use 8-bit or 4-bit quantization here
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto")
+		model.to(device)
+		
+		generated_ids = model.generate(**tokens, max_new_tokens=1000, do_sample=True)
+
+		# Decode with HF tokenizer
+		result = tokenizer.decode(generated_ids[0])
+		print(result)
+
+	if True:
+		# Function calling
+
+		model_id = "mistralai/Mixtral-8x22B-Instruct-v0.1"
+
+		def get_current_weather(location: str, format: str):
+			"""
+			Get the current weather
+
+			Args:
+				location: The city and state, e.g. San Francisco, CA
+				format: The temperature unit to use. Infer this from the users location. (choices: ["celsius", "fahrenheit"])
+			"""
+			pass
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto")
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+		conversation = [{"role": "user", "content": "What's the weather like in Paris?"}]
+		tools = [get_current_weather]
+
+		# Format and tokenize the tool use prompt 
+		inputs = tokenizer.apply_chat_template(
+			conversation,
+			tools=tools,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+		inputs.to(model.device)
+
+		outputs = model.generate(**inputs, max_new_tokens=1000)
 		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
 # REF [site] >> https://huggingface.co/HuggingFaceH4
@@ -5824,6 +6102,13 @@ def phi_4_reasoning_example():
 		)
 		print(tokenizer.decode(outputs[0]))
 
+# REF [site] >> https://huggingface.co/mistralai
+def magistral_example():
+	# Models:
+	#	mistralai/Magistral-Small-2506
+
+	raise NotImplementedError
+
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
 	# Models:
@@ -6842,16 +7127,28 @@ def codestral_example():
 	print(middle)
 	'''
 
+	# Install:
+	#	pip install mistral-common --upgrade
+
+	from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+	from mistral_common.protocol.instruct.messages import UserMessage
+	from mistral_common.protocol.instruct.request import ChatCompletionRequest
+
+	tokenizer = MistralTokenizer.v3()
+
+	completion_request = ChatCompletionRequest(messages=[UserMessage(content="Explain Machine Learning to me in a nutshell.")])
+	tokens = tokenizer.encode_chat_completion(completion_request).tokens
+
 	model_id = "mistralai/Codestral-22B-v0.1"
-	tokenizer = transformers.ALBERT_PRETRAINED_MODEL_ARCHIVE_LISTAutoTokenizer.from_pretrained(model_id)
 
 	model = transformers.AutoModelForCausalLM.from_pretrained(model_id)
+	model.to("cuda")
 
-	text = "Hello my name is"
-	inputs = tokenizer(text, return_tensors="pt")
+	generated_ids = model.generate(tokens, max_new_tokens=1000, do_sample=True)
 
-	outputs = model.generate(**inputs, max_new_tokens=20)
-	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+	# Decode with mistral tokenizer
+	result = tokenizer.decode(generated_ids[0].tolist())
+	print(result)
 
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_coder_example():
@@ -11043,7 +11340,8 @@ def main():
 
 	#orca_example()  # ORCA-2.
 
-	#mistral_example()  # Mistral-7B.
+	#mistral_example()  # Mistral-7B, Mistral-Nemo, Mistral-Large.
+	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2.
 	#mixtral_example()  # Mixtral-8x7B.
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO.
 	#gemma_example()  # Gemma, Gemma 2, Gemma 3.
@@ -11080,6 +11378,7 @@ def main():
 	#exaone_deep_example()  # EXAONE Deep.
 	#llama_nemotron_example()  # Llama Nemotron.
 	#phi_4_reasoning_example()  # Phi-4-reasoning.
+	#magistral_example()  # Magistral-Small. Not yet implemented.
 
 	#-----
 	# Math.
