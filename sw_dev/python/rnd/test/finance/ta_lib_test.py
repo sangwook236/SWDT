@@ -86,12 +86,20 @@ def simple_example():
 	# The latest value is the same as the last output value
 	assert (output[-1] - latest) < 0.00001
 
+# REF [site] >> https://github.com/edgetrader/candlestick-pattern/blob/master/notebook/candlestick-pattern.ipynb
+def candlestick_pattern_test():
+
+	raise NotImplementedError
+
 def main():
 	# Install:
 	#	pip install TA-Lib
 	#	conda install -c conda-forge ta-lib
 
 	simple_example()  # Not yet tested
+
+	# Candlestick patterns
+	#candlestick_pattern_test()  # Not yet implemented
 
 #--------------------------------------------------------------------
 
