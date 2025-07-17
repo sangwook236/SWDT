@@ -5573,6 +5573,14 @@ def smol_lm_example():
 
 		print(tokenizer.decode(outputs[0]))
 
+# REF [site] >> https://huggingface.co/moonshotai
+def kimi_example():
+	# Models:
+	#	moonshotai/Kimi-K2-Base
+	#	moonshotai/Kimi-K2-Instruct
+
+	raise NotImplementedError
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -10011,6 +10019,106 @@ def llama_vision_example():
 		output = model.generate(**inputs, max_new_tokens=30)
 		print(processor.decode(output[0]))
 
+# REF [site] >> https://huggingface.co/moonshotai
+def kimi_vl_example():
+	# Models:
+	#	moonshotai/Kimi-VL-A3B-Instruct
+	#	moonshotai/Kimi-VL-A3B-Thinking
+	#	moonshotai/Kimi-VL-A3B-Thinking-2506
+
+	if True:
+		model_path = "moonshotai/Kimi-VL-A3B-Instruct"
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_path,
+			torch_dtype="auto",
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		processor = transformers.AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+
+		image_path = "./figures/demo.png"
+		image = Image.open(image_path)
+		messages = [
+			{"role": "user", "content": [{"type": "image", "image": image_path}, {"type": "text", "text": "What is the dome building in the picture? Think step by step."}]}
+		]
+		text = processor.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+		inputs = processor(images=image, text=text, return_tensors="pt", padding=True, truncation=True).to(model.device)
+		generated_ids = model.generate(**inputs, max_new_tokens=512)
+		generated_ids_trimmed = [
+			out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		]
+
+		response = processor.batch_decode(
+			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+		)[0]
+		print(response)
+
+	if True:
+		model_path = "moonshotai/Kimi-VL-A3B-Thinking"
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_path,
+			torch_dtype="auto",
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		processor = transformers.AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+
+		image_paths = ["./figures/demo1.png", "./figures/demo2.png"]
+		images = [Image.open(path) for path in image_paths]
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "image": image_path} for image_path in image_paths
+				] + [{"type": "text", "text": "Please infer step by step who this manuscript belongs to and what it records"}],
+			},
+		]
+		text = processor.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+		inputs = processor(images=images, text=text, return_tensors="pt", padding=True, truncation=True).to(model.device)
+		generated_ids = model.generate(**inputs, max_new_tokens=32768, temperature=0.8)
+		generated_ids_trimmed = [
+			out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		]
+
+		response = processor.batch_decode(
+			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+		)[0]
+		print(response)
+
+	if True:
+		url = "https://huggingface.co/spaces/moonshotai/Kimi-VL-A3B-Thinking/resolve/main/images/demo6.jpeg"
+
+		model_path = "moonshotai/Kimi-VL-A3B-Thinking-2506"
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_path,
+			torch_dtype="auto",
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		processor = transformers.AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+
+		image_paths = ["url"]
+		images = [Image.open(path) for path in image_paths]
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "image": image_path} for image_path in image_paths
+				] + [{"type": "text", "text": "What kind of cat is this? Answer with one word."}],
+			},
+		]
+		text = processor.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
+		inputs = processor(images=images, text=text, return_tensors="pt", padding=True, truncation=True).to(model.device)
+		generated_ids = model.generate(**inputs, max_new_tokens=32768, temperature=0.8)
+		generated_ids_trimmed = [
+			out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		]
+
+		response = processor.batch_decode(
+			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+		)[0]
+		print(response)
+
 # REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
 def llava_example():
 	if False:
@@ -10203,6 +10311,14 @@ def qwen_audio_example():
 		generate_ids = generate_ids[:, inputs.input_ids.size(1):]
 
 		response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+# REF [site] >> https://huggingface.co/moonshotai
+def kimi_audio_example():
+	# Models:
+	#	moonshotai/Kimi-Audio-7B
+	#	moonshotai/Kimi-Audio-7B-Instruct
+
+	raise NotImplementedError
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/tvlt
 def tvlt_example():
@@ -11361,6 +11477,7 @@ def main():
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
 	smol_lm_example()  # SmolLM, SmolLM2.
+	#kimi_example()  # Kimi K2. Not yet implemented.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -11461,6 +11578,7 @@ def main():
 	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL.
 	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2.
 	#llama_vision_example()  # Llama 3.2 Vision.
+	#kimi_vl_example()  # Kimi-VL.
 
 	#llava_example()  # LLaVa.
 	#nano_llava_example()  # nanoLLaVA.
@@ -11475,6 +11593,7 @@ def main():
 
 	#audiogen_example()  # AudioGen.
 	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio.
+	#kimi_audio_example()  # Kimi-Audio. Not yet implemented.
 
 	#-----
 	# Vision and audio.
