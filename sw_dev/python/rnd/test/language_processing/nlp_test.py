@@ -246,6 +246,7 @@ def voxtral_example():
 def main():
 	# Chat
 	voxtral_example()  # Voxtral
+	# Refer to canary_qwen_example() in ./speech_processing_test.py
 
 #--------------------------------------------------------------------
 

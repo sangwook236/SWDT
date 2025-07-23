@@ -373,6 +373,40 @@ def speech_brain_asr_example():
 	# https://huggingface.co/speechbrain/asr-whisper-large-v2-commonvoice-fr/tree/main
 	asr_model.transcribe_file("./example-fr.mp3")
 
+# REF [site] >> https://huggingface.co/nvidia
+def canary_qwen_example():
+	# Models:
+	#	nvidia/canary-qwen-2.5b
+
+	# Install:
+	#	python -m pip install "nemo_toolkit[asr,tts] @ git+https://github.com/NVIDIA/NeMo.git"
+
+	from nemo.collections.speechlm2.models import SALM
+
+	model = SALM.from_pretrained("nvidia/canary-qwen-2.5b")
+
+	if True:
+		# Example usage in ASR mode (speech-to-text)
+
+		answer_ids = model.generate(
+			prompts=[
+				[{"role": "user", "content": f"Transcribe the following: {model.audio_locator_tag}", "audio": ["speech.wav"]}]
+			],
+			max_new_tokens=128,
+		)
+		print(model.tokenizer.ids_to_text(answer_ids[0].cpu()))
+
+	if True:
+		# Example usage in LLM mode (text-only)
+
+		prompt = "..."
+		transcript = "..."
+		with model.llm.disable_adapter():
+			answer_ids = model.generate(
+				prompts=[[{"role": "user", "content": f"{prompt}\n\n{transcript}"}]],
+				max_new_tokens=2048,
+			)
+
 # REF [site] >> https://huggingface.co/microsoft
 def microsoft_tts_example():
 	import datasets
@@ -655,6 +689,29 @@ def nari_labs_example():
 
 	sf.write("simple.mp3", output, 44100)
 
+# REF [site] >> https://huggingface.co/ResembleAI
+def chatterbox_examples():
+	# Models:
+	#	ResembleAI/chatterbox
+
+	# Install:
+	#	pip install chatterbox-tts
+
+	import torchaudio as ta
+	from chatterbox.tts import ChatterboxTTS
+
+	model = ChatterboxTTS.from_pretrained(device="cuda")
+
+	text = "Ezreal and Jinx teamed up with Ahri, Yasuo, and Teemo to take down the enemy's Nexus in an epic late-game pentakill."
+	wav = model.generate(text)
+	ta.save("test-1.wav", wav, model.sr)
+
+	# If you want to synthesize with a different voice, specify the audio prompt
+	AUDIO_PROMPT_PATH="./YOUR_FILE.wav"
+	wav = model.generate(text, audio_prompt_path=AUDIO_PROMPT_PATH)
+
+	ta.save("test-2.wav", wav, model.sr)
+
 # REF [site] >> https://huggingface.co/microsoft
 def microsoft_voice_conversion_example():
 	import numpy as np
@@ -690,6 +747,9 @@ def main():
 	#openai_asr_example()  # Whisper.
 	#speech_brain_asr_example()  # Whisper. Error.
 
+	canary_qwen_example()  # Canary-Qwen.
+	# Refer to voxtral_example() in ./nlp_test.py
+
 	#-----
 	# Speech synthesis:
 	#	- Text-to-Speech (TTS).
@@ -699,7 +759,8 @@ def main():
 	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
 	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN.
 	#sesame_example()  # CSM.
-	nari_labs_example()  # Dia.
+	#nari_labs_example()  # Dia.
+	#chatterbox_examples()  # ResembleAI Chatterbox.
 
 	#-----
 	# Speech-to-speech.
