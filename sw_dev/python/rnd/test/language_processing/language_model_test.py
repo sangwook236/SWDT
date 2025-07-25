@@ -5390,6 +5390,65 @@ def llama_nemotron_example():
 
 		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
 
+# REF [site] >> https://huggingface.co/nvidia
+def open_reasoning_nemotron_example():
+	# Models:
+	#	nvidia/OpenReasoning-Nemotron-1.5B
+	#	nvidia/OpenReasoning-Nemotron-7B
+	#	nvidia/OpenReasoning-Nemotron-14B
+	#	nvidia/OpenReasoning-Nemotron-32B
+
+	model_id = "nvidia/OpenReasoning-Nemotron-1.5B"
+	#model_id = "nvidia/OpenReasoning-Nemotron-7B"
+	#model_id = "nvidia/OpenReasoning-Nemotron-14B"
+	#model_id = "nvidia/OpenReasoning-Nemotron-32B"
+
+	pipeline = transformers.pipeline(
+		"text-generation",
+		model=model_id,
+		model_kwargs={"torch_dtype": torch.bfloat16},
+		device_map="auto",
+	)
+
+	if True:
+		# Code generation prompt
+		prompt = """You are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.
+Please use python programming language only.
+You must use ```python for just the final solution code block with the following format:
+```python
+# Your code here
+```
+{user}
+"""
+
+		messages = [
+			{
+				"role": "user",
+				"content": prompt.format(user="Write a program to calculate the sum of the first $N$ fibonacci numbers")},
+		]
+	elif False:
+		# Math generation prompt
+		prompt = """Solve the following math problem. Make sure to put the answer (and only answer) inside \\boxed{}.
+
+{user}
+"""
+
+		messages = ...
+	elif False:
+		# Science generation prompt
+		# You can refer to prompts here -
+		# https://github.com/NVIDIA/NeMo-Skills/blob/main/nemo_skills/prompt/config/generic/hle.yaml (HLE)
+		# https://github.com/NVIDIA/NeMo-Skills/blob/main/nemo_skills/prompt/config/eval/aai/mcq-4choices-boxed.yaml (for GPQA)
+		# https://github.com/NVIDIA/NeMo-Skills/blob/main/nemo_skills/prompt/config/eval/aai/mcq-10choices-boxed.yaml (MMLU-Pro)
+
+		messages = ...
+
+	outputs = pipeline(
+		messages,
+		max_new_tokens=64000,
+	)
+	print(outputs[0]["generated_text"][-1]['content'])
+
 # REF [site] >> https://huggingface.co/microsoft
 def phi_4_reasoning_example():
 	# Models:
@@ -5850,6 +5909,118 @@ def open_math_example():
 			max_new_tokens=4096,
 		)
 		print(outputs[0]["generated_text"][-1]['content'])
+
+# REF [site] >> https://huggingface.co/nvidia
+def ace_reason_example():
+	# Models:
+	#	nvidia/AceReason-Nemotron-7B
+	#	nvidia/AceReason-Nemotron-14B
+	#
+	#	nvidia/AceReason-Nemotron-1.1-7B
+
+	if False:
+		model_name = "nvidia/AceReason-Nemotron-7B"
+		#model_name = "nvidia/AceReason-Nemotron-14B"
+
+		# Usage Recommendations:
+		#	1. Don't include a system prompt; instead, place all instructions directly in the user prompt.
+		#	2. We recommend using the following instruction for math questions: Please reason step by step, and put your final answer within \boxed{}.
+		#	3. We recommend using the following instruction for code questions:
+		#
+		#	question = "" # code question
+		#	starter_code = "" # starter code function header
+		#
+		#	code_instruction_nostartercode = """Write Python code to solve the problem. Please place the solution code in the following format:\n```python\n# Your solution code here\n```"""
+		#	code_instruction_hasstartercode = """Please place the solution code in the following format:\n```python\n# Your solution code here\n```"""
+		#	if starter_code != "":
+		#		question += "\n\n" + "Solve the problem starting with the provided function header.\n\nFunction header:\n" + "```\n" + starter_code + "\n```"
+		#		question += "\n\n" + code_instruction_hasstartercode
+		#	else:
+		#		question += "\n\n" + code_instruction_nostartercode
+		#
+		# 	final_prompt = "<｜User｜>" + question + "<｜Assistant｜><think>\n"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype="auto", device_map="auto")
+
+		prompt = "Jen enters a lottery by picking $4$ distinct numbers from $S=\\{1,2,3,\\cdots,9,10\\}.$ $4$ numbers are randomly chosen from $S.$ She wins a prize if at least two of her numbers were $2$ of the randomly chosen numbers, and wins the grand prize if all four of her numbers were the randomly chosen numbers. The probability of her winning the grand prize given that she won a prize is $\\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$."
+		messages = [{"role": "user", "content": prompt}]
+
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to("cuda")
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=32768,
+			temperature=0.6,
+			top_p=0.95
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(response)
+
+	if True:
+		model_name = "nvidia/AceReason-Nemotron-1.1-7B"
+
+		# Usage Recommendations
+		#	1. We recommend using the system prompt: "You are a helpful and harmless assistant. You should think step-by-step."
+		#	2. We recommend using the following instruction for math questions:
+		#
+		#	math_question = "MATH_QUESTION"
+		#	math_instruction = "Please place your final answer inside \\boxed{}."
+		#	system_instruction = "You are a helpful and harmless assistant. You should think step-by-step."
+		#
+		#	final_prompt = "<|im_start|>system\n" + system_instruction + "<|im_end|>\n<|im_start|>user\n" + math_question + "\n\n" + math_instruction + "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+		#
+		#	3. We recommend using the following instruction for code questions:
+		#
+		#	code_question = "CODE_QUESTION"
+		#	starter_code = "STARTER_CODE" # starter code function header, set empty string ("") if there is no starter code
+		#
+		#	code_instruction_nostartercode = """Write Python code to solve the problem. Please place the solution code in the following format:\n```python\n# Your solution code here\n```"""
+		#	code_instruction_hasstartercode = """Please place the solution code in the following format:\n```python\n# Your solution code here\n```"""
+		#	if starter_code != "":
+		#		code_question += "\n\n" + "Solve the problem starting with the provided function header.\n\nFunction header:\n" + "```\n" + starter_code + "\n```"
+		#		code_question += "\n\n" + code_instruction_hasstartercode
+		#	else:
+		#		code_question += "\n\n" + code_instruction_nostartercode
+		#
+		#	final_prompt = "<|im_start|>system\n" + system_instruction + "<|im_end|>\n<|im_start|>user\n" + code_question + "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+		#
+		#	4. Our inference engine for evaluation is vLLM==0.7.3 using top-p=0.95, temperature=0.6, max_tokens=32768.
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype="auto", device_map="auto")
+
+		prompt = "Jen enters a lottery by picking $4$ distinct numbers from $S=\\{1,2,3,\\cdots,9,10\\}.$ $4$ numbers are randomly chosen from $S.$ She wins a prize if at least two of her numbers were $2$ of the randomly chosen numbers, and wins the grand prize if all four of her numbers were the randomly chosen numbers. The probability of her winning the grand prize given that she won a prize is $\\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$."
+		messages = [{"role": "user", "content": prompt}]
+
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to("cuda")
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=32768,
+			temperature=0.6,
+			top_p=0.95
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(response)
 
 # REF [site] >> https://github.com/microsoft/CodeBERT
 def codebert_example():
@@ -10432,6 +10603,26 @@ def trajectory_transformer_example():
 			return_dict=True,
 		)
 
+# REF [site] >> https://huggingface.co/nvidia
+def nemotron_4_example():
+	# Models:
+	#	nvidia/Nemotron-4-340B-Base
+	#	nvidia/Nemotron-4-340B-Reward
+	#	nvidia/Nemotron-4-340B-Instruct
+
+	# Inference server:
+	#	https://catalog.ngc.nvidia.com/orgs/nvidia/containers/nemo
+	#
+	#	docker pull nvcr.io/nvidia/nemo:25.04
+
+	# Usage:
+	#	Deployment and inference with Nemotron-4-340B can be done in three steps using NeMo Framework:
+	#	1. Create a Python script to interact with the deployed model.
+	#	2. Create a Bash script to start the inference server.
+	#	3. Schedule a Slurm job to distribute the model across 2 nodes and associate them with the inference server.
+
+	raise NotImplementedError
+
 # REF [site] >>
 #	https://huggingface.co/nvidia
 #	https://github.com/NVIDIA/Cosmos
@@ -10856,6 +11047,11 @@ def main():
 	#rag_example()
 	#rag_facebook_example()
 
+	# References:
+	#	https://developer.nvidia.com/nemo-retriever
+	#	https://github.com/NVIDIA-AI-Blueprints/rag
+	#	https://build.nvidia.com/nvidia/build-an-enterprise-rag-pipeline
+
 	#-----
 	# Reasoning.
 
@@ -10865,6 +11061,7 @@ def main():
 	#s1_example()  # s1.
 	#exaone_deep_example()  # EXAONE Deep.
 	#llama_nemotron_example()  # Llama Nemotron.
+	#open_reasoning_nemotron_example()  # OpenReasoning-Nemotron.
 	#phi_4_reasoning_example()  # Phi-4-reasoning.
 	#magistral_example()  # Magistral-Small. Not yet implemented.
 
@@ -10880,6 +11077,7 @@ def main():
 	#deepseek_prover_example()  # DeepSeek-Prover.
 	#ace_math_example()  # AceMath, AceMath-RL.
 	#open_math_example()  # OpenMath, OpenMath2.
+	#ace_reason_example()  # AceReason-Nemotron, AceReason-Nemotron 1.1.
 
 	#-----
 	# Code.
@@ -10988,6 +11186,10 @@ def main():
 	#donut_example()
 	#donut_invoice_test()  # Not yet completed.
 
+	# References:
+	#	https://developer.nvidia.com/blog/approaches-to-pdf-data-extraction-for-information-retrieval
+	#	https://developer.nvidia.com/blog/nvidia-nemo-retriever-delivers-accurate-multimodal-pdf-data-extraction-15x-faster/
+
 	#-----
 	# Table.
 
@@ -11031,6 +11233,12 @@ def main():
 	#trajectory_transformer_example()  # Trajectory transformer.
 
 	#--------------------
+	# Foundation models.
+
+	# Nemotron-4-340B is a large language model (LLM) that can be used as part of a synthetic data generation pipeline to create training data that helps researchers and developers build their own LLMs.
+	#nemotron_4_example()  # Nemotron-4. Not yet implemented.
+
+	#-----
 	# World models.
 
 	#cosmos_example()  # Not yet implemented.
