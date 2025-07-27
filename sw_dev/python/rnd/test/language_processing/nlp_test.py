@@ -244,9 +244,33 @@ def voxtral_example():
 			print("=" * 80)
 
 def main():
+	# Natural Language Processing (NLP)
+
+	# References:
+	#	./nltk_test.py  # Natural Language Toolkit (NLTK)
+	#	./spacy_test.py  # spaCy
+	#	./keras_nlp_test.py  # KerasNLP
+	#	./torchtext_test.py  # TorchText
+
+	# Korean NLP
+	#	./konlpy_test.py  # KoNLPy
+	#	./koalanlp_test.py  # KoalaNLP
+
+	# Topic modeling
+	#	./gensim_test.py  # Gensim
+
+	#-----
 	# Chat
+
 	voxtral_example()  # Voxtral
 	# Refer to canary_qwen_example() in ./speech_processing_test.py
+
+	#-----
+	# Augmentation
+
+	# References:
+	#	./nlpaug_test.py
+	#	./textattack_test.py  # TextAttack
 
 #--------------------------------------------------------------------
 

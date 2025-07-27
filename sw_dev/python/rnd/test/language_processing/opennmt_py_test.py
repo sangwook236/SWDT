@@ -1582,6 +1582,8 @@ def main():
 	im2latex_example()
 	#simple_example()  # Not yet completed.
 
+	# Refer to ./ctranslate2_test.py
+
 #--------------------------------------------------------------------
 
 if '__main__' == __name__:
