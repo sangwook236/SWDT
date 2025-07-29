@@ -643,9 +643,9 @@ def main():
 	#	Refer to langchain_test.py
 
 	# NVIDIA Agent Intelligence Toolkit (AIQ Toolkit)
-	#	https://developer.nvidia.com/agent-intelligence-toolkit
+	#	https://developer.nvidia.com/nemo-agent-toolkit
 	#	https://docs.nvidia.com/aiqtoolkit/latest/index.html
-	#	https://github.com/NVIDIA/AIQToolkit
+	#	https://github.com/NVIDIA/NeMo-Agent-Toolkit
 
 	# Smolagents AI Agent Framework
 	#	https://smolagents.org/
