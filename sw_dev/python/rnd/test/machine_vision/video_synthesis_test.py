@@ -414,6 +414,337 @@ def text_or_image_to_video_example() -> None:
 	#	Text2Video-Zero
 	# Optimize
 
+# REF [site] >> https://huggingface.co/zai-org
+def cog_video_example() -> None:
+	# Models:
+	#	zai-org/CogVideoX-2b
+	#	zai-org/CogVideoX-5b
+	#	zai-org/CogVideoX-5b-I2V  # Image-to-video
+	#
+	#	zai-org/CogVideoX1.5-5B
+	#	zai-org/CogVideoX1.5-5B-I2V  # Image-to-video
+	#	zai-org/CogVideoX1.5-5B-SAT
+
+	# Install:
+	#	pip install --upgrade transformers accelerate diffusers imageio-ffmpeg
+	#		diffusers>=0.30.1
+	#		transformers>=4.46.2
+	#		accelerate>=1.1.1
+	#		imageio-ffmpeg>=0.5.1
+
+	if False:
+		import torch
+		import diffusers
+		from diffusers.utils import export_to_video
+
+		model_id = "THUDM/CogVideoX-2b"
+		#model_id = "THUDM/CogVideoX-5b"
+
+		prompt = "A panda, dressed in a small, red jacket and a tiny hat, sits on a wooden stool in a serene bamboo forest. The panda's fluffy paws strum a miniature acoustic guitar, producing soft, melodic tunes. Nearby, a few other pandas gather, watching curiously and some clapping in rhythm. Sunlight filters through the tall bamboo, casting a gentle glow on the scene. The panda's face is expressive, showing concentration and joy as it plays. The background includes a small, flowing stream and vibrant green foliage, enhancing the peaceful and magical atmosphere of this unique musical performance."
+
+		pipe = diffusers.CogVideoXPipeline.from_pretrained(
+			model_id,
+			torch_dtype=torch.float16
+			#torch_dtype=torch.bfloat16
+		)
+
+		pipe.enable_model_cpu_offload()
+		pipe.enable_sequential_cpu_offload()
+		pipe.vae.enable_slicing()
+		pipe.vae.enable_tiling()
+
+		video = pipe(
+			prompt=prompt,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=49,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if False:
+		# Quantized Inference
+
+		# To get started, PytorchAO needs to be installed from the GitHub source and PyTorch Nightly.
+		# Source and nightly installation is only required until next release.
+
+		import torch
+		import transformers
+		import diffusers
+		from diffusers.utils import export_to_video
+		from torchao.quantization import quantize_, int8_weight_only, int8_dynamic_activation_int8_weight
+
+		model_id = "THUDM/CogVideoX-2b"
+		#model_id = "THUDM/CogVideoX-5b"
+
+		quantization = int8_weight_only
+
+		text_encoder = transformers.T5EncoderModel.from_pretrained("THUDM/CogVideoX-5b", subfolder="text_encoder", torch_dtype=torch.bfloat16)
+		quantize_(text_encoder, quantization())
+
+		transformer = diffusers.CogVideoXTransformer3DModel.from_pretrained(model_id, subfolder="transformer", torch_dtype=torch.bfloat16)
+		quantize_(transformer, quantization())
+
+		vae = diffusers.AutoencoderKLCogVideoX.from_pretrained(model_id, subfolder="vae", torch_dtype=torch.bfloat16)
+		quantize_(vae, quantization())
+
+		# Create pipeline and run inference
+		pipe = diffusers.CogVideoXPipeline.from_pretrained(
+			model_id,
+			text_encoder=text_encoder,
+			transformer=transformer,
+			vae=vae,
+			torch_dtype=torch.bfloat16,
+		)
+		pipe.enable_model_cpu_offload()
+		pipe.vae.enable_tiling()
+
+		prompt = "A panda, dressed in a small, red jacket and a tiny hat, sits on a wooden stool in a serene bamboo forest. The panda's fluffy paws strum a miniature acoustic guitar, producing soft, melodic tunes. Nearby, a few other pandas gather, watching curiously and some clapping in rhythm. Sunlight filters through the tall bamboo, casting a gentle glow on the scene. The panda's face is expressive, showing concentration and joy as it plays. The background includes a small, flowing stream and vibrant green foliage, enhancing the peaceful and magical atmosphere of this unique musical performance."
+
+		video = pipe(
+			prompt=prompt,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=49,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if False:
+		import torch
+		import diffusers
+		from diffusers.utils import export_to_video, load_image
+
+		prompt = "A little girl is riding a bicycle at high speed. Focused, detailed, realistic."
+		image = load_image(image="input.jpg")
+		pipe = diffusers.CogVideoXImageToVideoPipeline.from_pretrained(
+			"THUDM/CogVideoX-5b-I2V",
+			torch_dtype=torch.bfloat16
+		)
+
+		pipe.enable_sequential_cpu_offload()
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		video = pipe(
+			prompt=prompt,
+			image=image,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=49,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if False:
+		# Quantized Inference
+
+		# To get started, PytorchAO needs to be installed from the GitHub source and PyTorch Nightly.
+		# Source and nightly installation is only required until the next release.
+
+		import torch
+		import transformers
+		import diffusers
+		from diffusers.utils import export_to_video, load_image
+		from torchao.quantization import quantize_, int8_weight_only
+
+		quantization = int8_weight_only
+
+		text_encoder = transformers.T5EncoderModel.from_pretrained("THUDM/CogVideoX-5b-I2V", subfolder="text_encoder", torch_dtype=torch.bfloat16)
+		quantize_(text_encoder, quantization())
+
+		transformer = diffusers.CogVideoXTransformer3DModel.from_pretrained("THUDM/CogVideoX-5b-I2V",subfolder="transformer", torch_dtype=torch.bfloat16)
+		quantize_(transformer, quantization())
+
+		vae = diffusers.AutoencoderKLCogVideoX.from_pretrained("THUDM/CogVideoX-5b-I2V", subfolder="vae", torch_dtype=torch.bfloat16)
+		quantize_(vae, quantization())
+
+		# Create pipeline and run inference
+		pipe = diffusers.CogVideoXImageToVideoPipeline.from_pretrained(
+			"THUDM/CogVideoX-5b-I2V",
+			text_encoder=text_encoder,
+			transformer=transformer,
+			vae=vae,
+			torch_dtype=torch.bfloat16,
+		)
+
+		pipe.enable_model_cpu_offload()
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		prompt = "A little girl is riding a bicycle at high speed. Focused, detailed, realistic."
+		image = load_image(image="input.jpg")
+		video = pipe(
+			prompt=prompt,
+			image=image,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=49,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if True:
+		import torch
+		import diffusers
+		from diffusers.utils import export_to_video
+
+		prompt = "A panda, dressed in a small, red jacket and a tiny hat, sits on a wooden stool in a serene bamboo forest. The panda's fluffy paws strum a miniature acoustic guitar, producing soft, melodic tunes. Nearby, a few other pandas gather, watching curiously and some clapping in rhythm. Sunlight filters through the tall bamboo, casting a gentle glow on the scene. The panda's face is expressive, showing concentration and joy as it plays. The background includes a small, flowing stream and vibrant green foliage, enhancing the peaceful and magical atmosphere of this unique musical performance."
+
+		pipe = diffusers.CogVideoXPipeline.from_pretrained(
+			"THUDM/CogVideoX1.5-5B",
+			torch_dtype=torch.bfloat16
+		)
+
+		pipe.enable_sequential_cpu_offload()
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		video = pipe(
+			prompt=prompt,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=81,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if True:
+		# Quantized Inference
+
+		# To get started, PytorchAO needs to be installed from the GitHub source and PyTorch Nightly.
+		# Source and nightly installation is only required until the next release.
+
+		import torch
+		import transformers
+		import diffusers
+		from diffusers.utils import export_to_video
+		from torchao.quantization import quantize_, int8_weight_only
+
+		quantization = int8_weight_only
+
+		text_encoder = transformers.T5EncoderModel.from_pretrained("THUDM/CogVideoX1.5-5B", subfolder="text_encoder", torch_dtype=torch.bfloat16)
+		quantize_(text_encoder, quantization())
+
+		transformer = diffusers.CogVideoXTransformer3DModel.from_pretrained("THUDM/CogVideoX1.5-5B", subfolder="transformer", torch_dtype=torch.bfloat16)
+		quantize_(transformer, quantization())
+
+		vae = diffusers.AutoencoderKLCogVideoX.from_pretrained("THUDM/CogVideoX1.5-5B", subfolder="vae", torch_dtype=torch.bfloat16)
+		quantize_(vae, quantization())
+
+		# Create pipeline and run inference
+		pipe = diffusers.CogVideoXImageToVideoPipeline.from_pretrained(
+			"THUDM/CogVideoX1.5-5B",
+			text_encoder=text_encoder,
+			transformer=transformer,
+			vae=vae,
+			torch_dtype=torch.bfloat16,
+		)
+
+		pipe.enable_model_cpu_offload()
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		prompt = "A little girl is riding a bicycle at high speed. Focused, detailed, realistic."
+		video = pipe(
+			prompt=prompt,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=81,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if True:
+		import torch
+		import diffusers
+		from diffusers.utils import export_to_video, load_image
+
+		prompt = "A little girl is riding a bicycle at high speed. Focused, detailed, realistic."
+		image = load_image(image="input.jpg")
+		pipe = diffusers.CogVideoXImageToVideoPipeline.from_pretrained(
+			"THUDM/CogVideoX1.5-5B-I2V",
+			torch_dtype=torch.bfloat16
+		)
+
+		pipe.enable_sequential_cpu_offload()
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		video = pipe(
+			prompt=prompt,
+			image=image,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=81,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
+	if True:
+		# Quantized Inference
+
+		# To get started, PytorchAO needs to be installed from the GitHub source and PyTorch Nightly.
+		# Source and nightly installation is only required until the next release.
+
+		import torch
+		import transformers
+		import diffusers
+		from diffusers.utils import export_to_video, load_image
+		from torchao.quantization import quantize_, int8_weight_only
+
+		quantization = int8_weight_only
+
+		text_encoder = transformers.T5EncoderModel.from_pretrained("THUDM/CogVideoX1.5-5B-I2V", subfolder="text_encoder", torch_dtype=torch.bfloat16)
+		quantize_(text_encoder, quantization())
+
+		transformer = diffusers.CogVideoXTransformer3DModel.from_pretrained("THUDM/CogVideoX1.5-5B-I2V", subfolder="transformer", torch_dtype=torch.bfloat16)
+		quantize_(transformer, quantization())
+
+		vae = diffusers.AutoencoderKLCogVideoX.from_pretrained("THUDM/CogVideoX1.5-5B-I2V", subfolder="vae", torch_dtype=torch.bfloat16)
+		quantize_(vae, quantization())
+
+		# Create pipeline and run inference
+		pipe = diffusers.CogVideoXImageToVideoPipeline.from_pretrained(
+			"THUDM/CogVideoX1.5-5B-I2V",
+			text_encoder=text_encoder,
+			transformer=transformer,
+			vae=vae,
+			torch_dtype=torch.bfloat16,
+		)
+
+		pipe.enable_model_cpu_offload()
+		pipe.vae.enable_tiling()
+		pipe.vae.enable_slicing()
+
+		prompt = "A little girl is riding a bicycle at high speed. Focused, detailed, realistic."
+		image = load_image(image="input.jpg")
+		video = pipe(
+			prompt=prompt,
+			image=image,
+			num_videos_per_prompt=1,
+			num_inference_steps=50,
+			num_frames=81,
+			guidance_scale=6,
+			generator=torch.Generator(device="cuda").manual_seed(42),
+		).frames[0]
+
+		export_to_video(video, "./output.mp4", fps=8)
+
 # REF [site] >> https://huggingface.co/THUDM
 def cog_video_test() -> None:
 	# Models:
@@ -617,10 +948,14 @@ def main():
 	# Diffusion models
 	#	Refer to ./diffusion_model_test.py
 
+	#-----
+	# Text-to-video generation
+
 	#text_to_video_example()
 	#text_to_video_zero_example()
 	text_or_image_to_video_example()  # Text- or image-to-video models
 
+	#cog_video_example()  # CogVideoX, CogVideoX1.5
 	#cog_video_test()
 	#stable_video_diffusion_example()  # Not yet implemented
 	#i2vgen_xl_example()  # I2VGen-XL
