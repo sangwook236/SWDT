@@ -5003,6 +5003,129 @@ def apriel_example():
 		response = tokenizer.decode(outputs[0], skip_special_tokens=True)
 		print(response)
 
+# REF [site] >> https://huggingface.co/zai-org
+def glm_example():
+	# Models:
+	#	zai-org/GLM-4-9B-0414
+	#	zai-org/GLM-4-32B-0414
+	#	zai-org/GLM-4-32B-Base-0414
+
+	if True:
+		import re, ast, json
+
+		MODEL_PATH = "THUDM/GLM-4-9B-0414"
+		#MODEL_PATH = "THUDM/GLM-4-32B-0414"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_PATH)
+		model = transformers.AutoModelForCausalLM.from_pretrained(MODEL_PATH, device_map="auto")
+
+		def is_function_call(single_message):
+			"""Determine whether the current system message is a function call."""
+			pattern = re.compile(r'([^\n`]*?)\n({.*?})(?=\w*\n|$)', re.DOTALL)
+			matches = pattern.findall(single_message)
+			if not matches:
+				return False
+
+			func_name, args_str = matches[0]
+			func_name = func_name.strip()
+			try:
+				parsed_args = json.loads(args_str)
+			except json.JSONDecodeError:
+				try:
+					parsed_args = ast.literal_eval(args_str)
+				except:
+					return False
+			
+			return {"name": func_name, "arguments": parsed_args}
+
+		def realtime_aqi(city):
+			"""Weather Query Tool"""
+			if '北京' in city.lower():
+				return json.dumps({'city': '北京', 'aqi': '10', 'unit': 'celsius'}, ensure_ascii=False)
+			elif '上海' in city.lower():
+				return json.dumps({'city': '上海', 'aqi': '72', 'unit': 'fahrenheit'}, ensure_ascii=False)
+			else:
+				return json.dumps({'city': city, 'aqi': 'unknown'}, ensure_ascii=False)
+
+		def build_system_prompt(tools):
+			"""Construct system prompt based on the list of available tools."""
+			if tools is None:
+				tools = []
+			value = "# 可用工具"
+			contents = []
+			for tool in tools:
+				content = f"\n\n## {tool['function']['name']}\n\n{json.dumps(tool['function'], ensure_ascii=False, indent=4)}"
+				content += "\n在调用上述函数时，请使用 Json 格式表示调用的参数。"
+				contents.append(content)
+			value += "".join(contents)
+			return value
+
+		tools = [{
+			"type": "function", 
+			"function": {
+				"name": "realtime_aqi",
+				"description": "天气预报。获取实时空气质量。当前空气质量，PM2.5，PM10信息",
+				"parameters": {
+					"type": "object",
+					"properties": {
+						"city": {
+							"description": "城市名"
+						}
+					},
+					"required": [
+						"city"
+					]
+				}
+			}
+		}]
+
+		system_prompt = build_system_prompt(tools)
+
+		message = [
+			{"role": "system", "content": system_prompt},
+			{"role": "user", "content": "北京和上海今天的天气情况"}
+		]
+		print(f"User Message: {message[-1]['content']}")
+
+		while True:
+			inputs = tokenizer.apply_chat_template(
+				message,
+				return_tensors="pt",
+				add_generation_prompt=True,
+				return_dict=True,
+			).to(model.device)
+
+			generate_kwargs = {
+				"input_ids": inputs["input_ids"],
+				"attention_mask": inputs["attention_mask"],
+				"max_new_tokens": 1024,
+				"do_sample": True,
+			}
+			out = model.generate(**generate_kwargs)
+			generate_resp = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:-1], skip_special_tokens=False)
+			stop_sequence = tokenizer.decode(out[0][-1:], skip_speical_tokens=False)
+			if stop_sequence == "<|user|>":
+				print(f"Assistant Response: {generate_resp.strip()}")
+				break
+
+			function_calls = []
+			for m in generate_resp.split("<|assistant|>"):
+				fc_decode = is_function_call(m.strip())
+				if fc_decode:
+					message.append({"role": "assistant", "metadata": fc_decode['name'], "content": json.dumps(fc_decode['arguments'], ensure_ascii=False)})
+					print(f"Function Call: {fc_decode}")
+					function_calls.append(fc_decode)
+				else:
+					message.append({"role": "assistant", "content": m})
+					print(f"Assistant Response: {m.strip()}")
+			
+			for fc in function_calls:
+				function_response = realtime_aqi(
+					city=fc["arguments"]["city"],
+				)
+				print(f"Function Response: {function_response}")
+				message.append({"role": "observation", "content": function_response})
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -5686,6 +5809,180 @@ def apriel_nemotron_example():
 		response = re.findall(r"\[BEGIN FINAL RESPONSE\](.*?)\[END FINAL RESPONSE\]", output, re.DOTALL)[0].strip()
 		print("output:", output)
 		print("response:", response)
+
+# REF [site] >> https://huggingface.co/zai-org
+def glm_reasoning_example():
+	# Models:
+	#	zai-org/GLM-Z1-9B-0414
+	#	zai-org/GLM-Z1-32B-0414
+	#	zai-org/GLM-Z1-Rumination-32B-0414
+	#
+	#	zai-org/GLM-4.1V-9B-Base
+	#	zai-org/GLM-4.1V-9B-Thinking
+
+	if False:
+		MODEL_PATH = "THUDM/GLM-4-Z1-9B-0414"
+		#MODEL_PATH = "THUDM/GLM-4-Z1-32B-0414"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_PATH)
+		model = transformers.AutoModelForCausalLM.from_pretrained(MODEL_PATH, device_map="auto")
+
+		message = [{"role": "user", "content": "Let a, b be positive real numbers such that ab = a + b + 3. Determine the range of possible values for a + b."}]
+
+		inputs = tokenizer.apply_chat_template(
+			message,
+			return_tensors="pt",
+			add_generation_prompt=True,
+			return_dict=True,
+		).to(model.device)
+
+		generate_kwargs = {
+			"input_ids": inputs["input_ids"],
+			"attention_mask": inputs["attention_mask"],
+			"max_new_tokens": 4096,
+			"do_sample": False,
+		}
+		out = model.generate(**generate_kwargs)
+		print(tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True))
+
+	if False:
+		# Inference Code
+
+		MODEL_PATH = "THUDM/GLM-Z1-Rumination-32B-0414"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_PATH)
+		model = transformers.AutoModelForCausalLM.from_pretrained(MODEL_PATH, device_map="auto")
+
+		message = [{"role": "user", "content": "Let a, b be positive real numbers such that ab = a + b + 3. Determine the range of possible values for a + b."}]
+
+		inputs = tokenizer.apply_chat_template(
+			message,
+			return_tensors="pt",
+			add_generation_prompt=True,
+			return_dict=True,
+		).to(model.device)
+
+		generate_kwargs = {
+			"input_ids": inputs["input_ids"],
+			"attention_mask": inputs["attention_mask"],
+			"temperature": 0.95,
+			"top_p": 0.7,
+			"do_sample": True,
+		}
+		out = model.generate(**generate_kwargs)
+		print(tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True))
+
+	if False:
+		# Function Call
+
+		import re, json
+
+		MODEL_PATH = "THUDM/GLM-4-Z1-Rumination-32B-0414"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_PATH)
+		model = transformers.AutoModelForCausalLM.from_pretrained(MODEL_PATH, device_map="auto")
+
+		messages = [{"role": "user", "content": "Let a, b be positive real numbers such that ab = a + b + 3. Determine the range of possible values for a + b."}]
+
+		generate_kwargs = {
+			"temperature": 0.95,
+			"top_p": 0.7,
+			"do_sample": True,
+			"max_new_tokens": 16384
+		}
+
+		def get_assistant():
+			inputs = tokenizer.apply_chat_template(
+				messages,
+				return_tensors="pt",
+				add_generation_prompt=True,
+				return_dict=True,
+			).to(model.device)
+			out = model.generate(input_ids=inputs["input_ids"], **generate_kwargs)
+			return tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True).strip()
+
+		def get_observation(function_name, args):
+			content = None
+			if function_name == "search":
+				mock_search_res = [
+					{"title": "t1", "url":"url1", "snippet": "snippet_content_1"},
+					{"title": "t2", "url":"url2", "snippet": "snippet_content_2"}
+				]
+				content = "\n\n".join([f"【{i}†{res['title']}†{res['url']}\n{res['snippet']}】"] for i, res in enumerate(mock_search_res))
+			elif function_name == "click":
+				mock_click_res = "main content"
+				content = mock_click_res
+			elif function_name == "open":
+				mock_open_res = "main_content"
+				content = mock_open_res
+			else:
+				raise ValueError("unspport function name!")
+			return content
+				
+		def get_func_name_args(llm_text):
+			function_call = re.sub(r'.*?</think>', '', llm_text, flags=re.DOTALL)
+			function_call = json.loads(function_call)
+			action = function_call['name']
+			params = function_call['arguments']
+			return action, params
+
+		def pipeline():
+			end_str = "{\"name\": \"finish\", \"arguments\": {}}"
+			response = get_assistant()
+			messages.append({"role": "assistant", "content": response})
+			max_turns, turns = 35, 1
+			while not response.endswith(end_str) and turns < max_turns:
+				action, params = get_func_name_args(response)
+				observation = get_observation(action, params)
+				messages.append({"role": "observation", "content": observation})
+				response = get_assistant()
+				messages.append({"role": "assistant", "content": response})
+				turns += 1
+				
+			if response.endswith(end_str):
+				final_answer = get_assistant()
+			else:
+				final_answer = None
+			return final_answer
+
+		pipeline()
+
+	if True:
+		MODEL_PATH = "THUDM/GLM-4.1V-9B-Thinking"
+
+		messages = [{
+			"role": "user",
+			"content": [
+				{
+					"type": "image",
+					"url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Grayscale_8bits_palette_sample_image.png"
+				},
+				{
+					"type": "text",
+					"text": "describe this image"
+				}
+			],
+		}]
+
+		processor = transformers.AutoProcessor.from_pretrained(MODEL_PATH, use_fast=True)
+		model = transformers.Glm4vForConditionalGeneration.from_pretrained(
+			pretrained_model_name_or_path=MODEL_PATH,
+			torch_dtype=torch.bfloat16,
+			device_map="auto",
+		)
+
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt"
+		).to(model.device)
+
+		generated_ids = model.generate(**inputs, max_new_tokens=8192)
+
+		output_text = processor.decode(generated_ids[0][inputs["input_ids"].shape[1]:], skip_special_tokens=False)
+		print(output_text)
 
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
@@ -7527,6 +7824,76 @@ def qwen_qvq_example():
 		generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
 	)
 	print(output_text)
+
+# REF [site] >> https://huggingface.co/ydeng9
+def open_vl_thinker_example():
+	# Models:
+	#	ydeng9/OpenVLThinker-3B-v1.2
+	#	ydeng9/OpenVLThinker-7B-v1.2
+
+	from qwen_vl_utils import process_vision_info
+
+	# 1. Define model and processor names
+	model_name = "ydeng9/OpenVLThinker-7B-v1.2"
+	processor_name = "Qwen/Qwen2.5-VL-7B-Instruct"
+
+	# 2. Load the OpenVLThinker-7B model and processor
+	device = "cuda:0" if torch.cuda.is_available() else "cpu"
+	model = transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
+		model_name,
+		torch_dtype=torch.bfloat16,
+		attn_implementation="flash_attention_2",
+		device_map=device
+	)
+	processor = transformers.AutoProcessor.from_pretrained(processor_name)
+
+	# 3. Define a sample image URL and an instruction
+	image_url = "https://example.com/sample_image.jpg"  # replace with your image URL
+	instruction = "Example question"
+
+	# 4. Create a multimodal prompt using a chat message structure
+	messages = [{
+		"role": "user",
+		"content": [
+			{"type": "image", "image": image_url},
+			{"type": "text", "text": instruction},
+		],
+	}]
+
+	# 5. Generate a text prompt from the chat messages
+	text_prompt = processor.apply_chat_template(
+		messages, tokenize=False, add_generation_prompt=True
+	)
+
+	# 6. Process image (and video) inputs from the messages
+	image_inputs, video_inputs = process_vision_info(messages)
+	inputs = processor(
+		text=[text_prompt],
+		images=image_inputs,
+		videos=video_inputs,
+		padding=True,
+		return_tensors="pt",
+	).to(device)
+
+	# 7. Generate the model's response (with specified generation parameters)
+	generated_ids = model.generate(
+		**inputs,
+		do_sample=True,
+		max_new_tokens=2048,
+		top_p=0.001,
+		top_k=1,
+		temperature=0.01,
+		repetition_penalty=1.0,
+	)
+
+	# 8. Decode the generated tokens into human-readable text
+	generated_text = processor.batch_decode(
+		generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+	)[0]
+
+	# 9. Print the generated response
+	print("Generated Response:")
+	print(generated_text)
 
 # REF [site] >> https://huggingface.co/microsoft/kosmos-2-patch14-224
 def kosmos_example():
@@ -10606,7 +10973,8 @@ def main():
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
 	#smol_lm_example()  # SmolLM, SmolLM2.
 	#kimi_example()  # Kimi K2. Not yet implemented.
-	apriel_example()  # Apriel.
+	#apriel_example()  # Apriel.
+	glm_example()  # GLM-4.
 
 	#-----
 	# Retrieval-augmented generation (RAG).
@@ -10631,7 +10999,8 @@ def main():
 	#open_reasoning_nemotron_example()  # OpenReasoning-Nemotron.
 	#phi_4_reasoning_example()  # Phi-4-reasoning.
 	#magistral_example()  # Magistral-Small. Not yet implemented.
-	#apriel_nemotron_example()  # Apriel-Nemotron.
+	#apriel_nemotron_example()  # Apriel Nemotron.
+	#glm_reasoning_example()  # GLM-Z1, GLM-Z1-Rumination, GLM-V4.1-Thinking.
 
 	#-----
 	# Math.
@@ -10686,6 +11055,7 @@ def main():
 	# Visual reasoning.
 
 	#qwen_qvq_example()  # QVQ.
+	#open_vl_thinker_example()  # OpenVLThinker.
 
 	#--------------------
 	# Multimodal.
@@ -10801,6 +11171,10 @@ def main():
 	#------------------------------------------------------------
 	# Preprocessing.
 	#	https://huggingface.co/docs/transformers/main/en/preprocessing
+	#	https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/llama-nemotron-data-curation
+
+	# Prompting:
+	#	https://github.com/NVIDIA/NeMo/blob/main/tutorials/multimodal/Prompt%20Formatter%20Tutorial.ipynb
 
 	#--------------------
 	# Training.
@@ -10817,6 +11191,15 @@ def main():
 
 	# Train reasoning LLMs:
 	#	https://developer.nvidia.com/blog/train-a-reasoning-capable-llm-in-one-weekend-with-nvidia-nemo
+	#		https://github.com/NVIDIA/NeMo/tree/main/tutorials/llm/reasoning
+
+	# Train multilingual LLMs:
+	#	https://developer.nvidia.com/blog/training-localized-multilingual-llms-with-nvidia-nemo-part-1/
+	#	https://developer.nvidia.com/blog/training-localized-multilingual-llms-with-nvidia-nemo-part-2/
+
+	#--------------------
+	# Evaluation.
+	#	https://github.com/NVIDIA/NeMo/tree/main/tutorials/llm/reasoning/evaluation
 
 	#--------------------
 	# Data and model parallelism.
