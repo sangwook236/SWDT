@@ -275,12 +275,14 @@ def train_person_keypoints():
 	#torch.onnx.export(model, input_tensors, './person_keypoint_rcnn_mobilenet.onnx', opset_version=11)
 
 def main():
-	# Keypoint detection.
+	# Keypoint detection
 	detect_person_keypoints()
 	#train_person_keypoints()  # Not yet completed.
 
-	# Object detection & instance segmentation.
+	# Object detection & instance segmentation
 	#	REF [file] >> ./pytorch_object_detection.py
+	# Segmentation
+	#	REF [file] >> ./pytorch_segmentation.py
 
 #--------------------------------------------------------------------
 

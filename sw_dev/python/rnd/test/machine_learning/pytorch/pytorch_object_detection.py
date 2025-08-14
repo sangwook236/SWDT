@@ -406,7 +406,7 @@ def rcnn_torchvision_tutorial(is_instance_segmentation=True):
 		visualize_object_detection([img.mul(255).permute(1, 2, 0).byte().numpy() for img in images], predictions, BOX_SCORE_THRESHOLD)
 
 def main():
-	# Object detection.
+	# Object detection
 	#	REF [site] >> https://github.com/pytorch/vision/tree/main/references/detection
 	#
 	#	Faster R-CNN ResNet-50 FPN
@@ -419,13 +419,15 @@ def main():
 	#	Mask R-CNN
 	#	Keypoint R-CNN
 
-	# Object detection & instance segmentation.
+	# Object detection & instance segmentation
 	#	REF [file] >> ./pytorch_model.py
 
 	rcnn_torchvision_tutorial(is_instance_segmentation=True)
 
-	# Keypoint detection.
+	# Keypoint detection
 	#	REF [file] >> ./pytorch_keypoint_detection.py
+	# Segmentation
+	#	REF [file] >> ./pytorch_segmentation.py
 
 #--------------------------------------------------------------------
 
