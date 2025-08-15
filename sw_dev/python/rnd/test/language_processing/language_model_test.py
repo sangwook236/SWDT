@@ -531,6 +531,35 @@ def gpt4all_example():
 		print(response)
 		session.close()
 
+# REF [site] >> https://huggingface.co/openai
+def gpt_oss_example():
+	# Models:
+	#	openai/gpt-oss-20b
+	#	openai/gpt-oss-120b
+
+	# Install:
+	#	pip install -U transformers kernels torch
+
+	model_id = "openai/gpt-oss-20b"
+	#model_id = "openai/gpt-oss-120b"
+
+	pipe = transformers.pipeline(
+		"text-generation",
+		model=model_id,
+		torch_dtype="auto",
+		device_map="auto",
+	)
+
+	messages = [
+		{"role": "user", "content": "Explain quantum mechanics clearly and concisely."},
+	]
+
+	outputs = pipe(
+		messages,
+		max_new_tokens=256,
+	)
+	print(outputs[0]["generated_text"][-1])
+
 def bert_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_bert.py
 
@@ -10908,6 +10937,8 @@ def main():
 	#kakao_brain_gpt_test()  # KoGPT.
 
 	#gpt4all_example()  # Not correctly working.
+
+	gpt_oss_example()
 
 	#-----
 	# BERT.
