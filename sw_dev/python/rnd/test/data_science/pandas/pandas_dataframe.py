@@ -144,6 +144,9 @@ def numpy_operation():
 	print('pd.DataFrame from np.ndarray =\n', iris_df2, sep='')
 
 def main():
+	# GPU acceleration:
+	#	https://developer.nvidia.com/blog/7-drop-in-replacements-to-instantly-speed-up-your-python-data-science-workflows
+
 	if False:
 		# Set 4 options to display complete contents of a dataframe without any kind of truncation.
 		pd.set_option('display.max_rows', None)

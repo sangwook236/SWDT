@@ -280,6 +280,9 @@ def drawing_tutorial():
 	plt.show()
 
 def main():
+	# GPU acceleration:
+	#	https://developer.nvidia.com/blog/7-drop-in-replacements-to-instantly-speed-up-your-python-data-science-workflows
+
 	#basic_operation_tutorial()
 	drawing_tutorial()
 

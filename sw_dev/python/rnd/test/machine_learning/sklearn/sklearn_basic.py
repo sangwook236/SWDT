@@ -30,6 +30,9 @@ for k_fold_example():
 		y_train, y_test = y[train_index], y[test_index]
 
 def main():
+	# GPU acceleration:
+	#	https://developer.nvidia.com/blog/7-drop-in-replacements-to-instantly-speed-up-your-python-data-science-workflows
+
 	train_test_split_example()
 	k_fold_example()
 

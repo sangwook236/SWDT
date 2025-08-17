@@ -29,5 +29,11 @@ int clustering_main(int argc, char *argv[])
 	// DBSCAN.
 	//	Refer to dbscan() & dbscan_gpu() in ${SWDT_CPP_RND_HOME}/test/geometry/pcl/pcl_segmentation.cpp
 
+	// cuML:
+	//	https://github.com/rapidsai/cuml/tree/main/cpp/include/cuml/cluster
+	//	- k-means.
+	//	- Spectral clustering.
+	//	- DBSCAN & HDBSCAN.
+
 	return 0;
 }
