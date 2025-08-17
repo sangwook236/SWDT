@@ -5547,19 +5547,29 @@ Please reason step by step, and you should write the correct option alphabet (A,
 def llama_nemotron_example():
 	# Models:
 	#	nvidia/Llama-3.1-Nemotron-Nano-8B-v1
+	#	nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1
 	#	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
+	#	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1-FP8
+	#
 	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1
-	#	nvidia/Llama-Nemotron-Post-Training-Dataset
+	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1-FP8
+	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1_5
+	#	nvidia/Llama-3_3-Nemotron-Super-49B-v1_5-FP8
+	#
+	#	nvidia/Llama-3.3-Nemotron-70B-Select
+	#	nvidia/Llama-3.3-Nemotron-70B-Edit
+	#	nvidia/Llama-3.3-Nemotron-70B-Feedback
 
 	if True:
 		# Reasoning on
 
-		if True:
+		if False:
 			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
 			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
 			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
 		else:
-			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			#model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			model_id = "nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1"
 			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 		tokenizer.pad_token_id = tokenizer.eos_token_id
@@ -5582,12 +5592,14 @@ def llama_nemotron_example():
 	if True:
 		# Reasoning off
 	
-		if True:
+		if False:
 			#model_id = "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1"
 			model_id = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
 			model_kwargs = {"torch_dtype": torch.bfloat16, "trust_remote_code": True, "device_map": "auto"}
 		else:
-			model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			#model_id = "nvidia/Llama-3.1-Nemotron-Nano-8B-v1"
+			model_id = "nvidia/Llama-3.1-Nemotron-Nano-4B-v1.1"
+			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
 			model_kwargs = {"torch_dtype": torch.bfloat16, "device_map": "auto"}
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 		tokenizer.pad_token_id = tokenizer.eos_token_id
@@ -5605,6 +5617,90 @@ def llama_nemotron_example():
 		thinking = "off"
 
 		print(pipeline([{"role": "system", "content": f"detailed thinking {thinking}"}, {"role": "user", "content": "Solve x*(sin(x)+2)=0"}]))
+
+	if True:
+		model_name = "nvidia/Llama-3.3-Nemotron-70B-Select"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "What is the distance between the Earth and the Sun?"
+		good_response = "The distance from Earth to the Sun is 93 million miles"
+		bad_response = "The distance from Earth to the Sun is 39 million miles"
+
+		for response in [good_response, bad_response]:
+			messages = [{"role": "user", "content": prompt}, {"role": "assistant", "content": response}]
+			tokenized_message = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=False, return_tensors="pt", return_dict=True)
+			response_token_ids = model.generate(tokenized_message["input_ids"].cuda(), attention_mask=tokenized_message["attention_mask"].cuda(), max_new_tokens=1, return_dict_in_generate=True, output_scores=True)
+			quality = response_token_ids["scores"][0][0][0].item()
+			print(quality)
+
+		# Example quality - note that higher scores means higher quality, and scores can be negative.
+
+		# good_response: -4.78125
+		# bad_response -7.21875
+
+	if True:
+		model_name = "nvidia/Llama-3.3-Nemotron-70B-Edit"
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		def generate_edit(messages, model, tokenizer):
+			tokenized_message = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, return_tensors="pt", return_dict=True)
+			response_token_ids = model.generate(tokenized_message["input_ids"].cuda(), attention_mask=tokenized_message["attention_mask"].cuda(), max_new_tokens=4096, pad_token_id = tokenizer.eos_token_id)
+			generated_tokens =response_token_ids[:, len(tokenized_message["input_ids"][0]):]
+			generated_text = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+			return generated_text
+
+		prompt = "What is the distance between the Earth and the Sun?"
+		response = "The distance from Earth to the Sun is 93 million miles"
+		feedback = ["The response is partially helpful. It provides a concise answer to the prompt. However, the lack of additional information or context limits its usefulness. It could have been more informative by including the average distance in astronomical units (AU) and explaining the variation in distance due to the elliptical orbit."]
+		linearized_feedback = "\n\n".join(feedback) if feedback else "<None>"
+		formatted_feedback = "Edit the response to the previous prompt based on the following feedback:\n\n" + linearized_feedback
+
+		messages = [
+			{"role": "user", "content": prompt},
+			{"role": "assistant", "content": response},
+			{"role": "user", "content": formatted_feedback}
+		]
+
+		edited_response =  generate_edit(messages, model, tokenizer)
+		print(edited_response)
+
+		## Illustrative Example
+
+		# The average distance from the Earth to the Sun is approximately 93 million miles or 149.6 million kilometers.
+		# This distance is also measured in astronomical units (AU), with 1 AU being the equivalent of 93 million miles.
+		# It's important to note that this distance is not constant due to the elliptical shape of Earth's orbit around the Sun.
+		# At their closest point (perihelion), the distance is about 91.5 million miles, and at their farthest point (aphelion), it is roughly 94.5 million miles. This variation in distance results in slight changes in the amount of solar energy the Earth receives throughout the year.
+
+	if True:
+		model_name = "nvidia/Llama-3.3-Nemotron-70B-Feedback"
+		model = transformers.AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		def generate_feedback(messages, model, tokenizer, temperature=0.7):
+			tokenized_message = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, return_tensors="pt", return_dict=True)
+			response_token_ids = model.generate(tokenized_message["input_ids"].cuda(), attention_mask=tokenized_message["attention_mask"].cuda(), max_new_tokens=128, pad_token_id = tokenizer.eos_token_id, num_return_sequences=1, temperature=temperature)
+			generated_tokens =response_token_ids[:, len(tokenized_message["input_ids"][0]):]
+			generated_text = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+			return generated_text
+
+		prompt = "What is the distance between the Earth and the Sun?"
+		response = "The distance from Earth to the Sun is 93 million miles"
+
+		messages = [
+			{"role": "user", "content": prompt},
+			{"role": "assistant", "content": response},
+			{"role": "user", "content": "Evaluate the response to the previous prompt in terms of how helpful it is overall. Start the evaluation with the statement - The response is {not / slightly / partially / mostly / perfectly} helpful. Then provide a brief explanation of the evaluation in 2 to 10 sentences."}
+		]
+
+		feedback = generate_feedback(messages, model, tokenizer, temperature=0.7)
+		print(feedback)
+
+		## Illustrative example - feedback generated might not be identical since temperature sampling is used
+
+		# The response is partially helpful. It provides a concise answer to the prompt. However, the lack of additional information or context limits its usefulness. It could have been more informative by including the average distance in astronomical units (AU) and explaining the variation in distance due to the elliptical orbit.
 
 # REF [site] >> https://huggingface.co/nvidia
 def open_reasoning_nemotron_example():
@@ -5663,7 +5759,7 @@ You must use ```python for just the final solution code block with the following
 		messages,
 		max_new_tokens=64000,
 	)
-	print(outputs[0]["generated_text"][-1]['content'])
+	print(outputs[0]["generated_text"][-1]["content"])
 
 # REF [site] >> https://huggingface.co/microsoft
 def phi_4_reasoning_example():
@@ -9422,6 +9518,100 @@ def openflamingo_example():
 
 	print(f"Generated text: {tokenizer.decode(generated_text[0])}.")
 
+# REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
+def llava_example():
+	if False:
+		# Initializing a CLIP-vision config
+		vision_config = transformers.CLIPVisionConfig()
+
+		# Initializing a Llama config
+		text_config = transformers.LlamaConfig()
+
+		# Initializing a Llava llava-1.5-7b style configuration
+		configuration = transformers.LlavaConfig(vision_config, text_config)
+
+		# Initializing a model from the llava-1.5-7b style configuration
+		model = transformers.LlavaForConditionalGeneration(configuration)
+
+		# Accessing the model configuration
+		configuration = model.config
+
+	if True:
+		model = transformers.LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf")
+		processor = transformers.AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
+
+		prompt = "USER: <image>\nWhat's the content of the image? ASSISTANT:"
+		url = "https://www.ilankelman.org/stopsigns/australia.jpg"
+		image = Image.open(requests.get(url, stream=True).raw)
+
+		inputs = processor(text=prompt, images=image, return_tensors="pt")
+
+		# Generate
+		generate_ids = model.generate(**inputs, max_new_tokens=15)
+		generated = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+		print(generated)
+
+# REF [site] >> https://huggingface.co/qnguyen3
+def nano_llava_example():
+	# Models:
+	#	qnguyen3/nanoLLaVA
+
+	# Install:
+	#	pip install transformers accelerate flash_attn
+
+	import warnings
+
+	# Disable some warnings
+	transformers.logging.set_verbosity_error()
+	transformers.logging.disable_progress_bar()
+	warnings.filterwarnings("ignore")
+
+	# Set device
+	torch.set_default_device("cuda")  # or "cpu"
+
+	# Create model
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		"qnguyen3/nanoLLaVA",
+		torch_dtype=torch.float16,
+		device_map="auto",
+		trust_remote_code=True,
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(
+		"qnguyen3/nanoLLaVA",
+		trust_remote_code=True,
+	)
+
+	# Text prompt
+	prompt = "Describe this image in detail"
+
+	messages = [
+		{"role": "user", "content": f"<image>\n{prompt}"}
+	]
+	text = tokenizer.apply_chat_template(
+		messages,
+		tokenize=False,
+		add_generation_prompt=True
+	)
+
+	print(text)
+
+	text_chunks = [tokenizer(chunk).input_ids for chunk in text.split("<image>")]
+	input_ids = torch.tensor(text_chunks[0] + [-200] + text_chunks[1], dtype=torch.long).unsqueeze(0)
+
+	# Image, sample images can be found in images folder
+	image = Image.open("/path/to/image.png")
+	image_tensor = model.process_images([image], model.config).to(dtype=model.dtype)
+
+	# Generate
+	output_ids = model.generate(
+		input_ids,
+		images=image_tensor,
+		max_new_tokens=2048,
+		use_cache=True,
+	)[0]
+
+	print(tokenizer.decode(output_ids[input_ids.shape[1]:], skip_special_tokens=True).strip())
+
 # REF [site] >> https://huggingface.co/microsoft
 def phi_3_vision_example():
 	# Models:
@@ -10197,99 +10387,59 @@ def kimi_vl_example():
 		)[0]
 		print(response)
 
-# REF [site] >> https://huggingface.co/docs/transformers/en/model_doc/llava
-def llava_example():
-	if False:
-		# Initializing a CLIP-vision config
-		vision_config = transformers.CLIPVisionConfig()
-
-		# Initializing a Llama config
-		text_config = transformers.LlamaConfig()
-
-		# Initializing a Llava llava-1.5-7b style configuration
-		configuration = transformers.LlavaConfig(vision_config, text_config)
-
-		# Initializing a model from the llava-1.5-7b style configuration
-		model = transformers.LlavaForConditionalGeneration(configuration)
-
-		# Accessing the model configuration
-		configuration = model.config
-
-	if True:
-		model = transformers.LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf")
-		processor = transformers.AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
-
-		prompt = "USER: <image>\nWhat's the content of the image? ASSISTANT:"
-		url = "https://www.ilankelman.org/stopsigns/australia.jpg"
-		image = Image.open(requests.get(url, stream=True).raw)
-
-		inputs = processor(text=prompt, images=image, return_tensors="pt")
-
-		# Generate
-		generate_ids = model.generate(**inputs, max_new_tokens=15)
-		generated = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
-		print(generated)
-
-# REF [site] >> https://huggingface.co/qnguyen3
-def nano_llava_example():
+# REF [site] >> https://huggingface.co/LiquidAI
+def lfm2_vl_example():
 	# Models:
-	#	qnguyen3/nanoLLaVA
+	#	LiquidAI/LFM2-VL-450M
+	#	LiquidAI/LFM2-VL-1.6B
 
-	# Install:
-	#	pip install transformers accelerate flash_attn
+	"""
+	Chat template:
+		<|startoftext|><|im_start|>system
+		You are a helpful multimodal assistant by Liquid AI.<|im_end|>
+		<|im_start|>user
+		<image>Describe this image.<|im_end|>
+		<|im_start|>assistant
+		This image shows a Caenorhabditis elegans (C. elegans) nematode.<|im_end|>
+	"""
 
-	import warnings
+	# Load model and processor
+	model_id = "LiquidAI/LFM2-VL-450M"
+	#model_id = "LiquidAI/LFM2-VL-1.6B"
 
-	# Disable some warnings
-	transformers.logging.set_verbosity_error()
-	transformers.logging.disable_progress_bar()
-	warnings.filterwarnings("ignore")
-
-	# Set device
-	torch.set_default_device("cuda")  # or "cpu"
-
-	# Create model
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		"qnguyen3/nanoLLaVA",
-		torch_dtype=torch.float16,
+	model = transformers.AutoModelForImageTextToText.from_pretrained(
+		model_id,
 		device_map="auto",
-		trust_remote_code=True,
+		torch_dtype="bfloat16",
+		trust_remote_code=True
 	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(
-		"qnguyen3/nanoLLaVA",
-		trust_remote_code=True,
-	)
+	processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
-	# Text prompt
-	prompt = "Describe this image in detail"
-
-	messages = [
-		{"role": "user", "content": f"<image>\n{prompt}"}
+	# Load image and create conversation
+	url = "https://www.ilankelman.org/stopsigns/australia.jpg"
+	image = transformers.image_utils.load_image(url)
+	conversation = [
+		{
+			"role": "user",
+			"content": [
+				{"type": "image", "image": image},
+				{"type": "text", "text": "What is in this image?"},
+			],
+		},
 	]
-	text = tokenizer.apply_chat_template(
-		messages,
-		tokenize=False,
-		add_generation_prompt=True
-	)
 
-	print(text)
+	# Generate Answer
+	inputs = processor.apply_chat_template(
+		conversation,
+		add_generation_prompt=True,
+		return_tensors="pt",
+		return_dict=True,
+		tokenize=True,
+	).to(model.device)
+	outputs = model.generate(**inputs, max_new_tokens=64)
+	processor.batch_decode(outputs, skip_special_tokens=True)[0]
 
-	text_chunks = [tokenizer(chunk).input_ids for chunk in text.split("<image>")]
-	input_ids = torch.tensor(text_chunks[0] + [-200] + text_chunks[1], dtype=torch.long).unsqueeze(0)
-
-	# Image, sample images can be found in images folder
-	image = Image.open("/path/to/image.png")
-	image_tensor = model.process_images([image], model.config).to(dtype=model.dtype)
-
-	# Generate
-	output_ids = model.generate(
-		input_ids,
-		images=image_tensor,
-		max_new_tokens=2048,
-		use_cache=True,
-	)[0]
-
-	print(tokenizer.decode(output_ids[input_ids.shape[1]:], skip_special_tokens=True).strip())
+	# This image depicts a vibrant street scene in what appears to be a Chinatown or similar cultural area. The focal point is a large red stop sign with white lettering, mounted on a pole.
 
 # REF [site] >>
 #	https://huggingface.co/Efficient-Large-Model
@@ -10584,6 +10734,82 @@ def nemotron_4_example():
 	#	3. Schedule a Slurm job to distribute the model across 2 nodes and associate them with the inference server.
 
 	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/LiquidAI
+def lfm2_example():
+	# Models:
+	#	LiquidAI/LFM2-350M
+	#	LiquidAI/LFM2-700M
+	#	LiquidAI/LFM2-1.2B
+	#	LiquidAI/LFM2-350M-GGUF
+	#	LiquidAI/LFM2-700M-GGUF
+	#	LiquidAI/LFM2-1.2B-GGUF
+
+	"""
+	Chat template:
+		<|startoftext|><|im_start|>system
+		You are a helpful assistant trained by Liquid AI.<|im_end|>
+		<|im_start|>user
+		What is C. elegans?<|im_end|>
+		<|im_start|>assistant
+		It's a tiny nematode that lives in temperate soil environments.<|im_end|>
+
+	Tool use:
+		1. Function definition: LFM2 takes JSON function definitions as input (JSON objects between <|tool_list_start|> and <|tool_list_end|> special tokens), usually in the system prompt
+		2. Function call: LFM2 writes Pythonic function calls (a Python list between <|tool_call_start|> and <|tool_call_end|> special tokens), as the assistant answer.
+		3. Function execution: The function call is executed and the result is returned (string between <|tool_response_start|> and <|tool_response_end|> special tokens), as a "tool" role.
+		4. Final answer: LFM2 interprets the outcome of the function call to address the original user prompt in plain text.
+
+		<|startoftext|><|im_start|>system
+		List of tools: <|tool_list_start|>[{"name": "get_candidate_status", "description": "Retrieves the current status of a candidate in the recruitment process", "parameters": {"type": "object", "properties": {"candidate_id": {"type": "string", "description": "Unique identifier for the candidate"}}, "required": ["candidate_id"]}}]<|tool_list_end|><|im_end|>
+		<|im_start|>user
+		What is the current status of candidate ID 12345?<|im_end|>
+		<|im_start|>assistant
+		<|tool_call_start|>[get_candidate_status(candidate_id="12345")]<|tool_call_end|>Checking the current status of candidate ID 12345.<|im_end|>
+		<|im_start|>tool
+		<|tool_response_start|>{"candidate_id": "12345", "status": "Interview Scheduled", "position": "Clinical Research Associate", "date": "2023-11-20"}<|tool_response_end|><|im_end|>
+		<|im_start|>assistant
+		The candidate with ID 12345 is currently in the "Interview Scheduled" stage for the position of Clinical Research Associate, with an interview date set for 2023-11-20.<|im_end|>
+	"""
+
+	# Load model and tokenizer
+	model_id = "LiquidAI/LFM2-350M"
+	#model_id = "LiquidAI/LFM2-700M"
+	#model_id = "LiquidAI/LFM2-1.2B"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_id,
+		device_map="auto",
+		torch_dtype="bfloat16",
+	#	attn_implementation="flash_attention_2" <- uncomment on compatible GPU
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+
+	# Generate answer
+	prompt = "What is C. elegans?"
+	input_ids = tokenizer.apply_chat_template(
+		[{"role": "user", "content": prompt}],
+		add_generation_prompt=True,
+		return_tensors="pt",
+		tokenize=True,
+	).to(model.device)
+
+	output = model.generate(
+		input_ids,
+		do_sample=True,
+		temperature=0.3,
+		min_p=0.15,
+		repetition_penalty=1.05,
+		max_new_tokens=512,
+	)
+
+	print(tokenizer.decode(output[0], skip_special_tokens=False))
+
+	# <|startoftext|><|im_start|>user
+	# What is C. elegans?<|im_end|>
+	# <|im_start|>assistant
+	# C. elegans, also known as Caenorhabditis elegans, is a small, free-living
+	# nematode worm (roundworm) that belongs to the phylum Nematoda.
 
 # REF [site] >>
 #	https://huggingface.co/nvidia
@@ -11108,6 +11334,9 @@ def main():
 	#blip_example()  # BLIP.
 	#openflamingo_example()  # OpenFlamingo.
 
+	#llava_example()  # LLaVa.
+	#nano_llava_example()  # nanoLLaVA.
+
 	#phi_3_vision_example()  # Phi-3-vision, Phi-3.5-vision.
 	#pali_gemma_example()  # PaliGemma, PaliGemma 2.
 	#fuyu_example()  # Fuyu.
@@ -11117,9 +11346,7 @@ def main():
 	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2.
 	#llama_vision_example()  # Llama 3.2 Vision.
 	#kimi_vl_example()  # Kimi-VL.
-
-	#llava_example()  # LLaVa.
-	#nano_llava_example()  # nanoLLaVA.
+	#lfm2_vl_example()  # LFM2-VL.
 
 	#-----
 	# Video and language.
@@ -11188,6 +11415,7 @@ def main():
 
 	# Nemotron-4-340B is a large language model (LLM) that can be used as part of a synthetic data generation pipeline to create training data that helps researchers and developers build their own LLMs.
 	#nemotron_4_example()  # Nemotron-4. Not yet implemented.
+	#lfm2_example()  # Liquid Foundation Models 2 (LFM2).
 
 	#-----
 	# World models.
@@ -11209,6 +11437,9 @@ def main():
 
 	#--------------------
 	# Training.
+
+	# LLM course:
+	#	https://github.com/mlabonne/llm-course
 
 	# Fine-tune a pretrained model:
 	#	https://huggingface.co/docs/transformers/main/en/training
