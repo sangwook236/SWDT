@@ -9,25 +9,25 @@ import transformers
 # REF [site] >> https://huggingface.co/docs/transformers/main/model_doc/sam
 def segment_anything_example():
 	# Models:
-	#	facebook/sam-vit-base.
-	#	facebook/sam-vit-large: ~1.25GB.
-	#	facebook/sam-vit-huge: ~2.56GB.
+	#	facebook/sam-vit-base
+	#	facebook/sam-vit-large: ~1.25GB
+	#	facebook/sam-vit-huge: ~2.56GB
 
 	device = "cuda" if torch.cuda.is_available() else "cpu"
 
 	if False:
-		# Initializing a SamConfig with "facebook/sam-vit-huge" style configuration.
+		# Initializing a SamConfig with "facebook/sam-vit-huge" style configuration
 		configuration = transformers.SamConfig()
 
-		# Initializing a SamModel (with random weights) from the "facebook/sam-vit-huge" style configuration.
+		# Initializing a SamModel (with random weights) from the "facebook/sam-vit-huge" style configuration
 		model = transformers.SamModel(configuration)
 
-		# Accessing the model configuration.
+		# Accessing the model configuration
 		configuration = model.config
 
-		# We can also initialize a SamConfig from a SamVisionConfig, SamPromptEncoderConfig, and SamMaskDecoderConfig.
+		# We can also initialize a SamConfig from a SamVisionConfig, SamPromptEncoderConfig, and SamMaskDecoderConfig
 
-		# Initializing SAM vision, SAM Q-Former and language model configurations.
+		# Initializing SAM vision, SAM Q-Former and language model configurations
 		vision_config = transformers.SamVisionConfig()
 		prompt_encoder_config = transformers.SamPromptEncoderConfig()
 		mask_decoder_config = transformers.SamMaskDecoderConfig()
@@ -40,7 +40,7 @@ def segment_anything_example():
 
 		img_url = "https://huggingface.co/ybelkada/segment-anything/resolve/main/assets/car.png"
 		raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
-		input_points = [[[450, 600]]]  # 2D location of a window in the image.
+		input_points = [[[450, 600]]]  # 2D location of a window in the image
 		inputs = processor(raw_image, input_points=input_points, return_tensors="pt").to(device)
 
 		outputs = model(**inputs)
@@ -102,21 +102,21 @@ def segment_anything_2_example():
 # REF [site] >> https://huggingface.co/nvidia
 def segformer_example():
 	# Models:
-	#	nvidia/segformer-b0-finetuned-cityscapes-768-768.
-	#	nvidia/segformer-b0-finetuned-cityscapes-512-1024.
-	#	nvidia/segformer-b0-finetuned-cityscapes-640-1280.
-	#	nvidia/segformer-b0-finetuned-cityscapes-1024-1024.
-	#	nvidia/segformer-b1-finetuned-cityscapes-1024-1024.
-	#	nvidia/segformer-b2-finetuned-cityscapes-1024-1024.
-	#	nvidia/segformer-b3-finetuned-cityscapes-1024-1024.
-	#	nvidia/segformer-b4-finetuned-cityscapes-1024-1024.
-	#	nvidia/segformer-b5-finetuned-cityscapes-1024-1024.
-	#	nvidia/segformer-b0-finetuned-ade-512-512.
-	#	nvidia/segformer-b1-finetuned-ade-512-512.
-	#	nvidia/segformer-b2-finetuned-ade-512-512.
-	#	nvidia/segformer-b3-finetuned-ade-512-512.
-	#	nvidia/segformer-b4-finetuned-ade-512-512.
-	#	nvidia/segformer-b5-finetuned-ade-640-640.
+	#	nvidia/segformer-b0-finetuned-cityscapes-768-768
+	#	nvidia/segformer-b0-finetuned-cityscapes-512-1024
+	#	nvidia/segformer-b0-finetuned-cityscapes-640-1280
+	#	nvidia/segformer-b0-finetuned-cityscapes-1024-1024
+	#	nvidia/segformer-b1-finetuned-cityscapes-1024-1024
+	#	nvidia/segformer-b2-finetuned-cityscapes-1024-1024
+	#	nvidia/segformer-b3-finetuned-cityscapes-1024-1024
+	#	nvidia/segformer-b4-finetuned-cityscapes-1024-1024
+	#	nvidia/segformer-b5-finetuned-cityscapes-1024-1024
+	#	nvidia/segformer-b0-finetuned-ade-512-512
+	#	nvidia/segformer-b1-finetuned-ade-512-512
+	#	nvidia/segformer-b2-finetuned-ade-512-512
+	#	nvidia/segformer-b3-finetuned-ade-512-512
+	#	nvidia/segformer-b4-finetuned-ade-512-512
+	#	nvidia/segformer-b5-finetuned-ade-640-640
 
 	feature_extractor = transformers.SegformerFeatureExtractor.from_pretrained("nvidia/segformer-b0-finetuned-cityscapes-1024-1024")
 	#processor = transformers.SegformerImageProcessor.from_pretrained("nvidia/segformer-b0-finetuned-cityscapes-1024-1024")
@@ -128,14 +128,14 @@ def segformer_example():
 	inputs = feature_extractor(images=image, return_tensors="pt")
 	#inputs = processor(images=image, return_tensors="pt")
 	outputs = model(**inputs)
-	logits = outputs.logits  # Shape: (batch_size, num_labels, height / 4, width / 4).
+	logits = outputs.logits  # Shape: (batch_size, num_labels, height / 4, width / 4)
 	print(f"{logits=}.")
 
 def main():
-	segment_anything_example()  # Segment Anything (SAM).
-	#segment_anything_2_example()  # Segment Anything 2 (SAM 2).
+	segment_anything_example()  # Segment Anything (SAM)
+	#segment_anything_2_example()  # Segment Anything 2 (SAM 2)
 
-	#segformer_example()  # SegFormer.
+	#segformer_example()  # SegFormer
 
 #--------------------------------------------------------------------
 

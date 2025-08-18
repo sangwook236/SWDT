@@ -29,8 +29,11 @@ def facebook_sam_predictor_example():
 		w, h = box[2] - box[0], box[3] - box[1]
 		ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor="green", facecolor=(0,0,0,0), lw=2))
 
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
 	# Example image.
-	image = cv2.imread("./truck.jpg")
+	image = cv2.imread("./images/truck.jpg")
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 	plt.figure(figsize=(10, 10))
@@ -40,13 +43,14 @@ def facebook_sam_predictor_example():
 
 	# Selecting objects with SAM.
 	if False:
-		sam_checkpoint = "sam_vit_h_4b8939.pth"
-		model_type = "vit_h"
-	else:
-		sam_checkpoint = "sam_vit_l_0b3195.pth"
+		sam_checkpoint = "./checkpoints/sam_vit_b_01ec64.pth"
+		model_type = "vit_b"
+	elif True:
+		sam_checkpoint = "./checkpoints/sam_vit_l_0b3195.pth"
 		model_type = "vit_l"
-
-	device = "cuda" if torch.cuda.is_available() else "cpu"
+	else:
+		sam_checkpoint = "./checkpoints/sam_vit_h_4b8939.pth"
+		model_type = "vit_h"
 
 	sam = segment_anything.sam_model_registry[model_type](checkpoint=sam_checkpoint)
 	sam.to(device=device)
@@ -57,7 +61,7 @@ def facebook_sam_predictor_example():
 	input_point = np.array([[500, 375]])
 	input_label = np.array([1])
 
-	plt.figure(figsize=(10,10))
+	plt.figure(figsize=(10, 10))
 	plt.imshow(image)
 	show_points(input_point, input_label, plt.gca())
 	plt.axis("on")
@@ -194,7 +198,7 @@ def facebook_sam_predictor_example():
 		[1240, 675, 1400, 750],
 	], device=sam.device)
 
-	image2 = cv2.imread("./groceries.jpg")
+	image2 = cv2.imread("./images/groceries.jpg")
 	image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2RGB)
 	image2_boxes = torch.tensor([
 		[450, 170, 520, 350],
@@ -268,8 +272,11 @@ def facebook_sam_automatic_mask_generator_example():
 			img[m] = color_mask
 		ax.imshow(img)
 
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
 	# Example image.
-	image = cv2.imread("./dog.jpg")
+	image = cv2.imread("./images/dog.jpg")
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 	plt.figure(figsize=(20,20))
@@ -279,13 +286,14 @@ def facebook_sam_automatic_mask_generator_example():
 
 	# Automatic mask generation.
 	if False:
-		sam_checkpoint = "sam_vit_h_4b8939.pth"
-		model_type = "vit_h"
-	else:
-		sam_checkpoint = "sam_vit_l_0b3195.pth"
+		sam_checkpoint = "./checkpoints/sam_vit_b_01ec64.pth"
+		model_type = "vit_b"
+	elif True:
+		sam_checkpoint = "./checkpoints/sam_vit_l_0b3195.pth"
 		model_type = "vit_l"
-
-	device = "cuda" if torch.cuda.is_available() else "cpu"
+	else:
+		sam_checkpoint = "./checkpoints/sam_vit_h_4b8939.pth"
+		model_type = "vit_h"
 
 	sam = segment_anything.sam_model_registry[model_type](checkpoint=sam_checkpoint)
 	sam.to(device=device)
@@ -333,7 +341,40 @@ def facebook_sam_automatic_mask_generator_example():
 	plt.axis("off")
 	plt.show()
 
-# REF [site] >> https://github.com/facebookresearch/segment-anything-2/blob/main/notebooks/image_predictor_example.ipynb
+# REF [site] >> https://github.com/facebookresearch/sam2
+def facebook_sam2_1_image_prediction_get_started():
+	import torch
+	from sam2.build_sam import build_sam2
+	from sam2.sam2_image_predictor import SAM2ImagePredictor
+
+	checkpoint = "./checkpoints/sam2.1_hiera_large.pt"
+	model_cfg = "./configs/sam2.1_hiera_l.yaml"
+	predictor = SAM2ImagePredictor(build_sam2(model_cfg, checkpoint))
+
+	with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
+		predictor.set_image(<your_image>)
+		masks, _, _ = predictor.predict(<input_prompts>)
+
+# REF [site] >> https://github.com/facebookresearch/sam2
+def facebook_sam2_1_video_prediction_get_started():
+	import torch
+	from sam2.build_sam import build_sam2_video_predictor
+
+	checkpoint = "./checkpoints/sam2.1_hiera_large.pt"
+	model_cfg = "./configs/sam2.1_hiera_l.yaml"
+	predictor = build_sam2_video_predictor(model_cfg, checkpoint)
+
+	with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
+		state = predictor.init_state(<your_video>)
+
+		# Add new prompts and instantly get the output on the same frame
+		frame_idx, object_ids, masks = predictor.add_new_points_or_box(state, <your_prompts>):
+
+		# Propagate the prompts to get masklets throughout the video
+		for frame_idx, object_ids, masks in predictor.propagate_in_video(state):
+			...
+
+# REF [site] >> https://github.com/facebookresearch/sam2/blob/main/notebooks/image_predictor_example.ipynb
 def facebook_sam2_image_predictor_example():
 	import os
 	# If using Apple MPS, fall back to CPU for unsupported ops
@@ -352,7 +393,7 @@ def facebook_sam2_image_predictor_example():
 		device = torch.device("mps")
 	else:
 		device = torch.device("cpu")
-	print(f"using device: {device}")
+	print(f"Device: {device}.")
 
 	if device.type == "cuda":
 		# Use bfloat16 for the entire notebook
@@ -427,8 +468,30 @@ def facebook_sam2_image_predictor_example():
 	from sam2.build_sam import build_sam2
 	from sam2.sam2_image_predictor import SAM2ImagePredictor
 
-	sam2_checkpoint = "../checkpoints/sam2_hiera_large.pt"
-	model_cfg = "sam2_hiera_l.yaml"
+	if False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_tiny.pt"
+		model_cfg = "./configs/sam2_hiera_t.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_small.pt"
+		model_cfg = "./configs/sam2_hiera_s.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_base_plus.pt"
+		model_cfg = "./configs/sam2_hiera_b+.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_large.pt"
+		model_cfg = "./configs/sam2_hiera_l.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_tiny.pt"
+		model_cfg = "./configs/sam2.1_hiera_t.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_small.pt"
+		model_cfg = "./configs/sam2.1_hiera_s.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_base_plus.pt"
+		model_cfg = "./configs/sam2.1_hiera_b+.yaml"
+	else:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_large.pt"
+		model_cfg = "./configs/sam2.1_hiera_l.yaml"
 
 	sam2_model = build_sam2(model_cfg, sam2_checkpoint, device=device)
 
@@ -574,7 +637,7 @@ def facebook_sam2_image_predictor_example():
 		None,
 		None, 
 		box_batch=boxes_batch, 
-		multimask_output=False
+		multimask_output=False,
 	)
 
 	for image, boxes, masks in zip(img_batch, boxes_batch, masks_batch):
@@ -588,8 +651,8 @@ def facebook_sam2_image_predictor_example():
 	image1 = image  # truck.jpg from above
 	image1_pts = np.array([
 		[[500, 375]],
-		[[650, 750]]
-		]) # Bx1x2 where B corresponds to number of objects 
+		[[650, 750]],
+	])  # Bx1x2 where B corresponds to number of objects 
 	image1_labels = np.array([[1], [1]])
 
 	image2_pts = np.array([
@@ -615,8 +678,7 @@ def facebook_sam2_image_predictor_example():
 			show_mask(mask, plt.gca(), random_color=True)
 		show_points(points, labels, plt.gca())
 
-
-# REF [site] >> https://github.com/facebookresearch/segment-anything-2/blob/main/notebooks/video_predictor_example.ipynb
+# REF [site] >> https://github.com/facebookresearch/sam2/blob/main/notebooks/video_predictor_example.ipynb
 def facebook_sam2_video_predictor_example():
 	import os
 	# if using Apple MPS, fall back to CPU for unsupported ops
@@ -635,7 +697,7 @@ def facebook_sam2_video_predictor_example():
 		device = torch.device("mps")
 	else:
 		device = torch.device("cpu")
-	print(f"using device: {device}")
+	print(f"Device: {device}.")
 
 	if device.type == "cuda":
 		# Use bfloat16 for the entire notebook
@@ -654,8 +716,30 @@ def facebook_sam2_video_predictor_example():
 	# Loading the SAM 2 video predictor
 	from sam2.build_sam import build_sam2_video_predictor
 
-	sam2_checkpoint = "../checkpoints/sam2_hiera_large.pt"
-	model_cfg = "sam2_hiera_l.yaml"
+	if False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_tiny.pt"
+		model_cfg = "./configs/sam2_hiera_t.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_small.pt"
+		model_cfg = "./configs/sam2_hiera_s.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_base_plus.pt"
+		model_cfg = "./configs/sam2_hiera_b+.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_large.pt"
+		model_cfg = "./configs/sam2_hiera_l.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_tiny.pt"
+		model_cfg = "./configs/sam2.1_hiera_t.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_small.pt"
+		model_cfg = "./configs/sam2.1_hiera_s.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_base_plus.pt"
+		model_cfg = "./configs/sam2.1_hiera_b+.yaml"
+	else:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_large.pt"
+		model_cfg = "./configs/sam2.1_hiera_l.yaml"
 
 	predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=device)
 
@@ -993,7 +1077,7 @@ def facebook_sam2_video_predictor_example():
 		for out_obj_id, out_mask in video_segments[out_frame_idx].items():
 			show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
 
-# REF [site] >> https://github.com/facebookresearch/segment-anything-2/blob/main/notebooks/automatic_mask_generator_example.ipynb
+# REF [site] >> https://github.com/facebookresearch/sam2/blob/main/notebooks/automatic_mask_generator_example.ipynb
 def facebook_sam2_automatic_mask_generator_example():
 	import os
 	# If using Apple MPS, fall back to CPU for unsupported ops
@@ -1012,7 +1096,7 @@ def facebook_sam2_automatic_mask_generator_example():
 		device = torch.device("mps")
 	else:
 		device = torch.device("cpu")
-	print(f"using device: {device}")
+	print(f"Device: {device}.")
 
 	if device.type == "cuda":
 		# Use bfloat16 for the entire notebook
@@ -1066,8 +1150,30 @@ def facebook_sam2_automatic_mask_generator_example():
 	from sam2.build_sam import build_sam2
 	from sam2.automatic_mask_generator import SAM2AutomaticMaskGenerator
 
-	sam2_checkpoint = "../checkpoints/sam2_hiera_large.pt"
-	model_cfg = "sam2_hiera_l.yaml"
+	if False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_tiny.pt"
+		model_cfg = "./configs/sam2_hiera_t.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_small.pt"
+		model_cfg = "./configs/sam2_hiera_s.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_base_plus.pt"
+		model_cfg = "./configs/sam2_hiera_b+.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2_hiera_large.pt"
+		model_cfg = "./configs/sam2_hiera_l.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_tiny.pt"
+		model_cfg = "./configs/sam2.1_hiera_t.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_small.pt"
+		model_cfg = "./configs/sam2.1_hiera_s.yaml"
+	elif False:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_base_plus.pt"
+		model_cfg = "./configs/sam2.1_hiera_b+.yaml"
+	else:
+		sam2_checkpoint = "./checkpoints/sam2.1_hiera_large.pt"
+		model_cfg = "./configs/sam2.1_hiera_l.yaml"
 
 	sam2 = build_sam2(model_cfg, sam2_checkpoint, device=device, apply_postprocessing=False)
 
@@ -1117,16 +1223,34 @@ def facebook_sam2_automatic_mask_generator_example():
 	plt.show() 
 
 def main():
+	# Facebook
+
 	# SAM
-	facebook_sam_predictor_example()
+	#facebook_sam_predictor_example()
 	#facebook_sam_automatic_mask_generator_example()
 
-	# SAM 2
-	facebook_sam2_image_predictor_example()
-	facebook_sam2_video_predictor_example
+	# SAM 2.1
+	#facebook_sam2_1_image_prediction_get_started()  # Not yet completed
+	#facebook_sam2_1_video_prediction_get_started()  # Not yet completed
+
+	# SAM 2 & SAM 2.1
+	#facebook_sam2_image_predictor_example()
+	#facebook_sam2_video_predictor_example()
 	#facebook_sam2_automatic_mask_generator_example()
 
-	# Hugging Face Segment Anything model.
+	# SAM to ONNX
+	#	https://github.com/facebookresearch/segment-anything
+	#		pip install onnxruntime-gpu onnx onnxscript
+	#		cd ${SAM_HOME}
+	#		python scripts/export_onnx_model.py --checkpoint path/to/checkpoints/sam_vit_l_0b3195.pth --model-type vit_l --output path/to/checkpoints/sam_vit_l_0b3195.onnx
+	#	https://github.com/facebookresearch/segment-anything/blob/main/notebooks/onnx_model_example.ipynb
+
+	#-----
+	# Ultralytics
+	#	Refer to ultralytics_test.py
+
+	#-----
+	# Hugging Face Segment Anything model
 	#	Refer to ./hugging_face_segmentation_test.py.
 
 #--------------------------------------------------------------------
