@@ -1238,6 +1238,11 @@ def main():
 
 	#phi_3_ocr_test()  # Phi-3.5-vision (transformers)
 
+	#-----
+	# NeMo Retriever OCR
+	#	https://build.nvidia.com/nvidia/nemoretriever-ocr-v1
+	#	https://docs.nvidia.com/nim/ingestion/image-ocr/latest/api-reference.html
+
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:

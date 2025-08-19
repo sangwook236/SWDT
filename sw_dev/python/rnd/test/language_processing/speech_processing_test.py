@@ -54,10 +54,12 @@ def nvidia_asr_example():
 	#	nvidia/parakeet-tdt_ctc-1.1b
 	#	nvidia/parakeet-tdt_ctc-0.6b-ja
 	#	nvidia/parakeet-tdt-0.6b-v2
+	#	nvidia/parakeet-tdt-0.6b-v3
 	#
 	#	nvidia/canary-180m-flash
 	#	nvidia/canary-1b
 	#	nvidia/canary-1b-flash
+	#	nvidia/canary-1b-v2
 
 	if False:
 		# Install:
@@ -89,7 +91,7 @@ def nvidia_asr_example():
 		transcribed = asr_model.transcribe(["./2086-149220-0033.wav"])
 		print(transcribed)
 
-	if True:
+	if False:
 		# Install:
 		#	pip install nemo_toolkit['all']
 
@@ -105,7 +107,7 @@ def nvidia_asr_example():
 		output = asr_model.transcribe(["./2086-149220-0033.wav"])
 		print(output[0].text)
 
-	if True:
+	if False:
 		# Install:
 		#	pip install git+https://github.com/NVIDIA/NeMo.git@r1.23.0#egg=nemo_toolkit[asr]
 
@@ -174,7 +176,7 @@ def nvidia_asr_example():
 			)[0].text
 			print(predicted_text)
 
-	if True:
+	if False:
 		from nemo.collections.asr.models import EncDecMultiTaskModel
 
 		#model_name = "nvidia/canary-180m-flash"
@@ -226,6 +228,75 @@ def nvidia_asr_example():
 				"/path/to/input_manifest.json",
 				batch_size=16,  # Batch size to run the inference with
 			)
+
+	if True:
+		# Install:
+		#	pip install -U nemo_toolkit['asr']
+
+		from nemo.collections.asr import ASRModel
+		asr_ast_model = ASRModel.from_pretrained(model_name="nvidia/canary-1b-v2")
+
+		#-----
+		# Transcribe
+		output = asr_ast_model.transcribe(["./2086-149220-0033.wav"], source_lang="en", target_lang="en")
+		print(output[0].text)
+
+		#-----
+		# Transcribe with timestamps
+		output = asr_model.transcribe(["./2086-149220-0033.wav"], source_lang="en", target_lang="en", timestamps=True)
+
+		# By default, timestamps are enabled for word and segment level
+		word_timestamps = output[0].timestamp["word"]  # Word level timestamps for first sample
+		segment_timestamps = output[0].timestamp["segment"]  # Segment level timestamps
+
+		for stamp in segment_timestamps:
+			print(f"{stamp['start']}s - {stamp['end']}s : {stamp['segment']}")
+
+		#-----
+		# Translate with timestamps
+		output = asr_model.transcribe(["./2086-149220-0033.wav"], source_lang="en", target_lang="fr", timestamps=True)
+
+		segment_timestamps = output[0].timestamp["segment"]  # Only supports segment level timestamps for translation
+
+		for stamp in segment_timestamps:
+			print(f"{stamp['start']}s - {stamp['end']}s : {stamp['segment']}")
+
+	if True:
+		# Install:
+		#	pip install -U nemo_toolkit['asr']
+
+		import nemo.collections.asr as nemo_asr
+		asr_model = nemo_asr.models.ASRModel.from_pretrained(model_name="nvidia/parakeet-tdt-0.6b-v3")
+
+		#-----
+		# Transcribe
+		output = asr_model.transcribe(["./2086-149220-0033.wav"])
+		print(output[0].text)
+
+		#-----
+		# Transcribe with timestamps
+		output = asr_model.transcribe(["./2086-149220-0033.wav"], timestamps=True)
+
+		# By default, timestamps are enabled for char, word and segment level
+		word_timestamps = output[0].timestamp["word"]  # Word level timestamps for first sample
+		segment_timestamps = output[0].timestamp["segment"]  # Segment level timestamps
+		char_timestamps = output[0].timestamp["char"]  # Char level timestamps
+
+		for stamp in segment_timestamps:
+			print(f"{stamp['start']}s - {stamp['end']}s : {stamp['segment']}")
+
+		#-----
+		# Transcribe long-form audio
+		#	Update self-attention model of fast-conformer encoder
+		#	Set attention left and right context sizes to 256
+		asr_model.change_attention_model(self_attention_model="rel_pos_local_attn", att_context_size=[256, 256])
+
+		output = asr_model.transcribe(["./2086-149220-0033.wav"])
+
+		print(output[0].text)
+
+		#-----
+		# Stream with Parakeet models
 
 def openai_asr_example():
 	# Models:
@@ -739,33 +810,33 @@ def microsoft_voice_conversion_example():
 
 def main():
 	# Speech recognition:
-	#	- Automatic speech recognition (ASR).
-	#	- Speech-to-Text (STT).
+	#	- Automatic speech recognition (ASR)
+	#	- Speech-to-Text (STT)
 
-	#microsoft_asr_example()  # SpeechT5.
-	#nvidia_asr_example()  # Conformer, Citrinet, Parakeet, Canary.
-	#openai_asr_example()  # Whisper.
-	#speech_brain_asr_example()  # Whisper. Error.
+	#microsoft_asr_example()  # SpeechT5
+	#nvidia_asr_example()  # Conformer, Citrinet, Parakeet, Canary
+	#openai_asr_example()  # Whisper
+	#speech_brain_asr_example()  # Whisper. Error
 
-	canary_qwen_example()  # Canary-Qwen.
+	canary_qwen_example()  # Canary-Qwen
 	# Refer to voxtral_example() in ./nlp_test.py
 
 	#-----
 	# Speech synthesis:
-	#	- Text-to-Speech (TTS).
+	#	- Text-to-Speech (TTS)
 
-	#microsoft_tts_example()  # SpeechT5.
-	#nvidia_tts_example()  # FastPitch + HiFiGAN.
-	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN.
-	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN.
-	#sesame_example()  # CSM.
-	#nari_labs_example()  # Dia.
-	#chatterbox_examples()  # ResembleAI Chatterbox.
+	#microsoft_tts_example()  # SpeechT5
+	#nvidia_tts_example()  # FastPitch + HiFiGAN
+	#speech_brain_tts_example()  # Tacotron / FastSpeech + HiFiGAN
+	#tensor_speech_tts_example()  # Tacotron / FastSpeech + MelGAN
+	#sesame_example()  # CSM
+	#nari_labs_example()  # Dia
+	#chatterbox_examples()  # ResembleAI Chatterbox
 
 	#-----
-	# Speech-to-speech.
+	# Speech-to-speech
 
-	#microsoft_voice_conversion_example()  # SpeechT5.
+	#microsoft_voice_conversion_example()  # SpeechT5
 
 #--------------------------------------------------------------------
 
