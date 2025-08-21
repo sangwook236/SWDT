@@ -647,6 +647,9 @@ def main():
 	#	https://docs.nvidia.com/aiqtoolkit/latest/index.html
 	#	https://github.com/NVIDIA/NeMo-Agent-Toolkit
 
+	# Build Enterprise AI Agents with Advanced Open NVIDIA Llama Nemotron Reasoning Models:
+	#	https://developer.nvidia.com/blog/build-enterprise-ai-agents-with-advanced-open-nvidia-llama-nemotron-reasoning-models/
+
 	# Smolagents AI Agent Framework
 	#	https://smolagents.org/
 	#	https://huggingface.co/docs/smolagents/index

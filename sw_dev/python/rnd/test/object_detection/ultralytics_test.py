@@ -1232,7 +1232,7 @@ def main():
 	#yolov8_instance_segmentation_example()
 	#yolov8_classification_example()
 
-	#yolov11_example()  # YOLOv11
+	yolov11_example()  # YOLOv11
 	#yolov12_example()  # YOLOv12
 
 	#yolo_nas_example()  # YOLO-NAS
@@ -1247,7 +1247,10 @@ def main():
 	#-----
 	# Segment Anything (SAM)
 
-	sam_example()  # SAM, MobileSAM
+	# NOTE [caution] >> Low level of completion
+	#	Exporting a SAM to ONNX are not supported
+
+	#sam_example()  # SAM, MobileSAM
 	#sam2_example()  # SAM 2
 	#mobile_sam_example()  # MobileSAM
 	#fast_sam_example()  # FastSAM
