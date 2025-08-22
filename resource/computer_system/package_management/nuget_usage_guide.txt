@@ -1,3 +1,101 @@
 [-] General.
 	- Site.
 		https://www.nuget.org/
+		https://www.nuget.org/packages
+
+[-] Tools.
+	- NuGet CLI.
+		https://learn.microsoft.com/en-us/nuget/
+		https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-nuget-cli
+		https://www.nuget.org/downloads/
+
+		The CLI tool for .NET Framework libraries and for any non-SDK-style project such as one that targets .NET Standard libraries.
+
+		nuget
+		nuget help
+
+		nuget init
+		nuget install
+		nuget delete
+		nuget list
+		nuget update
+		nuget restore
+		nuget search
+
+	- dotnet CLI.
+		https://learn.microsoft.com/en-us/dotnet/core/tools/
+		https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli
+
+		The CLI tool for .NET Core and .NET Standard libraries, and for any SDK-style project such as one that targets the .NET Framework.
+
+		dotnet --help
+		dotnet --info
+
+		Basic commands:
+			dotnet new
+			dotnet restore
+			dotnet build
+			dotnet publish
+			dotnet run
+			dotnet test
+			dotnet vstest
+			dotnet pack
+			dotnet migrate
+			dotnet clean
+			dotnet sln
+			dotnet help
+			dotnet store
+			dotnet watch
+			dotnet format
+
+		Project modification commands:
+			dotnet package --help
+			dotnet package add
+			dotnet package list
+			dotnet package remove
+			dotnet package search
+			dotnet reference add
+			dotnet reference list
+			dotnet reference remove
+
+		NuGet commands:
+			dotnet nuget --help
+			dotnet nuget push
+			dotnet nuget delete
+			dotnet nuget locals
+			dotnet nuget disable source
+			dotnet nuget enable source
+			dotnet nuget list source
+			dotnet nuget remove source
+			dotnet nuget update source
+			dotnet nuget verify
+			dotnet nuget trust
+			dotnet nuget sign
+			dotnet nuget why
+
+		Workload management commands:
+			dotnet workload
+			dotnet workload config
+			dotnet workload install
+			dotnet workload list
+			dotnet workload update
+			dotnet workload restore
+			dotnet workload repair
+			dotnet workload uninstall
+			dotnet workload search
+
+		Advanced commands:
+			dotnet sdk check
+			dotnet msbuild
+			dotnet build-server
+			dotnet dev-certs
+			dotnet-install script
+
+		Tool management commands:
+			dotnet tool install
+			dotnet tool list
+			dotnet tool update
+			dotnet tool restore
+			dotnet tool run
+			dotnet tool uninstall
+			dotnet tool search
