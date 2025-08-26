@@ -33,29 +33,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cuda\cuda_main.cpp">
-      <Filter>Source Files\cuda</Filter>
-    </ClCompile>
-    <ClCompile Include="library_autolinking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thrust\thrust_main.cpp">
-      <Filter>Source Files\thrust</Filter>
-    </ClCompile>
-    <ClCompile Include="vexcl\vexcl_main.cpp">
-      <Filter>Source Files\vexcl</Filter>
-    </ClCompile>
-    <ClCompile Include="openmp\openmp_main.cpp">
-      <Filter>Source Files\openmp</Filter>
-    </ClCompile>
-    <ClCompile Include="simd\simd_main.cpp">
-      <Filter>Source Files\simd</Filter>
-    </ClCompile>
-    <ClCompile Include="simd\sse.cpp">
-      <Filter>Source Files\simd</Filter>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="arrayfire\arrayfire_main.cpp">
       <Filter>Source Files\arrayfire</Filter>
@@ -63,19 +45,40 @@
     <ClCompile Include="arrayfire\arrayfire_morphology.cpp">
       <Filter>Source Files\arrayfire</Filter>
     </ClCompile>
+    <ClCompile Include="cuda\cuda_main.cpp">
+      <Filter>Source Files\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="openmp\openmp_main.cpp">
+      <Filter>Source Files\openmp</Filter>
+    </ClCompile>
+    <ClCompile Include="tensorrt\tensorrt_main.cpp">
+      <Filter>Source Files\tensorrt</Filter>
+    </ClCompile>
+    <ClCompile Include="thrust\thrust_main.cpp">
+      <Filter>Source Files\thrust</Filter>
+    </ClCompile>
+    <ClCompile Include="simd\simd_main.cpp">
+      <Filter>Source Files\simd</Filter>
+    </ClCompile>
+    <ClCompile Include="simd\sse.cpp">
+      <Filter>Source Files\simd</Filter>
+    </ClCompile>
+    <ClCompile Include="vexcl\vexcl_main.cpp">
+      <Filter>Source Files\vexcl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="thrust\thrust_algorithm.cu">
-      <Filter>Source Files\thrust</Filter>
-    </CudaCompile>
-    <CudaCompile Include="thrust\thrust_basic_operation.cu">
-      <Filter>Source Files\thrust</Filter>
-    </CudaCompile>
     <CudaCompile Include="cuda\cuda_basic_operation.cu">
       <Filter>Source Files\cuda</Filter>
     </CudaCompile>
     <CudaCompile Include="cuda\cuda_texture.cu">
       <Filter>Source Files\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="thrust\thrust_algorithm.cu">
+      <Filter>Source Files\thrust</Filter>
+    </CudaCompile>
+    <CudaCompile Include="thrust\thrust_basic_operation.cu">
+      <Filter>Source Files\thrust</Filter>
     </CudaCompile>
     <CudaCompile Include="thrust\thrust_iterator.cu">
       <Filter>Source Files\thrust</Filter>

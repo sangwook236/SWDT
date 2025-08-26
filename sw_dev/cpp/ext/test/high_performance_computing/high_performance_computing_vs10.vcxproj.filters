@@ -21,14 +21,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cuda\cuda_main.cpp">
-      <Filter>Source Files\cuda</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="cuda\cuda_main.cpp">
+      <Filter>Source Files\cuda</Filter>
     </ClCompile>
     <ClCompile Include="thrust\thrust_main.cpp">
       <Filter>Source Files\thrust</Filter>

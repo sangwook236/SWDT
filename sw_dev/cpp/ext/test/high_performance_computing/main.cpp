@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 	int simd_main(int argc, char *argv[]);
 
 	int cuda_main(int argc, char *argv[]);
+	int tensorrt_main(int argc, char *argv[]);
 	int vexcl_main(int argc, char *argv[]);
 	int thrust_main(int argc, char *argv[]);
 	int arrayfire_main(int argc, char *argv[]);
@@ -37,6 +38,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nCompute Unified Device Architecture (CUDA) --------------------------" << std::endl;
 		//retval = cuda_main(argc, argv);
+
+		std::cout << "\nTensorRT library ----------------------------------------------------" << std::endl;
+		//retval = tensorrt_main(argc, argv);
 
 		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
 		//	- Support OpenCL, CUDA, and Boost.Compute.

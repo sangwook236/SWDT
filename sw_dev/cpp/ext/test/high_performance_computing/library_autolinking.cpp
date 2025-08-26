@@ -7,6 +7,11 @@
 #pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "OpenCL.lib")
 
+// For TensorRT
+#pragma comment(lib, "nvinfer_10.lib")
+#pragma comment(lib, "nvonnxparser_10.lib")
+
+// For ArrayFire
 #pragma comment(lib, "af.lib")
 //#pragma comment(lib, "afopencl.lib")
 //#pragma comment(lib, "afcuda.lib")
@@ -17,6 +22,11 @@
 #pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "OpenCL.lib")
 
+// For TensorRT
+#pragma comment(lib, "nvinfer_10.lib")
+#pragma comment(lib, "nvonnxparser_10.lib")
+
+// For ArrayFire
 #pragma comment(lib, "af.lib")
 //#pragma comment(lib, "afopencl.lib")
 //#pragma comment(lib, "afcuda.lib")

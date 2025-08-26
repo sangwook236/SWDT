@@ -85,9 +85,9 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cuda\cuda_main.cpp" />
-    <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="cuda\cuda_main.cpp" />
     <ClCompile Include="thrust\thrust_main.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -171,14 +171,15 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="arrayfire\arrayfire_main.cpp" />
     <ClCompile Include="arrayfire\arrayfire_morphology.cpp" />
     <ClCompile Include="cuda\cuda_main.cpp" />
-    <ClCompile Include="library_autolinking.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="openmp\openmp_main.cpp" />
     <ClCompile Include="simd\simd_main.cpp" />
     <ClCompile Include="simd\sse.cpp" />
+    <ClCompile Include="tensorrt\tensorrt_main.cpp" />
     <ClCompile Include="thrust\thrust_main.cpp" />
     <ClCompile Include="vexcl\vexcl_main.cpp" />
   </ItemGroup>
