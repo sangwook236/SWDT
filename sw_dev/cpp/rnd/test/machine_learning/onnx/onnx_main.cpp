@@ -36,6 +36,7 @@ static void softmax(T& input)
 // REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
 void onnx_runtime_mnist_example()
 {
+	// REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
 	const std::string onnx_filepath("path/to/mnist.onnx");
 	//const std::wstring onnx_filepath(L"path/to/mnist.onnx");
 
@@ -47,11 +48,11 @@ void onnx_runtime_mnist_example()
 	std::array<float, image_width * image_height> input_image{};
 	{
 		// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
-		const std::string image_path("../0.jpg");
-		//const std::string image_path("../1.jpg");
-		//const std::string image_path("../2.jpg");
-		//const std::string image_path("../4.jpg");
-		//const std::string image_path("../7.jpg");
+		const std::string image_path("path/to/mnist/0.jpg");
+		//const std::string image_path("path/to/mnist1.jpg");
+		//const std::string image_path("path/to/mnist2.jpg");
+		//const std::string image_path("path/to/mnist4.jpg");
+		//const std::string image_path("path/to/mnist7.jpg");
 
 		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
 		if (gray.empty())
@@ -70,7 +71,7 @@ void onnx_runtime_mnist_example()
 	std::array<float, num_classes> results{};
 	{
 		std::cout << "Creating an ONNX session from " << onnx_filepath << "..." << std::endl;
-		auto start_time =std::chrono::steady_clock::now();
+		auto start_time(std::chrono::steady_clock::now());
 		Ort::Env env;
 		//Ort::Env env(ORT_LOGGING_LEVEL_WARNING, /*logid =*/ "onnx_log");
 if 0
@@ -141,12 +142,39 @@ if 0
 			const std::vector<std::string>& output_names = session.GetOutputNames();
 			assert(num_inputs == std::size(input_names) && num_outputs == std::size(output_names));
 
-			std::cout << "Input names (#inputs = " << num_inputs << "): ";
-			std::copy(input_names.begin(), input_names.end(), std::ostream_iterator<std::string>(std::cout, ", "));
-			std::cout << std::endl;
-			std::cout << "Output names (#outputs = " << num_outputs << "): ";
-			std::copy(output_names.begin(), output_names.end(), std::ostream_iterator<std::string>(std::cout, ", "));
-			std::cout << std::endl;
+			//std::cout << "Input names (#inputs = " << num_inputs << "): ";
+			//std::copy(input_names.begin(), input_names.end(), std::ostream_iterator<std::string>(std::cout, ", "));
+			//std::cout << std::endl;
+			std::cout << "Input (#inputs = " << num_inputs << "):" << std::endl;
+			for (size_t idx = 0; idx < num_inputs; ++idx)
+			{
+				const Ort::TypeInfo& type_info = session.GetInputTypeInfo(idx);
+				//const Ort::TensorTypeAndShapeInfo& tensor_info = type_info.GetTensorTypeAndShapeInfo();
+				const Ort::ConstTensorTypeAndShapeInfo& tensor_info = type_info.GetTensorTypeAndShapeInfo();
+				const std::vector<int64_t>& shape = tensor_info.GetShape();
+
+				std::cout << "\tInput #" << idx << ": " << input_names[idx] << std::endl;
+				std::cout << "\t\tShape = ";
+				std::copy(shape.begin(), shape.end(), std::ostream_iterator<int64_t>(std::cout, ", "));
+				std::cout << std::endl;
+			}
+
+			//std::cout << "Output names (#outputs = " << num_outputs << "): ";
+			//std::copy(output_names.begin(), output_names.end(), std::ostream_iterator<std::string>(std::cout, ", "));
+			//std::cout << std::endl;
+			std::cout << "Output (#outputs = " << num_outputs << "):" << std::endl;
+			for (size_t idx = 0; idx < num_outputs; ++idx)
+			{
+				const Ort::TypeInfo& type_info = session.GetOutputTypeInfo(idx);
+				//const Ort::TensorTypeAndShapeInfo& tensor_info = type_info.GetTensorTypeAndShapeInfo();
+				const Ort::ConstTensorTypeAndShapeInfo& tensor_info = type_info.GetTensorTypeAndShapeInfo();
+				const std::vector<int64_t>& shape = tensor_info.GetShape();
+
+				std::cout << "\tOuput #" << idx << ": " << output_names[idx] << std::endl;
+				std::cout << "\t\tShape = ";
+				std::copy(shape.begin(), shape.end(), std::ostream_iterator<int64_t>(std::cout, ", "));
+				std::cout << std::endl;
+			}
 		}
 
 		//-----
@@ -166,18 +194,17 @@ if 0
 		Ort::Value output_tensor = Ort::Value::CreateTensor<float>(memory_info, results.data(), results.size(), output_shape.data(), output_shape.size());
 		session.Run(Ort::RunOptions(nullptr), input_names, &input_tensor, input_names.size(), output_names, &output_tensor, output_names.size());
 #else
-		// TODO [check] >>
-		const std::vector<Ort::Value>& output_tensor = session.Run(Ort::RunOptions{nullptr}, input_names, &input_tensor, input_names.size(), output_names, output_names.size());
-		const float* output_ptr = output_tensor[0].GetTensorMutableData();
-		results.assign(output_ptr, output_ptr + num_classes);
+		std::vector<Ort::Value> output_tensor = session.Run(Ort::RunOptions{nullptr}, input_names, &input_tensor, 1, output_names, 1);
+		float* output_ptr = output_tensor[0].GetTensorMutableData<float>();
+		std::copy(output_ptr, output_ptr + num_classes, results.data());
 #endif
 		softmax(results);
 		std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 		//std::cout << "Results dim = " << results.size() << std::endl;
 	}
 
-	const int64_t result = std::distance(results.begin(), std::max_element(results.begin(), results.end()));
-	std::cout << "Predicted digit = " << result << std::endl;
+	const int64_t predicted = std::distance(results.begin(), std::max_element(results.begin(), results.end()));
+	std::cout << "Predicted = " << predicted << std::endl;
 }
 
 }  // namespace local
@@ -189,7 +216,9 @@ namespace my_onnx {
 
 int onnx_main(int argc, char *argv[])
 {
-	// Install ONNX Runtime:
+	// ONNX Runtime
+
+	// Install:
 	//	https://github.com/microsoft/onnxruntime/releases
 
 	/*
@@ -211,6 +240,10 @@ int onnx_main(int argc, char *argv[])
 	*/
 
 	local::onnx_runtime_mnist_example();
+
+	//-----
+	// TensorRT
+	//	Refer to mnist_onnx_tensorrt_test() in tensorrt_main.cpp
 
 	return 0;
 }

@@ -58,17 +58,17 @@ void mnist_onnx_tensorrt_test()
 	const size_t num_classes = 10;
 
 	// REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
-	const std::string onnx_path("./mnist/mnist.onnx");
+	const std::string onnx_path("path/to/mnist.onnx");
 
 	// Prepare input image (1, 1, 28, 28)
 	std::vector<float> input_data(1 * image_channel * image_height * image_width, 0.0f);  // [0, 1]
 	{
 		// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
-		const std::string image_path("./mnist/0.jpg");
-		//const std::string image_path("./mnist/1.jpg");
-		//const std::string image_path("./mnist/2.jpg");
-		//const std::string image_path("./mnist/4.jpg");
-		//const std::string image_path("./mnist/7.jpg");
+		const std::string image_path("path/to/mnist/0.jpg");
+		//const std::string image_path("path/to/mnist/1.jpg");
+		//const std::string image_path("path/to/mnist/2.jpg");
+		//const std::string image_path("path/to/mnist/4.jpg");
+		//const std::string image_path("path/to/mnist/7.jpg");
 	
 		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
 		if (gray.empty())
