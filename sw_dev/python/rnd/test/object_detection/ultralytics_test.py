@@ -1267,6 +1267,10 @@ def main():
 	#	Auto Annotation with Meta's Segment Anything 2 Model using Ultralytics:
 	#		https://youtu.be/M7xWw4Iodhg
 
+	#-----
+	# TensorRT
+	#	https://docs.ultralytics.com/integrations/tensorrt/
+
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:
