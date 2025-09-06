@@ -217,8 +217,6 @@ namespace my_onnx {
 int onnx_main(int argc, char *argv[])
 {
 	// ONNX Runtime
-
-	// Install:
 	//	https://github.com/microsoft/onnxruntime/releases
 
 	/*
@@ -239,7 +237,17 @@ int onnx_main(int argc, char *argv[])
 	std::cout << outputDataPtr[0] << std::endl;
 	*/
 
-	local::onnx_runtime_mnist_example();
+	try
+	{
+		local::onnx_runtime_mnist_example();
+
+		// Refer to samexporter_onnx_runtime_test() in sam_onnx_test.cpp
+	}
+	catch (const Ort::Exception& ex)
+	{
+		std::cerr << "Ort::Exception caught: " << ex.what() << std::endl;
+		//return 1;
+	}
 
 	//-----
 	// TensorRT

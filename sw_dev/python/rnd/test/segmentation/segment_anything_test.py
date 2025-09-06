@@ -1253,6 +1253,10 @@ def main():
 	# Hugging Face Segment Anything model
 	#	Refer to ./hugging_face_segmentation_test.py.
 
+	#-----
+	# Compiling SAM2 using the dynamo backend (TorchDynamo):
+	#	https://docs.pytorch.org/TensorRT/tutorials/_rendered_examples/dynamo/torch_export_sam2.html
+
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:
