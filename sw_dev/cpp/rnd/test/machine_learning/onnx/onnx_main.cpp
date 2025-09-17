@@ -241,7 +241,8 @@ int onnx_main(int argc, char *argv[])
 	{
 		local::onnx_runtime_mnist_example();
 
-		// Refer to samexporter_onnx_runtime_test() in sam_onnx_test.cpp
+		// Segment Anything (SAM)
+		//	Refer to sam_onnx_runtime_test.cpp
 	}
 	catch (const Ort::Exception& ex)
 	{
@@ -250,8 +251,8 @@ int onnx_main(int argc, char *argv[])
 	}
 
 	//-----
-	// TensorRT
-	//	Refer to mnist_onnx_tensorrt_test() in tensorrt_main.cpp
+	// ONNX on TensorRT
+	//	Refer tensorrt_main.cpp
 
 	return 0;
 }

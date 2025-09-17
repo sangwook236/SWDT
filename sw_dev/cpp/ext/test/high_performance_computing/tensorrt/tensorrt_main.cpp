@@ -13,6 +13,8 @@
 namespace {
 namespace local {
 
+//#define __INFER_ASYNC 1
+
 template <typename T>
 static void softmax(T& input)
 {
@@ -208,68 +210,63 @@ void mnist_onnx_tensorrt_test()
 			std::cout << std::endl;
 		}
 
-		// Allocate host memory for input and output
 		const int64_t input_size = std::accumulate(input_dims.d, input_dims.d + input_dims.nbDims, 1, std::multiplies<int64_t>());
 		const int64_t output_size = std::accumulate(output_dims.d, output_dims.d + output_dims.nbDims, 1, std::multiplies<int64_t>());
 		assert(input_data.size() == input_size);
 		assert(num_classes == output_size);
 
-		// Pointers to the input and output buffers on the GPU
+#if defined(__INFER_ASYNC)
+		// Create CUDA stream for inference
+		cudaStream_t stream;
+		CUDA_CHECK(cudaStreamCreate(&stream));
+#endif
+
+		// Allocate host memory for input and output
 		void* buffers[2] = { nullptr, };
+#if defined(__INFER_ASYNC)
+		//CUDA_CHECK(cudaMalloc(&buffers[input_idx], input_size * sizeof(float)));
+		//CUDA_CHECK(cudaMalloc(&buffers[output_idx], output_size * sizeof(float)));
+		CUDA_CHECK(cudaMallocAsync(&buffers[input_idx], input_size * sizeof(float), stream));
+		CUDA_CHECK(cudaMallocAsync(&buffers[output_idx], output_size * sizeof(float), stream));
+#else
 		CUDA_CHECK(cudaMalloc(&buffers[input_idx], input_size * sizeof(float)));
 		CUDA_CHECK(cudaMalloc(&buffers[output_idx], output_size * sizeof(float)));
+#endif
 
 		context->setTensorAddress(input_name, buffers[input_idx]);
 		context->setTensorAddress(output_name, buffers[output_idx]);
 
-#if 1
+		// Copy input data from host to device
+#if defined(__INFER_ASYNC)
+		//CUDA_CHECK(cudaMemcpy(buffers[input_idx], input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice));
+		CUDA_CHECK(cudaMemcpyAsync(buffers[input_idx], input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice, stream));
+#else
 		CUDA_CHECK(cudaMemcpy(buffers[input_idx], input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice));
+#endif
 
 		// Run inference
-		std::cout << "Inferring..." << std::endl;
-		const auto start_time(std::chrono::steady_clock::now());
-		if (context->executeV2(buffers))
-		{
-			std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
-
-			// Copy output data from device to host
-			std::vector<float> output_data(output_size);
-			CUDA_CHECK(cudaMemcpy(output_data.data(), buffers[output_idx], output_size * sizeof(float), cudaMemcpyDeviceToHost));
-
-			// Print output
-			//softmax(output_data);
-			const int64_t predicted = std::distance(output_data.begin(), std::max_element(output_data.begin(), output_data.end()));
-			std::cout << "Predicted = " << predicted << std::endl;
-		}
-		else
-		{
-			std::cerr << "Inference failed." << std::endl;
-		}
-
-		// Cleanup
-		CUDA_CHECK(cudaFree(buffers[input_idx]));
-		CUDA_CHECK(cudaFree(buffers[output_idx]));
+#if defined(__INFER_ASYNC)
+		std::cout << "Inferring async..." << std::endl;
 #else
-		// Infer async
-
-		// Create CUDA stream for inference
-		cudaStream_t stream;
-		CUDA_CHECK(cudaStreamCreate(&stream));
-
-		// Copy input data from host to device
-		CUDA_CHECK(cudaMemcpyAsync(buffers[input_idx], input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice, stream));
-
-		// Execute the inference
-		std::cout << "Inferring..." << std::endl;
+		std::cout << "Inferring sync..." << std::endl;
+#endif
 		const auto start_time(std::chrono::steady_clock::now());
+#if defined(__INFER_ASYNC)
 		//if (context->executeAsyncV2(buffers, stream, nullptr))  // Compile-time error: 'executeAsyncV2': is not a member of 'nvinfer1::IExecutionContext'
 		if (context->enqueueV3(stream))
+#else
+		if (context->executeV2(buffers))
+#endif
 		{
 			std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 
 			// Copy output data from device to host
 			std::vector<float> output_data(output_size);
+#if defined(__INFER_ASYNC)
 			CUDA_CHECK(cudaMemcpyAsync(output_data.data(), buffers[output_idx], output_size * sizeof(float), cudaMemcpyDeviceToHost, stream));
+#else
+			CUDA_CHECK(cudaMemcpy(output_data.data(), buffers[output_idx], output_size * sizeof(float), cudaMemcpyDeviceToHost));
+#endif
 
 			// Print output
 			//softmax(output_data);
@@ -278,16 +275,24 @@ void mnist_onnx_tensorrt_test()
 		}
 		else
 		{
-			std::cerr << "Inference failed." << std::endl;
+			std::cerr << "Failed to infer." << std::endl;
 		}
 
+#if defined(__INFER_ASYNC)
 		// Synchronize stream
 		CUDA_CHECK(cudaStreamSynchronize(stream));
 
-		// Free GPU memory
+		// Cleanup
+		//CUDA_CHECK(cudaFree(buffers[input_idx]));
+		//CUDA_CHECK(cudaFree(buffers[output_idx]));
+		CUDA_CHECK(cudaFreeAsync(buffers[input_idx], stream));
+		CUDA_CHECK(cudaFreeAsync(buffers[output_idx], stream));
+
+		CUDA_CHECK(cudaStreamDestroy(stream));
+#else
+		// Cleanup
 		CUDA_CHECK(cudaFree(buffers[input_idx]));
 		CUDA_CHECK(cudaFree(buffers[output_idx]));
-		CUDA_CHECK(cudaStreamDestroy(stream));
 #endif
 	}
 }
@@ -301,7 +306,36 @@ namespace my_tensorrt {
 
 int tensorrt_main(int argc, char *argv[])
 {
+	// Install:
+	//	https://github.com/NVIDIA/TensorRT/releases
+	//	https://developer.nvidia.com/tensorrt
+
+	/*
+	const std::string engine_path("path/to/mnist.engine");
+
+	std::cout << "Reading an engine file, " << engine_path << "..." << std::endl;
+	const auto start_time(std::chrono::steady_clock::now());
+	std::ifstream stream(engine_path, std::ios::binary | std::ios::ate);
+	if (!stream)
+	{
+		std::cerr << "Failed to open an engine file, " << engine_path << std::endl;
+		return;
+	}
+	const std::streamsize sz = stream.tellg();
+	stream.seekg(0, std::ios::beg);
+	std::vector<char> buf(sz);
+	stream.read(buf.data(), sz);
+	std::cout << "An engine file read: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+
+	local::MyLogger logger;
+	std::unique_ptr<nvinfer1::IRuntime> runtime(nvinfer1::createInferRuntime(logger));
+	std::unique_ptr<nvinfer1::ICudaEngine> engine(runtime->deserializeCudaEngine(buf.data(), buf.size()));
+	*/
+
 	local::mnist_onnx_tensorrt_test();
+
+	// Segment Anything (SAM)
+	//	Refer to sam_tensorrt_test.cpp
 
 	return 0;
 }

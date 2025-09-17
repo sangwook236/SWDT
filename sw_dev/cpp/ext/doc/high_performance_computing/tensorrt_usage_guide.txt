@@ -7,6 +7,7 @@
 		https://pytorch.org/TensorRT/
 		https://github.com/pytorch/TensorRT
 
+		https://docs.nvidia.com/deeplearning/tensorrt
 		https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html
 		https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html
 		https://nvidia.github.io/TRTorch/
@@ -30,6 +31,13 @@
 
 	- ONNX to TensorRT.
 		https://github.com/open-mmlab/mmdetection/blob/master/docs/en/tutorials/onnx2tensorrt.md
+		https://github.com/tier4/sam2_trt_inference
+
+[-] Tools.
+	- trtexec.
+		https://docs.nvidia.com/deeplearning/tensorrt/latest/reference/command-line-programs.html
+
+		trtexec --onnx=path/to/model.onnx --saveEngine=path/to/model.engine --fp16 --workspace=4096 --shapes=input:1024x1024x3
 
 [-] Installation (TensorRT).
 	- Install CUDA and cuDNN.
