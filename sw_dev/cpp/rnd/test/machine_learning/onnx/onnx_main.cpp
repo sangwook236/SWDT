@@ -9,10 +9,6 @@
 #include <opencv2/opencv.hpp>
 #include <onnxruntime_cxx_api.h>
 
-#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-#pragma comment(lib, "onnxruntime.lib")
-#endif
-
 
 namespace {
 namespace local {
@@ -36,9 +32,11 @@ static void softmax(T& input)
 // REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
 void onnx_runtime_mnist_example()
 {
+	const std::string mnist_dir_path("path/to/mnist");
+
 	// REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
-	const std::string onnx_filepath("path/to/mnist.onnx");
-	//const std::wstring onnx_filepath(L"path/to/mnist.onnx");
+	const std::string onnx_filepath(mnist_dir_path + "/mnist.onnx");
+	//const std::wstring onnx_filepath(mnist_dir_path + L"/mnist.onnx");
 
 	static constexpr const int image_width = 28;
 	static constexpr const int image_height = 28;
@@ -48,11 +46,11 @@ void onnx_runtime_mnist_example()
 	std::array<float, image_width * image_height> input_image{};
 	{
 		// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
-		const std::string image_path("path/to/mnist/0.jpg");
-		//const std::string image_path("path/to/mnist1.jpg");
-		//const std::string image_path("path/to/mnist2.jpg");
-		//const std::string image_path("path/to/mnist4.jpg");
-		//const std::string image_path("path/to/mnist7.jpg");
+		const std::string image_path(mnist_dir_path + "/0.jpg");
+		//const std::string image_path(mnist_dir_path + "/1.jpg");
+		//const std::string image_path(mnist_dir_path + "/2.jpg");
+		//const std::string image_path(mnist_dir_path + "/4.jpg");
+		//const std::string image_path(mnist_dir_path + "/7.jpg");
 
 		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
 		if (gray.empty())
@@ -135,9 +133,11 @@ if 0
 		auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPU);
 #endif
 		std::cout << "An ONNX session created: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+
+		// Show session info
 		{
-			const size_t num_inputs = session.GetInputCount();
-			const size_t num_outputs = session.GetOutputCount();
+			const size_t num_inputs(session.GetInputCount());
+			const size_t num_outputs(session.GetOutputCount());
 			const std::vector<std::string>& input_names = session.GetInputNames();
 			const std::vector<std::string>& output_names = session.GetOutputNames();
 			assert(num_inputs == std::size(input_names) && num_outputs == std::size(output_names));
@@ -153,8 +153,9 @@ if 0
 				const Ort::ConstTensorTypeAndShapeInfo& tensor_info = type_info.GetTensorTypeAndShapeInfo();
 				const std::vector<int64_t>& shape = tensor_info.GetShape();
 
-				std::cout << "\tInput #" << idx << ": " << input_names[idx] << std::endl;
-				std::cout << "\t\tShape = ";
+				std::cout << "\tInput #" << idx << ':' << std::endl;
+				std::cout << "\t\tName: " << input_names[idx] << std::endl;
+				std::cout << "\t\tShape (dimension = " << shape.size() << "): ";
 				std::copy(shape.begin(), shape.end(), std::ostream_iterator<int64_t>(std::cout, ", "));
 				std::cout << std::endl;
 			}
@@ -170,8 +171,9 @@ if 0
 				const Ort::ConstTensorTypeAndShapeInfo& tensor_info = type_info.GetTensorTypeAndShapeInfo();
 				const std::vector<int64_t>& shape = tensor_info.GetShape();
 
-				std::cout << "\tOuput #" << idx << ": " << output_names[idx] << std::endl;
-				std::cout << "\t\tShape = ";
+				std::cout << "\tOuput #" << idx << ':' << std::endl;
+				std::cout << "\t\tName: " << output_names[idx] << std::endl;
+				std::cout << "\t\tShape (dimension = " << shape.size() << "): ";
 				std::copy(shape.begin(), shape.end(), std::ostream_iterator<int64_t>(std::cout, ", "));
 				std::cout << std::endl;
 			}
@@ -203,7 +205,7 @@ if 0
 		//std::cout << "Results dim = " << results.size() << std::endl;
 	}
 
-	const int64_t predicted = std::distance(results.begin(), std::max_element(results.begin(), results.end()));
+	const int64_t predicted(std::distance(results.begin(), std::max_element(results.begin(), results.end())));
 	std::cout << "Predicted = " << predicted << std::endl;
 }
 
@@ -218,6 +220,7 @@ int onnx_main(int argc, char *argv[])
 {
 	// ONNX Runtime
 	//	https://github.com/microsoft/onnxruntime/releases
+	//	https://onnxruntime.ai/
 
 	/*
 	// REF [site] >> https://onnxruntime.ai/
@@ -243,16 +246,15 @@ int onnx_main(int argc, char *argv[])
 
 		// Segment Anything (SAM)
 		//	Refer to sam_onnx_runtime_test.cpp
+
+		// ONNX on TensorRT
+		//	Refer to tensorrt_main.cpp
 	}
 	catch (const Ort::Exception& ex)
 	{
 		std::cerr << "Ort::Exception caught: " << ex.what() << std::endl;
 		//return 1;
 	}
-
-	//-----
-	// ONNX on TensorRT
-	//	Refer tensorrt_main.cpp
 
 	return 0;
 }

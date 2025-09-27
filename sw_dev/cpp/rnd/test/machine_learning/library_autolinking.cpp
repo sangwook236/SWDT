@@ -4,6 +4,9 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
+
 #pragma comment(lib, "gpd.lib")
 #pragma comment(lib, "GClasses_DebugVersion.lib")
 #pragma comment(lib, "hdf5_hl_D.lib")
@@ -31,10 +34,12 @@
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
 //#pragma comment(lib, "librlutils.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "onnxruntime.lib")
 
 #		else
+
+#pragma comment(lib, "libboost_chrono-vc140-mt-1_64.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-1_64.lib")
 
 #pragma comment(lib, "gp.lib")
 #pragma comment(lib, "GClasses.lib")
@@ -63,8 +68,7 @@
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
 //#pragma comment(lib, "librlutils.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_64.lib")
+#pragma comment(lib, "onnxruntime.lib")
 
 #		endif
 

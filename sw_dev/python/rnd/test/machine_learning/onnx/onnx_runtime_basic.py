@@ -8,18 +8,20 @@ import onnxruntime as ort
 
 def show_onnx_info():
 	print(f"ONNX Runtime: version = {ort.__version__}.")
+	#print(f"\tBuild info: {ort.get_build_info()}.")
 
 	# ONNX Runtime Execution Providers
 	#	https://onnxruntime.ai/docs/execution-providers/
 	print("Available ONNX Runtime Execution Providers:")
 	for provider in ort.get_available_providers():
+	#for provider in ort.get_all_providers():
 		print(f"- {provider}.")
 
 	#-----
 	onnx_path = "path/to/model.onnx"
 
-	session = ort.InferenceSession(onnx_path)
-	#session = ort.InferenceSession(onnx_path, providers=ort.get_available_providers())
+	#session = ort.InferenceSession(onnx_path)
+	session = ort.InferenceSession(onnx_path, providers=ort.get_available_providers())
 	print("ONNX model inputs:")
 	for input in session.get_inputs():
 		print(f"\tname = {input.name}, shape = {input.shape}, type = {input.type}")
@@ -30,7 +32,7 @@ def show_onnx_info():
 		print(f"\tname = {output.name}, shape = {output.shape}, type = {output.type}")
 
 	# Execution providers
-	print(f"ONNX runtime providers: {session.get_providers()}.")
+	print(f"ONNX execution providers: {session.get_providers()}.")
 
 # REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/blob/main/python/api/onnxruntime-python-api.py
 def python_api_example():
@@ -159,6 +161,12 @@ def main():
 	show_onnx_info()
 
 	python_api_example()
+
+	# Segment Anything (SAM)
+	#	Refer to sam_onnx_runtime_test.py
+
+	# ONNX on TensorRT
+	#	Refer to sam_tensorrt_test.py
 
 #--------------------------------------------------------------------
 

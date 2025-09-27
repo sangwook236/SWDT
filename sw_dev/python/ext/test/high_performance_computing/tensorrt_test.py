@@ -413,11 +413,14 @@ def simple_trtorch_example(device='cuda'):
 def main():
 	device = torch.device('cuda')
 
-	# TensorRT.
+	# TensorRT
 	simple_tensorrt_example(device)
 
-	# TRTorch.
+	# TRTorch
 	#simple_trtorch_example(device)
+
+	# Segment Anything (SAM)
+	#	Refer to sam_tensorrt_test.py
 
 #--------------------------------------------------------------------
 
