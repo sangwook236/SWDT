@@ -4457,6 +4457,11 @@ def qwen3_example():
 	#	Qwen/Qwen3-8B-Base
 	#	Qwen/Qwen3-14B-Base
 	#	Qwen/Qwen3-30B-A3B-Base
+	#
+	#	Qwen/Qwen3-Next-80B-A3B-Instruct
+	#	Qwen/Qwen3-Next-80B-A3B-Instruct-FP8
+	#	Qwen/Qwen3-Next-80B-A3B-Thinking
+	#	Qwen/Qwen3-Next-80B-A3B-Thinking-FP8
 
 	if False:
 		model = transformers.Qwen3ForCausalLM.from_pretrained("Qwen/Qwen3-8B")
@@ -4490,24 +4495,25 @@ def qwen3_example():
 		labels = predicted_token_class_ids
 		loss = model(**inputs, labels=labels).loss
 
-	#model_name = "Qwen/Qwen3-0.6B"
-	#model_name = "Qwen/Qwen3-1.7B"
-	#model_name = "Qwen/Qwen3-4B"
-	model_name = "Qwen/Qwen3-8B"
-	#model_name = "Qwen/Qwen3-14B"
-	#model_name = "Qwen/Qwen3-30B-A3B"
-	#model_name = "Qwen/Qwen3-32B"
-	#model_name = "Qwen/Qwen3-235B-A22B"
-	#model_name = "Qwen/Qwen3-0.6B-FP8"
-	#model_name = "Qwen/Qwen3-1.7B-FP8"
-	#model_name = "Qwen/Qwen3-4B-FP8"
-	#model_name = "Qwen/Qwen3-8B-FP8"
-	#model_name = "Qwen/Qwen3-14B-FP8"
-	#model_name = "Qwen/Qwen3-30B-A3B-FP8"
-	#model_name = "Qwen/Qwen3-32B-FP8"
-	#model_name = "Qwen/Qwen3-235B-A22B-FP8"
+	if False:
+		#model_name = "Qwen/Qwen3-0.6B"
+		#model_name = "Qwen/Qwen3-1.7B"
+		#model_name = "Qwen/Qwen3-4B"
+		model_name = "Qwen/Qwen3-8B"
+		#model_name = "Qwen/Qwen3-14B"
+		#model_name = "Qwen/Qwen3-30B-A3B"
+		#model_name = "Qwen/Qwen3-32B"
+		#model_name = "Qwen/Qwen3-235B-A22B"
+		#model_name = "Qwen/Qwen3-0.6B-FP8"
+		#model_name = "Qwen/Qwen3-1.7B-FP8"
+		#model_name = "Qwen/Qwen3-4B-FP8"
+		#model_name = "Qwen/Qwen3-8B-FP8"
+		#model_name = "Qwen/Qwen3-14B-FP8"
+		#model_name = "Qwen/Qwen3-30B-A3B-FP8"
+		#model_name = "Qwen/Qwen3-32B-FP8"
+		#model_name = "Qwen/Qwen3-235B-A22B-FP8"
 
-	if True:
+		#-----
 		# Load the tokenizer and the model
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
 		model = transformers.AutoModelForCausalLM.from_pretrained(
@@ -4550,7 +4556,7 @@ def qwen3_example():
 		print("thinking content:", thinking_content)
 		print("content:", content)
 
-	if True:
+		#-----
 		# Advanced Usage: Switching Between Thinking and Non-Thinking Modes via User Input
 
 		# An example of a multi-turn conversation
@@ -4603,7 +4609,7 @@ def qwen3_example():
 		response_3 = chatbot.generate_response(user_input_3)
 		print(f"Bot: {response_3}")
 
-	if True:
+	if False:
 		# Agentic Use
 		#	Qwen3 excels in tool calling capabilities.
 		#	We recommend using Qwen-Agent to make the best use of agentic ability of Qwen3.
@@ -4664,6 +4670,113 @@ def qwen3_example():
 		]
 
 		# Define agent
+		bot = Assistant(llm=llm_cfg, function_list=tools)
+
+		# Streaming generation
+		messages = [{"role": "user", "content": "https://qwenlm.github.io/blog/ Introduce the latest developments of Qwen"}]
+		for responses in bot.run(messages=messages):
+			pass
+		print(responses)
+
+	if True:
+		model_name = "Qwen/Qwen3-Next-80B-A3B-Instruct"
+		#model_name = "Qwen/Qwen3-Next-80B-A3B-Thinking"
+
+		# Load the tokenizer and the model
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			dtype="auto",
+			device_map="auto",
+		)
+
+		# Prepare the model input
+		prompt = "Give me a short introduction to large language model."
+		messages = [
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		# Conduct text completion
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=16384,
+			#max_new_tokens=32768,
+		)
+		output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist() 
+
+		if True:
+			content = tokenizer.decode(output_ids, skip_special_tokens=True)
+
+			print("content:", content)
+		else:
+			# Parsing thinking content
+			try:
+				# rindex finding 151668 (</think>)
+				index = len(output_ids) - output_ids[::-1].index(151668)
+			except ValueError:
+				index = 0
+
+			thinking_content = tokenizer.decode(output_ids[:index], skip_special_tokens=True).strip("\n")
+			content = tokenizer.decode(output_ids[index:], skip_special_tokens=True).strip("\n")
+
+			print("thinking content:", thinking_content)  # No opening <think> tag
+			print("content:", content)
+
+	if True:
+		# Agentic Use
+
+		from qwen_agent.agents import Assistant
+
+		model_name = "Qwen/Qwen3-Next-80B-A3B-Instruct"
+		#model_name = "Qwen3-Next-80B-A3B-Instruct-FP8"
+		#model_name = "Qwen/Qwen3-Next-80B-A3B-Thinking"
+
+		# Define LLM
+		if True:
+			# Using OpenAI-compatible API endpoint. It is recommended to disable the reasoning and the tool call parsing
+			# functionality of the deployment frameworks and let Qwen-Agent automate the related operations. For example, 
+			# `vllm serve Qwen/Qwen3-Next-80B-A3B-Thinking --served-model-name Qwen3-Next-80B-A3B-Thinking --port 8000 --tensor-parallel-size 4 --max-model-len 262144`.
+			llm_cfg = {
+				"model": model_name,
+			
+				# Use a custom endpoint compatible with OpenAI API:
+				"model_server": "http://localhost:8000/v1",  # api_base without reasoning and tool call parsing
+				"api_key": "EMPTY",
+				"generate_cfg": {
+					"thought_in_content": True,
+				},
+			}
+		else:
+			# Using Alibaba Cloud Model Studio
+			llm_cfg = {
+				"model": model_name,
+				"model_type": "qwen_dashscope",
+			}
+
+		# Define Tools
+		tools = [
+			{
+				"mcpServers": {  # You can specify the MCP configuration file
+					"time": {
+						"command": "uvx",
+						"args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
+					},
+					"fetch": {
+						"command": "uvx",
+						"args": ["mcp-server-fetch"]
+					}
+				}
+			},
+			"code_interpreter",  # Built-in tools
+		]
+
+		# Define Agent
 		bot = Assistant(llm=llm_cfg, function_list=tools)
 
 		# Streaming generation
@@ -5052,7 +5165,7 @@ def glm_example():
 
 		def is_function_call(single_message):
 			"""Determine whether the current system message is a function call."""
-			pattern = re.compile(r'([^\n`]*?)\n({.*?})(?=\w*\n|$)', re.DOTALL)
+			pattern = re.compile(r"([^\n`]*?)\n({.*?})(?=\w*\n|$)", re.DOTALL)
 			matches = pattern.findall(single_message)
 			if not matches:
 				return False
@@ -5071,12 +5184,12 @@ def glm_example():
 
 		def realtime_aqi(city):
 			"""Weather Query Tool"""
-			if '北京' in city.lower():
-				return json.dumps({'city': '北京', 'aqi': '10', 'unit': 'celsius'}, ensure_ascii=False)
-			elif '上海' in city.lower():
-				return json.dumps({'city': '上海', 'aqi': '72', 'unit': 'fahrenheit'}, ensure_ascii=False)
+			if "北京" in city.lower():
+				return json.dumps({"city": "北京", "aqi": "10", "unit": "celsius"}, ensure_ascii=False)
+			elif "上海" in city.lower():
+				return json.dumps({"city": "上海", "aqi": "72", "unit": "fahrenheit"}, ensure_ascii=False)
 			else:
-				return json.dumps({'city': city, 'aqi': 'unknown'}, ensure_ascii=False)
+				return json.dumps({"city": city, "aqi": "unknown"}, ensure_ascii=False)
 
 		def build_system_prompt(tools):
 			"""Construct system prompt based on the list of available tools."""
@@ -5085,7 +5198,7 @@ def glm_example():
 			value = "# 可用工具"
 			contents = []
 			for tool in tools:
-				content = f"\n\n## {tool['function']['name']}\n\n{json.dumps(tool['function'], ensure_ascii=False, indent=4)}"
+				content = f"\n\n## {tool["function"]["name"]}\n\n{json.dumps(tool["function"], ensure_ascii=False, indent=4)}"
 				content += "\n在调用上述函数时，请使用 Json 格式表示调用的参数。"
 				contents.append(content)
 			value += "".join(contents)
@@ -5143,7 +5256,7 @@ def glm_example():
 			for m in generate_resp.split("<|assistant|>"):
 				fc_decode = is_function_call(m.strip())
 				if fc_decode:
-					message.append({"role": "assistant", "metadata": fc_decode['name'], "content": json.dumps(fc_decode['arguments'], ensure_ascii=False)})
+					message.append({"role": "assistant", "metadata": fc_decode["name"], "content": json.dumps(fc_decode["arguments"], ensure_ascii=False)})
 					print(f"Function Call: {fc_decode}")
 					function_calls.append(fc_decode)
 				else:
@@ -7279,47 +7392,90 @@ def qwen_coder_example():
 	#	Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int4
 	#	Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int8
 	#	Qwen/Qwen2.5-Coder-7B-Instruct-GGUF
+	#
+	#	Qwen/Qwen3-Coder-30B-A3B-Instruct
+	#	Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8
+	#	Qwen/Qwen3-Coder-480B-A35B-Instruct
+	#	Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
 
-	model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
-	#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-AWQ"
-	#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int4"
-	#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int8"
-	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
-	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ"
-	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int4"
-	#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int8"
+	if False:
+		model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
+		#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct-GPTQ-Int8"
+		#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
+		#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-AWQ"
+		#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int4"
+		#model_name = "Qwen/Qwen2.5-Coder-7B-Instruct-GPTQ-Int8"
 
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		model_name,
-		torch_dtype="auto",
-		device_map="auto",
-	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
 
-	prompt = "write a quick sort algorithm."
-	messages = [
-		{"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
-		{"role": "user", "content": prompt},
-	]
-	text = tokenizer.apply_chat_template(
-		messages,
-		tokenize=False,
-		add_generation_prompt=True,
-	)
-	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+		prompt = "write a quick sort algorithm."
+		messages = [
+			{"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
 
-	generated_ids = model.generate(
-		**model_inputs,
-		max_new_tokens=512,
-	)
-	generated_ids = [
-		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
-	]
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
 
-	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if True:
+		model_name = "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+		#model_name = "Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8"
+		#model_name = "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+		#model_name = "Qwen/Qwen3-Coder-480B-A3B-Instruct-FP8"
+
+		# Load the tokenizer and the model
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto"
+		)
+
+		# Prepare the model input
+		prompt = "Write a quick sort algorithm."
+		messages = [
+			{"role": "user", "content": prompt}
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		# Conduct text completion
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=65536
+		)
+		output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist() 
+
+		content = tokenizer.decode(output_ids, skip_special_tokens=True)
+
+		print("Content:", content)
 
 # REF [site] >> https://huggingface.co/deepseek-ai
 def deepseek_coder_example():
@@ -8287,82 +8443,207 @@ def qwen_omni_example():
 	# Models:
 	#	Qwen/Qwen2.5-Omni-3B
 	#	Qwen/Qwen2.5-Omni-7B
+	#
+	#	Qwen/Qwen3-Omni-30B-A3B-Instruct
+	#	Qwen/Qwen3-Omni-30B-A3B-Thinking
+	#	Qwen/Qwen3-Omni-30B-A3B-Captioner
 
-	# Install:
-	#	pip install qwen-omni-utils[decord] -U
+	if False:
+		# Install:
+		#	pip install qwen-omni-utils[decord] -U
 
-	import soundfile as sf
+		from qwen_omni_utils import process_mm_info
+		import soundfile as sf
 
-	from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
-	from qwen_omni_utils import process_mm_info
+		model_id = "Qwen/Qwen2.5-Omni-3B"
+		#model_id = "Qwen/Qwen2.5-Omni-7B"
 
-	model_id = "Qwen/Qwen2.5-Omni-3B"
-	#model_id = "Qwen/Qwen2.5-Omni-7B"
+		if True:
+			# Default: Load the model on the available device(s)
+			model = transformers.Qwen2_5OmniForConditionalGeneration.from_pretrained(model_id, torch_dtype="auto", device_map="auto")
+		else:
+			# We recommend enabling flash_attention_2 for better acceleration and memory saving
+			# FlashAttention-2 can only be used when a model is loaded in torch.float16 or torch.bfloat16.
+			model = transformers.Qwen2_5OmniForConditionalGeneration.from_pretrained(
+				model_id,
+				torch_dtype="auto",
+				#torch_dtype=torch.bfloat16,
+				device_map="auto",
+				attn_implementation="flash_attention_2",
+			)
+
+		# The model supports both text and audio outputs, if users do not need audio outputs, they can call model.disable_talker() after init the model.
+		# This option will save about ~2GB of GPU memory but the return_audio option for generate function will only allow to be set at False.
+		#model.disable_talker()
+
+		processor = transformers.Qwen2_5OmniProcessor.from_pretrained(model_id)
+
+		conversation = [
+			{
+				"role": "system",
+				"content": [
+					{"type": "text", "text": "You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech."}
+				],
+			},
+			{
+				"role": "user",
+				"content": [
+					{"type": "video", "video": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2.5-Omni/draw.mp4"},
+				],
+			},
+		]
+
+		# Set use audio in video
+		USE_AUDIO_IN_VIDEO = True
+
+		# Preparation for inference
+		text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
+		audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+		inputs = processor(text=text, audio=audios, images=images, videos=videos, return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+		inputs = inputs.to(model.device).to(model.dtype)
+
+		if True:
+			# Inference: Generation of the output text and audio
+			text_ids, audio = model.generate(**inputs, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+		elif False:
+			# Users can use the speaker parameter of generate function to specify the voice type.
+			# By default, if speaker is not specified, the default voice type is Chelsie.
+			text_ids, audio = model.generate(**inputs, speaker="Chelsie")
+			#text_ids, audio = model.generate(**inputs, speaker="Ethan")
+		else:
+			# In order to obtain a flexible experience, we recommend that users can decide whether to return audio when generate function is called.
+			# If return_audio is set to False, the model will only return text outputs to get text responses faster.
+			text_ids = model.generate(**inputs, return_audio=False)
+
+		text = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
+		print(text)
+		sf.write(
+			"output.wav",
+			audio.reshape(-1).detach().cpu().numpy(),
+			samplerate=24000,
+		)
 
 	if True:
-		# Default: Load the model on the available device(s)
-		model = Qwen2_5OmniForConditionalGeneration.from_pretrained(model_id, torch_dtype="auto", device_map="auto")
-	else:
-		# We recommend enabling flash_attention_2 for better acceleration and memory saving
-		# FlashAttention-2 can only be used when a model is loaded in torch.float16 or torch.bfloat16.
-		model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
-			model_id,
-			torch_dtype="auto",
-			#torch_dtype=torch.bfloat16,
+		# Install:
+		#	pip install qwen-omni-utils -U
+		#	pip install -U flash-attn --no-build-isolation
+
+		from qwen_omni_utils import process_mm_info
+		import soundfile as sf
+
+		MODEL_PATH = "Qwen/Qwen3-Omni-30B-A3B-Instruct"
+		#MODEL_PATH = "Qwen/Qwen3-Omni-30B-A3B-Thinking"
+
+		model = transformers.Qwen3OmniMoeForConditionalGeneration.from_pretrained(
+			MODEL_PATH,
+			dtype="auto",
 			device_map="auto",
 			attn_implementation="flash_attention_2",
 		)
 
-	# The model supports both text and audio outputs, if users do not need audio outputs, they can call model.disable_talker() after init the model.
-	# This option will save about ~2GB of GPU memory but the return_audio option for generate function will only allow to be set at False.
-	#model.disable_talker()
+		processor = transformers.Qwen3OmniMoeProcessor.from_pretrained(MODEL_PATH)
 
-	processor = Qwen2_5OmniProcessor.from_pretrained(model_id)
+		conversation = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "image": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-Omni/demo/cars.jpg"},
+					{"type": "audio", "audio": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-Omni/demo/cough.wav"},
+					{"type": "text", "text": "What can you see and hear? Answer in one short sentence."}
+				],
+			},
+		]
 
-	conversation = [
-		{
-			"role": "system",
-			"content": [
-				{"type": "text", "text": "You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech."}
-			],
-		},
-		{
-			"role": "user",
-			"content": [
-				{"type": "video", "video": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2.5-Omni/draw.mp4"},
-			],
-		},
-	]
+		# Set whether to use audio in video
+		USE_AUDIO_IN_VIDEO = True
 
-	# Set use audio in video
-	USE_AUDIO_IN_VIDEO = True
+		# Preparation for inference
+		text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
+		audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+		inputs = processor(
+			text=text, 
+			audio=audios, 
+			images=images, 
+			videos=videos, 
+			return_tensors="pt", 
+			padding=True, 
+			use_audio_in_video=USE_AUDIO_IN_VIDEO,
+		)
+		inputs = inputs.to(model.device).to(model.dtype)
 
-	# Preparation for inference
-	text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
-	audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
-	inputs = processor(text=text, audio=audios, images=images, videos=videos, return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO)
-	inputs = inputs.to(model.device).to(model.dtype)
+		# Inference: Generation of the output text and audio
+		text_ids, audio = model.generate(
+			**inputs, 
+			speaker="Ethan", 
+			thinker_return_dict_in_generate=True,
+			use_audio_in_video=USE_AUDIO_IN_VIDEO,
+		)
+
+		text = processor.batch_decode(
+			text_ids.sequences[:, inputs["input_ids"].shape[1] :],
+			skip_special_tokens=True,
+			clean_up_tokenization_spaces=False,
+		)
+		print(text)
+		if audio is not None:
+			sf.write(
+				"./output.wav",
+				audio.reshape(-1).detach().cpu().numpy(),
+				samplerate=24000,
+			)
 
 	if True:
-		# Inference: Generation of the output text and audio
-		text_ids, audio = model.generate(**inputs, use_audio_in_video=USE_AUDIO_IN_VIDEO)
-	elif False:
-		# Users can use the speaker parameter of generate function to specify the voice type.
-		# By default, if speaker is not specified, the default voice type is Chelsie.
-		text_ids, audio = model.generate(**inputs, speaker="Chelsie")
-		#text_ids, audio = model.generate(**inputs, speaker="Ethan")
-	else:
-		# In order to obtain a flexible experience, we recommend that users can decide whether to return audio when generate function is called.
-		# If return_audio is set to False, the model will only return text outputs to get text responses faster.
-		text_ids = model.generate(**inputs, return_audio=False)
+		# Install:
+		#	pip install qwen-omni-utils -U
+		#	pip install -U flash-attn --no-build-isolation
 
-	text = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
-	print(text)
-	sf.write(
-		"output.wav",
-		audio.reshape(-1).detach().cpu().numpy(),
-		samplerate=24000,
-	)
+		from qwen_omni_utils import process_mm_info
+		import soundfile as sf
+
+		MODEL_PATH = "Qwen/Qwen3-Omni-30B-A3B-Captioner"
+
+		model = transformers.Qwen3OmniMoeForConditionalGeneration.from_pretrained(
+			MODEL_PATH,
+			dtype="auto",
+			device_map="auto",
+			attn_implementation="flash_attention_2",
+		)
+
+		processor = transformers.Qwen3OmniMoeProcessor.from_pretrained(MODEL_PATH)
+
+		conversation = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "audio", "audio": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-Omni/cookbook/caption2.mp3"},
+				],
+			},
+		]
+
+		# Preparation for inference
+		text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
+		audios, _, _ = process_mm_info(conversation, use_audio_in_video=False)
+		inputs = processor(
+			text=text, 
+			audio=audios,
+			return_tensors="pt", 
+			padding=True, 
+			use_audio_in_video=False,
+		)
+		inputs = inputs.to(model.device).to(model.dtype)
+
+		# Inference: Generation of the output text and audio
+		text_ids, audio = model.generate(
+			**inputs,
+			thinker_return_dict_in_generate=True,
+		)
+
+		text = processor.batch_decode(
+			text_ids.sequences[:, inputs["input_ids"].shape[1] :],
+			skip_special_tokens=True,
+			clean_up_tokenization_spaces=False,
+		)
+		print(text)
 
 # REF [site] >>
 #	https://huggingface.co/microsoft
@@ -9929,11 +10210,20 @@ def qwen_vl_example():
 	#	Qwen/Qwen2.5-VL-3B-Instruct
 	#	Qwen/Qwen2.5-VL-7B-Instruct
 	#	Qwen/Qwen2.5-VL-72B-Instruct
+	#
+	#	Qwen/Qwen3-VL-30B-A3B-Instruct
+	#	Qwen/Qwen3-VL-30B-A3B-Instruct-FP8
+	#	Qwen/Qwen3-VL-30B-A3B-Thinking
+	#	Qwen/Qwen3-VL-30B-A3B-Thinking-FP8
+	#	Qwen/Qwen3-VL-235B-A22B-Instruct
+	#	Qwen/Qwen3-VL-235B-A22B-Instruct-FP8
+	#	Qwen/Qwen3-VL-235B-A22B-Thinking
+	#	Qwen/Qwen3-VL-235B-A22B-Thinking-FP8
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(f"Device: {device}.")
 
-	if True:
+	if False:
 		# Install:
 		#	pip install qwen-vl-utils
 
@@ -10011,7 +10301,7 @@ def qwen_vl_example():
 		)
 		print(output_text)
 
-	if True:
+	if False:
 		# Install:
 		#	# It's highly recommanded to use `[decord]` feature for faster video loading.
 		#	pip install qwen-vl-utils[decord]==0.0.8
@@ -10080,6 +10370,150 @@ def qwen_vl_example():
 			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
 		)
 		print(output_text)
+
+	if True:
+		model_name = "Qwen/Qwen3-VL-30B-A3B-Instruct"
+		#model_name = "Qwen/Qwen3-VL-30B-A3B-Thinking"
+		#model_name = "Qwen/Qwen3-VL-235B-A22B-Instruct"
+		#model_name = "Qwen/Qwen3-VL-235B-A22B-Thinking"
+
+		# Default: Load the model on the available device(s)
+		model = transformers.Qwen3VLMoeForConditionalGeneration.from_pretrained(
+			model_name, dtype="auto", device_map="auto"
+		)
+		# We recommend enabling flash_attention_2 for better acceleration and memory saving, especially in multi-image and video scenarios.
+		#model = transformers.Qwen3VLMoeForConditionalGeneration.from_pretrained(
+		#	model_name,
+		#	dtype=torch.bfloat16,
+		#	attn_implementation="flash_attention_2",
+		#	device_map="auto",
+		#)
+
+		processor = transformers.AutoProcessor.from_pretrained(model_name)
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg",
+					},
+					{"type": "text", "text": "Describe this image."},
+				],
+			}
+		]
+
+		# Preparation for inference
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt"
+		)
+
+		# Inference: Generation of the output
+		generated_ids = model.generate(**inputs, max_new_tokens=128)
+		generated_ids_trimmed = [
+			out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+		]
+		output_text = processor.batch_decode(
+			generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+		)
+		print(output_text)
+
+	if True:
+		import os
+		from vllm import LLM, SamplingParams
+		from qwen_vl_utils import process_vision_info
+
+		os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
+
+		def prepare_inputs_for_vllm(messages, processor):
+			text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+			# qwen_vl_utils 0.0.14+ reqired
+			image_inputs, video_inputs, video_kwargs = process_vision_info(
+				messages,
+				image_patch_size=processor.image_processor.patch_size,
+				return_video_kwargs=True,
+				return_video_metadata=True
+			)
+			print(f"video_kwargs: {video_kwargs}")
+
+			mm_data = {}
+			if image_inputs is not None:
+				mm_data["image"] = image_inputs
+			if video_inputs is not None:
+				mm_data["video"] = video_inputs
+
+			return {
+				"prompt": text,
+				"multi_modal_data": mm_data,
+				"mm_processor_kwargs": video_kwargs
+			}
+
+		#messages = [
+		#	{
+		#		"role": "user",
+		#		"content": [
+		#			{
+		#				"type": "video",
+		#				"video": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-VL/space_woaudio.mp4",
+		#			},
+		#			{"type": "text", "text": "这段视频有多长"},
+		#		],
+		#	}
+		#]
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": "https://ofasys-multimodal-wlcb-3-toshanghai.oss-accelerate.aliyuncs.com/wpf272043/keepme/image/receipt.png",
+					},
+					{"type": "text", "text": "Read all the text in the image."},
+				],
+			}
+		]
+
+		# TODO: change to your own checkpoint path
+		checkpoint_path = "Qwen/Qwen3-VL-30B-A3B-Instruct-FP8"
+		#checkpoint_path = "Qwen/Qwen3-VL-30B-A3B-Thinking-FP8"
+		#checkpoint_path = "Qwen/Qwen3-VL-235B-A22B-Instruct-FP8"
+		#checkpoint_path = "Qwen/Qwen3-VL-235B-A22B-Thinking-FP8"
+		processor = transformers.AutoProcessor.from_pretrained(checkpoint_path)
+		inputs = [prepare_inputs_for_vllm(message, processor) for message in [messages]]
+
+		llm = LLM(
+			model=checkpoint_path,
+			trust_remote_code=True,
+			gpu_memory_utilization=0.70,
+			enforce_eager=False,
+			tensor_parallel_size=torch.cuda.device_count(),
+			seed=0
+		)
+
+		sampling_params = SamplingParams(
+			temperature=0,
+			max_tokens=1024,
+			top_k=-1,
+			stop_token_ids=[],
+		)
+
+		for i, input_ in enumerate(inputs):
+			print()
+			print("=" * 40)
+			print(f"Inputs[{i}]: {input_["prompt"]=!r}")
+		print("\n" + ">" * 40)
+
+		outputs = llm.generate(inputs, sampling_params=sampling_params)
+		for i, output in enumerate(outputs):
+			generated_text = output.outputs[0].text
+			print()
+			print("=" * 40)
+			print(f"Generated text: {generated_text!r}")
 
 # REF [site] >> https://huggingface.co/deepseek-ai
 def deepseek_vl_example():
@@ -11227,7 +11661,7 @@ def main():
 	#qwen_example()  # Qwen. Not yet implemented.
 	#qwen2_example()  # Qwen2.
 	#qwen2_5_example()  # Qwen2.5.
-	#qwen3_example()  # Qwen3.
+	#qwen3_example()  # Qwen3, Qwen3-Next.
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
 	#smol_lm_example()  # SmolLM, SmolLM2.
@@ -11291,7 +11725,7 @@ def main():
 	#star_coder_example()  # StarCoder.
 	#replit_example()  # Replit.
 	#codestral_example()  # Codestral.
-	#qwen_coder_example()  # Qwen2.5-Coder.
+	#qwen_coder_example()  # Qwen2.5-Coder, Qwen3-Coder.
 	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2.
 
 	#-----
@@ -11320,7 +11754,7 @@ def main():
 	# Multimodal.
 
 	#kosmos_example()  # Kosmos-2.
-	#qwen_omni_example()  # Qwen2.5-Omni.
+	#qwen_omni_example()  # Qwen2.5-Omni, Qwen3-Omni.
 	#phi_4_multimodal_example()  # Phi-4-multimodal.
 	#smol_vlm_example()  # SmolVLM, SmolVLM2.
 
@@ -11344,16 +11778,20 @@ def main():
 	#fuyu_example()  # Fuyu.
 	#pixtral_example()  # Pixtral. Not yet implemented.
 	#vila_example()  # VILA. Not yet implemented.
-	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL.
+	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL, Qwen3-VL.
 	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2.
 	#llama_vision_example()  # Llama 3.2 Vision.
 	#kimi_vl_example()  # Kimi-VL.
 	#lfm2_vl_example()  # LFM2-VL.
 
+	# Refer to image_synthesis_test.py.
+
 	#-----
 	# Video and language.
 
 	#long_vila_example()  # LongVILA. Not yet implemented.
+
+	# Refer to video_synthesis_test.py.
 
 	#-----
 	# Audio and language.
