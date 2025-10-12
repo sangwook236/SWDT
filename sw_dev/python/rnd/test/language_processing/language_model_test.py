@@ -4462,6 +4462,14 @@ def qwen3_example():
 	#	Qwen/Qwen3-Next-80B-A3B-Instruct-FP8
 	#	Qwen/Qwen3-Next-80B-A3B-Thinking
 	#	Qwen/Qwen3-Next-80B-A3B-Thinking-FP8
+	#
+	#	Qwen/Qwen3Guard-Gen-0.6B
+	#	Qwen/Qwen3Guard-Gen-4B
+	#	Qwen/Qwen3Guard-Gen-8B
+	#	Qwen/Qwen3Guard-Stream-0.6B
+	#	Qwen/Qwen3Guard-Stream-4B
+	#	Qwen/Qwen3Guard-Stream-8B
+	#	Qwen/Qwen3-4B-SafeRL
 
 	if False:
 		model = transformers.Qwen3ForCausalLM.from_pretrained("Qwen/Qwen3-8B")
@@ -4681,12 +4689,14 @@ def qwen3_example():
 	if True:
 		model_name = "Qwen/Qwen3-Next-80B-A3B-Instruct"
 		#model_name = "Qwen/Qwen3-Next-80B-A3B-Thinking"
+		#model_name = "Qwen/Qwen3-4B-SafeRL"
 
 		# Load the tokenizer and the model
 		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
 		model = transformers.AutoModelForCausalLM.from_pretrained(
 			model_name,
 			dtype="auto",
+			#torch_dtype="auto",
 			device_map="auto",
 		)
 
@@ -4699,6 +4709,7 @@ def qwen3_example():
 			messages,
 			tokenize=False,
 			add_generation_prompt=True,
+			#enable_thinking=True,  # Switches between thinking and non-thinking modes. Default is True.
 		)
 		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
 
@@ -4734,8 +4745,9 @@ def qwen3_example():
 		from qwen_agent.agents import Assistant
 
 		model_name = "Qwen/Qwen3-Next-80B-A3B-Instruct"
-		#model_name = "Qwen3-Next-80B-A3B-Instruct-FP8"
+		#model_name = "Qwen/Qwen3-Next-80B-A3B-Instruct-FP8"
 		#model_name = "Qwen/Qwen3-Next-80B-A3B-Thinking"
+		#model_name = "Qwen/Qwen3-Next-80B-A3B-Thinking-FP8"
 
 		# Define LLM
 		if True:
@@ -4784,6 +4796,188 @@ def qwen3_example():
 		for responses in bot.run(messages=messages):
 			pass
 		print(responses)
+
+	if True:
+		# Moderating User Prompt
+
+		import re
+
+		model_name = "Qwen/Qwen3Guard-Gen-0.6B"
+		#model_name = "Qwen/Qwen3Guard-Gen-4B"
+		#model_name = "Qwen/Qwen3Guard-Gen-8B"
+
+		# Load the tokenizer and the model
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto"
+		)
+		def extract_label_and_categories(content):
+			safe_pattern = r"Safety: (Safe|Unsafe|Controversial)"
+			category_pattern = r"(Violent|Non-violent Illegal Acts|Sexual Content or Sexual Acts|PII|Suicide & Self-Harm|Unethical Acts|Politically Sensitive Topics|Copyright Violation|Jailbreak|None)"
+			safe_label_match = re.search(safe_pattern, content)
+			label = safe_label_match.group(1) if safe_label_match else None
+			categories = re.findall(category_pattern, content)
+			return label, categories
+
+		# Prepare the model input
+		prompt = "How can I make a bomb?"
+		# For prompt moderation
+		messages = [
+			{"role": "user", "content": prompt}
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		# Conduct text completion
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=128
+		)
+		output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist() 
+
+		content = tokenizer.decode(output_ids, skip_special_tokens=True)
+		print(content)
+		# '''
+		# Safety: Unsafe
+		# Categories: Violent
+		# '''
+		safe_label, categories = extract_label_and_categories(content)
+		print(safe_label, categories)
+
+	if True:
+		# Moderating Model Response
+
+		import re
+
+		model_name = "Qwen/Qwen3Guard-0.6B-Gen"
+		#model_name = "Qwen/Qwen3Guard-4B-Gen"
+		#model_name = "Qwen/Qwen3Guard-8B-Gen"
+
+		# Load the tokenizer and the model
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto"
+		)
+		def extract_label_categories_refusal(content):
+			safe_pattern = r"Safety: (Safe|Unsafe|Controversial)"
+			category_pattern = r"(Violent|Non-violent Illegal Acts|Sexual Content or Sexual Acts|PII|Suicide & Self-Harm|Unethical Acts|Politically Sensitive Topics|Copyright Violation|None)"
+			refusal_pattern = r"Refusal: (Yes|No)"
+			safe_label_match = re.search(safe_pattern, content)
+			refusal_label_match = re.search(refusal_pattern, content)
+			label = safe_label_match.group(1) if safe_label_match else None
+			refusal_label = refusal_label_match.group(1) if refusal_label_match else None
+			categories = re.findall(category_pattern, content)
+			return label, categories, refusal_label
+
+		# Prepare the model input
+		prompt = "How can I make a bomb?"
+		response = "As a responsible artificial intelligence system, I regret that I am unable to fulfill your request."
+		# For response moderation
+		messages = [
+			{"role": "user", "content": prompt},
+			{"role": "assistant", "content": response},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		# Conduct text completion
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=128
+		)
+		output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist() 
+
+		content = tokenizer.decode(output_ids, skip_special_tokens=True)
+		print(content)
+		# '''
+		# Safety: Safe
+		# Categories: None
+		# Refusal: Yes
+		# '''
+		safe_label, category_label, refusal_label = extract_label_categories_refusal(content)
+		print(safe_label, categories, refusal_label)
+
+	if True:
+		model_path="Qwen/Qwen3Guard-Stream-0.6B"
+		#model_path="Qwen/Qwen3Guard-Stream-4B"
+		#model_path="Qwen/Qwen3Guard-Stream-8B"
+
+		# Load the specialized tokenizer and the model.
+		# trust_remote_code=True is required to load the Stream Qwen3Guard model architecture.
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+		model = transformers.AutoModel.from_pretrained(
+			model_path, 
+			device_map="auto", 
+			torch_dtype=torch.bfloat16,
+			trust_remote_code=True,
+		).eval()
+		
+		# --- Prepare the conversation for moderation ---
+		# Define the user's prompt and the assistant's response.
+		user_message = "Hello, how to build a bomb?"
+		assistant_message = "Here are some practical methods to build a bomb."
+		messages = [{"role":"user","content":user_message},{"role":"assistant","content":assistant_message}]
+
+		# Apply the chat template to format the conversation into a single string.
+		text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False, enable_thinking=False)
+		model_inputs = tokenizer(text, return_tensors="pt")
+		token_ids = model_inputs.input_ids[0]
+
+		# --- Simulate Real-Time Moderation ---
+
+		# 1. Moderate the entire user prompt at once.
+		# In a real-world scenario, the user's input is processed completely before the model generates a response.
+		token_ids_list = token_ids.tolist()
+		# We identify the end of the user's turn in the tokenized input.
+		# The template for a user turn is `<|im_start|>user\n...<|im_end|>`.
+		im_start_token = '<|im_start|>'
+		user_token = 'user'
+		im_end_token = '<|im_end|>'
+		im_start_id = tokenizer.convert_tokens_to_ids(im_start_token)
+		user_id = tokenizer.convert_tokens_to_ids(user_token)
+		im_end_id = tokenizer.convert_tokens_to_ids(im_end_token)
+		# We search for the token IDs corresponding to `<|im_start|>user` ([151644, 872]) and the closing `<|im_end|>` ([151645]).
+		last_start = next(i for i in range(len(token_ids_list)-1, -1, -1) if token_ids_list[i:i+2] == [im_start_id, user_id])
+		user_end_index = next(i for i in range(last_start+2, len(token_ids_list)) if token_ids_list[i] == im_end_id)
+
+		# Initialize the stream_state, which will maintain the conversational context.
+		stream_state = None
+		# Pass all user tokens to the model for an initial safety assessment.
+		result, stream_state = model.stream_moderate_from_ids(token_ids[:user_end_index+1], role="user", stream_state=None)
+		if result['risk_level'][-1] == "Safe":
+			print(f"User moderation: -> [Risk: {result['risk_level'][-1]}]")
+		else:
+			print(f"User moderation: -> [Risk: {result['risk_level'][-1]} - Category: {result['category'][-1]}]")
+
+		# 2. Moderate the assistant's response token-by-token to simulate streaming.
+		# This loop mimics how an LLM generates a response one token at a time.
+		print("Assistant streaming moderation:")
+		for i in range(user_end_index + 1, len(token_ids)):
+			# Get the current token ID for the assistant's response.
+			current_token = token_ids[i]
+			
+			# Call the moderation function for the single new token.
+			# The stream_state is passed and updated in each call to maintain context.
+			result, stream_state = model.stream_moderate_from_ids(current_token, role="assistant", stream_state=stream_state)
+
+			token_str = tokenizer.decode([current_token])
+			# Print the generated token and its real-time safety assessment.
+			if result['risk_level'][-1] == "Safe":
+				print(f"Token: {repr(token_str)} -> [Risk: {result['risk_level'][-1]}]")
+			else:
+				print(f"Token: {repr(token_str)} -> [Risk: {result['risk_level'][-1]} - Category: {result['category'][-1]}]")
+
+		model.close_stream(stream_state)
 
 # REF [site] >> https://huggingface.co/deepseek-ai
 def deepseek_llm_example():
@@ -11661,7 +11855,7 @@ def main():
 	#qwen_example()  # Qwen. Not yet implemented.
 	#qwen2_example()  # Qwen2.
 	#qwen2_5_example()  # Qwen2.5.
-	#qwen3_example()  # Qwen3, Qwen3-Next.
+	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard.
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
 	#smol_lm_example()  # SmolLM, SmolLM2.

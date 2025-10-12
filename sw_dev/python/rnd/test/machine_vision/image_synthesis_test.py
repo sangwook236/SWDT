@@ -263,6 +263,124 @@ def cog_view_example():
 
 		image.save("./cogview4.png")
 
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_image_example():
+	# Models:
+	#	Qwen/Qwen-Image
+	#	Qwen/Qwen-Image-Edit
+	#	Qwen/Qwen-Image-Edit-2509
+
+	import torch
+	import diffusers
+
+	if True:
+		model_name = "Qwen/Qwen-Image"
+
+		# Load the pipeline
+		if torch.cuda.is_available():
+			torch_dtype = torch.bfloat16
+			device = "cuda"
+		else:
+			torch_dtype = torch.float32
+			device = "cpu"
+
+		pipe = diffusers.DiffusionPipeline.from_pretrained(model_name, torch_dtype=torch_dtype)
+		pipe = pipe.to(device)
+
+		positive_magic = {
+			"en": ", Ultra HD, 4K, cinematic composition.",  # For english prompt
+			"zh": ", 超清，4K，电影级构图."  # For chinese prompt
+		}
+
+		# Generate image
+		prompt = '''A coffee shop entrance features a chalkboard sign reading "Qwen Coffee 😊 $2 per cup," with a neon light beside it displaying "通义千问". Next to it hangs a poster showing a beautiful Chinese woman, and beneath the poster is written "π≈3.1415926-53589793-23846264-33832795-02384197". Ultra HD, 4K, cinematic composition'''
+
+		negative_prompt = " "  # Using an empty string if you do not have specific concept to remove
+
+		# Generate with different aspect ratios
+		aspect_ratios = {
+			"1:1": (1328, 1328),
+			"16:9": (1664, 928),
+			"9:16": (928, 1664),
+			"4:3": (1472, 1140),
+			"3:4": (1140, 1472),
+			"3:2": (1584, 1056),
+			"2:3": (1056, 1584),
+		}
+
+		width, height = aspect_ratios["16:9"]
+
+		image = pipe(
+			prompt=prompt + positive_magic["en"],
+			negative_prompt=negative_prompt,
+			width=width,
+			height=height,
+			num_inference_steps=50,
+			true_cfg_scale=4.0,
+			generator=torch.Generator(device="cuda").manual_seed(42)
+		).images[0]
+
+		image.save("./example.png")
+
+	if True:
+		import os
+		import torch
+		import diffusers
+		from PIL import Image
+
+		pipeline = diffusers.QwenImageEditPipeline.from_pretrained("Qwen/Qwen-Image-Edit")
+		print("pipeline loaded")
+		pipeline.to(torch.bfloat16)
+		pipeline.to("cuda")
+		pipeline.set_progress_bar_config(disable=None)
+		image = Image.open("./input.png").convert("RGB")
+		prompt = "Change the rabbit's color to purple, with a flash light background."
+		inputs = {
+			"image": image,
+			"prompt": prompt,
+			"generator": torch.manual_seed(0),
+			"true_cfg_scale": 4.0,
+			"negative_prompt": " ",
+			"num_inference_steps": 50,
+		}
+
+		with torch.inference_mode():
+			output = pipeline(**inputs)
+			output_image = output.images[0]
+			output_image.save("./output_image_edit.png")
+			print("image saved at", os.path.abspath("output_image_edit.png"))
+
+	if True:
+		import os
+		import torch
+		import diffusers
+		from PIL import Image
+
+		pipeline = diffusers.QwenImageEditPlusPipeline.from_pretrained("Qwen/Qwen-Image-Edit-2509", torch_dtype=torch.bfloat16)
+		print("pipeline loaded")
+
+		pipeline.to("cuda")
+		pipeline.set_progress_bar_config(disable=None)
+		image1 = Image.open("./input1.png")
+		image2 = Image.open("./input2.png")
+		prompt = "The magician bear is on the left, the alchemist bear is on the right, facing each other in the central park square."
+		inputs = {
+			"image": [image1, image2],
+			"prompt": prompt,
+			"generator": torch.manual_seed(0),
+			"true_cfg_scale": 4.0,
+			"negative_prompt": " ",
+			"num_inference_steps": 40,
+			"guidance_scale": 1.0,
+			"num_images_per_prompt": 1,
+		}
+
+		with torch.inference_mode():
+			output = pipeline(**inputs)
+			output_image = output.images[0]
+			output_image.save("./output_image_edit_plus.png")
+			print("image saved at", os.path.abspath("output_image_edit_plus.png"))
+
 def main():
 	# Diffusion models
 	#	Refer to ./diffusion_model_test.py
@@ -276,8 +394,12 @@ def main():
 	#-----
 	# Text-to-image generation
 
-	cog_view_example()  # CogView3, CogView4
+	#cog_view_example()  # CogView3, CogView4
+	qwen_image_example()  # Qwen-Image
 
+	#-----
+	# Vision and language.
+	#	Refer to language_model_test.py
 #--------------------------------------------------------------------
 
 if "__main__" == __name__:
