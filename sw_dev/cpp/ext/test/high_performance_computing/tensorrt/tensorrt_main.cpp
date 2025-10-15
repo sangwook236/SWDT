@@ -62,6 +62,7 @@ class MyLogger : public nvinfer1::ILogger
 	}
 };
 
+#if 0  // Erroneous implementation
 void mnist_onnx_tensorrt_test()
 {
 	const size_t image_width(28);
@@ -69,22 +70,36 @@ void mnist_onnx_tensorrt_test()
 	const size_t image_channel(1);
 	const size_t num_classes(10);
 
-	//const std::string mnist_dir_path("path/to/mnist");
-	const std::string mnist_dir_path("./mnist");
+	const std::string mnist_dir_path("path/to/mnist");
 
 	// REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
 	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.onnx");
-	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.plan");
-	const std::string plan_or_onnx_path(mnist_dir_path + "/mnist_fp16.plan");
+	const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.plan");
+	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist_fp16.plan");
 
-	// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
-	const std::vector<std::string> image_paths{
-		std::string(mnist_dir_path + "/0.jpg"),
-		std::string(mnist_dir_path + "/1.jpg"),
-		std::string(mnist_dir_path + "/2.jpg"),
-		std::string(mnist_dir_path + "/4.jpg"),
-		std::string(mnist_dir_path + "/7.jpg"),
-	};
+	// Prepare input image
+	std::vector<float> input_data(1 * image_channel * image_height * image_width, 0.0f);  // [0, 1]
+	{
+		// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
+		const std::string image_path(mnist_dir_path + "/0.jpg");
+		//const std::string image_path(mnist_dir_path + "/1.jpg");
+		//const std::string image_path(mnist_dir_path + "/2.jpg");
+		//const std::string image_path(mnist_dir_path + "/4.jpg");
+		//const std::string image_path(mnist_dir_path + "/7.jpg");
+
+		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
+		if (gray.empty())
+		{
+			std::cerr << "Failed to load image, " << image_path << std::endl;
+			return;
+		}
+		//cv::resize(gray, gray, cv::Size(image_width, image_height));
+
+		float* ptr = input_data.data();
+		for (unsigned y = 0; y < image_height; ++y)
+			for (unsigned x = 0; x < image_width; ++x, ++ptr)
+				*ptr = gray.at<unsigned char>(y, x) == 0 ? 0.0f : 1.0f;
+	}
 
 	//-----
 	MyLogger logger;
@@ -99,21 +114,21 @@ void mnist_onnx_tensorrt_test()
 	// Create a network
 #if 0
 	// Set network flags for explicit batch size
-	const auto explicit_batch = 1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
+	const auto explicit_batch(1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH));
 	std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(explicit_batch));
 #else
 	std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(0U));
 #endif
 	if (!network)
 	{
-		std::cerr << "Failed to create TensorRT network." << std::endl;
+		std::cerr << "Failed to create a TensorRT network." << std::endl;
 		return;
 	}
 	// Create a parser
 	std::unique_ptr<nvonnxparser::IParser> parser(nvonnxparser::createParser(*network, logger));
 	if (!parser)
 	{
-		std::cerr << "Failed to create TensorRT ONNX parser." << std::endl;
+		std::cerr << "Failed to create a TensorRT parser." << std::endl;
 		return;
 	}
 
@@ -131,39 +146,44 @@ void mnist_onnx_tensorrt_test()
 				std::cerr << "Failed to open an ONNX file, " << plan_or_onnx_path << std::endl;
 				return;
 			}
-			const std::streamsize sz = stream.tellg();
+			const std::streamsize sz(stream.tellg());
 			stream.seekg(0, std::ios::beg);
 			std::vector<char> buf(sz, 0);
 			if (!stream.read(buf.data(), buf.size()))
 			{
-				std::cerr << "Failed to read ONNX file." << std::endl;
-				return nullptr;
-			}
-
-			if (parser->parse(buf.data(), buf.size()))
-#else
-			if (parser->parseFromFile(plan_or_onnx_path.c_str(), static_cast<int>(nvinfer1::ILogger::Severity::kINFO)))
-#endif
-			{
-				std::cout << "An ONNX file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
-			}
-			else
-			{
-				std::cerr << "Failed to parse an ONNX file" << std::endl;
+				std::cerr << "Failed to read an ONNX file." << std::endl;
 				return;
 			}
+
+			if (!parser->parse(buf.data(), buf.size()))
+#else
+			if (!parser->parseFromFile(plan_or_onnx_path.c_str(), static_cast<int>(nvinfer1::ILogger::Severity::kINFO)))
+#endif
+			{
+				std::cerr << "Failed to parse an ONNX file." << std::endl;
+				return;
+			}
+			std::cout << "An ONNX file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 
 			// Configure a builder config
 			std::unique_ptr<nvinfer1::IBuilderConfig> config(builder->createBuilderConfig());
 			if (!config)
 			{
-				std::cerr << "Failed to create TensorRT builder config." << std::endl;
+				std::cerr << "Failed to create a TensorRT builder config." << std::endl;
 				return;
 			}
 			config->setMemoryPoolLimit(nvinfer1::MemoryPoolType::kWORKSPACE, 1ULL << 30);  // Set maximum workspace size to 1 GiB
+			//if (builder->platformHasFastFp16())
+			//	config->setFlag(nvinfer1::BuilderFlag::kFP16);
+			//if (builder->platformHasFastInt8())
+			//	config->setFlag(nvinfer1::BuilderFlag::kINT8);
 
 #if 0
 			{
+				// If the network has any dynamic input tensors, the appropriate calls to setDimensions() must be made.
+				// Likewise, if there are any shape input tensors, the appropriate calls to setShapeValues() are required.
+				// The builder retains ownership of the created optimization profile and returns a raw pointer, i.e. the users must not attempt to delete the returned pointer.
+
 				nvinfer1::IOptimizationProfile* profile = builder->createOptimizationProfile();
 
 				const nvinfer1::Dims data_dims_min{ 3, { 256, 256, 3 } };
@@ -173,7 +193,7 @@ void mnist_onnx_tensorrt_test()
 				profile->setDimensions("data_name", nvinfer1::OptProfileSelector::kOPT, data_dims_opt);
 				profile->setDimensions("data_name", nvinfer1::OptProfileSelector::kMAX, data_dims_max);
 
-#if 1
+#if 0
 				const std::vector<int32_t> data_shape_min{ 256, 256 };
 				const std::vector<int32_t> data_shape_opt{ 512, 512 };
 				const std::vector<int32_t> data_shape_max{ 1024, 1024 };
@@ -197,7 +217,7 @@ void mnist_onnx_tensorrt_test()
 			engine.reset(builder->buildEngineWithConfig(*network, *config));
 			if (!engine)
 			{
-				std::cerr << "Failed to build TensorRT engine." << std::endl;
+				std::cerr << "Failed to build a TensorRT engine." << std::endl;
 				return;
 			}
 		}
@@ -208,7 +228,7 @@ void mnist_onnx_tensorrt_test()
 			std::ifstream stream(plan_or_onnx_path, std::ios::binary | std::ios::ate);
 			if (!stream)
 			{
-				std::cerr << "Failed to open TensorRT plan file, " << plan_or_onnx_path << std::endl;
+				std::cerr << "Failed to open a TensorRT plan file, " << plan_or_onnx_path << std::endl;
 				return;
 			}
 			const std::streamsize sz(stream.tellg());
@@ -216,7 +236,7 @@ void mnist_onnx_tensorrt_test()
 			std::vector<char> buf(sz, 0);
 			if (!stream.read(buf.data(), buf.size()))
 			{
-				std::cerr << "Failed to read TensorRT plan file." << std::endl;
+				std::cerr << "Failed to read a TensorRT plan file." << std::endl;
 				return;
 			}
 			std::cout << "A TensorRT plan file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
@@ -225,7 +245,7 @@ void mnist_onnx_tensorrt_test()
 			std::unique_ptr<nvinfer1::IRuntime> runtime(nvinfer1::createInferRuntime(logger));
 			if (!runtime)
 			{
-				std::cerr << "Failed to create TensorRT runtime." << std::endl;
+				std::cerr << "Failed to create a TensorRT runtime." << std::endl;
 				return;
 			}
 
@@ -233,7 +253,7 @@ void mnist_onnx_tensorrt_test()
 			engine.reset(runtime->deserializeCudaEngine(buf.data(), buf.size()));
 			if (!engine)
 			{
-				std::cerr << "Failed to deserialize TensorRT engine." << std::endl;
+				std::cerr << "Failed to deserialize a TensorRT engine." << std::endl;
 				return;
 			}
 		}
@@ -260,7 +280,7 @@ void mnist_onnx_tensorrt_test()
 	std::unique_ptr<nvinfer1::IExecutionContext> context(engine->createExecutionContext());
 	if (!context)
 	{
-		std::cerr << "Failed to create TensorRT execution context." << std::endl;
+		std::cerr << "Failed to create a TensorRT execution context." << std::endl;
 		return;
 	}
 
@@ -268,7 +288,8 @@ void mnist_onnx_tensorrt_test()
 
 	//-----
 	// Prepare input/output buffers
-	//	"Input3": float32[1,1,28,28], "Plus214_Output_0": float32[1,10]
+
+	// "Input3": float32[1,1,28,28], "Plus214_Output_0": float32[1,10]
 	//	Can check the names of inputs & outputs in https://netron.app/
 #if 0
 	const int input_id(engine->getBindingIndex("Input3"));  // Deprecated
@@ -279,37 +300,357 @@ void mnist_onnx_tensorrt_test()
 #endif
 
 	// Get input and output tensor names from the engine
-	const char* input_name = engine->getIOTensorName(0);
-	const char* output_name = engine->getIOTensorName(1);
+	const char* input_name = engine->getIOTensorName(input_id);
+	const char* output_name = engine->getIOTensorName(output_id);
 
 	// Get input and output dimensions
 	const nvinfer1::Dims& input_dims = engine->getTensorShape(input_name);
-	const nvinfer1::Dims& output_dims = engine->getTensorShape(output_name);
-
-	// Allocate host memory for input and output
+	assert(std::count_if(input_dims.d, input_dims.d + input_dims.nbDims, [](const auto& elem) { return elem < 0; }) == 0);
 	const int64_t input_size(std::accumulate(input_dims.d, input_dims.d + input_dims.nbDims, 1, std::multiplies<int64_t>()));
+	assert(input_data.size() == input_size);
+	const nvinfer1::Dims& output_dims = engine->getTensorShape(output_name);
+	assert(std::count_if(output_dims.d, output_dims.d + output_dims.nbDims, [](const auto& elem) { return elem < 0; }) == 0);
 	const int64_t output_size(std::accumulate(output_dims.d, output_dims.d + output_dims.nbDims, 1, std::multiplies<int64_t>()));
 	assert(num_classes == output_size);
 
+#if defined(__USE_CUDA_STREAM)
+	// Create CUDA stream for inference
+	cudaStream_t stream;
+	CUDA_CHECK(cudaStreamCreate(&stream));
+#endif
+
+	// Allocate host memory for input and output
+
 	// Pointers to the input and output buffers on the GPU
 	void* buffers[2] = { nullptr, };
-	//std::vector<void*> buffers(3, nullptr);
+	//std::vector<void*> buffers(2, nullptr);
+#if defined(__USE_CUDA_STREAM)
+	//CUDA_CHECK(cudaMallocAsync(&buffers[input_id], input_size * sizeof(float), stream));
+	//CUDA_CHECK(cudaMallocAsync(&buffers[output_id], output_size * sizeof(float), stream));
 	CUDA_CHECK(cudaMalloc(&buffers[input_id], input_size * sizeof(float)));
 	CUDA_CHECK(cudaMalloc(&buffers[output_id], output_size * sizeof(float)));
 
-	auto prepare_input_image = [](const std::string& image_path, std::vector<float>& input_data) -> void {
-		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
-		if (gray.empty())
+	context->setTensorAddress(input_name, buffers[input_id]);
+	context->setTensorAddress(output_name, buffers[output_id]);
+#else
+	CUDA_CHECK(cudaMalloc(&buffers[input_id], input_size * sizeof(float)));
+	CUDA_CHECK(cudaMalloc(&buffers[output_id], output_size * sizeof(float)));
+#endif
+
+	// Copy input data from host to device
+#if defined(__USE_CUDA_STREAM)
+	CUDA_CHECK(cudaMemcpyAsync(buffers[input_id], (void*)input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice, stream));
+#else
+	CUDA_CHECK(cudaMemcpy(buffers[input_id], (void*)input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice));
+#endif
+
+	// Run inference
+	std::cout << "Inferring..." << std::endl;
+	const auto start_time(std::chrono::steady_clock::now());
+#if defined(__USE_CUDA_STREAM)
+	//if (context->executeAsyncV2(buffers, stream, nullptr))  // Compile-time error: 'executeAsyncV2': is not a member of 'nvinfer1::IExecutionContext'
+	if (context->enqueueV3(stream))
+#else
+	if (context->executeV2((void**)buffers))
+#endif
+	{
+		std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+
+		// Copy output data from device to host
+		std::vector<float> output_data(output_size);
+#if defined(__USE_CUDA_STREAM)
+		CUDA_CHECK(cudaMemcpyAsync((void*)output_data.data(), buffers[output_id], output_size * sizeof(float), cudaMemcpyDeviceToHost, stream));
+#else
+		CUDA_CHECK(cudaMemcpy((void*)output_data.data(), buffers[output_id], output_size * sizeof(float), cudaMemcpyDeviceToHost));
+#endif
+
+		// Show results
+		//softmax(output_data);
+		const int64_t predicted(std::distance(output_data.begin(), std::max_element(output_data.begin(), output_data.end())));
+		std::cout << "Predicted = " << predicted << std::endl;
+	}
+	else
+	{
+		std::cerr << "Inference failed." << std::endl;
+	}
+
+#if defined(__USE_CUDA_STREAM)
+	// Synchronize stream
+	CUDA_CHECK(cudaStreamSynchronize(stream));
+#endif
+
+	// Cleanup
+#if defined(__USE_CUDA_STREAM)
+	//CUDA_CHECK(cudaFreeAsync(buffers[input_id], stream));
+	//CUDA_CHECK(cudaFreeAsync(buffers[output_id], stream));
+	CUDA_CHECK(cudaFree(buffers[input_id]));
+	CUDA_CHECK(cudaFree(buffers[output_id]));
+
+	CUDA_CHECK(cudaStreamDestroy(stream));
+#else
+	CUDA_CHECK(cudaFree(buffers[input_id]));
+	CUDA_CHECK(cudaFree(buffers[output_id]));
+#endif
+	buffers[input_id] = nullptr;
+	buffers[output_id] = nullptr;
+}
+#endif
+
+void mnist_onnx_tensorrt_test()
+{
+	const size_t image_width(28);
+	const size_t image_height(28);
+	const size_t image_channel(1);
+	const size_t num_classes(10);
+
+	//const std::string mnist_dir_path("path/to/mnist");
+	const std::string mnist_dir_path("./mnist");
+
+	// REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
+	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.onnx");
+	const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.plan");
+	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist_fp16.plan");
+
+	// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
+	const std::vector<std::string> image_paths{
+		std::string(mnist_dir_path + "/0.jpg"),
+		std::string(mnist_dir_path + "/1.jpg"),
+		std::string(mnist_dir_path + "/2.jpg"),
+		std::string(mnist_dir_path + "/4.jpg"),
+		std::string(mnist_dir_path + "/7.jpg"),
+	};
+
+	//-----
+	MyLogger logger;
+
+	// Create a builder
+	std::unique_ptr<nvinfer1::IBuilder> builder(nvinfer1::createInferBuilder(logger));
+	if (!builder)
+	{
+		std::cerr << "Failed to create a TensorRT builder." << std::endl;
+		return;
+	}
+	// Create a network
+#if 0
+	// Set network flags for explicit batch size
+	const auto explicit_batch(1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH));
+	std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(explicit_batch));
+#else
+	std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(0U));
+#endif
+	if (!network)
+	{
+		std::cerr << "Failed to create a TensorRT network." << std::endl;
+		return;
+	}
+	// Create a parser
+	std::unique_ptr<nvonnxparser::IParser> parser(nvonnxparser::createParser(*network, logger));
+	if (!parser)
+	{
+		std::cerr << "Failed to create a TensorRT parser." << std::endl;
+		return;
+	}
+
+	// Create an engine
+	std::unique_ptr<nvinfer1::ICudaEngine> engine;
+	{
+		if (plan_or_onnx_path.ends_with(".onnx"))  // Too slow
 		{
-			std::cerr << "Failed to load image, " << image_path << std::endl;
-			return;
+			std::cout << "Parsing an ONNX file, " << plan_or_onnx_path << "..." << std::endl;
+			const auto start_time(std::chrono::steady_clock::now());
+#if 0
+			std::ifstream stream(plan_or_onnx_path, std::ios::binary | std::ios::ate);
+			if (!stream)
+			{
+				std::cerr << "Failed to open an ONNX file, " << plan_or_onnx_path << std::endl;
+				return;
+			}
+			const std::streamsize sz(stream.tellg());
+			stream.seekg(0, std::ios::beg);
+			std::vector<char> buf(sz, 0);
+			if (!stream.read(buf.data(), buf.size()))
+			{
+				std::cerr << "Failed to read an ONNX file." << std::endl;
+				return;
+			}
+
+			if (!parser->parse(buf.data(), buf.size()))
+#else
+			if (!parser->parseFromFile(plan_or_onnx_path.c_str(), static_cast<int>(nvinfer1::ILogger::Severity::kINFO)))
+#endif
+			{
+				std::cerr << "Failed to parse an ONNX file." << std::endl;
+				return;
+			}
+			std::cout << "An ONNX file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+
+			// Configure a builder config
+			std::unique_ptr<nvinfer1::IBuilderConfig> config(builder->createBuilderConfig());
+			if (!config)
+			{
+				std::cerr << "Failed to create a TensorRT builder config." << std::endl;
+				return;
+			}
+			config->setMemoryPoolLimit(nvinfer1::MemoryPoolType::kWORKSPACE, 1ULL << 30);  // Set maximum workspace size to 1 GiB
+
+#if 0
+			{
+				// If the network has any dynamic input tensors, the appropriate calls to setDimensions() must be made.
+				// Likewise, if there are any shape input tensors, the appropriate calls to setShapeValues() are required.
+				// The builder retains ownership of the created optimization profile and returns a raw pointer, i.e. the users must not attempt to delete the returned pointer.
+
+				nvinfer1::IOptimizationProfile* profile = builder->createOptimizationProfile();
+
+				const nvinfer1::Dims data_dims_min{ 3, { 256, 256, 3 } };
+				const nvinfer1::Dims data_dims_opt{ 3, { 512, 512, 3 } };
+				const nvinfer1::Dims data_dims_max{ 3, { 1024, 1024, 3 } };
+				profile->setDimensions("data_name", nvinfer1::OptProfileSelector::kMIN, data_dims_min);
+				profile->setDimensions("data_name", nvinfer1::OptProfileSelector::kOPT, data_dims_opt);
+				profile->setDimensions("data_name", nvinfer1::OptProfileSelector::kMAX, data_dims_max);
+
+#if 0
+				const std::vector<int32_t> data_shape_min{ 256, 256 };
+				const std::vector<int32_t> data_shape_opt{ 512, 512 };
+				const std::vector<int32_t> data_shape_max{ 1024, 1024 };
+				profile->setShapeValues("data_shape", nvinfer1::OptProfileSelector::kMIN, data_shape_min.data(), (int32_t)data_shape_min.size());
+				profile->setShapeValues("data_shape", nvinfer1::OptProfileSelector::kOPT, data_shape_opt.data(), (int32_t)data_shape_opt.size());
+				profile->setShapeValues("data_shape", nvinfer1::OptProfileSelector::kMAX, data_shape_max.data(), (int32_t)data_shape_max.size());
+#else
+				const std::vector<int64_t> data_shape_min{ 256, 256 };
+				const std::vector<int64_t> data_shape_opt{ 512, 512 };
+				const std::vector<int64_t> data_shape_max{ 1024, 1024 };
+				profile->setShapeValuesV2("data_shape", nvinfer1::OptProfileSelector::kMIN, data_shape_min.data(), (int32_t)data_shape_min.size());
+				profile->setShapeValuesV2("data_shape", nvinfer1::OptProfileSelector::kOPT, data_shape_opt.data(), (int32_t)data_shape_opt.size());
+				profile->setShapeValuesV2("data_shape", nvinfer1::OptProfileSelector::kMAX, data_shape_max.data(), (int32_t)data_shape_max.size());
+#endif
+
+				config->addOptimizationProfile(profile);
+			}
+#endif
+
+			// Build an engine
+			engine.reset(builder->buildEngineWithConfig(*network, *config));
+			if (!engine)
+			{
+				std::cerr << "Failed to build a TensorRT engine." << std::endl;
+				return;
+			}
 		}
-		//cv::resize(gray, gray, cv::Size(image_width, image_height));
+		else  // .plan or .engine
+		{
+			std::cout << "Parsing a TensorRT plan file, " << plan_or_onnx_path << "..." << std::endl;
+			const auto start_time(std::chrono::steady_clock::now());
+			std::ifstream stream(plan_or_onnx_path, std::ios::binary | std::ios::ate);
+			if (!stream)
+			{
+				std::cerr << "Failed to open a TensorRT plan file, " << plan_or_onnx_path << std::endl;
+				return;
+			}
+			const std::streamsize sz(stream.tellg());
+			stream.seekg(0, std::ios::beg);
+			std::vector<char> buf(sz, 0);
+			if (!stream.read(buf.data(), buf.size()))
+			{
+				std::cerr << "Failed to read a TensorRT plan file." << std::endl;
+				return;
+			}
+			std::cout << "A TensorRT plan file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+
+			// Create a runtime
+			std::unique_ptr<nvinfer1::IRuntime> runtime(nvinfer1::createInferRuntime(logger));
+			if (!runtime)
+			{
+				std::cerr << "Failed to create a TensorRT runtime." << std::endl;
+				return;
+			}
+
+			// Deserialize an engine
+			engine.reset(runtime->deserializeCudaEngine(buf.data(), buf.size()));
+			if (!engine)
+			{
+				std::cerr << "Failed to deserialize a TensorRT engine." << std::endl;
+				return;
+			}
+		}
+	}
+
+	// Create an execution context
+	std::unique_ptr<nvinfer1::IExecutionContext> context(engine->createExecutionContext());
+	if (!context)
+	{
+		std::cerr << "Failed to create a TensorRT execution context." << std::endl;
+		return;
+	}
+	assert(context->allInputDimensionsSpecified());
+	assert(context->getOptimizationProfile() >= 0);
+
+	//const nvinfer1::ICudaEngine& engine = context->getEngine();
+
+#if 1
+	// Show engine info
+	auto show_engine_info = [](const nvinfer1::ICudaEngine& engine) -> void {
+		std::cout << "Engine:" << std::endl;
+
+		const auto num_tensors(engine.getNbIOTensors());
+		for (int32_t idx = 0; idx < num_tensors; ++idx)
+		{
+			const char* tensor_name = engine.getIOTensorName(idx);
+			const nvinfer1::Dims& tensor_dims = engine.getTensorShape(tensor_name);
+
+			std::cout << "\tTensor #" << idx << ':' << std::endl;
+			std::cout << "\t\tName: " << tensor_name << std::endl;
+			std::cout << "\t\tShape (dimension = " << tensor_dims.nbDims << "): ";
+			std::copy(tensor_dims.d, tensor_dims.d + tensor_dims.nbDims, std::ostream_iterator<int64_t>(std::cout, ", "));
+			std::cout << std::endl;
+		}
+	};
+
+	show_engine_info(*engine);
+#endif
+
+	//-----
+	// Prepare input/output buffers
+
+	// "Input3": float32[1,1,28,28], "Plus214_Output_0": float32[1,10]
+	//	Can check the names of inputs & outputs in https://netron.app/
+#if 0
+	const int input_id(engine->getBindingIndex("Input3"));  // Deprecated
+	const int output_id(engine->getBindingIndex("Plus214_Output_0"));  // Deprecated
+#else
+	const int input_id(0);
+	const int output_id(1);
+#endif
+
+	// Get input and output tensor names from the engine
+	const char* input_name = engine->getIOTensorName(input_id);
+	const char* output_name = engine->getIOTensorName(output_id);
+
+	// Get input and output dimensions
+	const nvinfer1::Dims& input_dims = engine->getTensorShape(input_name);
+	assert(std::count_if(input_dims.d, input_dims.d + input_dims.nbDims, [](const auto& elem) { return elem < 0; }) == 0);
+	const int64_t input_size(std::accumulate(input_dims.d, input_dims.d + input_dims.nbDims, 1, std::multiplies<int64_t>()));
+	//assert(input_data.size() == input_size);
+	const nvinfer1::Dims& output_dims = engine->getTensorShape(output_name);
+	assert(std::count_if(output_dims.d, output_dims.d + output_dims.nbDims, [](const auto& elem) { return elem < 0; }) == 0);
+	const int64_t output_size(std::accumulate(output_dims.d, output_dims.d + output_dims.nbDims, 1, std::multiplies<int64_t>()));
+	assert(num_classes == output_size);
+
+	// Allocate host memory for input and output
+
+	// Pointers to the input and output buffers on the GPU
+	void* buffers[2] = { nullptr, };
+	//std::vector<void*> buffers(2, nullptr);
+	CUDA_CHECK(cudaMalloc(&buffers[input_id], input_size * sizeof(float)));
+	CUDA_CHECK(cudaMalloc(&buffers[output_id], output_size * sizeof(float)));
+
+	auto prepare_input_data = [&image_height, &image_width](const cv::Mat& gray, std::vector<float>& input_data) -> void {
+		//if (size_t(gray.rows) == image_height && size_t(gray.cols) == image_width)
+		//	cv::resize(gray, gray, cv::Size(image_width, image_height));
 
 		float* ptr = input_data.data();
 		for (unsigned y = 0; y < image_height; ++y)
 			for (unsigned x = 0; x < image_width; ++x, ++ptr)
-				*ptr += gray.at<unsigned char>(y, x) == 0 ? 0.0f : 1.0f;
+				*ptr = gray.at<unsigned char>(y, x) == 0 ? 0.0f : 1.0f;
 	};
 
 	std::vector<float> input_data(1 * image_channel * image_height * image_width, 0.0f);  // [0, 1]
@@ -318,38 +659,54 @@ void mnist_onnx_tensorrt_test()
 	//assert(output_data.size() == output_size);
 	for (const auto& image_path : image_paths)
 	{
-		// Prepare input image (1, 1, 28, 28)
-		prepare_input_image(image_path, input_data);
+		// Load an image
+		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
+		if (gray.empty())
+		{
+			std::cerr << "Failed to load an image, " << image_path << std::endl;
+			continue;
+		}
+
+		// Prepare input data
+		prepare_input_data(gray, input_data);
 
 		// Copy input data from host to device
-		CUDA_CHECK(cudaMemcpy(buffers[input_id], input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice));
+		CUDA_CHECK(cudaMemcpy(buffers[input_id], (void*)input_data.data(), input_size * sizeof(float), cudaMemcpyHostToDevice));
 
 		// Run inference
 		std::cout << "Inferring..." << std::endl;
 		const auto start_time(std::chrono::steady_clock::now());
-		if (context->executeV2(buffers))
-		{
-			std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
-
-			// Copy output data from device to host
-			CUDA_CHECK(cudaMemcpy(output_data.data(), buffers[output_id], output_size * sizeof(float), cudaMemcpyDeviceToHost));
-
-			// Show results
-			//softmax(output_data);
-			const int64_t predicted(std::distance(output_data.begin(), std::max_element(output_data.begin(), output_data.end())));
-			std::cout << "Predicted = " << predicted << std::endl;
-		}
-		else
+		if (!context->executeV2((void**)buffers))
 		{
 			std::cerr << "Inference failed." << std::endl;
+			continue;
 		}
+		std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+
+		// Copy output data from device to host
+		CUDA_CHECK(cudaMemcpy((void*)output_data.data(), buffers[output_id], output_size * sizeof(float), cudaMemcpyDeviceToHost));
+
+		// Show results
+		//softmax(output_data);
+		const int64_t predicted(std::distance(output_data.begin(), std::max_element(output_data.begin(), output_data.end())));
+		std::cout << "Predicted = " << predicted << std::endl;
+
+		//cv::imshow("Image", gray);
+		//cv::waitKey(0);
 	}
 
+	//cv::destroyAllWindows();
+
+	//-----
 	// Cleanup
+
 	CUDA_CHECK(cudaFree(buffers[input_id]));
 	CUDA_CHECK(cudaFree(buffers[output_id]));
 	buffers[input_id] = nullptr;
 	buffers[output_id] = nullptr;
+
+	//context.reset();
+	//engine.reset();
 }
 
 void mnist_onnx_tensorrt_stream_test()
@@ -364,8 +721,8 @@ void mnist_onnx_tensorrt_stream_test()
 
 	// REF [site] >> https://github.com/microsoft/onnxruntime-inference-examples/tree/main/c_cxx/MNIST
 	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.onnx");
-	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.plan");
-	const std::string plan_or_onnx_path(mnist_dir_path + "/mnist_fp16.plan");
+	const std::string plan_or_onnx_path(mnist_dir_path + "/mnist.plan");
+	//const std::string plan_or_onnx_path(mnist_dir_path + "/mnist_fp16.plan");
 
 	// REF [site] >> https://huggingface.co/datasets/ylecun/mnist
 	const std::vector<std::string> image_paths{
@@ -383,27 +740,27 @@ void mnist_onnx_tensorrt_stream_test()
 	std::unique_ptr<nvinfer1::IBuilder> builder(nvinfer1::createInferBuilder(logger));
 	if (!builder)
 	{
-		std::cerr << "Failed to create TensorRT builder." << std::endl;
+		std::cerr << "Failed to create a TensorRT builder." << std::endl;
 		return;
 	}
 	// Create a network
 #if 0
 	// Set network flags for explicit batch size
-	const auto explicit_batch = 1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
+	const auto explicit_batch(1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH));
 	std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(explicit_batch));
 #else
 	std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(0U));
 #endif
 	if (!network)
 	{
-		std::cerr << "Failed to create TensorRT network." << std::endl;
+		std::cerr << "Failed to create a TensorRT network." << std::endl;
 		return;
 	}
 	// Create a parser
 	std::unique_ptr<nvonnxparser::IParser> parser(nvonnxparser::createParser(*network, logger));
 	if (!parser)
 	{
-		std::cerr << "Failed to create TensorRT ONNX parser." << std::endl;
+		std::cerr << "Failed to create a TensorRT parser." << std::endl;
 		return;
 	}
 
@@ -421,39 +778,44 @@ void mnist_onnx_tensorrt_stream_test()
 				std::cerr << "Failed to open an ONNX file, " << plan_or_onnx_path << std::endl;
 				return;
 			}
-			const std::streamsize sz = stream.tellg();
+			const std::streamsize sz(stream.tellg());
 			stream.seekg(0, std::ios::beg);
 			std::vector<char> buf(sz, 0);
 			if (!stream.read(buf.data(), buf.size()))
 			{
-				std::cerr << "Failed to read ONNX file." << std::endl;
-				return nullptr;
-			}
-
-			if (parser->parse(buf.data(), buf.size()))
-#else
-			if (parser->parseFromFile(plan_or_onnx_path.c_str(), static_cast<int>(nvinfer1::ILogger::Severity::kINFO)))
-#endif
-			{
-				std::cout << "An ONNX file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
-			}
-			else
-			{
-				std::cerr << "Failed to parse an ONNX file" << std::endl;
+				std::cerr << "Failed to read an ONNX file." << std::endl;
 				return;
 			}
+
+			if (!parser->parse(buf.data(), buf.size()))
+#else
+			if (!parser->parseFromFile(plan_or_onnx_path.c_str(), static_cast<int>(nvinfer1::ILogger::Severity::kINFO)))
+#endif
+			{
+				std::cerr << "Failed to parse an ONNX file." << std::endl;
+				return;
+			}
+			std::cout << "An ONNX file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 
 			// Configure a builder config
 			std::unique_ptr<nvinfer1::IBuilderConfig> config(builder->createBuilderConfig());
 			if (!config)
 			{
-				std::cerr << "Failed to create TensorRT builder config." << std::endl;
+				std::cerr << "Failed to create a TensorRT builder config." << std::endl;
 				return;
 			}
 			config->setMemoryPoolLimit(nvinfer1::MemoryPoolType::kWORKSPACE, 1ULL << 30);  // Set maximum workspace size to 1 GiB
+			//if (builder->platformHasFastFp16())
+			//	config->setFlag(nvinfer1::BuilderFlag::kFP16);
+			//if (builder->platformHasFastInt8())
+			//	config->setFlag(nvinfer1::BuilderFlag::kINT8);
 
 #if 0
 			{
+				// If the network has any dynamic input tensors, the appropriate calls to setDimensions() must be made.
+				// Likewise, if there are any shape input tensors, the appropriate calls to setShapeValues() are required.
+				// The builder retains ownership of the created optimization profile and returns a raw pointer, i.e. the users must not attempt to delete the returned pointer.
+
 				nvinfer1::IOptimizationProfile* profile = builder->createOptimizationProfile();
 
 				const nvinfer1::Dims data_dims_min{ 3, { 256, 256, 3 } };
@@ -487,7 +849,7 @@ void mnist_onnx_tensorrt_stream_test()
 			engine.reset(builder->buildEngineWithConfig(*network, *config));
 			if (!engine)
 			{
-				std::cerr << "Failed to build TensorRT engine." << std::endl;
+				std::cerr << "Failed to build a TensorRT engine." << std::endl;
 				return;
 			}
 		}
@@ -498,7 +860,7 @@ void mnist_onnx_tensorrt_stream_test()
 			std::ifstream stream(plan_or_onnx_path, std::ios::binary | std::ios::ate);
 			if (!stream)
 			{
-				std::cerr << "Failed to open TensorRT plan file, " << plan_or_onnx_path << std::endl;
+				std::cerr << "Failed to open a TensorRT plan file, " << plan_or_onnx_path << std::endl;
 				return;
 			}
 			const std::streamsize sz(stream.tellg());
@@ -506,7 +868,7 @@ void mnist_onnx_tensorrt_stream_test()
 			std::vector<char> buf(sz, 0);
 			if (!stream.read(buf.data(), buf.size()))
 			{
-				std::cerr << "Failed to read TensorRT plan file." << std::endl;
+				std::cerr << "Failed to read a TensorRT plan file." << std::endl;
 				return;
 			}
 			std::cout << "A TensorRT plan file parsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
@@ -515,7 +877,7 @@ void mnist_onnx_tensorrt_stream_test()
 			std::unique_ptr<nvinfer1::IRuntime> runtime(nvinfer1::createInferRuntime(logger));
 			if (!runtime)
 			{
-				std::cerr << "Failed to create TensorRT runtime." << std::endl;
+				std::cerr << "Failed to create a TensorRT runtime." << std::endl;
 				return;
 			}
 
@@ -523,20 +885,34 @@ void mnist_onnx_tensorrt_stream_test()
 			engine.reset(runtime->deserializeCudaEngine(buf.data(), buf.size()));
 			if (!engine)
 			{
-				std::cerr << "Failed to deserialize TensorRT engine." << std::endl;
+				std::cerr << "Failed to deserialize a TensorRT engine." << std::endl;
 				return;
 			}
 		}
 	}
 
-	// Show engine info
+	// Create an execution context
+	std::unique_ptr<nvinfer1::IExecutionContext> context(engine->createExecutionContext());
+	if (!context)
 	{
-		const auto num_tensors(engine->getNbIOTensors());
-		std::cout << "Engine info:" << std::endl;
+		std::cerr << "Failed to create a TensorRT execution context." << std::endl;
+		return;
+	}
+	assert(context->allInputDimensionsSpecified());
+	assert(context->getOptimizationProfile() >= 0);
+
+	//const nvinfer1::ICudaEngine& engine = context->getEngine();
+
+#if 1
+	// Show engine info
+	auto show_engine_info = [](const nvinfer1::ICudaEngine& engine) -> void {
+		std::cout << "Engine:" << std::endl;
+
+		const auto num_tensors(engine.getNbIOTensors());
 		for (int32_t idx = 0; idx < num_tensors; ++idx)
 		{
-			const char* tensor_name = engine->getIOTensorName(idx);
-			const nvinfer1::Dims& tensor_dims = engine->getTensorShape(tensor_name);
+			const char* tensor_name = engine.getIOTensorName(idx);
+			const nvinfer1::Dims& tensor_dims = engine.getTensorShape(tensor_name);
 
 			std::cout << "\tTensor #" << idx << ':' << std::endl;
 			std::cout << "\t\tName: " << tensor_name << std::endl;
@@ -544,21 +920,15 @@ void mnist_onnx_tensorrt_stream_test()
 			std::copy(tensor_dims.d, tensor_dims.d + tensor_dims.nbDims, std::ostream_iterator<int64_t>(std::cout, ", "));
 			std::cout << std::endl;
 		}
-	}
+	};
 
-	// Create execution context
-	std::unique_ptr<nvinfer1::IExecutionContext> context(engine->createExecutionContext());
-	if (!context)
-	{
-		std::cerr << "Failed to create TensorRT execution context." << std::endl;
-		return;
-	}
-
-	//const nvinfer1::ICudaEngine& engine = context->getEngine();
+	show_engine_info(*engine);
+#endif
 
 	//-----
 	// Prepare input/output buffers
-	//	"Input3": float32[1,1,28,28], "Plus214_Output_0": float32[1,10]
+
+	// "Input3": float32[1,1,28,28], "Plus214_Output_0": float32[1,10]
 	//	Can check the names of inputs & outputs in https://netron.app/
 #if 0
 	const int input_id(engine->getBindingIndex("Input3"));  // Deprecated
@@ -569,67 +939,67 @@ void mnist_onnx_tensorrt_stream_test()
 #endif
 
 	// Get input and output tensor names from the engine
-	const char* input_name = engine->getIOTensorName(0);
-	const char* output_name = engine->getIOTensorName(1);
+	const char* input_name = engine->getIOTensorName(input_id);
+	const char* output_name = engine->getIOTensorName(output_id);
 
 	// Get input and output dimensions
 	const nvinfer1::Dims& input_dims = engine->getTensorShape(input_name);
-	const nvinfer1::Dims& output_dims = engine->getTensorShape(output_name);
-
-	// Allocate host memory for input and output
+	assert(std::count_if(input_dims.d, input_dims.d + input_dims.nbDims, [](const auto& elem) { return elem < 0; }) == 0);
 	const int64_t input_size(std::accumulate(input_dims.d, input_dims.d + input_dims.nbDims, 1, std::multiplies<int64_t>()));
+	//assert(input_data.size() == input_size);
+	const nvinfer1::Dims& output_dims = engine->getTensorShape(output_name);
+	assert(std::count_if(output_dims.d, output_dims.d + output_dims.nbDims, [](const auto& elem) { return elem < 0; }) == 0);
 	const int64_t output_size(std::accumulate(output_dims.d, output_dims.d + output_dims.nbDims, 1, std::multiplies<int64_t>()));
 	assert(num_classes == output_size);
 
+	// Allocate host memory for input and output
+
 	// Create CUDA stream for inference
 	const size_t num_streams(image_paths.size());
-	//std::vector<std::unique_ptr<cudaStream_t>> streams;
-	//streams.reserve(num_streams);
-	//for (size_t idx = 0; idx < num_streams; ++idx)
-	//{
-	//	auto stream = std::make_unique<cudaStream_t>();
-	//	CUDA_CHECK(cudaStreamCreate(stream.get()));
-	//	streams.push_back(std::move(stream));
-	//}
-	std::vector<cudaStream_t*> streams;
+#if 0
+	std::vector<std::unique_ptr<cudaStream_t>> streams;
 	streams.reserve(num_streams);
+	for (size_t idx = 0; idx < num_streams; ++idx)
 	{
-		cudaStream_t* stream = new cudaStream_t;
-		CUDA_CHECK(cudaStreamCreate(stream));
-		streams.push_back(stream);
+		auto stream = std::make_unique<cudaStream_t>();
+		CUDA_CHECK(cudaStreamCreate(stream.get()));
+		streams.push_back(std::move(stream));
 	}
+#else
+	std::vector<cudaStream_t> streams(num_streams);
+	for (size_t idx = 0; idx < num_streams; ++idx)
+		CUDA_CHECK(cudaStreamCreate(&(streams[idx])));
+#endif
 
 	// Pointers to the input and output buffers on the GPU
-	// TODO [check] >>
-	//void* buffers[2] = { nullptr, };
+	void* buffers[2] = { nullptr, };
 	//std::vector<void*> buffers(2, nullptr);
-	float* buffers[2] = { nullptr, };
 	{
-		//CUDA_CHECK(cudaMallocAsync(&buffers[input_id], input_size * sizeof(float), stream));
-		//CUDA_CHECK(cudaMallocAsync(&buffers[output_id], output_size * sizeof(float), stream));
-		// TODO [check] >>
-		//CUDA_CHECK(cudaMalloc(&buffers[input_id], input_size * sizeof(float)* num_streams));
-		//CUDA_CHECK(cudaMalloc(&buffers[output_id], output_size * sizeof(float)* num_streams));
-		CUDA_CHECK(cudaMalloc((void**)&buffers[input_id], input_size * sizeof(float) * num_streams));
-		CUDA_CHECK(cudaMalloc((void**)&buffers[output_id], output_size * sizeof(float) * num_streams));
+		//CUDA_CHECK(cudaMallocAsync(&buffers[input_id], input_size * sizeof(float), streams));
+		//CUDA_CHECK(cudaMallocAsync(&buffers[output_id], output_size * sizeof(float), streams));
+		CUDA_CHECK(cudaMalloc(&buffers[input_id], input_size * sizeof(float) * num_streams));
+		CUDA_CHECK(cudaMalloc(&buffers[output_id], output_size * sizeof(float) * num_streams));
 
-		context->setTensorAddress(input_name, buffers[input_id]);
-		context->setTensorAddress(output_name, buffers[output_id]);
-	}
-
-	auto prepare_input_image = [](const std::string& image_path, float* input_data) -> void {
-		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
-		if (gray.empty())
+		if (!context->setTensorAddress(input_name, buffers[input_id]))
 		{
-			std::cerr << "Failed to load image, " << image_path << std::endl;
+			std::cerr << "Failed to set memory address for input tensor." << std::endl;
 			return;
 		}
-		//cv::resize(gray, gray, cv::Size(image_width, image_height));
+		if (!context->setTensorAddress(output_name, buffers[output_id]))
+		{
+			std::cerr << "Failed to set memory address for output tensor." << std::endl;
+			return;
+		}
+	}
+
+	auto prepare_input_data = [&image_height, &image_width](const cv::Mat& gray, float* input_data) -> void {
+		//if (size_t(gray.rows) == image_height && size_t(gray.cols) == image_width)
+		//	cv::resize(gray, gray, cv::Size(image_width, image_height));
 
 		float* ptr = input_data;
 		for (unsigned y = 0; y < image_height; ++y)
 			for (unsigned x = 0; x < image_width; ++x, ++ptr)
-				*ptr += gray.at<unsigned char>(y, x) == 0 ? 0.0f : 1.0f;
+				*ptr = gray.at<unsigned char>(y, x) == 0 ? 0.0f : 1.0f;
 	};
 
 #if 1
@@ -638,7 +1008,7 @@ void mnist_onnx_tensorrt_stream_test()
 	std::vector<float> input_data(1 * image_channel * image_height * image_width * num_streams, 0.0f);  // [0, 1]
 	assert(input_data.size() == input_size * num_streams);
 	//std::vector<float> output_data(output_size, 0.0f);
-	//assert(output_data.size() == output_size);
+	////assert(output_data.size() == output_size);
 	std::vector<float> output_data(output_size * num_streams);
 	//assert(output_data.size() == output_size * num_streams);
 #else
@@ -649,11 +1019,21 @@ void mnist_onnx_tensorrt_stream_test()
 #endif
 	for (size_t idx = 0; idx < num_streams; ++idx)
 	{
-		// Prepare input image (1, 1, 28, 28)
-		prepare_input_image(image_paths[idx], input_data.data() + input_size);
+		const auto& image_path = image_paths[idx];
+
+		// Load an image
+		const cv::Mat& gray = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
+		if (gray.empty())
+		{
+			std::cerr << "Failed to load an image, " << image_path << std::endl;
+			continue;
+		}
+
+		// Prepare input data
+		prepare_input_data(gray, input_data.data() + input_size * idx);
 
 		// Copy input data from host to device
-		CUDA_CHECK(cudaMemcpyAsync((void*)(buffers[input_id] + input_size * idx), (void*)(input_data.data() + input_size * idx), input_size * sizeof(float), cudaMemcpyHostToDevice, *(streams[idx])));
+		CUDA_CHECK(cudaMemcpyAsync((void*)((float*)buffers[input_id] + input_size * idx), (void*)(input_data.data() + input_size * idx), input_size * sizeof(float), cudaMemcpyHostToDevice, streams[idx]));
 	}
 
 	for (auto& stream : streams)
@@ -661,19 +1041,19 @@ void mnist_onnx_tensorrt_stream_test()
 		// Run inference
 		std::cout << "Inferring..." << std::endl;
 		const auto start_time(std::chrono::steady_clock::now());
-		//if (context->executeAsyncV2(buffers, stream, nullptr))  // Compile-time error: 'executeAsyncV2': is not a member of 'nvinfer1::IExecutionContext'
-		if (context->enqueueV3(*stream))
-			std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
-		else
+		//if (!context->executeAsyncV2(buffers, *stream, nullptr))  // Compile-time error: 'executeAsyncV2': is not a member of 'nvinfer1::IExecutionContext'
+		if (!context->enqueueV3(stream))
 		{
 			std::cerr << "Inference failed." << std::endl;
+			continue;
 		}
+		std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 	}
 
 	for (size_t idx = 0; idx < num_streams; ++idx)
 	{
 		// Copy output data from device to host
-		CUDA_CHECK(cudaMemcpyAsync((void*)(output_data.data() + output_size * idx), (void*)((float*)buffers[output_id] + output_size * idx), output_size * sizeof(float), cudaMemcpyDeviceToHost, *streams[idx]));
+		CUDA_CHECK(cudaMemcpyAsync((void*)(output_data.data() + output_size * idx), (void*)((float*)buffers[output_id] + output_size * idx), output_size * sizeof(float), cudaMemcpyDeviceToHost, streams[idx]));
 
 		// Show results
 		//softmax(output_data);
@@ -683,9 +1063,11 @@ void mnist_onnx_tensorrt_stream_test()
 
 	// Synchronize stream
 	for (auto& stream : streams)
-		CUDA_CHECK(cudaStreamSynchronize(*stream));
+		CUDA_CHECK(cudaStreamSynchronize(stream));
 
+	//-----
 	// Cleanup
+
 	//CUDA_CHECK(cudaFreeHost((void*)input_data));
 	//CUDA_CHECK(cudaFreeHost((void*)output_data));
 
@@ -698,10 +1080,11 @@ void mnist_onnx_tensorrt_stream_test()
 
 	for (auto& stream : streams)
 	{
-		CUDA_CHECK(cudaStreamDestroy(*stream));
-		delete stream;
-		stream = nullptr;
+		CUDA_CHECK(cudaStreamDestroy(stream));
 	}
+
+	//context.reset();
+	//engine.reset();
 }
 
 }  // namespace local
@@ -726,7 +1109,7 @@ int tensorrt_main(int argc, char *argv[])
 	//	trtexec --onnx=path/to/mnist.onnx --saveEngine=path/to/mnist_fp16.plan --fp16 --workspace=4096 --shapes=input:1024x1024x3
 
 	local::mnist_onnx_tensorrt_test();
-	//local::mnist_onnx_tensorrt_stream_test();  // Uses CUDA Stream. Runtime error
+	//local::mnist_onnx_tensorrt_stream_test();  // Uses CUDA Stream. Not correctly working
 
 	// Segment Anything (SAM)
 	//	Refer to sam_tensorrt_test.cpp
