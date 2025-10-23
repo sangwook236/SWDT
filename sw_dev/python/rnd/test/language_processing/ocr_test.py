@@ -76,6 +76,26 @@ def trocr_example():
 		decoder_input_ids = torch.tensor([[model.config.decoder.decoder_start_token_id]])
 		outputs = model(pixel_values=pixel_values, decoder_input_ids=decoder_input_ids)  # ['loss', 'logits', 'past_key_values', 'decoder_hidden_states', 'decoder_attentions', 'cross_attentions', 'encoder_last_hidden_state', 'encoder_hidden_states', 'encoder_attentions'].
 
+# REF [site] >> https://github.com/deepseek-ai/DeepSeek-OCR
+def deepseek_ocr_example():
+	import os
+	import torch
+	import transformers
+
+	os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+	model_name = "deepseek-ai/DeepSeek-OCR"
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+	model = transformers.AutoModel.from_pretrained(model_name, attn_implementation="flash_attention_2", trust_remote_code=True, use_safetensors=True)
+	model = model.eval().cuda().to(torch.bfloat16)
+
+	#prompt = "<image>\nFree OCR. "
+	prompt = "<image>\n<|grounding|>Convert the document to markdown. "
+	image_file = "your_image.jpg"
+	output_path = "your/output/dir"
+
+	res = model.infer(tokenizer, prompt=prompt, image_file=image_file, output_path=output_path, base_size=1024, image_size=640, crop_mode=True, save_results=True, test_compress=True)
+
 # REF [site] >> https://github.com/mindee/doctr
 def doctr_example():
 	# Install:
@@ -1203,6 +1223,7 @@ def phi_3_ocr_test():
 
 def main():
 	#trocr_example()  # TrOCR
+	deepseek_ocr_example()  # DeepSeek-OCR (transformers)
 
 	#-----
 	# Document OCR
@@ -1229,7 +1250,7 @@ def main():
 	#qwen_vl_ocr_web_api_test()  # Qwen2.5-VL (Ollama)
 	#qwen_vl_ocr_python_test()  # Qwen2.5-VL (Ollama)
 
-	llama_ocr_example()  # Llama 3.2 Vision (Ollama)
+	#llama_ocr_example()  # Llama 3.2 Vision (Ollama)
 	#gemma_ocr_example()  # Gemma 3 (transformers)
 	#phi_3_ocr_example()  # Phi-3.5-vision (transformers)
 	#phi_4_ocr_example()  # Phi-4-multimodal (transformers)

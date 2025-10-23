@@ -246,13 +246,17 @@ def zoe_depth_example():
 
 # REF [site] >> https://github.com/DepthAnything/Depth-Anything-V2
 def depth_anything_v2_pytorch_example():
-	from depth_anything_v2.dpt import DepthAnythingV2
+	#import sys
+	#sys.path.append("path/to/depth_anything_v2")
+
 	import cv2
 
 	DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
 	if True:
 		# For robust relative depth estimation
+
+		from depth_anything_v2.dpt import DepthAnythingV2
 
 		model_configs = {
 			"vits": {"encoder": "vits", "features": 64, "out_channels": [48, 96, 192, 384]},
@@ -268,6 +272,8 @@ def depth_anything_v2_pytorch_example():
 	else:
 		# For metric depth estimation
 
+		from metric_depth.depth_anything_v2.dpt import DepthAnythingV2
+
 		model_configs = {
 			"vits": {"encoder": "vits", "features": 64, "out_channels": [48, 96, 192, 384]},
 			"vitb": {"encoder": "vitb", "features": 128, "out_channels": [96, 192, 384, 768]},
@@ -282,10 +288,26 @@ def depth_anything_v2_pytorch_example():
 		model.load_state_dict(torch.load(f"checkpoints/depth_anything_v2_metric_{dataset}_{encoder}.pth", map_location="cpu"))
 	model = model.to(DEVICE).eval()
 
-	#raw_img = cv2.imread("your/image/path")
-	depth_est = model.infer_image(raw_img)  # HxW raw depth map in numpy
+	image_path = "path/to/image.png"
+	input_image = cv2.imread(image_path)
+	if input_image is None:
+		print(f"Failed to load an image, {input_image}.")
+		return
+	print(f"Input image: shape={input_image.shape}, dtype={input_image.dtype}, (min, max) = ({np.min(input_image)}, {np.max(input_image)}).")
 
-	cv2.imshow("Input", raw_img)
+	print("Estimating depth...")
+	start_time = time.time()
+	depth_est = model.infer_image(input_image)  # HxW raw depth map in numpy
+	if depth_est is None:
+		print("Failed to estimate depth.")
+		return
+	print(f"Depth estimated: {(time.time() - start_time) * 1000.0:.02f} secs.")
+	print(f"Depth (estimated): shape={depth_est.shape}, dtype={depth_est.dtype}, (min, max) = ({np.min(depth_est)}, {np.max(depth_est)}).")
+
+	min_depth, max_depth = np.min(depth_est), np.max(depth_est)
+	depth_est = (depth_est - min_depth) / (max_depth - min_depth)  # Normalize to 0-1
+
+	cv2.imshow("Input", input_image)
 	cv2.imshow("Depth (estimated)", depth_est)
 
 	cv2.waitKey(0)
