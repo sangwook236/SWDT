@@ -96,133 +96,36 @@ def deepseek_ocr_example():
 
 	res = model.infer(tokenizer, prompt=prompt, image_file=image_file, output_path=output_path, base_size=1024, image_size=640, crop_mode=True, save_results=True, test_compress=True)
 
-# REF [site] >> https://github.com/mindee/doctr
-def doctr_example():
-	# Install:
-	#	pip install python-doctr
-	#	pip install "python-doctr[tf]"  # For TensorFlow
-	#	pip install "python-doctr[torch]"  # For PyTorch
-	#	pip install "python-doctr[torch,viz,html,contib]"  # For optional dependencies for visualization, html, and contrib modules
-
-	if True:
-		from doctr.io import DocumentFile
-		from doctr.models import ocr_predictor
-
-		# Read files
-		#	Documents can be interpreted from PDF or images
-
-		# PDF
-		pdf_doc = DocumentFile.from_pdf("path/to/your/doc.pdf")
-		# Image
-		single_img_doc = DocumentFile.from_images("path/to/your/img.jpg")
-		# Webpage (requires `weasyprint` to be installed)
-		webpage_doc = DocumentFile.from_url("https://www.yoursite.com")
-		# Multiple page images
-		multi_img_doc = DocumentFile.from_images(["path/to/page1.jpg", "path/to/page2.jpg"])
-
-		doc = pdf_doc
-
-		model = ocr_predictor(pretrained=True)
-		#model = ocr_predictor(det_arch="db_resnet50", reco_arch="crnn_vgg16_bn", pretrained=True)
-
-		# Analyze
-		result = model(doc)
-
-		# Deal with rotated documents
-		#	Should you use docTR on documents that include rotated pages, or pages with multiple box orientations, you have multiple options to handle it:
-		#	- If you only use straight document pages with straight words (horizontal, same reading direction), consider passing assume_straight_boxes=True to the ocr_predictor. It will directly fit straight boxes on your page and return straight boxes, which makes it the fastest option.
-		#	- If you want the predictor to output straight boxes (no matter the orientation of your pages, the final localizations will be converted to straight boxes), you need to pass export_as_straight_boxes=True in the predictor. Otherwise, if assume_straight_pages=False, it will return rotated bounding boxes (potentially with an angle of 0°).
-		# If both options are set to False, the predictor will always fit and return rotated boxes.
-
-		# To interpret your model's predictions, you can visualize them interactively as follows:
-		# Display the result (requires matplotlib & mplcursors to be installed)
-		result.show()
-
-		# Or even rebuild the original document from its predictions:
-		import matplotlib.pyplot as plt
-
-		synthetic_pages = result.synthesize()
-		plt.imshow(synthetic_pages[0]); plt.axis("off"); plt.show()
-
-		# The ocr_predictor returns a Document object with a nested structure (with Page, Block, Line, Word, Artefact).
-		# To get a better understanding of our document model, check our documentation(https://mindee.github.io/doctr/modules/io.html#document-structure):
-
-		# You can also export them as a nested dict, more appropriate for JSON format:
-		json_output = result.export()
-
-	if True:
-		# Use the KIE predictor
-		#	The KIE predictor is a more flexible predictor compared to OCR as your detection model can detect multiple classes in a document. For example, you can have a detection model to detect just dates and addresses in a document.
-		#	The KIE predictor makes it possible to use detector with multiple classes with a recognition model and to have the whole pipeline already setup fo
-
-		from doctr.io import DocumentFile
-		from doctr.models import kie_predictor
-
-		# Model
-		model = kie_predictor(det_arch="db_resnet50", reco_arch="crnn_vgg16_bn", pretrained=True)
-		# PDF
-		doc = DocumentFile.from_pdf("path/to/your/doc.pdf")
-
-		# Analyze
-		result = model(doc)
-
-		predictions = result.pages[0].predictions
-		for class_name in predictions.keys():
-			list_predictions = predictions[class_name]
-			for prediction in list_predictions:
-				print(f"Prediction for {class_name}: {prediction}")
-
 # REF [site] >>
-#	https://lightning.ai/mehta/studios/surya-ocr-implementation
-#	https://github.com/VikParuchuri/surya
-def surya_ocr_example():
+#	https://huggingface.co/datalab-to
+#	https://github.com/datalab-to/chandra
+def chandra_example():
+	# Models:
+	#	datalab-to/chandra
+
+	import transformers
+	from chandra.model.hf import generate_hf
+	from chandra.model.schema import BatchInputItem
+	from chandra.output import parse_markdown
 	from PIL import Image
-	from surya.ocr import run_ocr
-	from surya.model.detection import segformer
-	from surya.model.recognition.model import load_model
-	from surya.model.recognition.processor import load_processor
 
-	def get_image_text(image_path, language=["en"]):
-		"""
-		Extracts text from an image using OCR.
+	image_path = "path/to/image.jpg"
+	PIL_IMAGE = Image.open(image_path)
 
-		Args:
-			image_path (str): Path to the image file.
-			language (list, optional): List of languages to use for text recognition. Default is ["en"].
+	model = transformers.AutoModel.from_pretrained("datalab-to/chandra").cuda()
+	model.processor = transformers.AutoProcessor.from_pretrained("datalab-to/chandra")
 
-		Returns:
-			list: A list of extracted text lines from the image.
-		"""
+	batch = [
+		BatchInputItem(
+			image=PIL_IMAGE,
+			prompt_type="ocr_layout"
+		)
+	]
 
-		# Open the image file
-		image = Image.open(image_path)
+	result = generate_hf(batch, model)[0]
+	markdown = parse_markdown(result.raw)
 
-		# Load the detection model and processor
-		det_processor, det_model = segformer.load_processor(), segformer.load_model()
-
-		# Load the recognition model and processor
-		rec_model, rec_processor = load_model(), load_processor()
-
-		# Run the OCR process on the image
-		predictions = run_ocr([image], [language], det_model, det_processor, rec_model, rec_processor)[0]
-
-		# Extract text from the OCR predictions
-		text = [line.text for line in list(predictions)[0][1]]
-
-		return text
-
-	# Doc image
-	doc_file = "path/to/doc.png"
-
-	# Extract text from the uploaded image using the custom function
-	extracted_text = get_image_text(doc_file)
-
-	print("Extracted Text:")
-	# Loop through the extracted text and display each line
-	for text in extracted_text:
-		print(text)
-
-# REF [function] >> donut_example() in hugging_face_transformers_test.py
+# REF [function] >> donut_example() in document_processing_test.py
 def donut_ocr_test():
 	from PIL import Image
 	import transformers
@@ -1223,13 +1126,14 @@ def phi_3_ocr_test():
 
 def main():
 	#trocr_example()  # TrOCR
-	deepseek_ocr_example()  # DeepSeek-OCR (transformers)
+	deepseek_ocr_example()  # DeepSeek-OCR
+	#chandra_example()  # Chandra
 
 	#-----
 	# Document OCR
 
-	#doctr_example()  # docTR
-	#surya_ocr_example()  # Surya
+	# Refer to doctr_example() in ./document_processing_test.py
+	# Refer to surya_example() in ./document_processing_test.py
 
 	#donut_ocr_test()  # Donut
 
