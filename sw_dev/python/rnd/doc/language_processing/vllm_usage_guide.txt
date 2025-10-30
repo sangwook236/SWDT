@@ -5,6 +5,8 @@
 
 		https://docs.vllm.ai/en/latest/
 
+		https://docs.vllm.ai/en/latest/models/supported_models.html
+
 [-] Usage.
 	https://docs.vllm.ai/en/latest/getting_started/quickstart.html
 
@@ -80,7 +82,27 @@
 	https://docs.vllm.ai/en/latest/getting_started/installation/
 
 	- Install.
+		https://docs.vllm.ai/en/latest/getting_started/installation/index.html
+
 		Using pip:
 			pip install vllm --extra-index-url https://download.pytorch.org/whl/cu128
 		Using uv:
 			uv pip install vllm --torch-backend=auto
+
+		python -m vllm.entrypoints.openai.api_server \
+			--model Qwen/Qwen3-4B \
+			--host 0.0.0.0 --port 8000
+
+	- Docker.
+		https://docs.vllm.ai/en/stable/deployment/docker.html
+
+		docker run --runtime nvidia --gpus all \
+			-v ~/.cache/huggingface:/root/.cache/huggingface \
+			--env "HUGGING_FACE_HUB_TOKEN=$HF_TOKEN" \
+			-p 8000:8000 \
+			--ipc=host \
+			vllm/vllm-openai:latest \
+			--model Qwen/Qwen3-0.6B
+
+	- Check.
+		curl http://localhost:8000/v1/models

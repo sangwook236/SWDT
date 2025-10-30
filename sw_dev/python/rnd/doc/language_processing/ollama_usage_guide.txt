@@ -120,8 +120,25 @@
 			}'
 
 [-] Installation.
-	- Install (Linux).
-		curl -fsSL https://ollama.com/install.sh | sh
+	- Install.
+		https://ollama.com/download
+
+		Linux:
+			curl -fsSL https://ollama.com/install.sh | sh
+
+		ollama pull llama3
+		ollama run llama3
 
 	- Docker.
 		https://hub.docker.com/r/ollama/ollama
+
+		NVIDIA GPU:
+			docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+		CPU only:
+			docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+		docker exec -it ollama ollama pull llama3
+		docker exec -it ollama ollama run llama3
+
+	- Check.
+		curl http://localhost:11434/v1/models
