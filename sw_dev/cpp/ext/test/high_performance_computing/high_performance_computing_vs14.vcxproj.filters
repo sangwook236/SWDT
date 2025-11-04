@@ -31,6 +31,9 @@
     <Filter Include="Source Files\arrayfire">
       <UniqueIdentifier>{91f11b22-f0e3-4674-995b-def7c7405a0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tbb">
+      <UniqueIdentifier>{f916c237-6e3c-4e57-8aad-00d9e6d3d2d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,17 +54,20 @@
     <ClCompile Include="openmp\openmp_main.cpp">
       <Filter>Source Files\openmp</Filter>
     </ClCompile>
-    <ClCompile Include="tensorrt\tensorrt_main.cpp">
-      <Filter>Source Files\tensorrt</Filter>
-    </ClCompile>
-    <ClCompile Include="thrust\thrust_main.cpp">
-      <Filter>Source Files\thrust</Filter>
-    </ClCompile>
     <ClCompile Include="simd\simd_main.cpp">
       <Filter>Source Files\simd</Filter>
     </ClCompile>
     <ClCompile Include="simd\sse.cpp">
       <Filter>Source Files\simd</Filter>
+    </ClCompile>
+    <ClCompile Include="tbb\tbb_main.cpp">
+      <Filter>Source Files\tbb</Filter>
+    </ClCompile>
+    <ClCompile Include="tensorrt\tensorrt_main.cpp">
+      <Filter>Source Files\tensorrt</Filter>
+    </ClCompile>
+    <ClCompile Include="thrust\thrust_main.cpp">
+      <Filter>Source Files\thrust</Filter>
     </ClCompile>
     <ClCompile Include="vexcl\vexcl_main.cpp">
       <Filter>Source Files\vexcl</Filter>

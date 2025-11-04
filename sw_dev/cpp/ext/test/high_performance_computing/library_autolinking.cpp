@@ -4,6 +4,8 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "tbb_debug.lib")
+
 #pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "OpenCL.lib")
 
@@ -18,6 +20,8 @@
 //#pragma comment(lib, "afcpu.lib")
 
 #		else
+
+#pragma comment(lib, "tbb.lib")
 
 #pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "OpenCL.lib")

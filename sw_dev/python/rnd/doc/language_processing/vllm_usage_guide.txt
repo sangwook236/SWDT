@@ -96,6 +96,8 @@
 	- Docker.
 		https://docs.vllm.ai/en/stable/deployment/docker.html
 
+		docker pull vllm/vllm-openai:latest
+
 		docker run --runtime nvidia --gpus all \
 			-v ~/.cache/huggingface:/root/.cache/huggingface \
 			--env "HUGGING_FACE_HUB_TOKEN=$HF_TOKEN" \
@@ -106,3 +108,4 @@
 
 	- Check.
 		curl http://localhost:8000/v1/models
+		curl http://localhost:8000/v1/metrics

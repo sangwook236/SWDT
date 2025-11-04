@@ -142,3 +142,4 @@
 
 	- Check.
 		curl http://localhost:11434/v1/models
+		curl http://localhost:11434/v1/metrics
