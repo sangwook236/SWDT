@@ -1,0 +1,61 @@
+[-] General.
+	- Site.
+		https://lmstudio.ai/
+		https://github.com/lmstudio-ai
+
+		https://lmstudio.ai/docs
+
+		https://lmstudio.ai/models
+
+[-] Usage.
+	- JavaScript.
+		https://lmstudio.ai/docs/typescript
+
+	- Python.
+		https://lmstudio.ai/docs/python
+
+[-] Tool.
+	- LM Studio. (GUI)
+		https://lmstudio.ai/docs/app
+		https://lmstudio.ai/download
+
+	- lms. (CLI)
+		https://lmstudio.ai/docs/cli
+		https://github.com/lmstudio-ai/lms
+
+		lms server start
+		lms server stop
+		lms server status
+
+		lms ls
+		lms ps
+		lms load
+		lms unload
+
+		lms get
+		lms push
+
+		lms log stream
+
+		lms create
+
+[-] Installation.
+	https://lmstudio.ai/docs/developer
+
+	- Install.
+		npm install @lmstudio/sdk
+		pip install lmstudio
+
+	- Check.
+		lms server start --port 1234
+			OpenAI‑compatible
+
+		curl http://localhost:1234/v1/chat/completions \
+			-H "Content-Type: application/json" \
+			-d '{
+				"model": "openai/gpt-oss-20b",
+				"messages": [{"role": "user", "content": "Who are you, and what can you do?"}]
+			}'
+
+		curl http://localhost:1234/v1/models
+		curl http://localhost:1234/v1/metrics
