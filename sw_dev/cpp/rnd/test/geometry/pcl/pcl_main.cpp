@@ -773,6 +773,7 @@ void ransac();
 void registration();
 void segmentation();
 void reconstruction();
+void outlier_removal();
 void visualization(int argc, char **argv);
 
 void tsdf();
@@ -799,6 +800,8 @@ int pcl_main(int argc, char *argv[])
 	//my_pcl::registration();
 	//my_pcl::segmentation();
 	//my_pcl::reconstruction();
+
+	//my_pcl::outlier_removal();
 
 	//my_pcl::visualization(argc, argv);
 

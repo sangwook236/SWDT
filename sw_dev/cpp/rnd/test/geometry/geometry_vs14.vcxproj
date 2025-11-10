@@ -207,6 +207,7 @@
     <ClCompile Include="pcl\pcl_keypoint.cpp" />
     <ClCompile Include="pcl\pcl_main.cpp" />
     <ClCompile Include="pcl\pcl_octree.cpp" />
+    <ClCompile Include="pcl\pcl_outlier_removal.cpp" />
     <ClCompile Include="pcl\pcl_ransac.cpp" />
     <ClCompile Include="pcl\pcl_reconstruction.cpp" />
     <ClCompile Include="pcl\pcl_registration.cpp" />

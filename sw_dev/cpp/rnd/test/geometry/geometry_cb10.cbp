@@ -73,6 +73,7 @@
 		<Unit filename="pcl/pcl_keypoint.cpp" />
 		<Unit filename="pcl/pcl_main.cpp" />
 		<Unit filename="pcl/pcl_octree.cpp" />
+		<Unit filename="pcl/pcl_outlier_removal.cpp" />
 		<Unit filename="pcl/pcl_ransac.cpp" />
 		<Unit filename="pcl/pcl_reconstruction.cpp" />
 		<Unit filename="pcl/pcl_registration.cpp" />

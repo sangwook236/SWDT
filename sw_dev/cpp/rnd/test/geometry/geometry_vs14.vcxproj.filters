@@ -40,6 +40,9 @@
     <ClCompile Include="pcl\pcl_octree.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
+    <ClCompile Include="pcl\pcl_outlier_removal.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
     <ClCompile Include="pcl\pcl_ransac.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
