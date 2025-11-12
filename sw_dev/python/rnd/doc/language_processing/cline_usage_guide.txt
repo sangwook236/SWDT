@@ -1,0 +1,18 @@
+[-] General.
+	- Site.
+		https://cline.bot/
+		https://github.com/cline
+
+		https://docs.cline.bot/
+
+[-] Usage.
+	- Run models locally with Cline.
+		https://docs.cline.bot/running-models-locally
+			VSCode + Ollama, LiteLM, LM Studio, HuggingFace, etc.
+
+[-] Tools.
+	- Cline CLI.
+		https://docs.cline.bot/cli
+
+[-] Installation.
+	https://cline.bot/

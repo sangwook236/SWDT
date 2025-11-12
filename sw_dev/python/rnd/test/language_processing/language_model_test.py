@@ -5464,6 +5464,130 @@ def glm_example():
 				print(f"Function Response: {function_response}")
 				message.append({"role": "observation", "content": function_response})
 
+# REF [site] >> https://huggingface.co/inclusionAI
+def ling_example():
+	# Models:
+	#	inclusionAI/Ling-lite-base
+	#	inclusionAI/Ling-lite
+	#	inclusionAI/Ling-plus-base
+	#	inclusionAI/Ling-plus
+	#
+	#	inclusionAI/Ling-lite-base-1.5
+	#	inclusionAI/Ling-lite-1.5
+	#	inclusionAI/Ling-lite-1.5-2506
+	#	inclusionAI/Ling-lite-1.5-2507
+	#
+	#	inclusionAI/Ling-1T
+	#	inclusionAI/Ling-flash-base-2.0
+	#	inclusionAI/Ling-flash-2.0
+	#	inclusionAI/Ling-mini-base-2.0
+	#	inclusionAI/Ling-mini-base-2.0-5T
+	#	inclusionAI/Ling-mini-base-2.0-10T
+	#	inclusionAI/Ling-mini-base-2.0-15T
+	#	inclusionAI/Ling-mini-base-2.0-20T
+	#	inclusionAI/Ling-mini-2.0
+
+	if False:
+		#model_name = "inclusionAI/Ling-lite"
+		#model_name = "inclusionAI/Ling-plus"
+		#model_name = "inclusionAI/Ling-lite-base-1.5"
+		#model_name = "inclusionAI/Ling-lite-1.5"
+		#model_name = "inclusionAI/Ling-lite-1.5-2506"
+		model_name = "inclusionAI/Ling-lite-1.5-2507"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Give me a short introduction to large language models."
+		messages = [
+			{"role": "system", "content": "You are Ling, an assistant created by inclusionAI"},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(response)
+
+	if True:
+		model_name = "inclusionAI/Ling-flash-base-2.0"
+		#model_name = "inclusionAI/Ling-mini-base-2.0"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype = torch.bfloat16,
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		text = "What is the capital of France?"
+		model_inputs = tokenizer([text], return_tensors="pt", return_token_type_ids=False).to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(response)
+
+	if True:
+		model_name = "inclusionAI/Ling-1T"
+		#model_name = "inclusionAI/Ling-flash-2.0"
+		#model_name = "inclusionAI/Ling-mini-2.0"
+
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			dtype="auto",
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Give me a short introduction to large language models."
+		messages = [
+			{"role": "system", "content": "You are Ling, an assistant created by inclusionAI"},
+			{"role": "user", "content": prompt}
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True
+		)
+		model_inputs = tokenizer([text], return_tensors="pt", return_token_type_ids=False).to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=512
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+		print(response)
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -6417,6 +6541,144 @@ def glm_reasoning_example():
 
 		output_text = processor.decode(generated_ids[0][inputs["input_ids"].shape[1]:], skip_special_tokens=False)
 		print(output_text)
+
+# REF [site] >> https://huggingface.co/inclusionAI
+def ring_example():
+	# Models
+	#	inclusionAI/Ring-lite
+	#	inclusionAI/Ring-lite-2506
+	#	inclusionAI/Ring-lite-2507
+	#	inclusionAI/Ring-lite-distill-preview
+	#	inclusionAI/Ring-lite-linear-preview
+	#
+	#	inclusionAI/Ring-1T-preview
+	#	inclusionAI/Ring-1T-preview-FP8
+	#	inclusionAI/Ring-flash-2.0
+	#	inclusionAI/Ring-flash-linear-2.0
+	#	inclusionAI/Ring-mini-2.0
+	#	inclusionAI/Ring-mini-linear-2.0
+
+	if False:
+		model_name = "inclusionAI/Ring-lite"
+		#model_name = "inclusionAI/Ring-lite-2506"
+		#model_name = "inclusionAI/Ring-lite-2507"
+		#model_name = "inclusionAI/Ring-lite-distill-preview"
+		#model_name = "inclusionAI/Ring-lite-linear-preview"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+			#trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Give me a short introduction to large language models."
+		messages = [
+			{"role": "system", "content": "You are Ring, an assistant created by inclusionAI"},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+			enable_thinking=True,  # Thinking on
+			#enable_thinking=False,  # Thinking off
+		)
+		model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=8192,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if True:
+		model_name = "inclusionAI/Ring-1T-preview"
+		#model_name = "inclusionAI/Ring-flash-2.0"
+		#model_name = "inclusionAI/Ring-mini-2.0"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			dtype="auto",
+			#torch_dtype="auto",
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompt = "Give me a short introduction to large language models."
+		messages = [
+			{"role": "system", "content": "You are Ring, an assistant created by inclusionAI"},
+			{"role": "user", "content": prompt},
+		]
+		text = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+			#enable_thinking=True,
+		)
+		model_inputs = tokenizer([text], return_tensors="pt", return_token_type_ids=False).to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=8192,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+	if True:
+		model_name = "inclusionAI/Ring-flash-linear-2.0"
+		#model_name = "inclusionAI/Ring-mini-linear-2.0"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			dtype="auto",
+			device_map="auto",
+			trust_remote_code=True,
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		prompts = [
+			"Give me a short introduction to large language models."
+		]
+		input_texts = []
+		for prompt in prompts:
+			messages = [
+				{"role": "user", "content": prompt}
+			]
+			text = tokenizer.apply_chat_template(
+				messages,
+				tokenize=False,
+				add_generation_prompt=True
+			)
+			input_texts.append(text)
+
+		print(input_texts)
+
+		model_inputs = tokenizer(input_texts, return_tensors="pt", return_token_type_ids=False, padding=True, padding_side='left').to(model.device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=8192,
+			do_sample=False,
+		)
+		generated_ids = [
+			output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+		]
+
+		responses = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+
+		print("*" * 30)
+		print(responses)
+		print("*" * 30)
 
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
@@ -7867,6 +8129,47 @@ def main():
 		outputs = model.generate(inputs, max_new_tokens=512, do_sample=False, top_k=50, top_p=0.95, num_return_sequences=1, eos_token_id=tokenizer.eos_token_id)
 		print(tokenizer.decode(outputs[0][len(inputs[0]):], skip_special_tokens=True))
 
+# REF [site] >> https://huggingface.co/inclusionAI
+def ling_coder_example():
+	# Models:
+	#	inclusionAI/Ling-Coder-lite-base
+	#	inclusionAI/Ling-Coder-lite
+
+	model_name = "inclusionAI/Ling-Coder-lite"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		torch_dtype="auto",
+		device_map="auto",
+		trust_remote_code=True
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(
+		model_name, 
+		trust_remote_code=True
+	)
+
+	prompt = "Write a quick sort algorithm in python."
+	messages = [
+		{"role": "user", "content": prompt}
+	]
+	text = tokenizer.apply_chat_template(
+		messages,
+		tokenize=False,
+		add_generation_prompt=True
+	)
+	model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+	generated_ids = model.generate(
+		**model_inputs,
+		max_new_tokens=512
+	)
+	generated_ids = [
+		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+	]
+
+	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+	print(response)
+
 # REF [site] >> https://huggingface.co/nvidia
 def open_code_reasoning_example():
 	# Models:
@@ -9297,6 +9600,20 @@ def smol_vlm_example():
 			)
 
 			print(generated_texts[0])
+
+# REF [site] >> https://huggingface.co/inclusionAI
+def ming_example():
+	# Models:
+	#	inclusionAI/Ming-Lite-Omni
+	#	inclusionAI/Ming-Lite-Omni-1.5
+	#
+	#	inclusionAI/Ming-UniVision-16B-A3B
+	#	inclusionAI/Ming-UniAudio-16B-A3B
+	#	inclusionAI/Ming-UniAudio-16B-A3B-Edit
+	#	inclusionAI/MingTok-Vision
+	#	inclusionAI/MingTok-Audio
+
+	raise NotImplementedError
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vilt
 def vilt_example():
@@ -11773,43 +12090,43 @@ def dpo_train_example():
 	dpo_trainer.model.save_pretrained(output_dir)
 
 def main():
-	# Transformer.
+	# Transformer
 
 	# Refer to ./transformer_test.py
 	# Refer to ./hugging_face_transformers_test.py
 
 	#--------------------
-	# Language models.
+	# Language models
 
 	#-----
-	# GPT.
+	# GPT
 
 	#gpt2_example()
 	#sentence_completion_model_using_gpt2_example()
-	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
+	#conditional_text_generation_using_gpt2_example()  # Not yet implemented
 
-	#eleuther_ai_gpt_test()  # gpt-j, gpt-neo, & gpt-neox.
-	#skt_gpt_test()  # KoGPT2.
-	#kakao_brain_gpt_test()  # KoGPT.
+	#eleuther_ai_gpt_test()  # gpt-j, gpt-neo, & gpt-neox
+	#skt_gpt_test()  # KoGPT2
+	#kakao_brain_gpt_test()  # KoGPT
 
-	#gpt4all_example()  # Not correctly working.
+	#gpt4all_example()  # Not correctly working
 
-	gpt_oss_example()
+	#gpt_oss_example()
 
 	#-----
-	# BERT.
+	# BERT
 
 	#bert_example()
 	#masked_language_modeling_for_bert_example()
 
 	#sequence_classification_using_bert()
 
-	#korean_bert_example()  # BERT multilingual & KoBERT.
-	#skt_bert_test()  # KoBERT.
-	#klue_bert_test()  # Not yet completed.
+	#korean_bert_example()  # BERT multilingual & KoBERT
+	#skt_bert_test()  # KoBERT
+	#klue_bert_test()  # Not yet completed
 
 	#-----
-	# T5.
+	# T5
 	#	T5 is an encoder-decoder model pre-trained on a multi-task mixture of unsupervised and supervised tasks and for which each task is converted into a text-to-text format.
 	#	T5 works well on a variety of tasks out-of-the-box by prepending a different prefix to the input corresponding to each task, e.g., for translation: translate English to German: ..., for summarization: summarize: ....
 
@@ -11817,54 +12134,55 @@ def main():
 	#flan_t5_example()
 
 	#-----
-	#palm_example()  # PaLM + RLHF.
-	#bloom_example()  # BLOOM.
+	#palm_example()  # PaLM + RLHF
+	#bloom_example()  # BLOOM
 
-	#opt_example()  # OPT.
-	#galactica_example()  # Galactica.
+	#opt_example()  # OPT
+	#galactica_example()  # Galactica
 
-	#llama_example()  # LLaMA.
-	#llama2_example()  # Llama 2. Model parallelism.
-	#llama3_example()  # Llama 3, Llama 3.1, Llama 3.2, & Llama 3.3.
-	#llama4_example()  # Llama 4.
-	#llama_guard_example()  # Llama Guard.
-	#open_llama_example()  # OpenLLaMA.
+	#llama_example()  # LLaMA
+	#llama2_example()  # Llama 2. Model parallelism
+	#llama3_example()  # Llama 3, Llama 3.1, Llama 3.2, & Llama 3.3
+	#llama4_example()  # Llama 4
+	#llama_guard_example()  # Llama Guard
+	#open_llama_example()  # OpenLLaMA
 
-	#megatron_example()  # Megatron-LM.
-	#mpt_example()  # MPT.
+	#megatron_example()  # Megatron-LM
+	#mpt_example()  # MPT
 
-	#falcon_example()  # Falcon.
-	#yi_example()  # Yi-6B & Yi-34B.
+	#falcon_example()  # Falcon
+	#yi_example()  # Yi-6B & Yi-34B
 
-	#orca_example()  # ORCA-2.
+	#orca_example()  # ORCA-2
 
 	#mistral_example()  # Mistral-7B, Mistral-Nemo, Mistral-Large.
-	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2.
-	#mixtral_example()  # Mixtral-8x7B.
-	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO.
-	#gemma_example()  # Gemma, Gemma 2, Gemma 3.
-	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2.
-	#data_gemma_example()  # DataGemma.
-	#open_elm_example()  # OpenELM.
-	#aya_example()  # Aya.
-	#phi_example()  # Phi-1, Phi-1.5, Phi-2.
-	#phi_3_example()  # Phi-3.
-	#phi_3_5_example()  # Phi-3.5.
-	#phi_4_example()  # Phi-4.
-	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram.
-	#qwen_example()  # Qwen. Not yet implemented.
-	#qwen2_example()  # Qwen2.
-	#qwen2_5_example()  # Qwen2.5.
-	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard.
-	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3.
-	#exaone_example()  # EXAONE 3.0, EXAONE 3.5.
-	#smol_lm_example()  # SmolLM, SmolLM2.
-	#kimi_example()  # Kimi K2. Not yet implemented.
-	#apriel_example()  # Apriel.
-	glm_example()  # GLM-4.
+	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2
+	#mixtral_example()  # Mixtral-8x7B
+	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO
+	#gemma_example()  # Gemma, Gemma 2, Gemma 3
+	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2
+	#data_gemma_example()  # DataGemma
+	#open_elm_example()  # OpenELM
+	#aya_example()  # Aya
+	#phi_example()  # Phi-1, Phi-1.5, Phi-2
+	#phi_3_example()  # Phi-3
+	#phi_3_5_example()  # Phi-3.5
+	#phi_4_example()  # Phi-4
+	#ernie_example()  # ERNIE1.0, ERNIE2.0, ERNIE3.0, ERNIE-Gram
+	#qwen_example()  # Qwen. Not yet implemented
+	#qwen2_example()  # Qwen2
+	#qwen2_5_example()  # Qwen2.5
+	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
+	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3
+	#exaone_example()  # EXAONE 3.0, EXAONE 3.5
+	#smol_lm_example()  # SmolLM, SmolLM2
+	#kimi_example()  # Kimi K2. Not yet implemented
+	#apriel_example()  # Apriel
+	#glm_example()  # GLM-4
+	ling_example()  # Ling, Ling-V2
 
 	#-----
-	# Retrieval-augmented generation (RAG).
+	# Retrieval-augmented generation (RAG)
 
 	# References:
 	#	https://developer.nvidia.com/nemo-retriever
@@ -11875,194 +12193,140 @@ def main():
 	#rag_facebook_example()
 
 	#-----
-	# Reasoning.
+	# Reasoning
 
-	#qwen_qwq_example()  # QwQ.
-	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented.
-	#open_r1_example()  # OpenR1. Not yet completed.
-	#s1_example()  # s1.
-	#exaone_deep_example()  # EXAONE Deep.
-	#llama_nemotron_example()  # Llama Nemotron.
-	#open_reasoning_nemotron_example()  # OpenReasoning-Nemotron.
-	#phi_4_reasoning_example()  # Phi-4-reasoning.
-	#magistral_example()  # Magistral-Small. Not yet implemented.
-	#apriel_nemotron_example()  # Apriel Nemotron.
-	#glm_reasoning_example()  # GLM-Z1, GLM-Z1-Rumination, GLM-V4.1-Thinking.
-
-	#-----
-	# Math.
-
-	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math.
-	#deepseek_math_example()  # DeepSeek-Math.
+	#qwen_qwq_example()  # QwQ
+	#deepseek_r_example()  # DeepSeek-R1. Not yet implemented
+	#open_r1_example()  # OpenR1. Not yet completed
+	#s1_example()  # s1
+	#exaone_deep_example()  # EXAONE Deep
+	#llama_nemotron_example()  # Llama Nemotron
+	#open_reasoning_nemotron_example()  # OpenReasoning-Nemotron
+	#phi_4_reasoning_example()  # Phi-4-reasoning
+	#magistral_example()  # Magistral-Small. Not yet implemented
+	#apriel_nemotron_example()  # Apriel Nemotron
+	#glm_reasoning_example()  # GLM-Z1, GLM-Z1-Rumination, GLM-V4.1-Thinking
+	#ring_example()  # Ring, Ring-V2
 
 	#-----
-	# Math reasoning.
+	# Math
 
-	#deepseek_prover_example()  # DeepSeek-Prover.
-	#ace_math_example()  # AceMath, AceMath-RL.
-	#open_math_example()  # OpenMath, OpenMath2.
-	#ace_reason_example()  # AceReason-Nemotron, AceReason-Nemotron 1.1.
+	#qwen_math_example()  # Qwen2-Math, Qwen2.5-Math
+	#deepseek_math_example()  # DeepSeek-Math
 
 	#-----
-	# Code.
+	# Math reasoning
 
-	#codebert_example()  # CodeBERT.
-	#codeberta_example()  # CodeBERTa.
-	#codet5_example()  # CodeT5.
-	#codet5p_example()  # CodeT5+.
-	#codegen_example()  # CodeGen.
-	#codegen2_example()  # CodeGen2.
-	#codegen25_example()  # CodeGen2.5.
-	#codeparrot_example()  # CodeParrot.
-	#code_llama_example()  # Code Llama.
-	#code_gemma_example()  # CodeGemma.
-	#star_coder_example()  # StarCoder.
-	#replit_example()  # Replit.
-	#codestral_example()  # Codestral.
-	#qwen_coder_example()  # Qwen2.5-Coder, Qwen3-Coder.
-	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2.
+	#deepseek_prover_example()  # DeepSeek-Prover
+	#ace_math_example()  # AceMath, AceMath-RL
+	#open_math_example()  # OpenMath, OpenMath2
+	#ace_reason_example()  # AceReason-Nemotron, AceReason-Nemotron 1.1
 
 	#-----
-	# Code reasoning.
+	# Code
 
-	#open_code_reasoning_example()  # OpenCodeReasoning.
+	#codebert_example()  # CodeBERT
+	#codeberta_example()  # CodeBERTa
+	#codet5_example()  # CodeT5
+	#codet5p_example()  # CodeT5+
+	#codegen_example()  # CodeGen
+	#codegen2_example()  # CodeGen2
+	#codegen25_example()  # CodeGen2.5
+	#codeparrot_example()  # CodeParrot
+	#code_llama_example()  # Code Llama
+	#code_gemma_example()  # CodeGemma
+	#star_coder_example()  # StarCoder
+	#replit_example()  # Replit
+	#codestral_example()  # Codestral
+	#qwen_coder_example()  # Qwen2.5-Coder, Qwen3-Coder
+	#deepseek_coder_example()  # DeepSeek-Coder, DeepSeek-Coder-V2
+	#ling_coder_example()  # Ling-Coder
+
+	#-----
+	# Code reasoning
+
+	#open_code_reasoning_example()  # OpenCodeReasoning
 
 	#--------------------
-	# Vision.
+	# Vision
 
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_vision/vit_test.py
 
-	#vit_example()  # ViT.
-	#deit_example()  # DeiT.
+	#vit_example()  # ViT
+	#deit_example()  # DeiT
 
-	#dino_example()  # DINO & DINOv2.
-	#dpt_example()  # Dense Prediction Transformer (DPT).
-
-	#-----
-	# Visual reasoning.
-
-	#qwen_qvq_example()  # QVQ.
-	#open_vl_thinker_example()  # OpenVLThinker.
-
-	#--------------------
-	# Multimodal.
-
-	#kosmos_example()  # Kosmos-2.
-	#qwen_omni_example()  # Qwen2.5-Omni, Qwen3-Omni.
-	#phi_4_multimodal_example()  # Phi-4-multimodal.
-	#smol_vlm_example()  # SmolVLM, SmolVLM2.
+	#dino_example()  # DINO & DINOv2
+	#dpt_example()  # Dense Prediction Transformer (DPT)
 
 	#-----
-	# Vision and language.
+	# Visual reasoning
 
-	#vilt_example()  # ViLT.
-	#beit_example()  # BEiT.
+	#qwen_qvq_example()  # QVQ
+	#open_vl_thinker_example()  # OpenVLThinker
 
-	#clip_example()  # CLIP.
-	#align_example()  # ALIGN.
-	#git_example()  # GIT.
-	#blip_example()  # BLIP.
-	#openflamingo_example()  # OpenFlamingo.
+	#--------------------
+	# Multimodal
 
-	#llava_example()  # LLaVa.
-	#nano_llava_example()  # nanoLLaVA.
-
-	#phi_3_vision_example()  # Phi-3-vision, Phi-3.5-vision.
-	#pali_gemma_example()  # PaliGemma, PaliGemma 2.
-	#fuyu_example()  # Fuyu.
-	#pixtral_example()  # Pixtral. Not yet implemented.
-	#vila_example()  # VILA. Not yet implemented.
-	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL, Qwen3-VL.
-	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2.
-	#llama_vision_example()  # Llama 3.2 Vision.
-	#kimi_vl_example()  # Kimi-VL.
-	#lfm2_vl_example()  # LFM2-VL.
-
-	# Refer to image_synthesis_test.py.
+	#kosmos_example()  # Kosmos-2
+	#qwen_omni_example()  # Qwen2.5-Omni, Qwen3-Omni
+	#phi_4_multimodal_example()  # Phi-4-multimodal
+	#smol_vlm_example()  # SmolVLM, SmolVLM2
+	#ming_example()  # Ming-Omni, Ming-UniVision, Ming-UniAudio, Ming-V2. Not yet implemented
 
 	#-----
-	# Video and language.
+	# Vision and language
 
-	#long_vila_example()  # LongVILA. Not yet implemented.
+	#vilt_example()  # ViLT
+	#beit_example()  # BEiT
 
-	# Refer to video_synthesis_test.py.
+	#clip_example()  # CLIP
+	#align_example()  # ALIGN
+	#git_example()  # GIT
+	#blip_example()  # BLIP
+	#openflamingo_example()  # OpenFlamingo
 
-	#-----
-	# Audio and language.
+	#llava_example()  # LLaVa
+	#nano_llava_example()  # nanoLLaVA
 
-	#audiogen_example()  # AudioGen.
-	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio.
-	#kimi_audio_example()  # Kimi-Audio. Not yet implemented.
+	#phi_3_vision_example()  # Phi-3-vision, Phi-3.5-vision
+	#pali_gemma_example()  # PaliGemma, PaliGemma 2
+	#fuyu_example()  # Fuyu
+	#pixtral_example()  # Pixtral. Not yet implemented
+	#vila_example()  # VILA. Not yet implemented
+	#qwen_vl_example()  # Qwen-VL, Qwen2-VL, Qwen2.5-VL, Qwen3-VL
+	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2
+	#llama_vision_example()  # Llama 3.2 Vision
+	#kimi_vl_example()  # Kimi-VL
+	#lfm2_vl_example()  # LFM2-VL
 
-	#-----
-	# Vision and audio.
-
-	#tvlt_example()  # TVLT.
-
-	#-----
-	# Vision-language-action.
-
-	# Refer to vla_test.py.
-
-	#--------------------
-	# Document.
-
-	# Refer to ./document_processing_test.py.
-	
-	#--------------------
-	# Text.
-
-	# Refer to ./text_processing_test.py.
-	# Refer to ./ocr_test.py.
-
-	#--------------------
-	# Natural language processing (NLP).
-
-	# Refer to ./nlp_test.py.
-
-	#--------------------
-	# Speech processing.
-	#	Speech recognition.
-	#	Speech synthesis.
-	#	Speech-to-speech.
-
-	# Refer to ./speech_processing_test.py.
-
-	#--------------------
-	# Sequence processing.
-
-	# Refer to sequence_processing_test.py.
-
-	#--------------------
-	# Biomedical.
-
-	# Refer to biomedical_llm_test.py.
-
-	#--------------------
-	# Reinforcement learning.
-
-	#decision_transformer_example()  # Decision transformer.
-	#trajectory_transformer_example()  # Trajectory transformer.
-
-	#--------------------
-	# Foundation models.
-
-	# Nemotron-4-340B is a large language model (LLM) that can be used as part of a synthetic data generation pipeline to create training data that helps researchers and developers build their own LLMs.
-	#nemotron_4_example()  # Nemotron-4. Not yet implemented.
-	#lfm2_example()  # Liquid Foundation Models 2 (LFM2).
+	# Refer to image_synthesis_test.py
 
 	#-----
-	# World models.
+	# Video and language
 
-	#cosmos_example()  # Not yet implemented.
+	#long_vila_example()  # LongVILA. Not yet implemented
 
-	#--------------------
-	# AI agents.
+	# Refer to video_synthesis_test.py
 
-	# Refer to ai_agent_test.py.
+	#-----
+	# Audio and language
+
+	#audiogen_example()  # AudioGen
+	#qwen_audio_example()  # Qwen-Audio, Qwen2-Audio
+	#kimi_audio_example()  # Kimi-Audio. Not yet implemented
+
+	#-----
+	# Vision and audio
+
+	#tvlt_example()  # TVLT
+
+	#-----
+	# Vision-language-action
+
+	# Refer to vla_test.py
 
 	#------------------------------------------------------------
-	# Preprocessing.
+	# Preprocessing
 	#	https://huggingface.co/docs/transformers/main/en/preprocessing
 	#	https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/llama-nemotron-data-curation
 
@@ -12070,7 +12334,7 @@ def main():
 	#	https://github.com/NVIDIA/NeMo/blob/main/tutorials/multimodal/Prompt%20Formatter%20Tutorial.ipynb
 
 	#--------------------
-	# Training.
+	# Training
 
 	# LLM course:
 	#	https://github.com/mlabonne/llm-course
@@ -12083,7 +12347,7 @@ def main():
 	#	https://huggingface.co/docs/transformers/main/en/model_sharing
 
 	# Fine-tune LLMs:
-	#	Refer to ${SWR_HOME}/test/language_processing/llm_fine_tuning_test.py.
+	#	Refer to ${SWR_HOME}/test/language_processing/llm_fine_tuning_test.py
 
 	# Train reasoning LLMs:
 	#	https://developer.nvidia.com/blog/train-a-reasoning-capable-llm-in-one-weekend-with-nvidia-nemo
@@ -12094,11 +12358,11 @@ def main():
 	#	https://developer.nvidia.com/blog/training-localized-multilingual-llms-with-nvidia-nemo-part-2/
 
 	#--------------------
-	# Evaluation.
+	# Evaluation
 	#	https://github.com/NVIDIA/NeMo/tree/main/tutorials/llm/reasoning/evaluation
 
 	#--------------------
-	# Data and model parallelism.
+	# Data and model parallelism
 
 	# Efficient Training on Multiple GPUs:
 	#	https://huggingface.co/docs/transformers/main/en/perf_train_gpu_many
@@ -12106,32 +12370,33 @@ def main():
 	# Model Parallelism:
 	#	https://huggingface.co/docs/transformers/v4.19.4/en/parallelism
 
-	# Refer to llama2_example().
+	# Refer to llama2_example()
 
 	#--------------------
-	# Transformer Reinforcement Learning (TRL).
+	# Transformer Reinforcement Learning (TRL)
 	#	https://github.com/huggingface/trl
 	#	https://huggingface.co/docs/trl/index
 	#
-	#	Supervised Fine-tuning (SFT).
-	#	Reward Modeling (RM).
-	#	Proximal Policy Optimization (PPO).
-	#	Direct Preference Optimization (DPO).
+	#	Supervised Fine-tuning (SFT)
+	#	Reward Modeling (RM)
+	#	Proximal Policy Optimization (PPO)
+	#	Direct Preference Optimization (DPO)
 
-	#stack_llama_example()  # Reinforcement Learning from Human Feedback (RLHF). Not yet implemented.
-	#stack_llama_2_sft_llama2_example()  # Not yet implemented.
-	#stack_llama_2_dpo_llama2_example()  # Not yet implemented.
+	#stack_llama_example()  # Reinforcement Learning from Human Feedback (RLHF). Not yet implemented
+	#stack_llama_2_sft_llama2_example()  # Not yet implemented
+	#stack_llama_2_dpo_llama2_example()  # Not yet implemented
 
-	#trl_train_small_llm_example()  # XGen-7B + SFT.
-	#dpo_train_example()  # Mistral-7B + DPO.
+	#trl_train_small_llm_example()  # XGen-7B + SFT
+	#dpo_train_example()  # Mistral-7B + DPO
 
 	#--------------------
-	# Inference engines.
+	# Inference engines
 	#	https://betterprogramming.pub/frameworks-for-serving-llms-60b7f7b23407
 
 	# Refer to ./hugging_face_transformers_test.py
 	# Refer to ./vllm_test.py
 	# Refer to ./ollama_test.py
+	# Refer to ./lm_studio_test.py
 
 #--------------------------------------------------------------------
 
