@@ -14,9 +14,47 @@
 		~/.cache/huggingface
 		%USERPROFILE%/.cache/huggingface
 
+[-] Tools.
+	- Hugging Face Hub CLI.
+		https://huggingface.co/docs/huggingface_hub/guides/cli
+		https://huggingface.co/docs/huggingface_hub/index
+
+		pip install huggingface_hub
+
+		hf --help
+		hf download --help
+		hf upload --help
+
+		hf auth whoami
+		hf auth login
+
+	- transformers. (CLI)
+		https://huggingface.co/docs/transformers/index
+		https://github.com/huggingface/transformers
+
+		transformers --help
+		transformers chat --help
+
+		Chat with a model directly from the command line:
+			(optional) pip install transformers[serving]
+
+			transformers chat Qwen/Qwen2.5-0.5B-Instruct
+
+	- accelerate. (CLI)
+		https://huggingface.co/docs/accelerate/index
+		https://github.com/huggingface/accelerate
+
+		accelerate --help
+
+		Generate a config file that will be used automatically to properly set the default options:
+			accelerate config
+
+		Launch on two GPUs:
+			accelerate launch --multi_gpu --num_processes 2 examples/nlp_example.py
+
 [-] Installation.
 	- Install.
-		pip install transformers
+		pip install transformers[torch]
 		pip install diffusers[torch]
 		pip install datasets
 		pip install accelerate
