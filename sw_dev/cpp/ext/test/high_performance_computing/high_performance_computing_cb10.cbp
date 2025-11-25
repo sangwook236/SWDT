@@ -58,7 +58,6 @@
 		<Unit filename="openmp/openmp_main.cpp" />
 		<Unit filename="simd/simd_main.cpp" />
 		<Unit filename="simd/sse.cpp" />
-		<Unit filename="tbb/tbb_main.cpp" />
 		<Unit filename="tensorrt/tensorrt_main.cpp" />
 		<Unit filename="thrust/thrust_algorithm.cu">
 			<Option compile="1" />

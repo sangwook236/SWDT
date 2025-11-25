@@ -179,7 +179,6 @@
     <ClCompile Include="openmp\openmp_main.cpp" />
     <ClCompile Include="simd\simd_main.cpp" />
     <ClCompile Include="simd\sse.cpp" />
-    <ClCompile Include="tbb\tbb_main.cpp" />
     <ClCompile Include="tensorrt\tensorrt_main.cpp" />
     <ClCompile Include="thrust\thrust_main.cpp" />
     <ClCompile Include="vexcl\vexcl_main.cpp" />

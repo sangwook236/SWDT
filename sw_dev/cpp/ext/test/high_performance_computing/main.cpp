@@ -21,11 +21,11 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		// Threading
+		//	Refer to ../threading
+
 		std::cout << "Open Multi-Processing (OpenMP) --------------------------------------" << std::endl;
 		retval = openmp_main(argc, argv);
-
-		std::cout << "\nThreading Building Blocks (TBB)) ------------------------------------" << std::endl;
-		//retval = tbb_main(argc, argv);
 
 		std::cout << "\nSingle instruction, mutiple data (SIMD) -----------------------------" << std::endl;
 		//	- Streaming SIMD Extensions (SSE).
