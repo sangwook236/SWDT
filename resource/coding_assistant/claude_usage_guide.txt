@@ -1,0 +1,38 @@
+[-] General.
+	- Site.
+		https://claude.com/product/claude-code
+		https://github.com/anthropics/claude-code
+
+[-] Tools.
+	- Claude Code. (CLI)
+		https://github.com/anthropics/claude-code
+
+		~/.claude/
+		~/.claude/settings.json
+		./.claude/settings.json
+		./.claude/settings.local.json
+		~/.claude/CLAUDE.md
+		./CLAUDE.md
+		./CLAUDE.local.md
+
+		~/.claude/commands/
+		./.claude/commands/
+		./.claude/commands/cmd.md
+		~/.claude/agents/
+		./.claude/agents/
+		./.claude/agents/agent.md
+
+		~/.claude.json
+		./.mcp.json
+
+		claude
+			/
+			@
+			!
+			#
+			Shift + Tab
+
+[-] Installation.
+	- Install.
+		Claude Code:
+			npm install -g @anthropic-ai/claude-code

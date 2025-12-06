@@ -1,0 +1,28 @@
+[-] General.
+	- Site.
+		https://codeassist.google/
+
+[-] Tools.
+	- Gemini Code Assist.
+		https://codeassist.google/
+	
+	- Gemini CLI.
+		https://github.com/google-gemini/gemini-cli
+
+		~/.gemini/
+		~/.gemini/settings.json
+		./GEMINI.md
+
+		~/.gemini/commands/
+		./.gemini/commands/
+		./.gemini/commands/cmd.toml
+
+		gemini
+			/
+			@
+			!
+
+[-] Installation.
+	- Install.
+		Gemini CLI:
+			npm install -g @google/gemini-cli

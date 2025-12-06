@@ -1,0 +1,21 @@
+[-] General.
+	- Site.
+		https://openai.com/codex/
+		https://chatgpt.com/codex
+
+[-] Tools.
+	- Codex CLI.
+		https://github.com/openai/codex
+
+		~/.codex/
+		./AGENTS.md
+
+		codex
+			/
+			@
+			!
+
+[-] Installation.
+	- Install.
+		Codex CLI:
+			npm install -g @openai/codex
