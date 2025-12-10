@@ -5001,8 +5001,13 @@ def deepseek_llm_example():
 	#
 	#	deepseek-ai/DeepSeek-V3
 	#	deepseek-ai/DeepSeek-V3-Base
+	#
+	#	deepseek-ai/DeepSeek-V3.2
+	#	deepseek-ai/DeepSeek-V3.2-Exp
+	#	deepseek-ai/DeepSeek-V3.2-Exp-Base
+	#	deepseek-ai/DeepSeek-V3.2-Speciale
 
-	if True:
+	if False:
 		# Text Completion
 
 		if True:
@@ -5031,7 +5036,7 @@ def deepseek_llm_example():
 		result = tokenizer.decode(outputs[0], skip_special_tokens=True)
 		print(result)
 
-	if True:
+	if False:
 		# Chat Completion
 
 		if True:
@@ -5063,6 +5068,27 @@ def deepseek_llm_example():
 
 		result = tokenizer.decode(outputs[0][input_tensor.shape[1]:], skip_special_tokens=True)
 		print(result)
+
+	if True:
+		# encoding/encoding_dsv32.py
+		from encoding_dsv32 import encode_messages, parse_message_from_completion_text
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-V3.2")
+
+		messages = [
+			{"role": "user", "content": "hello"},
+			{"role": "assistant", "content": "Hello! I am DeepSeek.", "reasoning_content": "thinking..."},
+			{"role": "user", "content": "1+1=?"}
+		]
+		encode_config = dict(thinking_mode="thinking", drop_thinking=True, add_default_bos_token=True)
+
+		# messages -> string
+		prompt = encode_messages(messages, **encode_config)
+		# Output: "<｜begin▁of▁sentence｜><｜User｜>hello<｜Assistant｜></think>Hello! I am DeepSeek.<｜end▁of▁sentence｜><｜User｜>1+1=?<｜Assistant｜><think>"
+
+		# string -> tokens
+		tokens = tokenizer.encode(prompt)
+		# Output: [0, 128803, 33310, 128804, 128799, 19923, 3, 342, 1030, 22651, 4374, 1465, 16, 1, 128803, 19, 13, 19, 127252, 128804, 128798]
 
 # REF [site] >> https://huggingface.co/LGAI-EXAONE
 def exaone_example():
@@ -6679,6 +6705,13 @@ def ring_example():
 		print("*" * 30)
 		print(responses)
 		print("*" * 30)
+
+# REF [site] >> https://huggingface.co/moonshotai/Kimi-K2-Thinking
+def kimi_k2_thinking_example():
+	# Models:
+	#	moonshotai/Kimi-K2-Thinking
+
+	raise NotImplementedError
 
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
@@ -11804,6 +11837,56 @@ def cosmos_example():
 
 	raise NotImplementedError
 
+# REF [site] >> https://huggingface.co/docs/trl/main/en/sft_trainer
+def sft_trainer_example():
+	import trl
+	import datasets
+
+	trainer = trl.SFTTrainer(
+		model="Qwen/Qwen3-0.6B",
+		train_dataset=datasets.load_dataset("trl-lib/Capybara", split="train"),
+	)
+
+	trainer.train()
+
+# REF [site] >> https://huggingface.co/docs/trl/main/en/dpo_trainer
+def dpo_trainer_example():
+	import transformers
+	import trl
+	import datasets
+
+	model = transformers.AutoModelForCausalLM.from_pretrained("Qwen/Qwen2-0.5B-Instruct")
+	tokenizer = transformers.AutoTokenizer.from_pretrained("Qwen/Qwen2-0.5B-Instruct")
+	train_dataset = datasets.load_dataset("trl-lib/ultrafeedback_binarized", split="train")
+
+	training_args = trl.DPOConfig(output_dir="./Qwen2-0.5B-DPO")
+	trainer = trl.DPOTrainer(model=model, args=training_args, processing_class=tokenizer, train_dataset=train_dataset)
+
+	trainer.train()
+
+# REF [site] >> https://huggingface.co/docs/trl/main/en/grpo_trainer
+def grpo_trainer_example():
+	import trl
+	import datasets
+
+	dataset = datasets.load_dataset("trl-lib/ultrafeedback-prompt", split="train")
+
+	# Dummy reward function for demonstration purposes
+	def reward_num_unique_letters(completions, **kwargs):
+		"""Reward function that rewards completions with more unique letters."""
+		completion_contents = [completion[0]["content"] for completion in completions]
+		return [float(len(set(content))) for content in completion_contents]
+
+	training_args = trl.GRPOConfig(output_dir="./Qwen2-0.5B-GRPO")
+	trainer = trl.GRPOTrainer(
+		model="Qwen/Qwen2-0.5B-Instruct",
+		reward_funcs=reward_num_unique_letters,
+		args=training_args,
+		train_dataset=dataset,
+	)
+
+	trainer.train()
+
 # REF [site] >> https://github.com/huggingface/trl/tree/main/examples/research_projects/stack_llama/scripts
 def stack_llama_example():
 	raise NotImplementedError
@@ -12089,6 +12172,10 @@ def dpo_train_example():
 	output_dir = os.path.join(training_args.output_dir, "final_checkpoint")
 	dpo_trainer.model.save_pretrained(output_dir)
 
+# REF [site] >> https://colab.research.google.com/github/huggingface/cookbook/blob/main/notebooks/en/fine_tuning_llm_grpo_trl.ipynb
+def fine_tuning_llm_grpo_trl_example():
+	raise NotImplementedError
+
 def main():
 	# Transformer
 
@@ -12173,7 +12260,7 @@ def main():
 	#qwen2_example()  # Qwen2
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
-	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3
+	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5
 	#smol_lm_example()  # SmolLM, SmolLM2
 	#kimi_example()  # Kimi K2. Not yet implemented
@@ -12207,6 +12294,7 @@ def main():
 	#apriel_nemotron_example()  # Apriel Nemotron
 	#glm_reasoning_example()  # GLM-Z1, GLM-Z1-Rumination, GLM-V4.1-Thinking
 	#ring_example()  # Ring, Ring-V2
+	#kimi_k2_thinking_example()  # Kimi K2 Thinking. Not yet implemented
 
 	#-----
 	# Math
@@ -12381,6 +12469,11 @@ def main():
 	#	Reward Modeling (RM)
 	#	Proximal Policy Optimization (PPO)
 	#	Direct Preference Optimization (DPO)
+	#	Group Relative Policy Optimization (GRPO)
+
+	#sft_trainer_example()  # Qwen3-0.6B + SFT
+	#dpo_trainer_example()  # Qwen2-0.5B + DPO
+	#grpo_trainer_example()  # Qwen2-0.5B + GRPO
 
 	#stack_llama_example()  # Reinforcement Learning from Human Feedback (RLHF). Not yet implemented
 	#stack_llama_2_sft_llama2_example()  # Not yet implemented
@@ -12388,6 +12481,7 @@ def main():
 
 	#trl_train_small_llm_example()  # XGen-7B + SFT
 	#dpo_train_example()  # Mistral-7B + DPO
+	#fine_tuning_llm_grpo_trl_example()  # Qwen2-0.5B + GRPO. Not yet implemented
 
 	#--------------------
 	# Inference engines
