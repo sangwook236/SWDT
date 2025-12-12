@@ -372,10 +372,54 @@ def hand_landmarks_detection_example():
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
+# REF [site] >> https://velog.io/@thithi250696/Deep-Learning-mediapipe-hand-사용하기-Hand-Landmark-가위바위보
+def hand_landmark_detection_test():
+	import cv2
+	import mediapipe as mp
+
+	detector = mp.solutions.hands.Hands(
+		max_num_hands=2,
+		min_detection_confidence=0.5,
+		min_tracking_confidence=0.5,
+	)
+
+	video = cv2.VideoCapture(0)
+	while video.isOpened():
+		ret, img = video.read()
+		if not ret:
+			continue
+
+		img = cv2.flip(img, 1)
+		img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+		detection_result = detector.process(img_rgb)  # Detect hands
+		if detection_result.multi_hand_landmarks is not None:
+			#print(detection_result.multi_hand_landmarks)
+			for landmark in detection_result.multi_hand_landmarks:
+				mp.solutions.drawing_utils.draw_landmarks(
+					img,
+					landmark_list=landmark,
+					connections=mp.solutions.hands.HAND_CONNECTIONS,
+					#landmark_drawing_spec=mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
+					landmark_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(color=mp.solutions.drawing_utils.RED_COLOR),
+					#connection_drawing_spec=mp.solutions.drawing_styles.get_default_hand_connections_style(),
+    				connection_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(color=mp.solutions.drawing_utils.BLUE_COLOR),
+					is_drawing_landmarks=True,
+				)
+
+		key = cv2.waitKey(10)
+		if key == 27:
+			break
+
+		cv2.imshow("Hand Landmarks", img)
+
+	video.release()
+	cv2.destroyAllWindows()
+
 # REF [site] >>
 #	https://github.com/google-ai-edge/mediapipe-samples/blob/main/examples/gesture_recognizer/python/gesture_recognizer.ipynb
 #	https://colab.research.google.com/github/googlesamples/mediapipe/blob/main/examples/gesture_recognizer/python/gesture_recognizer.ipynb
-def hand_gesture_recognition_example():
+def gesture_recognition_example():
 	# Download:
 	#	wget https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task
 	#	wget https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/thumbs_down.jpg
@@ -511,50 +555,6 @@ def hand_gesture_recognition_example():
 		results.append((top_gesture, hand_landmarks))
 
 	display_batch_of_images_with_gestures_and_hand_landmarks(images, results)
-
-# REF [site] >> https://velog.io/@thithi250696/Deep-Learning-mediapipe-hand-사용하기-Hand-Landmark-가위바위보
-def hand_landmark_detection_test():
-	import cv2
-	import mediapipe as mp
-
-	detector = mp.solutions.hands.Hands(
-		max_num_hands=2,
-		min_detection_confidence=0.5,
-		min_tracking_confidence=0.5,
-	)
-
-	video = cv2.VideoCapture(0)
-	while video.isOpened():
-		ret, img = video.read()
-		if not ret:
-			continue
-
-		img = cv2.flip(img, 1)
-		img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-		detection_result = detector.process(img_rgb)  # Detect hands
-		if detection_result.multi_hand_landmarks is not None:
-			#print(detection_result.multi_hand_landmarks)
-			for landmark in detection_result.multi_hand_landmarks:
-				mp.solutions.drawing_utils.draw_landmarks(
-					img,
-					landmark_list=landmark,
-					connections=mp.solutions.hands.HAND_CONNECTIONS,
-					#landmark_drawing_spec=mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
-					landmark_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(color=mp.solutions.drawing_utils.RED_COLOR),
-					#connection_drawing_spec=mp.solutions.drawing_styles.get_default_hand_connections_style(),
-    				connection_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(color=mp.solutions.drawing_utils.BLUE_COLOR),
-					is_drawing_landmarks=True,
-				)
-
-		key = cv2.waitKey(10)
-		if key == 27:
-			break
-
-		cv2.imshow("Hand Landmarks", img)
-
-	video.release()
-	cv2.destroyAllWindows()
 
 # REF [site] >>
 #	https://github.com/google-ai-edge/mediapipe-samples/blob/main/examples/face_detector/python/face_detector.ipynb
@@ -875,34 +875,50 @@ def pose_landmarks_detection_example():
 	cv2.destroyAllWindows()
 
 def main():
-	# Mediapipe
+	# MediaPipe
 	#	https://github.com/google-ai-edge/mediapipe
 	#	https://ai.google.dev/edge/mediapipe/solutions/examples
 	#	https://ai.google.dev/edge/mediapipe/solutions/guide
+	#	https://ai.google.dev/edge/mediapipe/framework
+
+	# MediaPipe Model Maker
+	#	https://ai.google.dev/edge/mediapipe/solutions/model_maker
+	#	A tool for customizing existing machine learning (ML) models to work with your data and applications
+	# MediaPipe Studio
+	#	https://ai.google.dev/edge/mediapipe/solutions/studio
+	#	A web-based application for evaluating and customizing on-device ML models and pipelines for your applications
+
+	# Available solutions
+	#	https://ai.google.dev/edge/mediapipe/solutions/guide
+	#
+	#	Generative AI tasks:
+	#		LLM inference
+	#		Retrieval augmented generation (RAG)
+	#		Function calling
+	#		Image generation
 	#
 	#	Vison tasks:
 	#		Object detection
 	#		Image classification
 	#		Image segmentation
 	#		Interactive segmentation
+	#		Gesture recognition
+	#			https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer
+	#			Canned gestures: "None", "Closed_Fist", "Open_Palm", "Pointing_Up", "Thumb_Down", "Thumb_Up", "Victory", "ILoveYou" 
 	#		Hand landmark detection
-	#		Hand gesture recognition
+	#		Image embedding
 	#		Face detection
 	#		Face landmark detection
-	#		Face stylization
 	#		Pose landmark detection
-	#		Image embedding
-	#		Image generation
+	#		Holistic landmarks detection
 	#
 	#	Text tasks:
-	#		LLM inference API
 	#		Text classification
 	#		Text embedding
 	#		Language detection
 	#
 	#	Audio tasks:
 	#		Audio classification
-	#		Audio embedding
 
 	# Install:
 	#	pip install mediapipe
@@ -917,9 +933,9 @@ def main():
 	# Hand
 
 	#hand_landmarks_detection_example()
-	#hand_gesture_recognition_example()
-
 	hand_landmark_detection_test()
+
+	#gesture_recognition_example()
 
 	#--------------------
 	# Face

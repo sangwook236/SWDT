@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+# REF [site] >> https://docs.ultralytics.com/modes/export/
+def export_yolo_test():
+	from ultralytics import YOLO
+
+	# Load a pretrained YOLOv8 model (e.g., yolov8n for nano)
+	model = YOLO("yolo11n.pt")  # Load an official model
+	#model = YOLO("path/to/best.pt")  # Load a custom-trained model
+
+	# Export the model
+	#model.export(format="torchscript")
+	#model.export(format="onnx")
+	model.export(format="onnx", opset=12, imgsz=[640, 640])
+	#model.export(format="onnx", dynamic=True)  # Dynamic input size
+	#model.export(format="engine")  # TensorRT
+	#model.export(format="engine", int8=True)  # INT8 quantization
+
 def yolov5_detection_example():
 	from ultralytics import YOLO
 
@@ -1224,6 +1240,8 @@ def main():
 	#	Model Export: https://docs.ultralytics.com/modes/export/
 	#	Multi-Object Tracking: https://docs.ultralytics.com/modes/track/
 	#	Model Benchmarking: https://docs.ultralytics.com/modes/benchmark/
+
+	#export_yolo_test()
 
 	#yolov5_detection_example()  # YOLOv5
 
