@@ -1208,6 +1208,70 @@ def fast_sam_example():
 		# Track with a FastSAM model on a video
 		results = model.track(source="path/to/video.mp4", imgsz=640)
 
+# REF [site] >> https://docs.ultralytics.com/tasks/segment/
+def instance_segmentation_example():
+	import time
+	import numpy as np
+	import torch
+	from ultralytics import YOLO
+	import cv2
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	# Load a model
+	model = YOLO("yolo11n-seg.pt")  # Load an official model
+	#model = YOLO("path/to/best.pt")  # Load a custom model
+
+	# Predict with the model
+	print("Segmenting...")
+	start_time = time.time()
+	results = model("https://ultralytics.com/images/bus.jpg", device=device)  # Predict on an image
+	print(f"Segmented: {(time.time() - start_time) * 1000} msecs.")
+
+	# results: a list of ultralytics.engine.results.Results
+
+	# ultralytics.engine.results.Results
+	#   boxes: ultralytics.engine.results.Boxes
+	#   masks:ultralytics.engine.results.Masks
+	#   probs: ultralytics.engine.results.Probs
+	#   keypoints: ultralytics.engine.results.Keypoints
+
+	# Access the results
+	for result in results:
+		#xyxy = result.boxes.xyxy  # Box in matrix format (#objects x 4)
+		#xyxyn = result.boxes.xyxyn  # Box in matrix format (#objects x 4)
+		#xywh = result.boxes.xywh  # Box in matrix format (#objects x 4)
+		#xywhn = result.boxes.xywhn  # Box in matrix format (#objects x 4)
+		#confidence = result.boxes.conf  # Confidence scores
+		#cls = result.boxes.cls  # Class labels
+		#xy = result.masks.xy  # Mask in polygon format [#objects x (#points x 2)]
+		#xyn = result.masks.xyn  # Normalized mask [#objects x (#points x 2)]
+		#masks = result.masks.data  # Mask in matrix format (#objects x H x W)
+
+		if True:
+			for idx, (cls, mask, boundary) in enumerate(zip(result.boxes.cls, result.masks.data, result.masks.xy)):
+				mask_img = result.orig_img.copy()
+
+				mask_boundary = boundary.astype(np.int32)
+				cv2.polylines(mask_img, [mask_boundary], isClosed=True, color=(0, 0, 255), thickness=2)
+
+				cv2.imshow(f"Mask #{idx} - {result.names[int(cls)]}", mask_img)
+		else:
+			for idx, (cls, mask, boundary) in enumerate(zip(result.boxes.cls, result.masks.data, result.masks.xyn)):
+				mask_img = cv2.cvtColor(mask.cpu().numpy() * 255, cv2.COLOR_GRAY2BGR)
+
+				mask_boundary = boundary.copy()
+				mask_boundary[:,0] *= mask.shape[1]
+				mask_boundary[:,1] *= mask.shape[0]
+				mask_boundary = mask_boundary.astype(np.int32)
+				cv2.polylines(mask_img, [mask_boundary], isClosed=True, color=(0, 0, 255), thickness=2)
+
+				cv2.imshow(f"Mask #{idx} - {result.names[int(cls)]}", mask_img)
+			cv2.imshow("Image", result.orig_img)
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
+
 def main():
 	# Model:
 	#	https://docs.ultralytics.com/models/
@@ -1272,6 +1336,11 @@ def main():
 	#sam2_example()  # SAM 2
 	#mobile_sam_example()  # MobileSAM
 	#fast_sam_example()  # FastSAM
+
+	#-----
+	# Instance segmentation
+
+	instance_segmentation_example()
 
 	#-----
 	# ONNX
