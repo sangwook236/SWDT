@@ -1,0 +1,10 @@
+[-] General.
+	- Site.
+		https://github.com/voxel51/fiftyone
+		https://voxel51.com/fiftyone/index.html
+
+		https://voxel51.com/docs/fiftyone/
+
+[-] Installation.
+	- Python.
+		pip install fiftyone

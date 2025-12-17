@@ -1,0 +1,25 @@
+[-] General.
+	- Site.
+		https://anylabeling.nrl.ai/
+		https://github.com/vietanhdev/anylabeling
+
+[-] Usage.
+	- anylabeling.
+		~/.anylabelingrc
+
+		anylabeling --help
+
+		anylabeling --labels tooth,gold,abutment,gum,tongue,lip,cheek,finger,tool,drape,unknown --nosortlabels  --nodata --autosave .
+
+[-] Installation.
+	- Install
+		conda create -n anylabeling python=3.12
+		conda activate anylabeling
+
+		conda install -c conda-forge pyqt==5.15.9
+		For CPU support:
+			pip install anylabeling
+		For GPU support:
+			pip install anylabeling-gpu
+
+		anylabeling

@@ -1,0 +1,9 @@
+[-] General.
+	- Site.
+		https://github.com/tzutalin/labelImg
+
+
+[-] Usage.
+	- Run.
+		cd $LabelImg_HOME
+		python labelImg.py

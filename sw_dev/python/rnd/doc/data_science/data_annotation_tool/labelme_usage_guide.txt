@@ -1,0 +1,99 @@
+[-] General.
+	- Site.
+		http://labelme.csail.mit.edu
+		http://labelme.csail.mit.edu/VideoLabelMe/
+
+		https://github.com/CSAILVision/LabelMeAnnotationTool
+
+		https://github.com/wkentaro/labelme
+			Good !!!
+
+[-] Usage (wkentaro).
+	- (Tip) Annotate by LabelMe.
+		1. Detect and recognize texts in Linux.
+			It is not easy to edit in Linux.
+		2. Edit in Windows.
+
+	- Config.
+		1. Default config (lowest priority).
+			${LABELME_HOME}/labelme/config/default_config.yaml
+		2. Config file passed by command line argument or ~/.labelmerc.
+			~/.labelmerc
+			${USERPROFILE}/.labelmerc
+		3. Command line argument (highest priority).
+
+	- Install.
+		Using pip:
+			pip install labelme
+			pip install labelme --upgrade
+
+		From source:
+			If necessary:
+				conda install pytorch
+				cd ${fvcore_HOME}
+				pip install -e .
+				cd ${detectron2_HOME}
+				pip install -e .
+
+				pip install keras-ocr
+				conda install shapely
+
+			cd ${LABELME_HOME}
+			pip install -e .
+			python setup.py install (for old version)
+
+			pip uninstall labelme
+
+	- Run.
+		https://github.com/wkentaro/labelme
+
+		When installed by pip:
+			labelme
+		When running from source:
+			cd ${LABELME_HOME}
+			python labelme/main.py
+
+		labelme --nodata
+			If '--nodata' option is specified, image data is not stored to the generated JSON file.
+		labelme --nodata /path/to/image
+
+		labelme --labels person,car /path/to/image
+			Arbitrary labels can be assigned too.
+		labelme --labels labels.txt --nodata /path/to/image
+
+		python ${LABELME_HOME}/labelme/main.py --labels person,car --nodata /path/to/image
+
+	- Utility.
+		REF [site] >> https://github.com/wkentaro/labelme/tree/master/examples/tutorial
+
+		View the json file quickly:
+			labelme_draw_json apc2016_obj3.json
+
+		Convert the json to set of image and label:
+			labelme_json_to_dataset apc2016_obj3.json -o apc2016_obj3_json
+				Generates standard files from the JSON file.
+					img.png: Image file.
+					label.png: uint8 label file.
+					label_viz.png: Visualization of label.png.
+					label_names.txt: Label names for values in label.png.
+
+		See the label PNG file:
+			labelme_draw_label_png apc2016_obj3_json/label.png
+
+		Convert to other dataset formats:
+			REF [directory] >> ${LABELME_HOME}/examples
+
+			labelme2voc.py --labels labels.txt /path/to/data_annotated /path/to/data_voc
+			labelme2coco.py --labels labels.txt /path/to/data_annotated /path/to/data_coco
+
+	- Generate YOLO format.
+		REF [python] >> labelme2yolo.py, labelme2mask.py
+		REF [doc] >> yolo_usage_guide.txt
+
+	- PyTorch dataset.
+		${SWL_PYTHON_HOME}/test/machine_learning/labelme_data.py & labelme_data_test.py
+
+[-] Installation (wkentaro).
+	- Install from source (v4.0.0 and above).
+		cd ${LABELME_HOME}
+		pip install -e .

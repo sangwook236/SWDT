@@ -1,0 +1,29 @@
+[-] General.
+	- Site.
+		https://lear.inrialpes.fr/people/klaeser/software_image_annotation
+
+[-] Usage.
+	- Interface.
+		Left mouse button: point.
+		Right mouse button: line.
+		Ctrl + right mouse button: flood fill.
+
+	- Add an object.
+		Click 'Add' button.
+	- Rename an object.
+		Rename in 'Type' combobox.
+
+	- Mask image type.
+		8-bit color image.
+
+	- Label objects.
+		Mask Type: object.
+		Draw on: all.
+		Red-colored areas.
+	- Label occluded objects.
+		Mask Type: occluded object.
+		Draw on: all.
+		Green-colored areas.
+	- Unlabel.
+		Mask Type: background.
+		Draw on: all.

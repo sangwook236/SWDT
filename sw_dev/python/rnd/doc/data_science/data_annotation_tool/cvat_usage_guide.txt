@@ -1,0 +1,192 @@
+[-] General.
+	- Site.
+		https://github.com/opencv/cvat
+
+[-] Usage.
+	REF [site] >>
+		https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/user_guide.md
+		https://medium.com/onepanel/computer-vision-annotation-tool-cvat-is-an-open-source-tool-for-annotating-digital-images-and-3890e71ad9b0
+
+	- Annotation mode.
+		Annotation mode
+		Interpolation mode
+		Attribute mode
+		Segmentation mode
+
+	- Create new task.
+		Task configuration
+			Labels:
+				vehicle @select=type:__undefined__,car,truck,bus,train ~radio=quality:good,bad ~checkbox=parked:false
+				person @select=gender:male,female ~text=age:"" dog cat
+				text @select=type:textline,word,char ~text=text:"" ~text=orientation:"0"
+				textline ~text=text:"" ~text=orientation:"0" word ~text=text:"" ~text=orientation:"0" char ~text=text:"" ~text=orientation:"0"
+
+	- Run AutoAnnotation.
+		Run AutoAnnotation scripts:
+			python cvat/utils/auto_annotation/run_model.py --py /path/to/python/interp.py \
+				--xml /path/to/xml/file.xml \
+				--bin /path/to/bin/file.bin \
+				--json /path/to/json/mapping/mapping.json
+			Some programs need to run unrestricted or as an administer. Use the --unrestriced flag to simulate.
+		Pass image files in to fully simulate your findings:
+			python cvat/utils/auto_annotation/run_model.py --py /path/to/python/interp.py \
+				--xml /path/to/xml/file.xml \
+				--bin /path/to/bin/file.bin \
+				--json /path/to/json/mapping/mapping.json \
+				--image-files /path/to/img.jpg /path2/to/img2.png /path/to/img3.jpg
+		Use the --show-images flag to visualize images:
+			python cvat/utils/auto_annotation/run_model.py --py /path/to/python/interp.py \
+				--xml /path/to/xml/file.xml \
+				--bin /path/to/bin/file.bin \
+				--json /path/to/json/mapping/mapping.json \
+				--image-files /path/to/img.jpg /path2/to/img2.png /path/to/img3.jpg \ 
+				--show-images
+		Scan quickly by setting the length of time (in milliseconds) to display each image:
+			python cvat/utils/auto_annotation/run_model.py --py /path/to/python/interp.py \
+				--xml /path/to/xml/file.xml \
+				--bin /path/to/bin/file.bin \
+				--json /path/to/json/mapping/mapping.json \
+				--image-files /path/to/img.jpg /path2/to/img2.png /path/to/img3.jpg \
+				--show-images \
+				--show-image-delay 2000
+		Add the --serialize command to ensure that your results will serialize correctly:
+			python cvat/utils/auto_annotation/run_model.py --py /path/to/python/interp.py \
+				--xml /path/to/xml/file.xml \
+				--bin /path/to/bin/file.bin \
+				--json /path/to/json/mapping/mapping.json \
+				--image-files /path/to/img.jpg /path2/to/img2.png /path/to/img3.jpg \
+				--serialize
+
+	- Shortcut.
+		REF [file] >> cvat_shortcut.xlsx
+
+	- Annotation format.
+		https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/xml_format.md
+
+[-] Installation.
+	REF [site] >> https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/installation.md
+
+	- Install docker-compose.
+		sudo pip install docker-compose
+
+	- Support NVIDIA GPUs.
+		https://github.com/opencv/cvat/blob/develop/components/cuda
+		https://github.com/NVIDIA/nvidia-docker	
+
+		docker info | grep 'Runtimes'
+			Output should contain 'nvidia'.
+
+	- Support OpenVINO toolkit.
+		https://github.com/opencv/cvat/tree/develop/components/openvino
+		https://docs.openvinotoolkit.org/latest/index.html
+
+		Download the latest OpenVINO toolkit .tgz installer (offline or online) for Ubuntu platforms.
+			https://software.intel.com/en-us/openvino-toolkit
+		Put downloaded file into ${CVAT_HOME}/cvat/components/openvino.
+
+	- Auto annotation.
+		https://github.com/opencv/cvat/tree/develop/cvat/apps/auto_annotation
+		https://github.com/opencv/cvat/tree/develop/utils/open_model_zoo
+		https://github.com/opencv/open_model_zoo
+
+		Clone the Open Model Zoo.
+			git clone https://github.com/opencv/open_model_zoo.git
+		Install the appropriate libraries.
+			Currently that command would be
+				pip install -r open_model_zoo/tools/downloader/requirements.in
+		Download the models using downloader.py file in ${OPEN_MODEL_ZOO_HOME}/tools/downloader/.
+			Xml and bin files:
+				REF [text] >> openvino_usage_guide.txt
+			Python and JSON files:
+				https://github.com/opencv/cvat/tree/develop/cvat/apps/auto_annotation
+				https://github.com/opencv/cvat/tree/develop/utils/open_model_zoo
+
+			Specific models that are already integrated into CVAT can be found ${CVAT_HOME}/utils/open_model_zoo.
+
+		From the web user interface in CVAT, upload the models using the model manager.
+			You'll need to include the xml and bin file from the model downloader.
+				model.xml
+				model.bin
+			You'll need to include the python and JSON files from scratch or by using the ones in the CVAT libary.
+				interp.py
+				mapping.json
+			All four files (xml, bin, python, JSON files) are required.
+			See https://github.com/opencv/cvat/tree/develop/cvat/apps/auto_annotation for instructions for creating custom python and JSON files.
+
+		Manage models via Admin panel.
+			"Annotation models" in http://localhost:8080/admin
+
+	- Build a docker image.
+		Change directory.
+			cd ${CVAT_HOME}
+		Activate environment.
+			conda activate cv
+
+		Build a default docker image.
+			docker-compose build
+		Build a docker image with CUDA and OpenVINO support.
+			docker-compose -f docker-compose.yml -f components/cuda/docker-compose.cuda.yml build
+			docker-compose -f docker-compose.yml -f components/cuda/docker-compose.cuda.yml -f components/openvino/docker-compose.openvino.yml build
+
+		Build docker containers with Analytics component support.
+			docker-compose -f docker-compose.yml -f components/analytics/docker-compose.analytics.yml build
+
+	- Run docker containers.
+		Change directory.
+			cd ${CVAT_HOME}
+		Activate environment.
+			conda activate cv
+
+		Run default docker containers.
+			docker-compose up -d
+		Run docker containers with CUDA and OpenVINO support.
+			docker-compose -f docker-compose.yml -f components/cuda/docker-compose.cuda.yml up -d
+			docker-compose -f docker-compose.yml -f components/cuda/docker-compose.cuda.yml -f components/openvino/docker-compose.openvino.yml up -d
+		Build and run docker containers with CUDA and OpenVINO support.
+			docker-compose -f docker-compose.yml -f components/cuda/docker-compose.cuda.yml -f components/openvino/docker-compose.openvino.yml up -d --build
+
+		Run docker containers with Analytics component support.
+			docker-compose -f docker-compose.yml -f components/analytics/docker-compose.analytics.yml up -d
+		Build and run docker containers with Analytics component support.
+			docker-compose -f docker-compose.yml -f components/analytics/docker-compose.analytics.yml up -d --build
+
+	- (Optional) create a superuser.
+		docker exec -it cvat bash -ic '/usr/bin/python3 ~/manage.py createsuperuser'
+			ID: sangwook & django (superuser) in SiliconMinds1.
+
+	- Open a web browser.
+		Go to localhost:8080.
+
+[-] Troubleshooting.
+	- Couldn't connect to Docker daemon.
+		<error>
+			Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?
+			If it's at a non-standard location, specify the URL with the DOCKER_HOST environment variable.
+		<cause>
+			A permission issue.
+		<solution>
+			(Optional)
+				export DOCKER_HOST=127.0.0.1
+				export DOCKER_HOST=127.0.0.1:2375
+			sudo chown $USER:docker /var/run/docker.sock
+
+	- Permission error.
+		<error>
+			Could not put task to the server. Request failed with status code 403.
+			{"detail":"You do not have permission to perform this action."}. Code: 403
+		<solution>
+			REF [site] >>
+				https://github.com/opencv/cvat/issues/3
+				https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/user_guide.md#administration-panel
+
+			Go into Admin Panel: http://localhost:8080/admin and login as the super user.
+			Click Users: http://localhost:8080/admin/auth/user/
+			Click on a specific user (e.g. admin)
+			In permissions section edit groups. You should see 3: admin, user, annotator.
+			At the bottom of the page click Save button.
+
+	- Could not upload a model. Please, Specify correct files.
+		<cause> Model files error.
+		<solution>
+			Xml, bin, python, JSON files are required.
+			Refer to "Installation" section.
