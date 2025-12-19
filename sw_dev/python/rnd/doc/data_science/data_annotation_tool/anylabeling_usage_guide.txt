@@ -1,0 +1,48 @@
+[-] General.
+	- Site.
+		https://anylabeling.nrl.ai/
+		https://github.com/vietanhdev/anylabeling
+
+[-] Usage.
+	- anylabeling.
+		anylabeling --help
+
+		anylabeling --config path/to/config
+			Default: ~/.anylabelingrc
+
+		anylabeling --labels person,cat,dog,tree,car,bike path/to/images
+		anylabeling --labels person,cat,dog,tree,car,bike --nosortlabels  --nodata --autosave --keep-prev .
+		anylabeling --labels labels.txt --flags flags.txt --labelflags labelflags.json --validatelabel exact
+			labels.txt:
+				person
+				cat
+				dog
+				tree
+				car
+				bike
+			flags.txt:
+				male
+				female
+				moving
+				stopped
+			labelflags.json: (?)
+				{
+					"person": ["male", "female"],
+					"car": ["moving", "stopped"]
+				}
+
+	- anylabeling/app.py
+		python anylabeling/app.py
+
+[-] Installation.
+	- Install.
+		conda create -n anylabeling python=3.12
+		conda activate anylabeling
+
+		conda install -c conda-forge pyqt==5.15.9
+		For CPU support:
+			pip install anylabeling
+		For GPU support:
+			pip install anylabeling-gpu
+
+		anylabeling

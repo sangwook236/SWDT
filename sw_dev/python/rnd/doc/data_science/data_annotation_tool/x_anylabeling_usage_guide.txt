@@ -1,0 +1,90 @@
+[-] General.
+	- Site.
+		https://github.com/CVHub520/X-AnyLabeling
+
+[-] Usage.
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/user_guide.md
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/get_started.md
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/model_zoo.md
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/custom_model.md
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/image_classifier.md
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/chatbot.md
+	https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/vqa.md
+
+	- xanylabeling.
+		https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/cli.md
+
+		xanylabeling --help
+		xanylabeling help
+		xanylabeling version
+		xanylabeling checks
+
+		xanylabeling config
+			Display configuration file path
+		xanylabeling --config FILE
+			Use custom config file
+			Default: ~/.xanylabelingrc
+
+		xanylabeling convert
+			List all conversion tasks
+		xanylabeling convert --task <task>
+			Show help for a specific task
+			xanylabeling convert --task yolo2xlabel
+		xanylabeling convert --task <task> [options]
+			Run conversion
+			Convert YOLO to XLABEL:
+				xanylabeling convert --task yolo2xlabel --mode detect --images ./images --labels ./labels --output ./output --classes classes.txt
+
+		xanylabeling
+		xanylabeling --filename IMAGE
+			Open specific image/folder
+		xanylabeling --output DIR
+			Set output directory
+		xanylabeling --reset-config
+			Reset Qt config
+
+		xanylabeling --labels person,cat,dog,tree,car,bike --filename path/to/images
+		xanylabeling --labels person,cat,dog,tree,car,bike --nosortlabels  --nodata --autosave --keep-prev --filename .
+		xanylabeling --labels labels.txt --flags flags.txt --labelflags labelflags.json --validatelabel exact
+			labels.txt:
+				person
+				cat
+				dog
+				tree
+				car
+				bike
+			flags.txt:
+				male
+				female
+				moving
+				stopped
+			labelflags.json:
+				{
+					"person": ["male", "female"],
+					"car": ["moving", "stopped"]
+				}
+
+[-] Installation.
+	- Install.
+		https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/get_started.md
+
+		For CPU environment [Windows/Linux/macOS]:
+			conda create --name x-anylabeling-cpu python=3.10 -y
+			conda activate x-anylabeling-cpu
+
+			pip install x-anylabeling-cvhub[cpu]
+
+		For CUDA 11.x environment [Windows/Linux]:
+			conda create --name x-anylabeling-cu11 python=3.11 -y
+			conda activate x-anylabeling-cu11
+
+			pip install x-anylabeling-cvhub[gpu-cu11]
+
+		For CUDA 12.x environment [Windows/Linux]:
+			conda create --name x-anylabeling-cu12 python=3.12 -y
+			conda activate x-anylabeling-cu12
+
+			pip install x-anylabeling-cvhub[gpu]
+				CUDA 12.x is the default GPU option
+
+		xanylabeling checks
