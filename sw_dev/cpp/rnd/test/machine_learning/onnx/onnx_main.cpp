@@ -70,7 +70,6 @@ void onnx_runtime_mnist_example()
 				*ptr += gray.at<unsigned char>(y, x) == 0 ? 0.0f : 1.0f;
 	}
 
-	std::array<float, num_classes> results{};
 	{
 		std::cout << "Creating an ONNX session from " << onnx_filepath << "..." << std::endl;
 		auto start_time(std::chrono::steady_clock::now());
@@ -206,8 +205,8 @@ void onnx_runtime_mnist_example()
 		const char* input_names[] = { "Input3" };
 		const char* output_names[] = { "Plus214_Output_0" };
 
-		std::array<int64_t, 4> input_shape{ 1, image_channel, image_width, image_height };
-		std::array<int64_t, 2> output_shape{ 1, num_classes };
+		std::array<int64_t, 4> input0_shape{ 1, image_channel, image_width, image_height };
+		std::array<int64_t, 2> output0_shape{ 1, num_classes };
 
 		const size_t num_inputs(1);
 		const size_t num_outputs(1);
@@ -265,26 +264,34 @@ void onnx_runtime_mnist_example()
 
 		std::cout << "Inferring..." << std::endl;
 		start_time = std::chrono::steady_clock::now();
-		//Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_image.data(), input_image.size(), input_shape.data(), input_shape.size());
-		Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_image.data(), input_image.size(), input_shapes[0].data(), input_shapes[0].size());
-#if 1
-		//Ort::Value output_tensor = Ort::Value::CreateTensor<float>(memory_info, results.data(), results.size(), output_shape.data(), output_shape.size());
-		Ort::Value output_tensor = Ort::Value::CreateTensor<float>(memory_info, results.data(), results.size(), output_shapes[0].data(), output_shapes[0].size());
-		//session.Run(Ort::RunOptions(nullptr), input_names, &input_tensor, num_inputs, output_names, &output_tensor, num_outputs);
-		session.Run(Ort::RunOptions(nullptr), input_names.data(), &input_tensor, num_inputs, output_names.data(), &output_tensor, num_outputs);
+		//Ort::Value input0_tensor = Ort::Value::CreateTensor<float>(memory_info, input_image.data(), input_image.size(), input0_shape.data(), input0_shape.size());
+		Ort::Value input0_tensor = Ort::Value::CreateTensor<float>(memory_info, input_image.data(), input_image.size(), input_shapes[0].data(), input_shapes[0].size());
+		//Ort::Value input_tensors[] = { std::move(input0_tensor) };
+		//std::vector<Ort::Value> input_tensors{ std::move(input0_tensor) };  // Compile-time error
+		std::array<float, num_classes> results{};
+#if 0
+		//Ort::Value output0_tensor = Ort::Value::CreateTensor<float>(memory_info, results.data(), results.size(), output0_shape.data(), output0_shape.size());
+		Ort::Value output0_tensor = Ort::Value::CreateTensor<float>(memory_info, results.data(), results.size(), output_shapes[0].data(), output_shapes[0].size());
+		//Ort::Value output_tensors[] = { std::move(output0_tensor) };
+		//std::vector<Ort::Value> output_tensors{ std::move(output0_tensor) };  // Compile-time error
+
+		session.Run(Ort::RunOptions(nullptr), input_names.data(), &input0_tensor, num_inputs, output_names.data(), &output0_tensor, num_outputs);
+		//session.Run(Ort::RunOptions(nullptr), input_names.data(), input_tensors, num_inputs, output_names.data(), output_tensors, num_outputs);
 #else
-		std::vector<Ort::Value> output_tensor = session.Run(Ort::RunOptions(nullptr), input_names, &input_tensor, num_inputs, output_names, num_outputs);
-		//std::vector<Ort::Value> output_tensor = session.Run(Ort::RunOptions(nullptr), input_names.data(), &input_tensor, num_inputs, output_names.data(), num_outputs);
-		float* output_ptr = output_tensor[0].GetTensorMutableData<float>();
+		std::vector<Ort::Value> output_tensors = session.Run(Ort::RunOptions(nullptr), input_names.data(), &input0_tensor, num_inputs, output_names.data(), num_outputs);
+		//std::vector<Ort::Value> output_tensors = session.Run(Ort::RunOptions(nullptr), input_names.data(), input_tensors, num_inputs, output_names.data(), num_outputs);
+
+		//const float* output_ptr = output_tensors[0].GetTensorData<float>();
+		float* output_ptr = output_tensors[0].GetTensorMutableData<float>();
 		std::copy(output_ptr, output_ptr + num_classes, results.data());
 #endif
 		softmax(results);
 		std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 		//std::cout << "Results dim = " << results.size() << std::endl;
-	}
 
-	const int64_t predicted(std::distance(results.begin(), std::max_element(results.begin(), results.end())));
-	std::cout << "Predicted = " << predicted << std::endl;
+		const int64_t predicted(std::distance(results.begin(), std::max_element(results.begin(), results.end())));
+		std::cout << "Predicted = " << predicted << std::endl;
+	}
 }
 
 }  // namespace local
@@ -325,13 +332,16 @@ int onnx_main(int argc, char *argv[])
 		// Segment Anything (SAM)
 		//	Refer to sam_onnx_runtime_test.cpp
 
+		// Ultralytics
+		//	Refer to ultralytics_onnx_runtime_test.cpp
+
 		// ONNX on TensorRT
 		//	Refer to tensorrt_main.cpp
 	}
 	catch (const Ort::Exception& ex)
 	{
 		std::cerr << "Ort::Exception caught: " << ex.what() << std::endl;
-		//return 1;
+		return 1;
 	}
 
 	return 0;
