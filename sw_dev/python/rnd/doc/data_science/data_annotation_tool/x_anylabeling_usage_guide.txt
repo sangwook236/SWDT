@@ -64,6 +64,15 @@
 					"car": ["moving", "stopped"]
 				}
 
+[-] Training.
+	- Ultralytics.
+		"Train" -> "Ultralytics"
+
+		Refer to ${NGVTech_PYTHON_HOME}/app/inno3d_seg/train_inno3d_seg.py
+
+		Train results:
+			~/xanylabeling_data/trainer/ultralytics/runs
+
 [-] Installation.
 	- Install.
 		https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/en/get_started.md

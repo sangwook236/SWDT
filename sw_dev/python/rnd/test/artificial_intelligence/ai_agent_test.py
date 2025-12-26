@@ -642,9 +642,9 @@ def main():
 	# LangGraph
 	#	Refer to langchain_test.py
 
-	# NVIDIA Agent Intelligence Toolkit (AIQ Toolkit)
+	# NVIDIA NeMo Agent Toolkit <- Agent Intelligence Toolkit (AIQ Toolkit) <- NVIDIA AgentIQ
+	#	https://docs.nvidia.com/nemo/agent-toolkit/latest/index.html
 	#	https://developer.nvidia.com/nemo-agent-toolkit
-	#	https://docs.nvidia.com/aiqtoolkit/latest/index.html
 	#	https://github.com/NVIDIA/NeMo-Agent-Toolkit
 
 	# Build Enterprise AI Agents with Advanced Open NVIDIA Llama Nemotron Reasoning Models:

@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+def benchmark():
+	from ultralytics.utils.benchmarks import benchmark
+
+	# Benchmark on GPU
+	benchmark(model="yolov8n.pt", data="coco8.yaml", imgsz=640, half=False, device=0)
+
 # REF [site] >> https://docs.ultralytics.com/modes/export/
 def export_models_test():
 	from ultralytics import YOLO
@@ -12,7 +18,8 @@ def export_models_test():
 	# Export the model
 	#model.export(format="torchscript")
 	#model.export(format="onnx")
-	model.export(format="onnx", opset=12, imgsz=[640, 640])
+	model.export(format="onnx", opset=12, imgsz=640)
+	#model.export(format="onnx", opset=12, imgsz=[640, 640])
 	#model.export(format="onnx", dynamic=True)  # Dynamic input size
 	#model.export(format="engine")  # TensorRT
 	#model.export(format="engine", int8=True)  # INT8 quantization
@@ -20,31 +27,32 @@ def export_models_test():
 def yolov5_detection_example():
 	from ultralytics import YOLO
 
-	# Load a model.
+	# Load a model
 	if False:
-		model = YOLO("./yolov5nu.yaml")  # Build a new model from scratch.
+		model = YOLO("yolov5nu.yaml")  # Build a new model from scratch
 	elif True:
-		model = YOLO("./yolov5nu.pt")  # Load a pretrained model (recommended for training).
+		model = YOLO("yolov5nu.pt")  # Load a pretrained model (recommended for training)
 	else:
-		model = YOLO("path/to/best.pt")  # Load a custom model.
+		model = YOLO("path/to/best.pt")  # Load a custom model
 	#print("Model info:")
 	#print(model.info())
 
-	# Train the model.
-	#model.train(data="./coco128.yaml", epochs=3)
-	model.train(data="./coco128.yaml", epochs=100, imgsz=640)
+	# Train the model
+	#model.train(data="coco128.yaml", epochs=3)  # ultralytics.utils.metrics.DetMetrics
+	model.train(data="coco128.yaml", epochs=100, imgsz=640)  # ultralytics.utils.metrics.DetMetrics
+	#model.train(data="coco128.yaml", epochs=100, resume=True)  # ultralytics.utils.metrics.DetMetrics
 
-	# Validate the model.
-	metrics = model.val()  # No arguments needed, dataset and settings remembered.
-	#	metrics.box.map  # mAP50-95.
-	#	metrics.box.map50  # mAP50.
-	#	metrics.box.map75  # mAP75.
-	#	metrics.box.maps  # A list contains mAP50-95 of each category.
+	# Validate the model
+	metrics = model.val()  # No arguments needed, dataset and settings remembered. ultralytics.utils.metrics.DetMetrics
+	#	metrics.box.map  # mAP50-95
+	#	metrics.box.map50  # mAP50
+	#	metrics.box.map75  # mAP75
+	#	metrics.box.maps  # A list contains mAP50-95 of each category
 
-	# Predict with the model.
-	results = model("https://ultralytics.com/images/bus.jpg")  # Predict on an image.
+	# Predict with the model
+	results = model("https://ultralytics.com/images/bus.jpg")  # A list of ultralytics.engine.results.Results
 	
-	# Export the model.
+	# Export the model
 	success = model.export(format="onnx")
 
 # REF [site] >>
@@ -53,97 +61,134 @@ def yolov5_detection_example():
 def yolov8_detection_example():
 	from ultralytics import YOLO
 
-	# Load a model.
+	# Load a model
 	if False:
-		model = YOLO("./yolov8n.yaml")  # Build a new model from scratch.
+		model = YOLO("yolov8n.yaml")  # Build a new model from scratch
 	elif True:
-		model = YOLO("./yolov8n.pt")  # Load a pretrained model (recommended for training).
+		model = YOLO("yolov8n.pt")  # Load a pretrained model (recommended for training)
 	else:
-		model = YOLO("path/to/best.pt")  # Load a custom model.
+		model = YOLO("path/to/best.pt")  # Load a custom model
 	#print("Model info:")
 	#print(model.info())
 
-	# Train the model.
-	#model.train(data="./coco128.yaml", epochs=3)
-	model.train(data="./coco128.yaml", epochs=100, imgsz=640)
+	# Train the model
+	#model.train(data="coco128.yaml", epochs=3)  # ultralytics.utils.metrics.DetMetrics
+	model.train(data="coco128.yaml", epochs=100, imgsz=640)  # ultralytics.utils.metrics.DetMetrics
 
-	# Validate the model.
-	metrics = model.val()  # No arguments needed, dataset and settings remembered.
-	#	metrics.box.map  # mAP50-95.
-	#	metrics.box.map50  # mAP50.
-	#	metrics.box.map75  # mAP75.
-	#	metrics.box.maps  # A list contains mAP50-95 of each category.
+	# Validate the model
+	metrics = model.val()  # No arguments needed, dataset and settings remembered. ultralytics.utils.metrics.DetMetrics
+	#	metrics.box.map  # mAP50-95
+	#	metrics.box.map50  # mAP50
+	#	metrics.box.map75  # mAP75
+	#	metrics.box.maps  # A list contains mAP50-95 of each category
 
-	# Predict with the model.
-	results = model("https://ultralytics.com/images/bus.jpg")  # Predict on an image.
+	# Predict with the model
+	results = model("https://ultralytics.com/images/bus.jpg")  # A list of ultralytics.engine.results.Results
 	
-	# Export the model.
+	# Export the model
 	success = model.export(format="onnx")
 
 # REF [site] >> https://docs.ultralytics.com/tasks/segmentation/
 def yolov8_instance_segmentation_example():
 	from ultralytics import YOLO
 
-	# Load a model.
+	# Load a model
 	if False:
-		model = YOLO("./yolov8n-seg.yaml")  # Build a new model from scratch.
+		model = YOLO("yolov8n-seg.yaml")  # Build a new model from scratch
 	elif True:
-		model = YOLO("./yolov8n-seg.pt")  # Load a pretrained model (recommended for training).
+		model = YOLO("yolov8n-seg.pt")  # Load a pretrained model (recommended for training)
 	else:
-		model = YOLO("path/to/best.pt")  # Load a custom model.
+		model = YOLO("path/to/best.pt")  # Load a custom model
 	#print("Model info:")
 	#print(model.info())
 
-	# Train the model.
-	model.train(data="./coco128-seg.yaml", epochs=100, imgsz=640)
+	# Train the model
+	metrics = model.train(data="coco128-seg.yaml", epochs=100, imgsz=640)  # ultralytics.utils.metrics.SegmentationMetrics
 
-	# Validate the model.
-	metrics = model.val()  # No arguments needed, dataset and settings remembered.
-	#	metrics.box.map  # mAP50-95(B).
-	#	metrics.box.map50  # mAP50(B).
-	#	metrics.box.map75  # mAP75(B).
-	#	metrics.box.maps  # A list contains mAP50-95(B) of each category.
-	#	metrics.seg.map  # mAP50-95(M).
-	#	metrics.seg.map50  # mAP50(M).
-	#	metrics.seg.map75  # mAP75(M).
-	#	metrics.seg.maps  # A list contains mAP50-95(M) of each category.
+	# Validate the model
+	metrics = model.val()  # No arguments needed, dataset and settings remembered. ultralytics.utils.metrics.SegmentationMetrics
 
-	# Predict with the model.
-	results = model("https://ultralytics.com/images/bus.jpg")  # Predict on an image.
+	# ultralytics.utils.metrics.SegmentMetrics
+	#	https://docs.ultralytics.com/reference/utils/metrics/
+	#
+	#	names: dict[int, str]	Dictionary of class names
+	#	box: Metric				An instance of the Metric class for storing detection results
+	#	seg: Metric				An instance of the Metric class to calculate mask segmentation metrics
+	#	speed: dict[str, float]	A dictionary for storing execution times of different parts of the detection process
+	#	task: str				The task type, set to 'segment'
+	#	stats: dict[str, list]	A dictionary containing lists for true positives, confidence scores, predicted classes, target classes, and target images
+	#	nt_per_class: int		Number of targets per class
+	#	nt_per_image: int		Number of targets per image
+	#
+	#	keys			A list of keys for accessing metrics. ['metrics/precision(B)', 'metrics/recall(B)', 'metrics/mAP50(B)', 'metrics/mAP50-95(B)', 'metrics/precision(M)', 'metrics/recall(M)', 'metrics/mAP50(M)', 'metrics/mAP50-95(M)']
+	#	maps			mAP scores for object detection and semantic segmentation models
+	#	fitness			Fitness score for both segmentation and bounding box models
+	#	curves			A list of curves for accessing specific metrics curves. ['Precision-Recall(B)', 'F1-Confidence(B)', 'Precision-Confidence(B)', 'Recall-Confidence(B)', 'Precision-Recall(M)', 'F1-Confidence(M)', 'Precision-Confidence(M)', 'Recall-Confidence(M)']
+	#	curves_results	A list of computed performance metrics and statistics
+	#	class_result	Classification results for a specified class index
+	#	mean_results	Mean metrics for bounding box and segmentation results
+	#	process			The detection and segmentation metrics over the given set of predictions
+	#	summary			A summarized representation of per-class segmentation metrics as a list of dictionaries
+	#
+	# ultralytics.utils.metrics.Metric
+	#	p: list					Precision for each class. Shape: (nc,)
+	#	r: list					Recall for each class. Shape: (nc,)
+	#	f1: list				F1 score for each class. Shape: (nc,)
+	#	all_ap: list			AP scores for all classes and all IoU thresholds. Shape: (nc, 10)
+	#	ap_class_index: list	Index of class for each AP score. Shape: (nc,)
+	#	nc: int					Number of classes
+	#
+	#	ap50			Return the Average Precision (AP) at an IoU threshold of 0.5 for all classes
+	#	ap				Return the Average Precision (AP) at an IoU threshold of 0.5-0.95 for all classes
+	#	mp				Return the Mean Precision of all classes
+	#	mr				Return the Mean Recall of all classes
+	#	map50			Return the mean Average Precision (mAP) at an IoU threshold of 0.5 (mAP50)
+	#	map75			Return the mean Average Precision (mAP) at an IoU threshold of 0.75 (mAP75)
+	#	map				Return the mean Average Precision (mAP) over IoU thresholds of 0.5 - 0.95 in steps of 0.05
+	#	maps			Return mAP of each class
+	#	curves			Return a list of curves for accessing specific metrics curves
+	#	curves_results	Return a list of curves for accessing specific metrics curves
+	#	class_result	Return class-aware result, p[i], r[i], ap50[i], ap[i]
+	#	fitness			Return model fitness as a weighted combination of metrics
+	#	mean_results	Return mean of results, mp, mr, map50, map
+	#	update			Update the evaluation metrics with a new set of results
 
-	# Export the model.
+	# Predict with the model
+	results = model("https://ultralytics.com/images/bus.jpg")  # A list of ultralytics.engine.results.Results
+
+	# Export the model
 	success = model.export(format="onnx")
 
 # REF [site] >> https://docs.ultralytics.com/tasks/classification/
 def yolov8_classification_example():
 	from ultralytics import YOLO
 
-	# Load a model.
+	# Load a model
 	if False:
-		model = YOLO("./yolov8n-cls.yaml")  # Build a new model from scratch.
+		model = YOLO("yolov8n-cls.yaml")  # Build a new model from scratch
 	elif True:
-		model = YOLO("./yolov8n-cls.pt")  # Load a pretrained model (recommended for training).
+		model = YOLO("yolov8n-cls.pt")  # Load a pretrained model (recommended for training)
 	else:
-		model = YOLO("path/to/best.pt")  # Load a custom model.
+		model = YOLO("path/to/best.pt")  # Load a custom model
 	#print("Model info:")
 	#print(model.info())
 
-	# Train the model.
+	# Train the model
 	model.train(data="mnist160", epochs=100, imgsz=64)
 
-	# Validate the model.
-	metrics = model.val()  # No arguments needed, dataset and settings remembered.
-	#	metrics.top1  # Top1 accuracy.
-	#	metrics.top5  # Top5 accuracy.
+	# Validate the model
+	metrics = model.val()  # No arguments needed, dataset and settings remembered
+	#	metrics.top1  # Top1 accuracy
+	#	metrics.top5  # Top5 accuracy
 
-	# Predict with the model.
-	results = model("https://ultralytics.com/images/bus.jpg")  # Predict on an image.
+	# Predict with the model
+	results = model("https://ultralytics.com/images/bus.jpg")  # A list of ultralytics.engine.results.Results
 
-	# Export the model.
+	# Export the model
 	success = model.export(format="onnx")
 
 # REF [site] >> https://docs.ultralytics.com/models/yolo11/
-def yolov11_example():
+def yolo11_example():
 	# Model			Filenames																			Task
 	# YOLO11		yolo11n.pt yolo11s.pt yolo11m.pt yolo11l.pt yolo11x.pt								Detection
 	# YOLO11-seg	yolo11n-seg.pt yolo11s-seg.pt yolo11m-seg.pt yolo11l-seg.pt yolo11x-seg.pt			Instance Segmentation
@@ -155,16 +200,108 @@ def yolov11_example():
 		from ultralytics import YOLO
 
 		# Load a COCO-pretrained YOLO11n model
-		model = YOLO("./yolo11n.pt")
+		model = YOLO("yolo11n.pt")
 
 		# Train the model on the COCO8 example dataset for 100 epochs
-		results = model.train(data="./coco8.yaml", epochs=100, imgsz=640)
+		results = model.train(data="coco8.yaml", epochs=100, imgsz=640)
 
 		# Run inference with the YOLO11n model on the 'bus.jpg' image
 		results = model("path/to/bus.jpg")
 
+# REF [site] >> https://docs.ultralytics.com/tasks/segment/
+def yolo11_instance_segmentation_example():
+	import time
+	import numpy as np
+	import torch
+	from ultralytics import YOLO
+	import cv2
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	# Load a model
+	# Official models
+	model_name = "yolo11n-seg.pt"
+	#model_name = "yolo11s-seg.pt"
+	#model_name = "yolo11m-seg.pt"
+	#model_name = "yolo11l-seg.pt"
+	#model_name = "yolo11x-seg.pt"
+	# Custom models
+	#model_name = "path/to/best.pt"
+	model = YOLO(model_name)
+
+	# Predict with the model
+	print("Segmenting...")
+	start_time = time.time()
+	results = model("https://ultralytics.com/images/bus.jpg", device=device)  # A list of ultralytics.engine.results.Results
+	print(f"Segmented: {(time.time() - start_time) * 1000} msecs.")
+
+	# ultralytics.engine.results.Results
+	#	https://docs.ultralytics.com/reference/engine/results/
+	#
+	#	orig_img: np.ndarray			The original image as a numpy array
+	#	orig_shape: tuple[int, int]		Original image shape in (height, width) format
+	#	boxes: Boxes | None				Detected bounding boxes
+	#	masks: Masks | None				Segmentation masks
+	#	probs: Probs | None				Classification probabilities
+	#	keypoints: Keypoints | None		Detected keypoints
+	#	obb: OBB | None					Oriented bounding boxes
+	#	speed: dict						Dictionary containing inference speed information
+	#	names: dict						Dictionary mapping class indices to class names
+	#	path: str						Path to the input image file
+	#	save_dir: str | None			Directory to save results
+	#
+	# ultralytics.engine.results.Boxes
+	#	data: torch.Tensor | np.ndarray		The raw tensor containing detection boxes and associated data
+	#	orig_shape: tuple[int, int]			The original image dimensions (height, width)
+	#	is_track: bool						Indicates whether tracking IDs are included in the box data
+	#	xyxy: torch.Tensor | np.ndarray		Boxes in [x1, y1, x2, y2] format (#objects x 4)
+	#	conf: torch.Tensor | np.ndarray		Confidence scores for each box
+	#	cls: torch.Tensor | np.ndarray		Class labels for each box
+	#	id: torch.Tensor | None				Tracking IDs for each box (if available)
+	#	xywh: torch.Tensor | np.ndarray		Boxes in [x, y, width, height] format (#objects x 4)
+	#	xyxyn: torch.Tensor | np.ndarray	Normalized [x1, y1, x2, y2] boxes relative to orig_shape (#objects x 4)
+	#	xywhn: torch.Tensor | np.ndarray	Normalized [x, y, width, height] boxes relative to orig_shape (#objects x 4)
+	# ultralytics.engine.results.Masks
+	#	data: torch.Tensor | np.ndarray		The raw tensor or array containing mask data (#objects x H x W)
+	#	orig_shape: tuple					Original image shape in (height, width) format
+	#	xy: list[np.ndarray]				A list of segments in pixel coordinates [#objects x (#points x 2)]
+	#	xyn: list[np.ndarray]				A list of normalized segments [#objects x (#points x 2)]
+	# ultralytics.engine.results.Probs
+	# ultralytics.engine.results.Keypoints
+	# ultralytics.engine.results.OBB
+
+	# Access the results
+	for result in results:
+		if result.boxes is None or result.masks is None:
+			print(f"No boxes or masks detected: {result.boxes=}, {result.masks=}.")
+			continue
+
+		if True:
+			for idx, (cls, mask, boundary) in enumerate(zip(result.boxes.cls, result.masks.data, result.masks.xy)):
+				mask_img = result.orig_img.copy()
+
+				mask_boundary = boundary.astype(np.int32)
+				cv2.polylines(mask_img, [mask_boundary], isClosed=True, color=(0, 0, 255), thickness=2)
+
+				cv2.imshow(f"Mask #{idx} - {result.names[int(cls)]}", mask_img)
+		else:
+			for idx, (cls, mask, boundary) in enumerate(zip(result.boxes.cls, result.masks.data, result.masks.xyn)):
+				mask_img = cv2.cvtColor(mask.cpu().numpy() * 255, cv2.COLOR_GRAY2BGR)
+
+				mask_boundary = boundary.copy()
+				mask_boundary[:,0] *= mask.shape[1]
+				mask_boundary[:,1] *= mask.shape[0]
+				mask_boundary = mask_boundary.astype(np.int32)
+				cv2.polylines(mask_img, [mask_boundary], isClosed=True, color=(0, 0, 255), thickness=2)
+
+				cv2.imshow(f"Mask #{idx} - {result.names[int(cls)]}", mask_img)
+			cv2.imshow("Image", result.orig_img)
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
+
 # REF [site] >> https://docs.ultralytics.com/models/yolo12/
-def yolov12_example():
+def yolo12_example():
 	# Model Type	Task
 	# YOLO12		Detection
 	# YOLO12-seg	Segmentation
@@ -183,7 +320,7 @@ def yolov12_example():
 		from ultralytics import YOLO
 
 		# Load a COCO-pretrained YOLO12n model
-		model = YOLO("./yolo12n.pt")
+		model = YOLO("yolo12n.pt")
 
 		# Train the model on the COCO8 example dataset for 100 epochs
 		results = model.train(data="coco8.yaml", epochs=100, imgsz=640)
@@ -212,13 +349,13 @@ def yolo_nas_example():
 		from ultralytics import NAS
 
 		# Load a COCO-pretrained YOLO-NAS-s model
-		model = NAS("./yolo_nas_s.pt")
+		model = NAS("yolo_nas_s.pt")
 
 		# Display model information (optional)
 		model.info()
 
 		# Validate the model on the COCO8 example dataset
-		results = model.val(data="./coco8.yaml")
+		results = model.val(data="coco8.yaml")
 
 		# Run inference with the YOLO-NAS-s model on the 'bus.jpg' image
 		results = model("path/to/bus.jpg")
@@ -241,10 +378,10 @@ def yolo_world_example():
 		from ultralytics import YOLOWorld
 
 		# Load a pretrained YOLOv8s-worldv2 model
-		model = YOLOWorld("./yolov8s-worldv2.pt")
+		model = YOLOWorld("yolov8s-worldv2.pt")
 
 		# Train the model on the COCO8 example dataset for 100 epochs
-		results = model.train(data="./coco8.yaml", epochs=100, imgsz=640)
+		results = model.train(data="coco8.yaml", epochs=100, imgsz=640)
 
 		# Run inference with the YOLOv8n model on the 'bus.jpg' image
 		results = model("path/to/bus.jpg")
@@ -255,7 +392,7 @@ def yolo_world_example():
 		from ultralytics import YOLOWorld
 
 		# Initialize a YOLO-World model
-		model = YOLOWorld("./yolov8s-world.pt")  # or select yolov8m/l-world.pt for different sizes
+		model = YOLOWorld("yolov8s-world.pt")  # or select yolov8m/l-world.pt for different sizes
 
 		# Execute inference with the YOLOv8s-world model on the specified image
 		results = model.predict("path/to/image.jpg")
@@ -269,10 +406,10 @@ def yolo_world_example():
 		from ultralytics import YOLO
 
 		# Create a YOLO-World model
-		model = YOLO("./yolov8s-world.pt")  # or select yolov8m/l-world.pt for different sizes
+		model = YOLO("yolov8s-world.pt")  # or select yolov8m/l-world.pt for different sizes
 
 		# Conduct model validation on the COCO8 example dataset
-		metrics = model.val(data="./coco8.yaml")
+		metrics = model.val(data="coco8.yaml")
 
 	if True:
 		# Track Usage
@@ -280,7 +417,7 @@ def yolo_world_example():
 		from ultralytics import YOLO
 
 		# Create a YOLO-World model
-		model = YOLO("./yolov8s-world.pt")  # or select yolov8m/l-world.pt for different sizes
+		model = YOLO("yolov8s-world.pt")  # or select yolov8m/l-world.pt for different sizes
 
 		# Track with a YOLO-World model on a video
 		results = model.track(source="path/to/video.mp4")
@@ -291,7 +428,7 @@ def yolo_world_example():
 		from ultralytics import YOLO
 
 		# Initialize a YOLO-World model
-		model = YOLO("./yolov8s-world.pt")  # or choose yolov8m/l-world.pt
+		model = YOLO("yolov8s-world.pt")  # or choose yolov8m/l-world.pt
 
 		# Define custom classes
 		model.set_classes(["person", "bus"])
@@ -309,7 +446,7 @@ def yolo_world_example():
 		from ultralytics import YOLO
 
 		# Initialize a YOLO-World model
-		model = YOLO("./yolov8s-world.pt")  # or select yolov8m/l-world.pt
+		model = YOLO("yolov8s-world.pt")  # or select yolov8m/l-world.pt
 
 		# Define custom classes
 		model.set_classes(["person", "bus"])
@@ -351,8 +488,57 @@ def yolo_world_example():
 			),
 			val=dict(yolo_data=["lvis.yaml"]),
 		)
-		model = YOLOWorld("./yolov8s-worldv2.yaml")
+		model = YOLOWorld("yolov8s-worldv2.yaml")
 		model.train(data=data, batch=128, epochs=100, trainer=WorldTrainerFromScratch)
+
+# REF [site] >> https://docs.ultralytics.com/models/yolo-world/
+def yolo_world_test():
+	import time
+	from ultralytics import YOLOWorld
+	import cv2
+
+	input_file = "./bus.jpg"
+
+	# Initialize a YOLO-World model
+	#model_name = "yolov8s-world.pt"
+	#model_name = "yolov8m-world.pt"
+	#model_name = "yolov8l-world.pt"
+	#model_name = "yolov8x-world.pt"
+	model_name = "yolov8s-worldv2.pt"
+	#model_name = "yolov8m-worldv2.pt"
+	#model_name = "yolov8l-worldv2.pt"
+	#model_name = "yolov8x-worldv2.pt"
+	model = YOLOWorld(model_name)
+
+	custom_classes = [
+		"person",
+		"bus",
+	]
+	model.set_classes(custom_classes)
+
+	# Detect
+	print("Detecting...")
+	start_time = time.time()
+	#results = model.predict(input_file)
+	results = model.predict(input_file, conf=0.5, verbose=False)
+	print(f"Detected (#objects = {len(results[0])}): {(time.time() - start_time) * 1000} msecs.")
+
+	# Show results
+	print(f"Box classes: {results[0].boxes.cls}.")
+	print(f"Box confidences: {results[0].boxes.conf}")
+
+	#results[0].show()
+	annotated_frame = results[0].plot()  # numpy.array, (height, width, channels), BGR
+	cv2.imshow("YOLO-World", annotated_frame)
+
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()
+
+	# Export the model
+	if False:
+		success = model.export(format="onnx", opset=12, imgsz=640)
+
+		print(f"Export success: {success}.")
 
 # REF [site] >> https://docs.ultralytics.com/models/yoloe/
 def yoloe_example():
@@ -384,10 +570,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 		from ultralytics.models.yolo.yoloe import YOLOEPESegTrainer as Trainer
 
-		model = YOLOE("./yoloe-11s-seg.pt")
+		model = YOLOE("yoloe-11s-seg.pt")
 
 		results = model.train(
-			data="./coco128-seg.yaml",
+			data="coco128-seg.yaml",
 			epochs=80,
 			close_mosaic=10,
 			batch=16,
@@ -407,7 +593,7 @@ def yoloe_example():
 		from ultralytics import YOLOE
 		from ultralytics.models.yolo.yoloe import YOLOEPESegTrainer as Trainer
 
-		model = YOLOE("./yoloe-11s-seg.pt")
+		model = YOLOE("yoloe-11s-seg.pt")
 		head_index = len(model.model.model) - 1
 		freeze = [str(f) for f in range(0, head_index)]  # freeze all layers except head
 
@@ -427,7 +613,7 @@ def yoloe_example():
 		])
 
 		results = model.train(
-			data="./coco128-seg.yaml",
+			data="coco128-seg.yaml",
 			epochs=2,
 			close_mosaic=0,
 			batch=16,
@@ -449,7 +635,7 @@ def yoloe_example():
 		from ultralytics.models.yolo.yoloe import YOLOEPETrainer as Trainer  # noqa
 
 		# Create detection model from yaml then load segmentation weights
-		model = YOLOE("./yoloe-11s.yaml").load("./yoloe-11s-seg.pt")
+		model = YOLOE("yoloe-11s.yaml").load("yoloe-11s-seg.pt")
 		# Rest of the code is same as the instance segmentation fine-tuning example above
 
 	#-----
@@ -461,7 +647,7 @@ def yoloe_example():
 		from ultralytics import YOLOE
 
 		# Initialize a YOLOE model
-		model = YOLOE("./yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
+		model = YOLOE("yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
 
 		# Set text prompt to detect person and bus. You only need to do this once after you load the model.
 		names = ["person", "bus"]
@@ -481,7 +667,7 @@ def yoloe_example():
 		from ultralytics.models.yolo.yoloe import YOLOEVPSegPredictor
 
 		# Initialize a YOLOE model
-		model = YOLOE("./yoloe-11l-seg.pt")
+		model = YOLOE("yoloe-11l-seg.pt")
 
 		# Define visual prompts using bounding boxes and their corresponding class IDs.
 		# Each box highlights an example of the object you want the model to detect.
@@ -516,7 +702,7 @@ def yoloe_example():
 		from ultralytics import YOLOE
 
 		# Initialize a YOLOE model
-		model = YOLOE("./yoloe-11l-seg-pf.pt")
+		model = YOLOE("yoloe-11l-seg-pf.pt")
 
 		# Run prediction. No prompts required.
 		results = model.predict("path/to/image.jpg")
@@ -533,10 +719,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 
 		# Create a YOLOE model
-		model = YOLOE("./yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
+		model = YOLOE("yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
 
 		# Conduct model validation on the COCO128-seg example dataset
-		metrics = model.val(data="./coco128-seg.yaml")
+		metrics = model.val(data="coco128-seg.yaml")
 
 	if True:
 		# Visual Prompt
@@ -545,10 +731,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 
 		# Create a YOLOE model
-		model = YOLOE("./yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
+		model = YOLOE("yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
 
 		# Conduct model validation on the COCO128-seg example dataset
-		metrics = model.val(data="./coco128-seg.yaml", load_vp=True)
+		metrics = model.val(data="coco128-seg.yaml", load_vp=True)
 
 	if True:
 		# Visual Prompt
@@ -558,10 +744,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 
 		# Create a YOLOE model
-		model = YOLOE("./yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
+		model = YOLOE("yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
 
 		# Conduct model validation on the COCO128-seg example dataset
-		metrics = model.val(data="./coco128-seg.yaml", load_vp=True, refer_data="coco.yaml")
+		metrics = model.val(data="coco128-seg.yaml", load_vp=True, refer_data="coco.yaml")
 
 	if True:
 		# Prompt free
@@ -569,10 +755,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 
 		# Create a YOLOE model
-		model = YOLOE("./yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
+		model = YOLOE("yoloe-11l-seg.pt")  # or select yoloe-11s/m-seg.pt for different sizes
 
 		# Conduct model validation on the COCO128-seg example dataset
-		metrics = model.val(data="./coco128-seg.yaml")
+		metrics = model.val(data="coco128-seg.yaml")
 
 	#-----
 	# Launching training from scratch
@@ -598,10 +784,10 @@ def yoloe_example():
 					),
 				],
 			),
-			val=dict(yolo_data=["./lvis.yaml"]),
+			val=dict(yolo_data=["lvis.yaml"]),
 		)
 
-		model = YOLOE("./yoloe-11l-seg.yaml")
+		model = YOLOE("yoloe-11l-seg.yaml")
 		model.train(
 			data=data,
 			batch=128,
@@ -623,10 +809,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 		from ultralytics.utils.patches import torch_load
 
-		det_model = YOLOE("./yoloe-11l.yaml")
-		state = torch_load("./yoloe-11l-seg.pt")
+		det_model = YOLOE("yoloe-11l.yaml")
+		state = torch_load("yoloe-11l-seg.pt")
 		det_model.load(state["model"])
-		det_model.save("./yoloe-11l-seg-det.pt")
+		det_model.save("yoloe-11l-seg-det.pt")
 
 		# Start training
 		from ultralytics.models.yolo.yoloe import YOLOESegVPTrainer
@@ -645,12 +831,12 @@ def yoloe_example():
 					),
 				],
 			),
-			val=dict(yolo_data=["./lvis.yaml"]),
+			val=dict(yolo_data=["lvis.yaml"]),
 		)
 
-		model = YOLOE("./yoloe-11l-seg.pt")
+		model = YOLOE("yoloe-11l-seg.pt")
 		# Replace to yoloe-11l-seg-det.pt if converted to detection model
-		#model = YOLOE("./yoloe-11l-seg-det.pt")
+		#model = YOLOE("yoloe-11l-seg-det.pt")
 
 		# Freeze every layer except of the savpe module.
 		head_index = len(model.model.model) - 1
@@ -670,7 +856,7 @@ def yoloe_example():
 			weight_decay=0.025,
 			momentum=0.9,
 			workers=4,
-			trainer=YOLOESegVPTrainer,  # use YOLOEVPTrainer if converted to detection model
+			trainer=YOLOESegVPTrainer,  # Use YOLOEVPTrainer if converted to detection model
 			device="0,1,2,3,4,5,6,7",
 			freeze=freeze,
 		)
@@ -678,13 +864,13 @@ def yoloe_example():
 		# Convert back to segmentation model after training. Only needed if you converted segmentation model to detection model before training
 		from copy import deepcopy
 
-		model = YOLOE("./yoloe-11l-seg.yaml")
-		model.load("./yoloe-11l-seg.pt")
+		model = YOLOE("yoloe-11l-seg.yaml")
+		model.load("yoloe-11l-seg.pt")
 
-		vp_model = YOLOE("./yoloe-11l-vp.pt")
+		vp_model = YOLOE("yoloe-11l-vp.pt")
 		model.model.model[-1].savpe = deepcopy(vp_model.model.model[-1].savpe)
 		model.eval()
-		model.save("./yoloe-11l-seg.pt")
+		model.save("yoloe-11l-seg.pt")
 
 	if True:
 		# Prompt free
@@ -692,10 +878,10 @@ def yoloe_example():
 		from ultralytics import YOLOE
 		from ultralytics.utils.patches import torch_load
 
-		det_model = YOLOE("./yoloe-11l.yaml")
-		state = torch_load("./yoloe-11l-seg.pt")
+		det_model = YOLOE("yoloe-11l.yaml")
+		state = torch_load("yoloe-11l-seg.pt")
 		det_model.load(state["model"])
-		det_model.save("./yoloe-11l-seg-det.pt")
+		det_model.save("yoloe-11l-seg-det.pt")
 
 		# Start training
 		data = dict(
@@ -712,12 +898,12 @@ def yoloe_example():
 					),
 				],
 			),
-			val=dict(yolo_data=["./lvis.yaml"]),
+			val=dict(yolo_data=["lvis.yaml"]),
 		)
 
-		model = YOLOE("./yoloe-11l-seg.pt")
+		model = YOLOE("yoloe-11l-seg.pt")
 		# Replace to yoloe-11l-seg-det.pt if converted to detection model
-		#model = YOLOE("./yoloe-11l-seg-det.pt")
+		#model = YOLOE("yoloe-11l-seg-det.pt")
 
 		# Freeze layers
 		head_index = len(model.model.model) - 1
@@ -755,10 +941,10 @@ def yoloe_example():
 		# Convert back to segmentation model after training. Only needed if you converted segmentation model to detection model before training.
 		from copy import deepcopy
 
-		model = YOLOE("./yoloe-11l-seg.pt")
+		model = YOLOE("yoloe-11l-seg.pt")
 		model.eval()
 
-		pf_model = YOLOE("./yoloe-11l-seg-pf.pt")
+		pf_model = YOLOE("yoloe-11l-seg-pf.pt")
 		names = ["object"]
 		tpe = model.get_text_pe(names)
 		model.set_classes(names, tpe)
@@ -768,7 +954,7 @@ def yoloe_example():
 		model.model.model[-1].cv3[1][2] = deepcopy(pf_model.model.model[-1].cv3[1][2]).requires_grad_(True)
 		model.model.model[-1].cv3[2][2] = deepcopy(pf_model.model.model[-1].cv3[2][2]).requires_grad_(True)
 		del model.model.pe
-		model.save("./yoloe-11l-seg-pf.pt")
+		model.save("yoloe-11l-seg-pf.pt")
 
 	if True:
 		# Training and Inference
@@ -776,7 +962,7 @@ def yoloe_example():
 		from ultralytics import YOLO
 
 		# Load pre-trained YOLOE model and train on custom data
-		model = YOLO("./yoloe-11s-seg.pt")
+		model = YOLO("yoloe-11s-seg.pt")
 		model.train(data="path/to/data.yaml", epochs=50, imgsz=640)
 
 		# Run inference using text prompts ("person", "bus")
@@ -794,13 +980,13 @@ def rt_detr_example():
 		from ultralytics import RTDETR
 
 		# Load a COCO-pretrained RT-DETR-l model
-		model = RTDETR("./rtdetr-l.pt")
+		model = RTDETR("rtdetr-l.pt")
 
 		# Display model information (optional)
 		model.info()
 
 		# Train the model on the COCO8 example dataset for 100 epochs
-		results = model.train(data="./coco8.yaml", epochs=100, imgsz=640)
+		results = model.train(data="coco8.yaml", epochs=100, imgsz=640)
 
 		# Run inference with the RT-DETR-l model on the 'bus.jpg' image
 		results = model("path/to/bus.jpg")
@@ -818,7 +1004,7 @@ def sam_example():
 		from ultralytics import SAM
 
 		# Load a model
-		model = SAM("./sam_b.pt")
+		model = SAM("sam_b.pt")
 
 		# Display model information (optional)
 		model.info()
@@ -845,7 +1031,7 @@ def sam_example():
 		from ultralytics import SAM
 
 		# Load a model
-		model = SAM("./sam_b.pt")
+		model = SAM("sam_b.pt")
 
 		# Display model information (optional)
 		model.info()
@@ -864,7 +1050,7 @@ def sam_example():
 		import cv2
 
 		# Create SAMPredictor
-		overrides = dict(conf=0.25, task="segment", mode="predict", imgsz=1024, model="./mobile_sam.pt")
+		overrides = dict(conf=0.25, task="segment", mode="predict", imgsz=1024, model="mobile_sam.pt")
 		predictor = SAMPredictor(overrides=overrides)
 
 		# Set image
@@ -890,7 +1076,7 @@ def sam_example():
 		from ultralytics.models.sam import Predictor as SAMPredictor
 
 		# Create SAMPredictor
-		overrides = dict(conf=0.25, task="segment", mode="predict", imgsz=1024, model="./mobile_sam.pt")
+		overrides = dict(conf=0.25, task="segment", mode="predict", imgsz=1024, model="mobile_sam.pt")
 		predictor = SAMPredictor(overrides=overrides)
 
 		# Segment with additional args
@@ -924,7 +1110,7 @@ def sam_example():
 
 		from ultralytics.data.annotator import auto_annotate
 
-		auto_annotate(data="path/to/images", det_model="./yolo11x.pt", sam_model="./sam_b.pt")
+		auto_annotate(data="path/to/images", det_model="yolo11x.pt", sam_model="sam_b.pt")
 
 # REF [site] >> https://docs.ultralytics.com/models/sam-2/
 def sam2_example():
@@ -945,7 +1131,7 @@ def sam2_example():
 		from ultralytics import SAM
 
 		# Load a model
-		model = SAM("./sam2.1_b.pt")
+		model = SAM("sam2.1_b.pt")
 
 		# Display model information (optional)
 		model.info()
@@ -972,7 +1158,7 @@ def sam2_example():
 		from ultralytics import SAM
 
 		# Load a model
-		model = SAM("./sam2.1_b.pt")
+		model = SAM("sam2.1_b.pt")
 
 		# Display model information (optional)
 		model.info()
@@ -987,7 +1173,7 @@ def sam2_example():
 		from ultralytics.models.sam import SAM2VideoPredictor
 
 		# Create SAM2VideoPredictor
-		overrides = dict(conf=0.25, task="segment", mode="predict", imgsz=1024, model="./sam2_b.pt")
+		overrides = dict(conf=0.25, task="segment", mode="predict", imgsz=1024, model="sam2_b.pt")
 		predictor = SAM2VideoPredictor(overrides=overrides)
 
 		# Run inference with single point
@@ -1029,7 +1215,7 @@ def sam2_example():
 
 		from ultralytics.data.annotator import auto_annotate
 
-		auto_annotate(data="path/to/images", det_model="./yolo11x.pt", sam_model="./sam2_b.pt")
+		auto_annotate(data="path/to/images", det_model="yolo11x.pt", sam_model="sam2_b.pt")
 
 # REF [site] >> https://docs.ultralytics.com/models/mobile-sam/
 def mobile_sam_example():
@@ -1064,7 +1250,7 @@ def mobile_sam_example():
 		from ultralytics import SAM
 
 		# Load the model
-		model = SAM("./mobile_sam.pt")
+		model = SAM("mobile_sam.pt")
 
 		# Predict a segment based on a single point prompt
 		model.predict("ultralytics/assets/zidane.jpg", points=[900, 370], labels=[1])
@@ -1084,7 +1270,7 @@ def mobile_sam_example():
 		from ultralytics import SAM
 
 		# Load the model
-		model = SAM("./mobile_sam.pt")
+		model = SAM("mobile_sam.pt")
 
 		# Predict a segment based on a single point prompt
 		model.predict("ultralytics/assets/zidane.jpg", points=[900, 370], labels=[1])
@@ -1103,7 +1289,7 @@ def mobile_sam_example():
 
 		from ultralytics.data.annotator import auto_annotate
 
-		auto_annotate(data="path/to/images", det_model="./yolo11x.pt", sam_model="./mobile_sam.pt")
+		auto_annotate(data="path/to/images", det_model="yolo11x.pt", sam_model="mobile_sam.pt")
 
 # REF [site] >> https://docs.ultralytics.com/models/fast-sam/
 def fast_sam_example():
@@ -1145,7 +1331,7 @@ def fast_sam_example():
 		source = "path/to/bus.jpg"
 
 		# Create a FastSAM model
-		model = FastSAM("./FastSAM-s.pt")  # or FastSAM-x.pt
+		model = FastSAM("FastSAM-s.pt")  # or FastSAM-x.pt
 
 		# Run inference on an image
 		everything_results = model(source, device="cpu", retina_masks=True, imgsz=1024, conf=0.4, iou=0.9)
@@ -1169,7 +1355,7 @@ def fast_sam_example():
 		from ultralytics.models.fastsam import FastSAMPredictor
 
 		# Create FastSAMPredictor
-		overrides = dict(conf=0.25, task="segment", mode="predict", model="./FastSAM-s.pt", save=False, imgsz=1024)
+		overrides = dict(conf=0.25, task="segment", mode="predict", model="FastSAM-s.pt", save=False, imgsz=1024)
 		predictor = FastSAMPredictor(overrides=overrides)
 
 		# Segment everything
@@ -1189,10 +1375,10 @@ def fast_sam_example():
 		from ultralytics import FastSAM
 
 		# Create a FastSAM model
-		model = FastSAM("./FastSAM-s.pt")  # or FastSAM-x.pt
+		model = FastSAM("FastSAM-s.pt")  # or FastSAM-x.pt
 
 		# Validate the model
-		results = model.val(data="./coco8-seg.yaml")
+		results = model.val(data="coco8-seg.yaml")
 
 	#-----
 	# Track Usage
@@ -1203,51 +1389,24 @@ def fast_sam_example():
 		from ultralytics import FastSAM
 
 		# Create a FastSAM model
-		model = FastSAM("./FastSAM-s.pt")  # or FastSAM-x.pt
+		model = FastSAM("FastSAM-s.pt")  # or FastSAM-x.pt
 
 		# Track with a FastSAM model on a video
 		results = model.track(source="path/to/video.mp4", imgsz=640)
 
-# REF [site] >> https://docs.ultralytics.com/tasks/segment/
-def instance_segmentation_example():
-	import time
+def visualize_ultralytics_results(results):
 	import numpy as np
-	import torch
-	from ultralytics import YOLO
 	import cv2
 
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	print(f"Device: {device}.")
-
-	# Load a model
-	model = YOLO("yolo11n-seg.pt")  # Load an official model
-	#model = YOLO("path/to/best.pt")  # Load a custom model
-
-	# Predict with the model
-	print("Segmenting...")
-	start_time = time.time()
-	results = model("https://ultralytics.com/images/bus.jpg", device=device)  # Predict on an image
-	print(f"Segmented: {(time.time() - start_time) * 1000} msecs.")
-
-	# results: a list of ultralytics.engine.results.Results
-
-	# ultralytics.engine.results.Results
-	#   boxes: ultralytics.engine.results.Boxes
-	#   masks:ultralytics.engine.results.Masks
-	#   probs: ultralytics.engine.results.Probs
-	#   keypoints: ultralytics.engine.results.Keypoints
-
-	# Access the results
 	for result in results:
-		#xyxy = result.boxes.xyxy  # Box in matrix format (#objects x 4)
-		#xyxyn = result.boxes.xyxyn  # Box in matrix format (#objects x 4)
-		#xywh = result.boxes.xywh  # Box in matrix format (#objects x 4)
-		#xywhn = result.boxes.xywhn  # Box in matrix format (#objects x 4)
-		#confidence = result.boxes.conf  # Confidence scores
-		#cls = result.boxes.cls  # Class labels
-		#xy = result.masks.xy  # Mask in polygon format [#objects x (#points x 2)]
-		#xyn = result.masks.xyn  # Normalized mask [#objects x (#points x 2)]
-		#masks = result.masks.data  # Mask in matrix format (#objects x H x W)
+		if result.boxes is None or result.masks is None:
+			print(f"No boxes or masks detected: {result.boxes=}, {result.masks=}.")
+			continue
+
+		#result.summary()
+		#result.show()
+		#annotated_frame = result.plot()  # numpy.array, (height, width, channels), BGR
+		#cv2.imshow("YOLO-World", annotated_frame)
 
 		if True:
 			for idx, (cls, mask, boundary) in enumerate(zip(result.boxes.cls, result.masks.data, result.masks.xy)):
@@ -1268,9 +1427,74 @@ def instance_segmentation_example():
 				cv2.polylines(mask_img, [mask_boundary], isClosed=True, color=(0, 0, 255), thickness=2)
 
 				cv2.imshow(f"Mask #{idx} - {result.names[int(cls)]}", mask_img)
-			cv2.imshow("Image", result.orig_img)
+			cv2.imshow(f"Image", result.orig_img)
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
+
+# REF [site] >> https://docs.ultralytics.com/models/fast-sam/#predict-usage
+def fast_sam_test():
+	import time
+	from ultralytics import FastSAM
+
+	input_file = "./bus.jpg"
+
+	# Create a FastSAM model
+	#model = FastSAM("FastSAM-s.pt")
+	model = FastSAM("FastSAM-x.pt")
+
+	# Run inference on an image
+	print("Segmenting...")
+	start_time = time.time()
+	everything_results = model(input_file, device="cpu", retina_masks=True, imgsz=448, conf=0.4, iou=0.9)
+	print(f"Segmented (#objects = {len(everything_results[0])}): {(time.time() - start_time) * 1000} msecs.")
+
+	# Visualize the results
+	visualize_ultralytics_results(everything_results)
+
+	# Export the model
+	if False:
+		success = model.export(format="onnx", opset=12, imgsz=448)
+
+		print(f"Export success: {success}.")
+
+# REF [site] >> https://docs.ultralytics.com/usage/simple-utilities/
+def auto_annotate_example():
+	from ultralytics.data.annotator import auto_annotate
+
+	auto_annotate(
+		data="path/to/new/data",
+		det_model="yolo11n.pt",
+		sam_model="mobile_sam.pt",
+		device="cuda",
+		output_dir="path/to/save_labels",
+	)
+
+# REF [site] >> https://docs.ultralytics.com/usage/simple-utilities/
+def visualize_image_annotations_example():
+	from ultralytics.data.utils import visualize_image_annotations
+
+	label_map = {  # Define the label map with all annotated class labels
+		0: "person",
+		1: "car",
+	}
+
+	# Visualize
+	visualize_image_annotations(
+		"path/to/image.jpg",  # Input image path
+		"path/to/annotations.txt",  # Annotation file path for the image
+		label_map,
+	)
+
+# REF [site] >> https://docs.ultralytics.com/usage/simple-utilities/
+def convert_coco_into_yolo_format_example():
+	from ultralytics.data.converter import convert_coco
+
+	convert_coco(
+		"coco/annotations/",
+		use_segments=False,
+		use_keypoints=False,
+		cls91to80=True,
+	)
 
 def main():
 	# Models: https://docs.ultralytics.com/models/
@@ -1283,7 +1507,17 @@ def main():
 	#			Detection: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x
 	#			Instance segmentation: yolov8n-seg, yolov8s-seg, yolov8m-seg, yolov8l-seg, yolov8x-seg
 	#			Classification: yolov8n-cls, yolov8s-cls, yolov8m-cls, yolov8l-cls, yolov8x-cls
-	#	Segment Anything Model (SAM), Segment Anything Model 2 (SAM 2), Mobile Segment Anything Model (MobileSAM), Fast Segment Anything Model (FastSAM)
+	#			Pose estimation: yolov8n-pose, yolov8s-pose, yolov8m-pose, yolov8l-pose, yolov8x-pose
+	#			Oriented bounding boxes (OBB): yolov8n-obb, yolov8s-obb, yolov8m-obb, yolov8l-obb, yolov8x-obb
+	#		YOLOv11:
+	#			Detection: yolo11n, yolo11s, yolo11m, yolo11l, yolo11x
+	#			Instance segmentation: yolo11n-seg, yolo11s-seg, yolo11m-seg, yolo11l-seg, yolo11x-seg
+	#			Classification: yolo11n-cls, yolo11s-cls, yolo11m-cls, yolo11l-cls, yolo11x-cls
+	#			Pose estimation: yolo11n-pose, yolo11s-pose, yolo11m-pose, yolo11l-pose, yolo11x-pose
+	#			Oriented bounding boxes (OBB): yolo11n-obb, yolo11s-obb, yolo11m-obb, yolo11l-obb, yolo11x-obb
+	#	YOLO26
+	#	YOLO-NAS, YOLO-World, YOLOE
+	#	Segment Anything Model (SAM), Segment Anything Model 2 (SAM 2), Segment Anything Model 3 (SAM 3), Mobile Segment Anything Model (MobileSAM), Fast Segment Anything Model (FastSAM)
 	#	Realtime Detection Transformers (RT-DETR)
 
 	# Tasks: https://docs.ultralytics.com/tasks/
@@ -1310,25 +1544,40 @@ def main():
 	#	https://www.ultralytics.com/hub
 
 	#-----
+	#benchmark()
 
 	#export_models_test()
 
 	#-----
 	# You Only Look Once (YOLO)
+	#	Detection
+	#	Instance segmentation
+	#	Classification
 
-	#yolov5_detection_example()  # YOLOv5
+	# YOLOv5
+	#yolov5_detection_example()
 
 	# YOLOv8
 	#yolov8_detection_example()
 	#yolov8_instance_segmentation_example()
 	#yolov8_classification_example()
 
-	#yolov11_example()  # YOLOv11
-	#yolov12_example()  # YOLOv12
+	# YOLOv11
+	#yolo11_example()
+	yolo11_instance_segmentation_example()  # Visualize the results
 
-	#yolo_nas_example()  # YOLO-NAS
-	#yolo_world_example()  # YOLO-World: Real-Time Open-Vocabulary Object Detection
-	#yoloe_example()  # YOLOE: Real-Time Seeing Anything
+	# YOLOv12
+	#yolo12_example()
+
+	# YOLO-NAS
+	#yolo_nas_example()
+
+	# YOLO-World: Real-Time Open-Vocabulary Object Detection
+	#yolo_world_example()
+	#yolo_world_test()
+
+	# YOLOE: Real-Time Seeing Anything
+	#yoloe_example()
 
 	#-----
 	# Detection Transformer (DETR)
@@ -1347,11 +1596,6 @@ def main():
 	#fast_sam_example()  # FastSAM
 
 	#-----
-	# Instance segmentation
-
-	instance_segmentation_example()
-
-	#-----
 	# ONNX
 	#	https://docs.ultralytics.com/integrations/onnx/
 
@@ -1366,6 +1610,38 @@ def main():
 	#-----
 	# TensorRT
 	#	https://docs.ultralytics.com/integrations/tensorrt/
+
+	#-----
+	# Simple utilities: https://docs.ultralytics.com/usage/simple-utilities/
+	#	Data:
+	#		Auto Labeling / Annotations
+	#		Visualize Dataset Annotations
+	#		Convert Segmentation Masks into YOLO Format
+	#		Convert COCO into YOLO Format
+	#		Get Bounding Box Dimensions
+	#		Convert Bounding Boxes to Segments
+	#		Convert Segments to Bounding Boxes
+	#	Utilities:
+	#		Image Compression
+	#		Auto-split Dataset
+	#		Segment-polygon to Binary Mask
+	#	Bounding Boxes:
+	#		Bounding Box (Horizontal) Instances
+	#		Scaling Boxes
+	#		Bounding Box Format Conversions
+	#		All Bounding Box Conversions
+	#	Plotting:
+	#		Box Annotation
+	#		Sweep Annotation
+	#		Adaptive label Annotation
+	#	Miscellaneous:
+	#		Code Profiling
+	#		Ultralytics Supported Formats
+	#		Make Divisible
+
+	#auto_annotate_example()
+	#visualize_image_annotations_example()
+	#convert_coco_into_yolo_format_example()
 
 #--------------------------------------------------------------------
 
