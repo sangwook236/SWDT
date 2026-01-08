@@ -659,6 +659,51 @@ def face_detection_example():
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
+# REF [function] >> hand_landmark_detection_test()
+def face_detection_test():
+	import cv2
+	import mediapipe as mp
+
+	detector = mp.solutions.face_detection.FaceDetection(
+		min_detection_confidence=0.5,
+		model_selection=1,
+	)
+
+	video = cv2.VideoCapture(0)
+	while video.isOpened():
+		ret, img = video.read()
+		if not ret:
+			continue
+
+		img = cv2.flip(img, 1)
+		img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+		detection_result = detector.process(img_rgb)  # Detect faces
+		if detection_result.detections is not None:
+			#print(detection_result.detections)
+			for detection in detection_result.detections:
+				mp.solutions.drawing_utils.draw_detection(
+					img,
+					detection=detection,
+					keypoint_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(
+						color=(0, 255, 0),
+						thickness=1,
+						circle_radius=2,
+					),
+					bbox_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(
+						color=(0, 0, 255),
+					),
+				)
+
+		key = cv2.waitKey(10)
+		if key == 27:
+			break
+
+		cv2.imshow("Face Detection", img)
+
+	video.release()
+	cv2.destroyAllWindows()
+
 # REF [site]] >>
 #	https://github.com/google-ai-edge/mediapipe-samples/blob/main/examples/face_landmarker/python/%5BMediaPipe_Python_Tasks%5D_Face_Landmarker.ipynb
 #	https://colab.research.google.com/github/googlesamples/mediapipe/blob/main/examples/face_landmarker/python/%5BMediaPipe_Python_Tasks%5D_Face_Landmarker.ipynb
@@ -765,50 +810,121 @@ def face_landmarks_detection_example():
 	# Print the transformation matrix
 	print(detection_result.facial_transformation_matrixes)
 
-# REF [function] >> hand_landmark_detection_test()
-def face_detection_test():
-	import cv2
+def face_mesh_test():
+	import time
 	import mediapipe as mp
+	import cv2
 
-	detector = mp.solutions.face_detection.FaceDetection(
+	# 1. Initialize MediaPipe solutions
+	mp_face_mesh = mp.solutions.face_mesh
+	mp_hands = mp.solutions.hands
+	mp_drawing = mp.solutions.drawing_utils
+	mp_drawing_styles = mp.solutions.drawing_styles
+
+	# Initialize face mesh (face detection + landmarks)
+	# refine_landmarks=True gives more detailed eye/lip contours
+	face_mesh = mp_face_mesh.FaceMesh(
+		max_num_faces=1,
+		refine_landmarks=True,
 		min_detection_confidence=0.5,
-		model_selection=1,
+		min_tracking_confidence=0.5
 	)
 
-	video = cv2.VideoCapture(0)
-	while video.isOpened():
-		ret, img = video.read()
+	# Initialize hands
+	hands = mp_hands.Hands(
+		max_num_hands=2,
+		min_detection_confidence=0.5,
+		min_tracking_confidence=0.5
+	)
+
+	# 2. Open video source
+	video_source = 0
+	cap = cv2.VideoCapture(video_source)
+
+	if not cap.isOpened():
+		print(f"Error: Could not open video source {video_source}")
+		return
+
+	print("Starting MediaPipe Inference. Press 'q' to exit.")
+
+	prev_time = 0
+	while True:
+		ret, frame = cap.read()
 		if not ret:
-			continue
-
-		img = cv2.flip(img, 1)
-		img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-		detection_result = detector.process(img_rgb)  # Detect faces
-		if detection_result.detections is not None:
-			#print(detection_result.detections)
-			for detection in detection_result.detections:
-				mp.solutions.drawing_utils.draw_detection(
-					img,
-					detection=detection,
-					keypoint_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(
-						color=(0, 255, 0),
-						thickness=1,
-						circle_radius=2,
-					),
-					bbox_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(
-						color=(0, 0, 255),
-					),
-				)
-
-		key = cv2.waitKey(10)
-		if key == 27:
 			break
 
-		cv2.imshow("Face Detection", img)
+		# Flip the image horizontally for a selfie-view display.
+		frame = cv2.flip(frame, 1)
 
-	video.release()
+		# MediaPipe works with RGB images
+		rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+		# 3. Process frame
+		# To improve performance, optionally mark the image as not writeable to pass by reference.
+		rgb_frame.flags.writeable = False
+	
+		# Run inference
+		face_results = face_mesh.process(rgb_frame)
+		hand_results = hands.process(rgb_frame)
+
+		# Draw annotations on the image (back to BGR)
+		rgb_frame.flags.writeable = True
+		annotated_frame = cv2.cvtColor(rgb_frame, cv2.COLOR_RGB2BGR)
+
+		# 4. Draw face landmarks
+		if face_results.multi_face_landmarks:
+			for face_landmarks in face_results.multi_face_landmarks:
+				mp_drawing.draw_landmarks(
+					image=annotated_frame,
+					landmark_list=face_landmarks,
+					connections=mp_face_mesh.FACEMESH_TESSELATION,
+					landmark_drawing_spec=None,
+					connection_drawing_spec=mp_drawing_styles.get_default_face_mesh_tesselation_style()
+				)
+				# Draw contours (eyes, lips, face oval)
+				mp_drawing.draw_landmarks(
+					image=annotated_frame,
+					landmark_list=face_landmarks,
+					connections=mp_face_mesh.FACEMESH_CONTOURS,
+					landmark_drawing_spec=None,
+					connection_drawing_spec=mp_drawing_styles.get_default_face_mesh_contours_style()
+				)
+
+		# 5. Draw hand landmarks
+		if hand_results.multi_hand_landmarks:
+			for hand_landmarks in hand_results.multi_hand_landmarks:
+				mp_drawing.draw_landmarks(
+					image=annotated_frame,
+					landmark_list=hand_landmarks,
+					connections=mp_hands.HAND_CONNECTIONS,
+					landmark_drawing_spec=mp_drawing_styles.get_default_hand_landmarks_style(),
+					connection_drawing_spec=mp_drawing_styles.get_default_hand_connections_style()
+				)
+
+		# Calculate FPS
+		curr_time = time.time()
+		fps = 1 / (curr_time - prev_time) if prev_time != 0 else 0
+		prev_time = curr_time
+
+		cv2.putText(
+			annotated_frame,
+			f"FPS: {fps:.1f}",
+			(10, 30),
+			cv2.FONT_HERSHEY_SIMPLEX,
+			1,
+			(0, 255, 0),
+			2
+		)
+
+		cv2.imshow("MediaPipe Face & Hand Detection", annotated_frame)
+
+		if cv2.waitKey(1) & 0xFF == ord("q"):
+			break
+
+	cap.release()
 	cv2.destroyAllWindows()
+	face_mesh.close()
+	hands.close()
 
 # REF [site] >>
 #	https://github.com/google-ai-edge/mediapipe-samples/blob/main/examples/pose_landmarker/python/%5BMediaPipe_Python_Tasks%5D_Pose_Landmarker.ipynb
@@ -941,9 +1057,11 @@ def main():
 	# Face
 
 	#face_detection_example()
+	#face_detection_test()
+
 	#face_landmarks_detection_example()
 
-	#face_detection_test()
+	#face_mesh_test()  # Face & hands
 
 	#--------------------
 	# Human

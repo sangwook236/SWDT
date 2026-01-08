@@ -30,6 +30,7 @@
 					"person": ["male", "female"],
 					"car": ["moving", "stopped"]
 				}
+		anylabeling --labels "" --flags "" --labelflags ""
 
 	- anylabeling/app.py
 		python anylabeling/app.py

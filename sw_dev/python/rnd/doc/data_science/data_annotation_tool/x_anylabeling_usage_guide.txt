@@ -63,6 +63,7 @@
 					"person": ["male", "female"],
 					"car": ["moving", "stopped"]
 				}
+		xanylabeling --labels "" --flags "" --labelflags ""
 
 [-] Training.
 	- Ultralytics.
