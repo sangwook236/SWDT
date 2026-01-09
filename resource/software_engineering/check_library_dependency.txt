@@ -1,0 +1,10 @@
+[-] Windows.
+	- dumpbin.
+		dumpbin /dependents <library.dll>
+	- Dependency Walker.
+		https://github.com/lucasg/Dependencies
+		https://www.dependencywalker.com/
+
+[-] Linux.
+	- ldd.
+		ldd <library.so>
