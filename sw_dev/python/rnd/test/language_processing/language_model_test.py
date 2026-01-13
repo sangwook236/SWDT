@@ -5614,6 +5614,49 @@ def ling_example():
 		response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 		print(response)
 
+# REF [site] >> https://huggingface.co/upstage
+def solar_open_example():
+	# Models:
+	#	upstage/Solar-Open-100B
+
+	import torch
+	import transformers
+
+	MODEL_ID = "upstage/Solar-Open-100B"
+
+	# Load model and tokenizer
+	tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_ID)
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		pretrained_model_name_or_path=MODEL_ID,
+		torch_dtype=torch.bfloat16,
+		device_map="auto",
+		trust_remote_code=True,
+	)
+
+	# Prepare input
+	messages = [{"role": "user", "content": "who are you?"}]
+	inputs = tokenizer.apply_chat_template(
+		messages,
+		tokenize=True,
+		add_generation_prompt=True,
+		return_dict=True,
+		return_tensors="pt",
+	)
+	inputs = inputs.to(model.device)
+
+	# Generate response
+	generated_ids = model.generate(
+		**inputs,
+		max_new_tokens=4096,
+		temperature=0.8,
+		top_p=0.95,
+		top_k=50,
+		do_sample=True,
+	)
+	generated_text = tokenizer.decode(generated_ids[0][inputs.input_ids.shape[1] :])
+	print(generated_text)
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
 	if False:
@@ -12266,7 +12309,8 @@ def main():
 	#kimi_example()  # Kimi K2. Not yet implemented
 	#apriel_example()  # Apriel
 	#glm_example()  # GLM-4
-	ling_example()  # Ling, Ling-V2
+	#ling_example()  # Ling, Ling-V2
+	solar_open_example()  # Solar Open
 
 	#-----
 	# Retrieval-augmented generation (RAG)

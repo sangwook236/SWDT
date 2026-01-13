@@ -59,6 +59,150 @@ def surya_example():
 def marker_example():
 	raise NotImplementedError
 
+# REF [site] >>
+#	https://github.com/docling-project/docling
+#	https://docling-project.github.io/docling/usage/advanced_options/
+def docling_example():
+	if True:
+		from docling.document_converter import DocumentConverter
+
+		source = "https://arxiv.org/pdf/2408.09869"  # Document per local path or URL
+		converter = DocumentConverter()
+		result = converter.convert(source)
+		print(result.document.export_to_markdown())  # Output: "## Docling Technical Report[...]"
+
+	if True:
+		# Model prefetching and offline usage
+
+		# Download models:
+		#	docling-tools models download
+		#	docling-tools models download-hf-repo ds4sd/SmolDocling-256M-preview
+
+		from docling.datamodel.base_models import InputFormat
+		from docling.datamodel.pipeline_options import EasyOcrOptions, PdfPipelineOptions
+		from docling.document_converter import DocumentConverter, PdfFormatOption
+
+		artifacts_path = "/local/path/to/models"
+
+		pipeline_options = PdfPipelineOptions(artifacts_path=artifacts_path)
+		doc_converter = DocumentConverter(
+			format_options={
+				InputFormat.PDF: PdfFormatOption(pipeline_options=pipeline_options)
+			}
+		)
+
+	if True:
+		# Using remote services
+
+		from docling.datamodel.base_models import InputFormat
+		from docling.datamodel.pipeline_options import PdfPipelineOptions
+		from docling.document_converter import DocumentConverter, PdfFormatOption
+
+		pipeline_options = PdfPipelineOptions(enable_remote_services=True)
+		doc_converter = DocumentConverter(
+			format_options={
+				InputFormat.PDF: PdfFormatOption(pipeline_options=pipeline_options)
+			}
+		)
+
+	if True:
+		# Control PDF table extraction options
+
+		from docling.datamodel.base_models import InputFormat
+		from docling.document_converter import DocumentConverter, PdfFormatOption
+		from docling.datamodel.pipeline_options import PdfPipelineOptions, TableFormerMode
+
+		pipeline_options = PdfPipelineOptions(do_table_structure=True)
+		if True:
+			pipeline_options.table_structure_options.do_cell_matching = False  # Uses text cells predicted from table structure model
+		else:
+			pipeline_options.table_structure_options.mode = TableFormerMode.ACCURATE  # Use more accurate TableFormer model
+
+		doc_converter = DocumentConverter(
+			format_options={
+				InputFormat.PDF: PdfFormatOption(pipeline_options=pipeline_options)
+			}
+		)
+
+	if True:
+		# Impose limits on the document size
+
+		from pathlib import Path
+		from docling.document_converter import DocumentConverter
+
+		source = "https://arxiv.org/pdf/2408.09869"
+		converter = DocumentConverter()
+		result = converter.convert(source, max_num_pages=100, max_file_size=20971520)
+
+	if True:
+		# Convert from binary PDF streams
+
+		from io import BytesIO
+		from docling.datamodel.base_models import DocumentStream
+		from docling.document_converter import DocumentConverter
+
+		buf = BytesIO(your_binary_stream)
+		source = DocumentStream(name="my_doc.pdf", stream=buf)
+		converter = DocumentConverter()
+		result = converter.convert(source)
+
+# REF [site] >> https://huggingface.co/ibm-granite
+def granite_docling_example():
+	# Models:
+	#	ibm-granite/granite-docling-258M
+
+	# Usage
+	#	Convert to HTML and Markdown:
+	#		docling --to html --to md --pipeline vlm --vlm-model granite_docling "https://arxiv.org/pdf/2501.17887" # accepts files, urls or directories
+	#	Convert to HTML including layout visualization:
+	#		docling --to html_split_page --show-layout --pipeline vlm --vlm-model granite_docling "https://arxiv.org/pdf/2501.17887"
+
+	from docling.datamodel import vlm_model_specs
+	from docling.datamodel.base_models import InputFormat
+	from docling.datamodel.pipeline_options import VlmPipelineOptions
+	from docling.document_converter import DocumentConverter, PdfFormatOption
+	from docling.pipeline.vlm_pipeline import VlmPipeline
+
+	source = "https://arxiv.org/pdf/2501.17887"
+
+	if True:
+		# USING SIMPLE DEFAULT VALUES
+		#	- GraniteDocling model
+		#	- Using the transformers framework
+
+		converter = DocumentConverter(
+			format_options={
+				InputFormat.PDF: PdfFormatOption(
+					pipeline_cls=VlmPipeline,
+				),
+			}
+		)
+
+		doc = converter.convert(source=source).document
+
+		print(doc.export_to_markdown())
+
+	if True:
+		# USING MACOS MPS ACCELERATOR
+		#	For more options see the compare_vlm_models.py example.
+
+		pipeline_options = VlmPipelineOptions(
+			vlm_options=vlm_model_specs.GRANITEDOCLING_MLX,
+		)
+
+		converter = DocumentConverter(
+			format_options={
+				InputFormat.PDF: PdfFormatOption(
+					pipeline_cls=VlmPipeline,
+					pipeline_options=pipeline_options,
+				),
+			}
+		)
+
+		doc = converter.convert(source=source).document
+
+		print(doc.export_to_markdown())
+
 # REF [site] >> https://github.com/mindee/doctr
 def doctr_example():
 	# Install:
@@ -730,6 +874,9 @@ def main():
 	#surya_example()  # Surya
 	#marker_example()  # Marker. Not yet implemented
 
+	docling_example()  # Docling
+	#granite_docling_example()  # Granite Docling
+
 	#-----
 	# Document image processing
 
@@ -773,7 +920,7 @@ def main():
 	#	./camelot_test.py
 	#	./paddle_ocr_test.py  # PaddleOCR
 
-	table_transformer_example()  # Table Transformer (TATR)
+	#table_transformer_example()  # Table Transformer (TATR)
 	#tapex_example()  # TaPEx
 
 	#korean_table_question_answering_example()  # Not correctly working
