@@ -1,10 +1,43 @@
 [-] Windows.
-	- dumpbin.
-		dumpbin /dependents <library.dll>
-	- Dependency Walker.
+	- Dependencies.
 		https://github.com/lucasg/Dependencies
+
+		GUI:
+			DependenciesGui
+		CLI:
+			Dependencies -help
+			Dependencies -modules <executable>
+			Dependencies -modules -depth 5 <executable>
+			Dependencies -chain <executable>
+			Dependencies -chain -depth 5 <executable>
+			Dependencies -knowndll <executable>
+			Dependencies -apisets <executable>
+			Dependencies -apisetsdll <executable>
+			Dependencies -sxsentries <executable>
+			Dependencies -imports <executable>
+			Dependencies -exports <executable>
+
+	- Dependency Walker.
 		https://www.dependencywalker.com/
+			Too slow
+
+	- dumpbin.
+		On Developer Command Prompt for VS.
+			dumpbin
+			dumpbin /dependents <executable>
 
 [-] Linux.
 	- ldd.
-		ldd <library.so>
+		List dynamic dependencies.
+
+		ldd <executable>
+
+	- objdump
+		objdump -p <executable> | grep NEEDED
+			Shows immediate dependencies without executing the file.
+
+	- Alternatives.
+		lddtree
+			Part of pax-utils, it displays the dependency tree hierarchical.
+		readelf -d <executable>
+			Lists the dynamic section of the ELF file. 

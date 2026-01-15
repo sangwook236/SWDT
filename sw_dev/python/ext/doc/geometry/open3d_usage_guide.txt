@@ -83,15 +83,20 @@
 				Set STATIC_WINDOWS_RUNTIME to OFF.
 				Set BUILD_SHARED_LIBS to ON.
 				Set BUILD_WEBRTC to OFF.
+				(Optional) Set BUILD_CUDA_MODULE to ON.
 				(Optional) Set CMAKE_DEBUG_POSTFIX to d.
-				(Optional) Set Python3_EXECUTABLE to /path/to/python3.
+				(Optional) Set PYTHON_EXECUTABLE to /path/to/python3.
 				(Optional) Set USE_SYSTEM_GLEW to OFF.
 				(Optional) Set USE_SYSTEM_GLFW to OFF.
 				(Optional) Set USE_SYSTEM_TBB to OFF.
 					Some errors may occur in oneAPI Threading Building Blocks (oneTBB) library.
 				(Optional) Set USE_SYSTEM_FMT to OFF.
-					Use header files in ${OPEN3D_HOME}/build/fmt/include
+					Include ${OPEN3D_INSTALL_DIR}/include/open3d/3rdparty or ${OPEN3D_HOME}/build/fmt/include
+					Link ${OPEN3D_HOME}/build/fmt/lib/fmt.lib & fmtd.lib
 				(Optional) Set USE_SYSTEM_QHULLCPP to OFF.
+				(Optional) Set USE_BLAS to OFF.
+				(Optional) Set USE_SYSTEM_BLAS to ON.
+				(Optional) Set USE_SYSTEM_STDGPU to ON.
 			Generate.
 			Build.
 				Perform "ALL_BUILD and INSTALL" targets in debug & release build modes respectively.
@@ -102,3 +107,4 @@
 			${OPEN3D_HOME}/build/Open3D/resources
 
 		Open Visual Studio solution file.
+			When using 3rd-party libraries for Open3D, include ${OPEN3D_INSTALL_DIR}/include/open3d/3rdparty.

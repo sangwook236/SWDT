@@ -291,6 +291,11 @@ void onnx_runtime_mnist_example()
 
 		const int64_t predicted(std::distance(results.begin(), std::max_element(results.begin(), results.end())));
 		std::cout << "Predicted = " << predicted << std::endl;
+
+		// Clean up
+		memory_info.release();
+		session.release();
+		env.release();
 	}
 }
 
