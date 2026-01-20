@@ -12532,9 +12532,13 @@ def main():
 	#	https://betterprogramming.pub/frameworks-for-serving-llms-60b7f7b23407
 
 	# Refer to ./hugging_face_transformers_test.py
+
 	# Refer to ./vllm_test.py
 	# Refer to ./ollama_test.py
 	# Refer to ./lm_studio_test.py
+	# Refer to ./litellm_test.py
+	# Refer to ./sglang_test.py
+	# Refer to ./dspy_test.py
 
 #--------------------------------------------------------------------
 

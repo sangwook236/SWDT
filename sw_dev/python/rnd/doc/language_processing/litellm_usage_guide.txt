@@ -1,0 +1,12 @@
+[-] General.
+	- Site.
+		https://www.litellm.ai/
+		https://github.com/BerriAI/litellm
+
+		https://docs.litellm.ai/
+
+[-] Installation.
+	https://github.com/BerriAI/litellm
+
+	- Install.
+		pip install litellm

@@ -111,7 +111,10 @@ void onnx_runtime_mnist_example()
 #if 0
 			OrtTensorRTProviderOptions trt_options;
 			trt_options.device_id = 0;  // Specify GPU device ID
-			//trt_options.trt_max_workspace_size = 1073741824;  // Default value: 1073741824 (1GB)
+			trt_options.trt_max_workspace_size = 1073741824;  // Default value: 1073741824 (1GB)
+			trt_options.trt_fp16_enable = 1;
+			//trt_options.trt_int8_enable = 1;
+			//trt_options.trt_int8_use_native_calibration_table = 1;
 			trt_options.trt_max_partition_iterations = 1000;  // Default value: 1000
 			trt_options.trt_min_subgraph_size = 1;  // Default value: 1
 			session_options.AppendExecutionProvider_TensorRT(trt_options);  // Runtime error
@@ -133,7 +136,14 @@ void onnx_runtime_mnist_example()
 			//cuda_options.gpu_mem_limit = SIZE_MAX;  // Default: SIZE_MAX
 			session_options.AppendExecutionProvider_CUDA(cuda_options);  // Register CUDA EP for fallback
 		}
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
+		const auto len(MultiByteToWideChar(CP_ACP, 0, onnx_filepath.c_str(), (int)onnx_filepath.length(), NULL, NULL));
+		wchar_t onnx_filepath_ws[MAX_PATH] = { L'\0', };
+		MultiByteToWideChar(CP_ACP, 0, onnx_filepath.c_str(), (int)onnx_filepath.length(), onnx_filepath_ws, len);
+		Ort::Session session(env, onnx_filepath_ws, session_options);
+#else
 		Ort::Session session(env, onnx_filepath.c_str(), session_options);
+#endif
 
 		auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPUOutput);
 #else

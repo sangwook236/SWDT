@@ -1,0 +1,10 @@
+[-] General.
+	- Site.
+		https://dspy.ai/
+		https://github.com/stanfordnlp/dspy
+
+[-] Installation.
+	https://dspy.ai/
+
+	- Install.
+		pip install -U dspy
