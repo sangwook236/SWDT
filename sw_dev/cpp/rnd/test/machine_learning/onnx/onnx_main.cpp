@@ -89,6 +89,7 @@ void onnx_runtime_mnist_example()
 			session_options.AppendExecutionProvider_CUDA(cuda_options);
 #else
 			session_options.AppendExecutionProvider_CUDA(OrtCUDAProviderOptions{});  // Enable CUDA execution provider
+			//session_options.AppendExecutionProvider_CUDA_V2(OrtCUDAProviderOptionsV2{});  // Enable CUDA execution provider
 #endif
 		}
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
@@ -111,30 +112,28 @@ void onnx_runtime_mnist_example()
 #if 0
 			OrtTensorRTProviderOptions trt_options;
 			trt_options.device_id = 0;  // Specify GPU device ID
-			trt_options.trt_max_workspace_size = 1073741824;  // Default value: 1073741824 (1GB)
+			trt_options.trt_max_workspace_size = 1 << 30;  // Default value: 2^30 = 1073741824 (1GB)
 			trt_options.trt_fp16_enable = 1;
-			//trt_options.trt_int8_enable = 1;
+			trt_options.trt_int8_enable = 0;
 			//trt_options.trt_int8_use_native_calibration_table = 1;
 			trt_options.trt_max_partition_iterations = 1000;  // Default value: 1000
 			trt_options.trt_min_subgraph_size = 1;  // Default value: 1
-			session_options.AppendExecutionProvider_TensorRT(trt_options);  // Runtime error
-#elif 0
-			// Configure TensorRT settings (e.g., enable FP16, specify engine cache path)
-			OrtTensorRTProviderOptions trt_options;
-			trt_options.trt_fp16_enable = 1;
-			//trt_options.trt_int8_enable = 1;
-			//trt_options.trt_int8_use_native_calibration_table = 1;
+			trt_options.trt_dla_enable = 0;
+			//trt_options.trt_dla_core = 0;
 			trt_options.trt_engine_cache_enable = 1;
 			trt_options.trt_engine_cache_path = "path/to/engine/cache";
-			session_options.AppendExecutionProvider_TensorRT(trt_options);  // Runtime error
+			session_options.AppendExecutionProvider_TensorRT(trt_options);
 #else
 			session_options.AppendExecutionProvider_TensorRT(OrtTensorRTProviderOptions{});
+			//session_options.AppendExecutionProvider_TensorRT_V2(OrtTensorRTProviderOptionsV2{});
 #endif
 
 			OrtCUDAProviderOptions cuda_options;  // Optional: for fallback to CUDA if TensorRT doesn't support a node
+			//OrtCUDAProviderOptionsV2 cuda_options;  // Optional: for fallback to CUDA if TensorRT doesn't support a node
 			cuda_options.device_id = 0;  // Specify GPU device ID
 			//cuda_options.gpu_mem_limit = SIZE_MAX;  // Default: SIZE_MAX
 			session_options.AppendExecutionProvider_CUDA(cuda_options);  // Register CUDA EP for fallback
+			//session_options.AppendExecutionProvider_CUDA_V2(cuda_options);  // Register CUDA EP for fallback
 		}
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		const auto len(MultiByteToWideChar(CP_ACP, 0, onnx_filepath.c_str(), (int)onnx_filepath.length(), NULL, NULL));
@@ -342,6 +341,13 @@ int onnx_main(int argc, char *argv[])
 
 	try
 	{
+#if 1
+		const auto& providers = Ort::GetAvailableProviders();
+		std::cout << "Available providers: ";
+		std::copy(providers.begin(), providers.end(), std::ostream_iterator<std::string>(std::cout, ", "));
+		std::cout << std::endl;
+#endif
+
 		local::onnx_runtime_mnist_example();
 
 		// Segment Anything (SAM)
