@@ -5097,14 +5097,14 @@ def exaone_example():
 	#	LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct-AWQ
 	#
 	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct
-	# 	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
-	# 	LGAI-EXAONE/EXAONE-3.5-32B-Instruct
+	#	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+	#	LGAI-EXAONE/EXAONE-3.5-32B-Instruct
 	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct-AWQ
-	# 	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-AWQ
-	# 	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-AWQ
+	#	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-AWQ
+	#	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-AWQ
 	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct-GGUF
-	# 	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF
-	# 	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-GGUF
+	#	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF
+	#	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-GGUF
 
 	if False:
 		if True:
@@ -5184,6 +5184,111 @@ def exaone_example():
 			do_sample=False,
 		)
 		print(tokenizer.decode(output[0]))
+
+# REF [site] >> https://huggingface.co/LGAI-EXAONE
+def k_exaone_example():
+	# Models:
+	#	LGAI-EXAONE/K-EXAONE-236B-A23B
+	#	LGAI-EXAONE/K-EXAONE-236B-A23B-FP8
+
+	model_name = "LGAI-EXAONE/K-EXAONE-236B-A23B"
+	#model_name = "LGAI-EXAONE/K-EXAONE-236B-A23B-FP8"
+
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		model_name,
+		dtype="bfloat16",
+		device_map="auto",
+	)
+	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+	if True:
+		# Reasoning mode
+
+		messages = [
+			{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
+			{"role": "user", "content": "Which one is bigger, 3.9 vs 3.12?"}
+		]
+		input_ids = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_tensors="pt",
+			enable_thinking=True,  # Skippable (default: True)
+		)
+
+		generated_ids = model.generate(
+			**input_ids.to(model.device),
+			max_new_tokens=16384,
+			temperature=1.0,
+			top_p=0.95,
+			do_sample=True,
+		)
+		output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
+		print(tokenizer.decode(output_ids, skip_special_tokens=True))
+
+	if True:
+		# Non-reasoning mode
+
+		messages = [
+			{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
+			{"role": "user", "content": "Explain how wonderful you are"}
+		]
+		input_ids = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_tensors="pt",
+			enable_thinking=False,
+		)
+
+		generated_ids = model.generate(
+			**input_ids.to(model.device),
+			max_new_tokens=1024,
+			temperature=1.0,
+			top_p=0.95,
+			do_sample=True,
+		)
+		output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
+		print(tokenizer.decode(output_ids, skip_special_tokens=True))
+
+	if True:
+		# Agentic tool use
+
+		from transformers.utils import get_json_schema
+
+		def roll_dice(max_num: int):
+			"""
+			Roll a dice with the number 1 to N. User can select the number N.
+
+			Args:
+				max_num: The maximum number on the dice.
+			"""
+			return random.randint(1, max_num)
+
+		tool_schema = get_json_schema(roll_dice)
+		tools = [tool_schema]
+
+		messages = [
+			{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
+			{"role": "user", "content": "Roll a D20 twice and sum the results."}
+		]
+		input_ids = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_tensors="pt",
+			tools=tools,
+		)
+
+		generated_ids = model.generate(
+			**input_ids.to(model.device),
+			max_new_tokens=16384,
+			temperature=1.0,
+			top_p=0.95,
+			do_sample=True,
+		)
+		output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
+		print(tokenizer.decode(output_ids, skip_special_tokens=True))
 
 # REF [site] >> https://huggingface.co/HuggingFaceTB
 def smol_lm_example():
@@ -12305,12 +12410,13 @@ def main():
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5
+	k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
 	#kimi_example()  # Kimi K2. Not yet implemented
 	#apriel_example()  # Apriel
 	#glm_example()  # GLM-4
 	#ling_example()  # Ling, Ling-V2
-	solar_open_example()  # Solar Open
+	#solar_open_example()  # Solar Open
 
 	#-----
 	# Retrieval-augmented generation (RAG)
