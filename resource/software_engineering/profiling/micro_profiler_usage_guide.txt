@@ -1,0 +1,19 @@
+[-] General.
+	- Site.
+		https://github.com/tyoma/micro-profiler
+
+[-] Usage.
+	https://github.com/tyoma/micro-profiler
+
+	- In Visual Studio.
+		(optional) Need debugging symbols for better profiling results.
+			set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG")
+
+		Right-click the project your want to profile in the solution tree and check 'Enable Profiling'. Please note, that this will force the environment to rebuild your project.
+		Build the project.
+		Run the project.
+		Profiler frontend will show-up automatically inside the Visual Studio instance you used to run the project or in a standalone mode (if standalone version is installed).
+
+[-] Installation.
+	- Install (Visual Studio).
+		Use "Extension Manager" on Visual Studio.
