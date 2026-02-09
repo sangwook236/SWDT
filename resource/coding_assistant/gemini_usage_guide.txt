@@ -5,7 +5,7 @@
 [-] Tools.
 	- Gemini Code Assist.
 		https://codeassist.google/
-	
+
 	- Gemini CLI.
 		https://github.com/google-gemini/gemini-cli
 

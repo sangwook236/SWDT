@@ -1,0 +1,37 @@
+[-] General.
+	- Site.
+		https://opencode.ai/
+		https://github.com/anomalyco/opencode
+
+		https://opencode.ai/docs
+
+[-] Tools.
+	- CLI.
+		https://github.com/anomalyco/opencode
+
+		~/.config/opencode/
+		~/.config/opencode/opencode.json
+
+		opencode
+			/connect
+			/init
+			/undo
+			/redo
+			/share
+			/compact
+			/sessions
+			/clear
+			/exit
+			/agents
+			/models
+			/mcps
+			/review
+
+		opencode auth login
+
+[-] Installation.
+	https://github.com/anomalyco/opencode
+
+	- Install.
+		curl -fsSL https://opencode.ai/install | bash
+		npm i -g opencode-ai
