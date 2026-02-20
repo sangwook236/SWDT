@@ -14,21 +14,21 @@
 		For Win64:
 
 	- Build Boost.Build engine.
-        run ${BOOST_HOME}/bootstrap.bat
+		run ${BOOST_HOME}/bootstrap.bat
 
 	- Configure Boost.Build engine.
 		Add the content below to ${BOOST_HOME}/project-config.jam
 			REF [site] >> http://www.boost.org/build/doc/html/index.html
 			REF [site] >> http://www.boost.org/build/doc/html/bbv2/reference/tools.html
 
-		For Win32:
-			using msvc : 14.0 : "C:/Program Files (x86)/Microsoft Visual Studio 14/VC/bin/cl" ;
-			using zlib : 1.2.8 : "D:/usr/local/include" "D:/usr/local/lib" ;
-		For Win64:
-			using msvc : 14.0 : "C:/Program Files (x86)/Microsoft Visual Studio 14/VC/bin/amd64/cl" ;
-			using zlib : 1.2.8 : "D:/usr/local64/include" "D:/usr/local64/lib" ;
-		using python : 3.5 : "D:/MyProgramFiles/Python35" : "D:/MyProgramFiles/Python35/include" : "D:/MyProgramFiles/Python35/libs" ;
-		using mpi ;
+			For Win32:
+				using msvc : 14.0 : "C:/Program Files (x86)/Microsoft Visual Studio 14/VC/bin/cl" ;
+				using zlib : 1.2.8 : "D:/usr/local/include" "D:/usr/local/lib" ;
+			For Win64:
+				using msvc : 14.0 : "C:/Program Files (x86)/Microsoft Visual Studio 14/VC/bin/amd64/cl" ;
+				using zlib : 1.2.8 : "D:/usr/local/include" "D:/usr/local/lib" ;
+			using python : 3.5 : "D:/MyProgramFiles/Python35" : "D:/MyProgramFiles/Python35/include" : "D:/MyProgramFiles/Python35/libs" ;
+			using mpi ;
 
 	- Build Boost library.
 		Option:
@@ -41,14 +41,16 @@
 		For Win32:
 			b2 stage -j4 toolset=msvc variant=release,debug link=static,shared threading=multi --build-type=complete --without-mpi -sICU_PATH="D:/lib_repo/cpp/ext/icu4c-57_1-src/icu" -sICU_LINK="-LD:/usr/local/lib" -sZLIB_SOURCE="D:/lib_repo/cpp/ext/zlib-1.2.8"
 		For Win64:
-			b2 stage -j4 --stagedir=stage64 toolset=msvc address-model=64 variant=release,debug link=static,shared threading=multi --build-type=complete --without-mpi -sICU_PATH="D:/lib_repo/cpp/ext/icu4c-57_1-src/icu" -sICU_LINK="-LD:/usr/local64/lib" -sZLIB_SOURCE="D:/lib_repo/cpp/ext/zlib-1.2.8"
+			b2 stage -j4 --stagedir=stage64 toolset=msvc address-model=64 variant=release,debug link=static,shared threading=multi --build-type=complete --without-mpi -sICU_PATH="D:/lib_repo/cpp/ext/icu4c-57_1-src/icu" -sICU_LINK="-LD:/usr/local/lib" -sZLIB_SOURCE="D:/lib_repo/cpp/ext/zlib-1.2.8"
 
 		For Win32:
-			b2 install --prefix=/usr/local
+			b2 install -j4 --prefix=path/to/install
+			b2 install -j4 address-model=32 link=shared  --prefix=path/to/install
 		For Win64:
-			b2 install --prefix=/usr/local64
+			b2 install -j4 --prefix=path/to/install
+			b2 install -j4 address-model=64 link=shared  --prefix=path/to/install
 
-        b2 clean release debug
+		b2 clean release debug
 
 	- Use MS-MPI.
 		Modify ${BOOST_HOME}/project-config.jam.
@@ -58,51 +60,51 @@
 			REF [site] >> http://stackoverflow.com/questions/26147564/how-to-build-boost-mpi-for-ms-mpi-with-visual-studio-2012
 
 			In line 246:
-			  if ! $(mpicxx) && [ os.on-windows ]
-			  {  
-			    # Try to auto-configure to the Microsoft Compute Cluster Pack
-			    #local cluster_pack_path_native = "C:\\Program Files\\Microsoft Compute Cluster Pack" ;
-			    #local cluster_pack_path = [ path.make $(cluster_pack_path_native) ] ;
+			if ! $(mpicxx) && [ os.on-windows ]
+			{
+				# Try to auto-configure to the Microsoft Compute Cluster Pack
+				#local cluster_pack_path_native = "C:\\Program Files\\Microsoft Compute Cluster Pack" ;
+				#local cluster_pack_path = [ path.make $(cluster_pack_path_native) ] ;
 				local ms_mpi_sdk_path = "C:\\Program Files (x86)\\Microsoft SDKs\\MPI" ;
 				local ms_mpi_path = "C:\\Program Files\\Microsoft MPI" ;
-			    #if [ GLOB $(cluster_pack_path_native)\\Include : mpi.h ]
-			    if [ GLOB $(ms_mpi_sdk_path)\\Include : mpi.h ]
-			    {
-			      if $(.debug-configuration)
-			      {
-			        #ECHO "Found Microsoft Compute Cluster Pack: $(cluster_pack_path_native)" ;
-			        ECHO "Found Microsoft Compute Cluster Pack: $(ms_mpi_sdk_path)" ;
-			      }
-			      
-			      # Pick up either the 32-bit or 64-bit library, depending on which address
-			      # model the user has selected. Default to 32-bit.
-			      #options = <include>$(cluster_pack_path)/Include 
-			      #          <address-model>64:<library-path>$(cluster_pack_path)/Lib/amd64
-			      #          <library-path>$(cluster_pack_path)/Lib/i386
-			      options = <include>$(ms_mpi_sdk_path)/Include 
-			                <address-model>64:<library-path>$(ms_mpi_sdk_path)/Lib/x64
-			                <library-path>$(ms_mpi_sdk_path)/Lib/x86
-			                <find-static-library>msmpi
-			                <toolset>msvc:<define>_SECURE_SCL=0
-			              ;
-			              
-			      # Setup the "mpirun" equivalent (mpiexec)
-			      #.mpirun = "\"$(cluster_pack_path_native)\\Bin\\mpiexec.exe"\" ;
-			      .mpirun = "\"$(ms_mpi_path)\\Bin\\mpiexec.exe"\" ;
-			      .mpirun_flags = -n ;
-			    }
-			    else if $(.debug-configuration)
-			    {
-			      ECHO "Did not find Microsoft Compute Cluster Pack in $(cluster_pack_path_native)." ;
-			    }
-			  }
+				#if [ GLOB $(cluster_pack_path_native)\\Include : mpi.h ]
+				if [ GLOB $(ms_mpi_sdk_path)\\Include : mpi.h ]
+				{
+				if $(.debug-configuration)
+				{
+					#ECHO "Found Microsoft Compute Cluster Pack: $(cluster_pack_path_native)" ;
+					ECHO "Found Microsoft Compute Cluster Pack: $(ms_mpi_sdk_path)" ;
+				}
+
+				# Pick up either the 32-bit or 64-bit library, depending on which address
+				# model the user has selected. Default to 32-bit.
+				#options = <include>$(cluster_pack_path)/Include 
+				#          <address-model>64:<library-path>$(cluster_pack_path)/Lib/amd64
+				#          <library-path>$(cluster_pack_path)/Lib/i386
+				options = <include>$(ms_mpi_sdk_path)/Include 
+							<address-model>64:<library-path>$(ms_mpi_sdk_path)/Lib/x64
+							<library-path>$(ms_mpi_sdk_path)/Lib/x86
+							<find-static-library>msmpi
+							<toolset>msvc:<define>_SECURE_SCL=0
+						;
+
+				# Setup the "mpirun" equivalent (mpiexec)
+				#.mpirun = "\"$(cluster_pack_path_native)\\Bin\\mpiexec.exe"\" ;
+				.mpirun = "\"$(ms_mpi_path)\\Bin\\mpiexec.exe"\" ;
+				.mpirun_flags = -n ;
+				}
+				else if $(.debug-configuration)
+				{
+				ECHO "Did not find Microsoft Compute Cluster Pack in $(cluster_pack_path_native)." ;
+				}
+			}
 		Build.
 			e.g.) b2 --with-mpi
 
 --------------------------------------------------------------------------------
 
-[-] ¥Ÿ∏• libraryø°º≠ Boost library∏¶ ªÁøÎ«“ ∂ß (CMake).
-	- Boost library∏¶ √£¡ˆ ∏¯«œ¥¬ ø¿∑˘.
+[-] Îã§Î•∏ libraryÏóêÏÑú Boost libraryÎ•º ÏÇ¨Ïö©Ìï† Îïå (CMake).
+	- Boost libraryÎ•º Ï∞æÏßÄ Î™ªÌïòÎäî Ïò§Î•ò.
 		<error>
 			Could not find the following Boost libraries:
 				boost_thread
@@ -111,15 +113,15 @@
 				boost_date_time
 			No Boost libraries were found. You may need to set BOOST_LIBRARYDIR to the directory containing Boost libraries or BOOST_ROOT to the location of Boost.
 		<cause>
-			Boost library directory∏¶ √£¡ˆ ∏¯«‘.
-			√÷Ω≈ version¿« Boost library ªÁøÎ.
-			==> ¡§»Æ«— ø¯¿Œ¿∫ æ∆¡˜ ∏∏ß (2016/05/03).
+			Boost library directoryÎ•º Ï∞æÏßÄ Î™ªÌï®.
+			ÏµúÏã† versionÏùò Boost library ÏÇ¨Ïö©.
+			==> Ï†ïÌôïÌïú ÏõêÏù∏ÏùÄ ÏïÑÏßÅ Î™®Î¶Ñ (2016/05/03).
 		<solution>
-			Boost library directory∏¶ ø√πŸ∏£∞‘ ¡ˆ¡§.
+			Boost library directoryÎ•º Ïò¨Î∞îÎ•¥Í≤å ÏßÄÏ†ï.
 				Set Boost_DIR to ${BOOST_HOME}.
 				Set BOOST_ROOT to ${BOOST_HOME}.
 				Set BOOST_LIBRARYDIR to ${BOOST_HOME}/stage/lib.
-			Boost library º≥¡§¿ª ø√πŸ∏£∞‘ ¡ˆ¡§.
+			Boost library ÏÑ§Ï†ïÏùÑ Ïò¨Î∞îÎ•¥Í≤å ÏßÄÏ†ï.
 				Set Boost_USE_MULTITHREADED to on/off.
 				Set Boost_USE_STATIC_LIBS to on/off.
 				Set Boost_ADDITIONAL_VERSIONS to 1.61.0.
@@ -127,11 +129,11 @@
 
 << Building & Installation >>
 
-[-] Boost site∑Œ ∫Œ≈Õ file download.
+[-] Boost siteÎ°ú Î∂ÄÌÑ∞ file download.
 	- Related files.
 		boost package
 		boost-jam file
-[-] MSVC »Ø∞Ê∫Øºˆ º≥¡§.
+[-] MSVC ÌôòÍ≤ΩÎ≥ÄÏàò ÏÑ§Ï†ï.
 	- Visual Studio 6.0.
 		>> Run ${VC6_ROOT}/Vc98/bin/vcvars32.bat.
 		>> Command.
@@ -146,11 +148,11 @@
 		Using bootstrap script.
 			${BOOST_ROOT}/bootstrap.bat
 			${BOOST_ROOT}/bootstrap.sh
-			==> buildingø° ¿««ÿ ª˝º∫µ» file.
+			==> buildingÏóê ÏùòÌï¥ ÏÉùÏÑ±Îêú file.
 				${BOOST_ROOT}/b2.exe or bjam.exe
 				${BOOST_ROOT}/b2 or bjam
-		bjam¿ª ∞≥∫∞¿˚¿∏∑Œ building.
-			bjam executable¿ª ª˝º∫«œ±‚ ¿ß«ÿ æ∆∑°¿« script file¿ª Ω««‡.
+		bjamÏùÑ Í∞úÎ≥ÑÏ†ÅÏúºÎ°ú building.
+			bjam executableÏùÑ ÏÉùÏÑ±ÌïòÍ∏∞ ÏúÑÌï¥ ÏïÑÎûòÏùò script fileÏùÑ Ïã§Ìñâ.
 				${BOOST_ROOT}/tools/build/v2/engine/build.bat
 				${BOOST_ROOT}/tools/build/v2/engine/build.sh
 				or
@@ -159,7 +161,7 @@
 	- bcp.
 		Build command.
 			${BOOST_ROOT}/bjam tools/bcp
-		${BOOST_ROOT}/dist/bin «œø° ª˝º∫.
+		${BOOST_ROOT}/dist/bin ÌïòÏóê ÏÉùÏÑ±.
 
 [-] When linking with STLport.
 	- Set eenvironmental variables.
@@ -168,9 +170,9 @@
 		e.g.) when linking with STL port in "${STLPORT_HOME}/STLport-4.6.2"
 			set STLPORT_PATH="${STLPORT_HOME}"
 			set STLPORT_VERSION=4.6.2
-	- Buildµ» STLport ∞¸∑√ lib/dll fileµÈ¿Ã ∆Ø¡§ directoryø° ¡∏¿Á«ÿæﬂ «‘.
+	- BuildÎêú STLport Í¥ÄÎ†® lib/dll fileÎì§Ïù¥ ÌäπÏ†ï directoryÏóê Ï°¥Ïû¨Ìï¥Ïïº Ìï®.
 		"${STLPORT_PATH}/STLport-4.6.2/lib" directory
-	- STLport debug mode∞° ¡§¿«µ«æÓ ¿÷æÓæﬂ «‘.
+	- STLport debug modeÍ∞Ä Ï†ïÏùòÎêòÏñ¥ ÏûàÏñ¥Ïïº Ìï®.
 		#define _STLP_DEBUG 1
 
 [-] Setting compiler specific configuration policy.
@@ -178,23 +180,23 @@
 
 [-] Building Boost.
 	- Use bjam.
-		bootstrap script¿« Ω««‡ ∞·∞˙∑Œ ª˝º∫.
-		∏µÁ library∏¶ building¥¬ ∞ÊøÏ.
+		bootstrap scriptÏùò Ïã§Ìñâ Í≤∞Í≥ºÎ°ú ÏÉùÏÑ±.
+		Î™®Îì† libraryÎ•º buildingÎäî Í≤ΩÏö∞.
 			${BOOST_ROOT}/b2.exe or bjam.exe
 			${BOOST_ROOT}/b2 or bjam
-		∆Ø¡§ library∏∏¿ª building«œ∞Ì¿⁄ «—¥Ÿ∏È «ÿ¥Á option¿ª √ﬂ∞°.
-			e.g.) boost::date_time library∏∏¿ª building«œ¥¬ ∞ÊøÏ.
+		ÌäπÏ†ï libraryÎßåÏùÑ buildingÌïòÍ≥†Ïûê ÌïúÎã§Î©¥ Ìï¥Îãπ optionÏùÑ Ï∂îÍ∞Ä.
+			e.g.) boost::date_time libraryÎßåÏùÑ buildingÌïòÎäî Í≤ΩÏö∞.
 				bjam --with-date_time "-sBUILD=debug" install
-		==> ±‚∫ª º≥¡§¿ª ªÁøÎ«—¥Ÿ∏È.
-			Windows(VC) »Ø∞Êø°º≠¥¬ static library∏∏ ª˝º∫.
-				shared library ª˝º∫.
+		==> Í∏∞Î≥∏ ÏÑ§Ï†ïÏùÑ ÏÇ¨Ïö©ÌïúÎã§Î©¥.
+			Windows(VC) ÌôòÍ≤ΩÏóêÏÑúÎäî static libraryÎßå ÏÉùÏÑ±.
+				shared library ÏÉùÏÑ±.
 					bjam link=shared
-			Unix-like(GCC) »Ø∞Êø°º≠ release version∏∏ ª˝º∫.
-				debug version ª˝º∫.
+			Unix-like(GCC) ÌôòÍ≤ΩÏóêÏÑú release versionÎßå ÏÉùÏÑ±.
+				debug version ÏÉùÏÑ±.
 					bjam variant=debug
-		==> ª˝º∫µ» library directory.
+		==> ÏÉùÏÑ±Îêú library directory.
 				${BOOST_ROOT}/stage/lib
-			Unix-like(GCC) »Ø∞Êø°º≠¥¬ release & debug version¿Ã µø¿œ«— file ¿Ã∏ß¿ª ∞°¡ˆ∏Á µø¿œ directoryø° ª˝º∫µ«π«∑Œ ∞„√ƒæ≤ø©¡ˆ¡ˆ æ µµ∑œ ¡÷¿«∏¶ ±‚øÔø©æﬂ «‘.
+			Unix-like(GCC) ÌôòÍ≤ΩÏóêÏÑúÎäî release & debug versionÏù¥ ÎèôÏùºÌïú file Ïù¥Î¶ÑÏùÑ Í∞ÄÏßÄÎ©∞ ÎèôÏùº directoryÏóê ÏÉùÏÑ±ÎêòÎØÄÎ°ú Í≤πÏ≥êÏì∞Ïó¨ÏßÄÏßÄ ÏïäÎèÑÎ°ù Ï£ºÏùòÎ•º Í∏∞Ïö∏Ïó¨Ïïº Ìï®.
 	- Run my batch file.
 		e.g.)
 			boost_1_50_0_vc_build.bat clean > error.log
@@ -213,17 +215,17 @@
 << Trouble Shooting >>
 
 [-] Configure boost library.
-	- Boost libraryø°¥¬ user configuration¿ª ¿ß«— file¿ª ¡¶∞¯.
+	- Boost libraryÏóêÎäî user configurationÏùÑ ÏúÑÌïú fileÏùÑ Ï†úÍ≥µ.
 		${BOOST_HEADER_ROOT}/config/user.hpp
-[-] Library linkingΩ√ error∞° πﬂª˝«“ ∂ß.
-	- Boost buildingΩ√ø° outpur message∏¶ file∑Œ redirection«ÿ "failed"µ» ø¯¿Œ¿ª ¡¶∞≈.
+[-] Library linkingÏãú errorÍ∞Ä Î∞úÏÉùÌï† Îïå.
+	- Boost buildingÏãúÏóê outpur messageÎ•º fileÎ°ú redirectionÌï¥ "failed"Îêú ÏõêÏù∏ÏùÑ Ï†úÍ±∞.
 		e.g.)
 			1. boost_build > error.log
-			2. error.log fileø°º≠ "failed"∏¶ ∞Àªˆ
-[-] BuildingΩ√ boost library sourceøÕ ∞∞¿Ã πË∆˜µ«¥¬ jam file¿ª ¿ÃøÎ«ÿæﬂ «‘.
-[-] Ver. 1.32.0ø°º≠ boost::date_time library∏¶ MSVC6/STLport∏¶ ¿ÃøÎ«œø© building«“ ∂ß.
-	- æÀ ºˆ æ¯¥¬ error πﬂª˝Ω√.
-		>< "boost/date_time/date_formatting.hpp"¿ª æ∆∑°øÕ ∞∞¿Ã ºˆ¡§.
+			2. error.log fileÏóêÏÑú "failed"Î•º Í≤ÄÏÉâ
+[-] BuildingÏãú boost library sourceÏôÄ Í∞ôÏù¥ Î∞∞Ìè¨ÎêòÎäî jam fileÏùÑ Ïù¥Ïö©Ìï¥Ïïº Ìï®.
+[-] Ver. 1.32.0ÏóêÏÑú boost::date_time libraryÎ•º MSVC6/STLportÎ•º Ïù¥Ïö©ÌïòÏó¨ buildingÌï† Îïå.
+	- Ïïå Ïàò ÏóÜÎäî error Î∞úÏÉùÏãú.
+		>< "boost/date_time/date_formatting.hpp"ÏùÑ ÏïÑÎûòÏôÄ Í∞ôÏù¥ ÏàòÏ†ï.
 			[ref] http://lists.boost.org/MailArchives/boost/msg76452.php
 		<before>
 			public:
@@ -234,13 +236,13 @@
 				 *  if that capability is used.
 				 */
 				static std::basic_ostream<charT>& format_month(const month_type& month,
-				                                  std::basic_ostream<charT>& os)
+												std::basic_ostream<charT>& os)
 		<after>
 			public:
 				// Workaround for ICE in MSVC 6 when building with STLport IOstreams
 			#if defined(BOOST_MSVC) && BOOST_MSVC <= 1200 && \
-			    (defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)) && \
-			    !defined(_STLP_NO_OWN_IOSTREAMS)
+				(defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)) && \
+				!defined(_STLP_NO_OWN_IOSTREAMS)
 			private:
 				typedef std::basic_ostream<charT> _ostream_type;
 			public:
@@ -253,19 +255,19 @@
 				 *  if that capability is used.
 				 */
 				static std::basic_ostream<charT>& format_month(const month_type& month,
-				                                  std::basic_ostream<charT>& os)
+												std::basic_ostream<charT>& os)
 			#endif
-	- _i64toa ∞¸∑√ error πﬂª˝Ω√.
-		>< "boost/date_time/posix_time/date_formatters.hpp"¿ª æ∆∑°øÕ ∞∞¿Ã ºˆ¡§.
+	- _i64toa Í¥ÄÎ†® error Î∞úÏÉùÏãú.
+		>< "boost/date_time/posix_time/date_formatters.hpp"ÏùÑ ÏïÑÎûòÏôÄ Í∞ôÏù¥ ÏàòÏ†ï.
 			[ref] http://lists.boost.org/MailArchives/boost/msg76453.php
-		>< µŒ ∞˜¿ª ºˆ¡§«ÿæﬂ «‘.
+		>< Îëê Í≥≥ÏùÑ ÏàòÏ†ïÌï¥Ïïº Ìï®.
 		<before>
 			template<class charT>
 			inline std::basic_string<charT> to_simple_string_type(time_duration td) {
 				//...
-			    charT buff[32];
-			    _i64toa(frac_sec, buff, 10);
-			    //...
+				charT buff[32];
+				_i64toa(frac_sec, buff, 10);
+				//...
 			}
 		<after>
 			#if (defined(BOOST_MSVC) && (_MSC_VER <= 1200))  // 1200 == VC++ 6.0
@@ -285,24 +287,24 @@
 			template<class charT>
 			inline std::basic_string<charT> to_simple_string_type(time_duration td) {
 				//...
-			    charT buff[32];
-			    detail::convert_int64<charT>::convert(buff, frac_sec);
-			    //...
+				charT buff[32];
+				detail::convert_int64<charT>::convert(buff, frac_sec);
+				//...
 			}
 
-[-] Ver. 1.32.0¿ª MSVC7.1/STLport∏¶ ¿ÃøÎ«œø© building«“ ∂ß.
-	- boost::lexical_cast ∞¸∑√ error πﬂª˝«—¥Ÿ∏È.
-		>< build option √ﬂ∞°.
+[-] Ver. 1.32.0ÏùÑ MSVC7.1/STLportÎ•º Ïù¥Ïö©ÌïòÏó¨ buildingÌï† Îïå.
+	- boost::lexical_cast Í¥ÄÎ†® error Î∞úÏÉùÌïúÎã§Î©¥.
+		>< build option Ï∂îÍ∞Ä.
 			<native-wchar_t>on
 			e.g.) "-sBUILD=release <native-wchar_t>on"
 
-[-] Microsoft VC++ Compiler∏¶ ¿ß«— project file(.dsw, *.sln)¿Ã ¡∏¿Á«œ¥¬ library.
+[-] Microsoft VC++ CompilerÎ•º ÏúÑÌïú project file(.dsw, *.sln)Ïù¥ Ï°¥Ïû¨ÌïòÎäî library.
 	- Serialization library.
 		>< directory where project files exist.
 			${BOOST_ROOT}/libs/serialization/vc6ide
 			${BOOST_ROOT}/libs/serialization/vc7ide
 			${BOOST_ROOT}/libs/serialization/borland6ide
-		>< Visual Studio .NET(_MSC_VER >= 1300)ø°º≠∏∏ ¡§ªÛ¿˚¿∏∑Œ building.
+		>< Visual Studio .NET(_MSC_VER >= 1300)ÏóêÏÑúÎßå Ï†ïÏÉÅÏ†ÅÏúºÎ°ú building.
 	- Python library.
 		>< directory where project files exist
 			${BOOST_ROOT}/libs/python/build
@@ -310,17 +312,17 @@
 		>< directory where project files exist
 			${BOOST_ROOT}/libs/test/build
 
-[-] Ver. 1.33.0 & MSVC7.1/STLport5.0RC5∏¶ ¿ÃøÎ«œø© building«“ ∂ß.
+[-] Ver. 1.33.0 & MSVC7.1/STLport5.0RC5Î•º Ïù¥Ïö©ÌïòÏó¨ buildingÌï† Îïå.
 	<-> Library linking error.
 		- Error message.
 			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71.lib'
 			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71_stldebug.lib'
-		- Build ∞¸∑√ ∆ƒ¿œ ºˆ¡§.
-			-> STLport library base name ºˆ¡§.
+		- Build Í¥ÄÎ†® ÌååÏùº ÏàòÏ†ï.
+			-> STLport library base name ÏàòÏ†ï.
 				>> In ${BOOST_ROOT}/tools/build/v1/vc-7_1-stlport-tools.jam.
 					<before> STLPORT_LIB_BASE_NAME = stlport_vc71;
 					<after> STLPORT_LIB_BASE_NAME = stlport;		
-			-> STLport library debug suffix ºˆ¡§.
+			-> STLport library debug suffix ÏàòÏ†ï.
 				>> In ${BOOST_ROOT}/tools/build/v1/stlport.jam
 					<before>
 						STLPORT_LIB_DEBUG_SUFFIX ?= _stldebug;
@@ -341,29 +343,29 @@
 				>> In ${BOOST_ROOT}/tools/build/v2/tools/stlport.jam.
 					<before>
 						if $(debug) = "on"
-			            {
-			            	name = $(name)_stldebug;
-			            }
-			        <after>
-			            if $(debug) = "on"
-			            {
-			                name = $(name)_stld50 ;
-			            }
-			            else {
-			                name = $(name)_r50 ;
-			            }
+						{
+							name = $(name)_stldebug;
+						}
+					<after>
+						if $(debug) = "on"
+						{
+							name = $(name)_stld50 ;
+						}
+						else {
+							name = $(name)_r50 ;
+						}
 
-[-] Ver. 1.33.0 & MSVC7.1/STLport5.0RC6∏¶ ¿ÃøÎ«œø© building«“ ∂ß.
+[-] Ver. 1.33.0 & MSVC7.1/STLport5.0RC6Î•º Ïù¥Ïö©ÌïòÏó¨ buildingÌï† Îïå.
 	<-> STLport library linking error.
 		- Error message.
 			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71.lib'
 			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71_stldebug.lib'
-		- Build ∞¸∑√ ∆ƒ¿œ ºˆ¡§.
-			-> STLport library base name ºˆ¡§.
+		- Build Í¥ÄÎ†® ÌååÏùº ÏàòÏ†ï.
+			-> STLport library base name ÏàòÏ†ï.
 				>> In ${BOOST_ROOT}/tools/build/v1/vc-7_1-stlport-tools.jam.
 					<before> STLPORT_LIB_BASE_NAME = stlport_vc71 ;
-					<after> STLPORT_LIB_BASE_NAME = stlport ;		
-			-> STLport library debug suffix ºˆ¡§.
+					<after> STLPORT_LIB_BASE_NAME = stlport ;
+			-> STLport library debug suffix ÏàòÏ†ï.
 				>> In ${BOOST_ROOT}/tools/build/v1/stlport.jam.
 					<before>
 						STLPORT_LIB_DEBUG_SUFFIX ?= _stldebug ;
@@ -384,17 +386,17 @@
 				>> In ${BOOST_ROOT}/tools/build/v2/tools/stlport.jam.
 					<before>
 						if $(debug) = "on"
-			            {
-			            	name = $(name)_stldebug ;
-			            }
-			        <after>
-			            if $(debug) = "on"
-			            {
-			                name = $(name)stld.5.0.0 ;
-			            }
-			            else {
-			                name = $(name).5.0.0 ;
-			            }
+						{
+							name = $(name)_stldebug ;
+						}
+					<after>
+						if $(debug) = "on"
+						{
+							name = $(name)stld.5.0.0 ;
+						}
+						else {
+							name = $(name).5.0.0 ;
+						}
 	<-> Thread library compiling error.
 		-. Error message.
 			error C3861: '_snprintf': identifier not found, even with argument-dependent lookup
@@ -403,45 +405,45 @@
 				<before>
 					bool boost_error(char const* expr, char const* func, char const* file, long line)
 					{
-					    #if WINVER
-					        using namespace std;
+						#if WINVER
+							using namespace std;
 
-					        #ifndef ELEMENTS
-					        #define ELEMENTS(a) (sizeof(a)/sizeof(*(a)))
-					        #endif
+							#ifndef ELEMENTS
+							#define ELEMENTS(a) (sizeof(a)/sizeof(*(a)))
+							#endif
 
-					        TCHAR message[200];
-					        _sntprintf(message,ELEMENTS(message),TEXT("Assertion failed (func=%s, file=%s, line=%d): %s"), func, file, line, expr);
+							TCHAR message[200];
+							_sntprintf(message,ELEMENTS(message),TEXT("Assertion failed (func=%s, file=%s, line=%d): %s"), func, file, line, expr);
 
-					        ::OutputDebugString(message);
+							::OutputDebugString(message);
 
-					        if(::IsDebuggerPresent())
-					            ::DebugBreak();
-					    #endif
+							if(::IsDebuggerPresent())
+								::DebugBreak();
+						#endif
 
-					    return false;
+						return false;
 					}
 				<after>
 					/*
 					bool boost_error(char const* expr, char const* func, char const* file, long line)
 					{
-					    #if WINVER
-					        using namespace std;
+						#if WINVER
+							using namespace std;
 
-					        #ifndef ELEMENTS
-					        #define ELEMENTS(a) (sizeof(a)/sizeof(*(a)))
-					        #endif
+							#ifndef ELEMENTS
+							#define ELEMENTS(a) (sizeof(a)/sizeof(*(a)))
+							#endif
 
-					        TCHAR message[200];
-					        _sntprintf(message,ELEMENTS(message),TEXT("Assertion failed (func=%s, file=%s, line=%d): %s"), func, file, line, expr);
+							TCHAR message[200];
+							_sntprintf(message,ELEMENTS(message),TEXT("Assertion failed (func=%s, file=%s, line=%d): %s"), func, file, line, expr);
 
-					        ::OutputDebugString(message);
+							::OutputDebugString(message);
 
-					        if(::IsDebuggerPresent())
-					            ::DebugBreak();
-					    #endif
+							if(::IsDebuggerPresent())
+								::DebugBreak();
+						#endif
 
-					    return false;
+						return false;
 					}
 					*/
 	<-> Regex library linking error.

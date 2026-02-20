@@ -84,9 +84,11 @@ void onnx_runtime_mnist_example()
 
 #if 0
 			OrtCUDAProviderOptions cuda_options;
+			//OrtCUDAProviderOptionsV2 cuda_options;
 			cuda_options.device_id = 0;  // Specify GPU device ID
 			//cuda_options.gpu_mem_limit = SIZE_MAX;  // Default: SIZE_MAX
 			session_options.AppendExecutionProvider_CUDA(cuda_options);
+			//session_options.AppendExecutionProvider_CUDA_V2(cuda_options);
 #else
 			session_options.AppendExecutionProvider_CUDA(OrtCUDAProviderOptions{});  // Enable CUDA execution provider
 			//session_options.AppendExecutionProvider_CUDA_V2(OrtCUDAProviderOptionsV2{});  // Enable CUDA execution provider
@@ -111,6 +113,7 @@ void onnx_runtime_mnist_example()
 
 #if 0
 			OrtTensorRTProviderOptions trt_options;
+			//OrtTensorRTProviderOptionsV2 trt_options;
 			trt_options.device_id = 0;  // Specify GPU device ID
 			trt_options.trt_max_workspace_size = 1 << 30;  // Default value: 2^30 = 1073741824 (1GB)
 			trt_options.trt_fp16_enable = 1;
@@ -123,6 +126,7 @@ void onnx_runtime_mnist_example()
 			trt_options.trt_engine_cache_enable = 1;
 			trt_options.trt_engine_cache_path = "path/to/engine/cache";
 			session_options.AppendExecutionProvider_TensorRT(trt_options);
+			//session_options.AppendExecutionProvider_TensorRT_V2(trt_options);
 #else
 			session_options.AppendExecutionProvider_TensorRT(OrtTensorRTProviderOptions{});
 			//session_options.AppendExecutionProvider_TensorRT_V2(OrtTensorRTProviderOptionsV2{});
@@ -355,6 +359,8 @@ int onnx_main(int argc, char *argv[])
 
 		// Ultralytics
 		//	Refer to ultralytics_onnx_runtime_test.cpp
+		//	Refer to inno3d_seg_onnx_runtime_by_function.cpp
+		//	Refer to inno3d_seg_onnx_runtime_by_class.cpp
 
 		// ONNX on TensorRT
 		//	Refer to tensorrt_main.cpp

@@ -109,6 +109,15 @@ add_definitions(-DUNICODE -D_UNICODE)
 #add_definitions(${PCL_DEFINITIONS})
 #message(STATUS "Compile definitions: ${COMPILE_DEFINITIONS}")
 
+#include(FetchContent)
+#FetchContent_Declare(
+#	fmt
+#	GIT_REPOSITORY https://github.com/fmtlib/fmt
+#	GIT_TAG 7.1.3
+#)
+#FetchContent_MakeAvailable(fmt)
+#target_link_libraries(${TARGET} PRIVATE fmt::fmt)
+
 #--------------------
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 	set(CMAKE_CXX_FLAGS "-target x86_64-w64-mingw32 -std=c++17 -Wall -Wextra -Wpedantic")
@@ -156,7 +165,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 #	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")  # {-MT, -MTd}.
 
 	if(OpenMP_CXX_FOUND)
-		add_compile_options(/fopenmp)
+		add_compile_options(/openmp)
 	endif(OpenMP_CXX_FOUND)
 
 #	add_compile_options(/arch:AVX2)
