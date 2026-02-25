@@ -142,9 +142,12 @@
 	- List containers.
 		docker container ls
 		docker ps
-	- List all containers including stopped ones.
-		docker container ls --all
-		docker ps -a
+		docker ps -a format "{{.ID}}: {{.Names}}: {{.Status}}"
+		docker ps -a format "table {{.Names}}\t{{.Status}}"
+
+		List all containers including stopped ones:
+			docker container ls --all
+			docker ps -a
 
 	- List the history of an image.
 		docker history <IMAGE_NAME[:TAG]>
@@ -184,6 +187,7 @@
 
 	- Log.
 		docker logs <CONTAINER_NAME>
+		docker logs -f <CONTAINER_NAME>
 
 [-] Usage (NVIDIA GPU).
 	https://github.com/NVIDIA/nvidia-docker
