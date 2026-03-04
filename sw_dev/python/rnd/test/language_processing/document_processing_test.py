@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-from PIL import Image
 import torch
 import transformers
+from PIL import Image
 
 # REF [site] >>
 #	https://lightning.ai/mehta/studios/surya-ocr-implementation

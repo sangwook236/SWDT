@@ -4979,6 +4979,300 @@ def qwen3_example():
 
 		model.close_stream(stream_state)
 
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen3
+#	https://huggingface.co/Qwen
+def qwen3_5_example():
+	# Models:
+	#	Qwen/Qwen3.5-27B
+	#	Qwen/Qwen3.5-27B-FP8
+	#	Qwen/Qwen3.5-35B-A3B
+	#	Qwen/Qwen3.5-35B-A3B-FP8
+	#	Qwen/Qwen3.5-35B-A3B-Base
+	#	Qwen/Qwen3.5-122B-A10B
+	#	Qwen/Qwen3.5-122B-A10B-FP8
+	#	Qwen/Qwen3.5-397B-A17B
+	#	Qwen/Qwen3.5-397B-A17B-FP8
+
+	# Install:
+	#	pip install -U openai
+	# Set the following accordingly:
+	#	export OPENAI_BASE_URL="http://localhost:8000/v1"
+	#	export OPENAI_API_KEY="EMPTY"
+
+	# We recommend using the following set of sampling parameters for generation
+	#	Thinking mode for general tasks: temperature=1.0, top_p=0.95, top_k=20, min_p=0.0, presence_penalty=1.5, repetition_penalty=1.0
+	#	Thinking mode for precise coding tasks (e.g. WebDev): temperature=0.6, top_p=0.95, top_k=20, min_p=0.0, presence_penalty=0.0, repetition_penalty=1.0
+	#	Instruct (or non-thinking) mode for general tasks: temperature=0.7, top_p=0.8, top_k=20, min_p=0.0, presence_penalty=1.5, repetition_penalty=1.0
+	#	Instruct (or non-thinking) mode for reasoning tasks: temperature=1.0, top_p=0.95, top_k=20, min_p=0.0, presence_penalty=1.5, repetition_penalty=1.0
+	# Please note that the support for sampling parameters varies according to inference frameworks.
+
+	if True:
+		# Text-Only Input
+
+		from openai import OpenAI
+
+		# Configured by environment variables
+		client = OpenAI()
+
+		messages = [
+			{"role": "user", "content": "Type \"I love Qwen3.5\" backwards"},
+		]
+
+		if False:
+			chat_response = client.chat.completions.create(
+				model="Qwen/Qwen3.5-122B-A10B",
+				messages=messages,
+				max_tokens=81920,
+				temperature=1.0,
+				top_p=0.95,
+				presence_penalty=1.5,
+				extra_body={
+					"top_k": 20,
+				}, 
+			)
+		else:
+			chat_response = client.chat.completions.create(
+				model="Qwen/Qwen3.5-397B-A17B",
+				messages=messages,
+				max_tokens=81920,
+				temperature=0.6,
+				top_p=0.95,
+				extra_body={
+					"top_k": 20,
+				}, 
+			)
+		print("Chat response:", chat_response)
+
+	if True:
+		# Image Input
+
+		from openai import OpenAI
+
+		# Configured by environment variables
+		client = OpenAI()
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image_url",
+						"image_url": {
+							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/CI_Demo/mathv-1327.jpg"
+						}
+					},
+					{
+						"type": "text",
+						"text": "The centres of the four illustrated circles are in the corners of the square. The two big circles touch each other and also the two little circles. With which factor do you have to multiply the radii of the little circles to obtain the radius of the big circles?\nChoices:\n(A) $\\frac{2}{9}$\n(B) $\\sqrt{5}$\n(C) $0.8 \\cdot \\pi$\n(D) 2.5\n(E) $1+\\sqrt{2}$"
+					}
+				]
+			}
+		]
+
+		if True:
+			chat_response = client.chat.completions.create(
+				model="Qwen/Qwen3.5-122B-A10B",
+				messages=messages,
+				max_tokens=81920,
+				temperature=1.0,
+				top_p=0.95,
+				presence_penalty=1.5,
+				extra_body={
+					"top_k": 20,
+				}, 
+			)
+		else:
+			chat_response = client.chat.completions.create(
+				model="Qwen/Qwen3.5-397B-A17B",
+				messages=messages,
+				max_tokens=81920,
+				temperature=0.6,
+				top_p=0.95,
+				extra_body={
+					"top_k": 20,
+				}, 
+			)
+		print("Chat response:", chat_response)
+
+	if True:
+		# Video Input
+
+		from openai import OpenAI
+
+		# Configured by environment variables
+		client = OpenAI()
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "video_url",
+						"video_url": {
+							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/video/N1cdUjctpG8.mp4"
+						}
+					},
+					{
+						"type": "text",
+						"text": "How many porcelain jars were discovered in the niches located in the primary chamber of the tomb?"
+					}
+				]
+			}
+		]
+
+		# When vLLM is launched with `--media-io-kwargs '{"video": {"num_frames": -1}}'`,
+		# video frame sampling can be configured via `extra_body` (e.g., by setting `fps`).
+		# This feature is currently supported only in vLLM.
+		#
+		# By default, `fps=2` and `do_sample_frames=True`.
+		# With `do_sample_frames=True`, you can customize the `fps` value to set your desired video sampling rate.
+		if False:
+			chat_response = client.chat.completions.create(
+				model="Qwen/Qwen3.5-122B-A10B",
+				messages=messages,
+				max_tokens=81920,
+				temperature=1.0,
+				top_p=0.95,
+				presence_penalty=1.5,
+				extra_body={
+					"top_k": 20,
+					"mm_processor_kwargs": {"fps": 2, "do_sample_frames": True},
+				}, 
+			)
+		else:
+			chat_response = client.chat.completions.create(
+				model="Qwen/Qwen3.5-397B-A17B",
+				messages=messages,
+				max_tokens=81920,
+				temperature=0.6,
+				top_p=0.95,
+				extra_body={
+					"top_k": 20,
+					"mm_processor_kwargs": {"fps": 2, "do_sample_frames": True},
+				}, 
+			)
+		print("Chat response:", chat_response)
+
+	if True:
+		# Instruct (or Non-Thinking) Mode
+		#	Qwen3.5 does not officially support the soft switch of Qwen3, i.e., /think and /nothink.
+
+		from openai import OpenAI
+
+		# Configured by environment variables
+		client = OpenAI()
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image_url",
+						"image_url": {
+							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/RealWorld/RealWorld-04.png"
+						}
+					},
+					{
+						"type": "text",
+						"text": "Where is this?"
+					}
+				]
+			}
+		]
+
+		chat_response = client.chat.completions.create(
+			model="Qwen/Qwen3.5-397B-A17B",
+			messages=messages,
+			max_tokens=32768,
+			temperature=0.7,
+			top_p=0.8,
+			presence_penalty=1.5,
+			extra_body={
+				"top_k": 20,
+				"chat_template_kwargs": {"enable_thinking": False},
+			}, 
+		)
+		print("Chat response:", chat_response)
+
+	if True:
+		# Agentic Usage
+		#	Qwen3.5 excels in tool calling capabilities.
+
+		# Qwen-Agent
+		#	We recommend using Qwen-Agent to quickly build Agent applications with Qwen3.5.
+		#	To define the available tools, you can use the MCP configuration file, use the integrated tool of Qwen-Agent, or integrate other tools by yourself.
+
+		# Install Qwen-Agent:
+		#	https://github.com/QwenLM/Qwen-Agent
+
+		import os
+		from qwen_agent.agents import Assistant
+
+		# Define LLM
+		if True:
+			# Using Alibaba Cloud Model Studio
+			llm_cfg = {
+				# Use the OpenAI-compatible model service provided by DashScope:
+				"model": "Qwen3.5-397B-A17B",
+				"model_type": "qwenvl_oai",
+				"model_server": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+				"api_key": os.getenv("DASHSCOPE_API_KEY"),
+
+				"generate_cfg": {
+					"use_raw_api": True,
+					# When using Dash Scope OAI API, pass the parameter of whether to enable thinking mode in this way
+					"extra_body": {
+						"enable_thinking": True
+					},
+				},
+			}
+		else:
+			# Using OpenAI-compatible API endpoint.
+			# functionality of the deployment frameworks and let Qwen-Agent automate the related operations.
+
+			lm_cfg = {
+				# Use your own model service compatible with OpenAI API by vLLM/SGLang:
+				"model": "Qwen/Qwen3.5-397B-A17B",
+				"model_type": "qwenvl_oai",
+				"model_server": "http://localhost:8000/v1",  # api_base
+				"api_key": "EMPTY",
+
+				"generate_cfg": {
+					"use_raw_api": True,
+					# When using vLLM/SGLang OAI API, pass the parameter of whether to enable thinking mode in this way
+					"extra_body": {
+						"chat_template_kwargs": {"enable_thinking": True}
+					},
+				},
+			}
+
+		# Define Tools
+		tools = [
+			{"mcpServers": {  # You can specify the MCP configuration file
+					"filesystem": {
+						"command": "npx",
+						"args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/xxxx/Desktop"]
+					}
+				}
+			}
+		]
+
+		# Define Agent
+		bot = Assistant(llm=llm_cfg, function_list=tools)
+
+		# Streaming generation
+		messages = [{"role": "user", "content": "Help me organize my desktop."}]
+		for responses in bot.run(messages=messages):
+			pass
+		print(responses)
+
+		# Streaming generation
+		messages = [{"role": "user", "content": "Develop a dog website and save it on the desktop"}]
+		for responses in bot.run(messages=messages):
+			pass
+		print(responses)
+
 # REF [site] >> https://huggingface.co/deepseek-ai
 def deepseek_llm_example():
 	# Models:
@@ -12153,9 +12447,10 @@ def main():
 	#qwen2_example()  # Qwen2
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
+	qwen3_5_example()  # Qwen3.5
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5
-	k_exaone_example()  # K-EXAONE
+	#k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
 	#kimi_example()  # Kimi K2. Not yet implemented
 	#apriel_example()  # Apriel
