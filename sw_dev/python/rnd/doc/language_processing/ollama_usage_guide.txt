@@ -6,6 +6,9 @@
 		https://ollama.com/search
 		https://ollama.com/library
 
+	- Directory.
+		~/.ollama
+
 [-] Usage.
 	https://github.com/ollama/ollama
 
@@ -19,10 +22,10 @@
 				1. Create a file named Modelfile, with a FROM instruction with the local filepath to the model you want to import.
 					FROM ./vicuna-33b.Q4_0.gguf
 
-				2. Create the model in Ollama
+				2. Create the model in Ollama.
 					ollama create example -f Modelfile
 
-				3. Run the model
+				3. Run the model.
 					ollama run example
 
 	- Import from PyTorch or Safetensors.
@@ -51,8 +54,28 @@
 	https://github.com/ollama/ollama
 
 	- CLI.
+		Commands:
+			serve		Start Ollama
+			create		Create a model
+			show		Show information for a model
+			run			Run a model
+			stop		Stop a running model
+			pull		Pull a model from a registry
+			push		Push a model to a registry
+			signin		Sign in to ollama.com
+			signout		Sign out from ollama.com
+			list		List models
+			ps			List running models
+			cp			Copy a model
+			rm			Remove a model
+			launch		Launch the Ollama menu or an integration
+			help		Help about any command
+
 		ollama --help
 		ollama push --help
+
+		Run ollama in your terminal to open the interactive menu:
+			ollama
 
 		Create a model:
 			ollama create mymodel -f ./Modelfile
@@ -100,6 +123,44 @@
 		Start Ollama:
 			ollama serve is used when you want to start ollama without running the desktop application.
 
+			Environment variables:
+				OLLAMA_DEBUG				Show additional debug information (e.g. OLLAMA_DEBUG=1)
+				OLLAMA_HOST					IP Address for the ollama server (default 127.0.0.1:11434)
+				OLLAMA_CONTEXT_LENGTH		Context length to use unless otherwise specified (default: 4k/32k/256k based on VRAM)
+				OLLAMA_KEEP_ALIVE			The duration that models stay loaded in memory (default "5m")
+				OLLAMA_MAX_LOADED_MODELS	Maximum number of loaded models per GPU
+				OLLAMA_MAX_QUEUE			Maximum number of queued requests
+				OLLAMA_MODELS				The path to the models directory
+				OLLAMA_NUM_PARALLEL			Maximum number of parallel requests
+				OLLAMA_NO_CLOUD				Disable Ollama cloud features (remote inference and web search)
+				OLLAMA_NOPRUNE				Do not prune model blobs on startup
+				OLLAMA_ORIGINS				A comma separated list of allowed origins
+				OLLAMA_SCHED_SPREAD			Always schedule model across all GPUs
+				OLLAMA_FLASH_ATTENTION		Enabled flash attention
+				OLLAMA_KV_CACHE_TYPE		Quantization type for the K/V cache (default: f16)
+				OLLAMA_LLM_LIBRARY			Set LLM library to bypass autodetection
+				OLLAMA_GPU_OVERHEAD			Reserve a portion of VRAM per GPU (bytes)
+				OLLAMA_LOAD_TIMEOUT			How long to allow model loads to stall before giving up (default "5m")
+
+			On Command Prompt:
+				set OLLAMA_HOST=127.0.0.1:11434
+				set OLLAMA_KEEP_ALIVE=24h
+			On PowerShell:
+				$env:OLLAMA_HOST="127.0.0.1:11434"
+				$env:OLLAMA_KEEP_ALIVE="24h"
+			ollama serve
+
+		Launch:
+			Assistant:
+				ollama launch openclaw
+				ollama launch openclaw --config
+				ollama launch openclaw --model kimi-k2.5:cloud
+
+			Coding:
+				ollama launch claude
+				ollama launch codex
+				ollama launch opencode
+
 	- REST API.
 		https://github.com/ollama/ollama/blob/main/docs/api.md
 
@@ -108,7 +169,7 @@
 		Generate a response:
 			curl http://localhost:11434/api/generate -d '{
 				"model": "llama3",
-				"prompt":"Why is the sky blue?"
+				"prompt": "Why is the sky blue?"
 			}'
 
 		Chat with a model:

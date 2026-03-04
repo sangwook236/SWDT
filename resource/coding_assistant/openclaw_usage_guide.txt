@@ -1,0 +1,25 @@
+[-] General.
+	- Site.
+		https://openclaw.ai/
+		https://github.com/openclaw
+
+		https://docs.openclaw.ai/
+
+		https://clawhub.ai/
+
+[-] Tools.
+	- CLI.
+		~/.openclaw/
+		~/.openclaw/workspace/
+		~/.openclaw/agents/main/sessions/
+		~/.openclaw/openclaw.json
+
+		openclaw onboard
+
+[-] Installation.
+	https://openclaw.ai/
+
+	- Install.
+		npm i -g openclaw
+
+		openclaw onboard
