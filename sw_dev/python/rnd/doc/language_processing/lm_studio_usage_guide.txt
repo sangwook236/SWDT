@@ -7,6 +7,10 @@
 
 		https://lmstudio.ai/models
 
+	- Directory.
+		~/.lmstudio
+		~/.lmstudio/models
+
 [-] Usage.
 	- JavaScript.
 		https://lmstudio.ai/docs/typescript

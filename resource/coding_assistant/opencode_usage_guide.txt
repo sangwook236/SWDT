@@ -11,6 +11,7 @@
 
 		~/.config/opencode/
 		~/.config/opencode/opencode.json
+		~/.local/share/opencode/
 
 		opencode
 			/connect

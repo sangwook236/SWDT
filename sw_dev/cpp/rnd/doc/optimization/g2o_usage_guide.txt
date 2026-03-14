@@ -87,6 +87,9 @@
 		mkdir build
 		cd build
 		cmake ../
+			(Optional) Set G2O_USE_OPENMP to TRUE.
+			(Optional) Set BUILD_WITH_MARCH_NATIVE to TRUE.
+			(Optional) Set CMAKE_DEBUG_POSTFIX to d.
 		make -j8
 		sudo make install
 
