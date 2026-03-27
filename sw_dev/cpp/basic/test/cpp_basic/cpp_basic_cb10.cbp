@@ -44,6 +44,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="performance_analysis.cpp" />
 		<Unit filename="predefined_macro.cpp" />
+		<Unit filename="resource_leakage.cpp" />
 		<Unit filename="shared_lib_linking.cpp" />
 		<Unit filename="static_lib_linking.cpp" />
 		<Unit filename="stl_algorithm.cpp" />

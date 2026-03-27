@@ -28,7 +28,7 @@
     <ClCompile Include="predefined_macro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="performance_analysis.cpp">
+    <ClCompile Include="resource_leakage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shared_lib_linking.cpp">

@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 	void stl_algorithm();
 
 	void performance_analysis();
+	void resource_leakage();
 
 	void static_lib_linking();
 	void shared_lib_linking();
@@ -82,6 +83,7 @@ int main(int argc, char **argv)
 		//stl_algorithm();
 
 		//performance_analysis();
+		//resource_leakage();
 
 		//
 		//static_lib_linking();

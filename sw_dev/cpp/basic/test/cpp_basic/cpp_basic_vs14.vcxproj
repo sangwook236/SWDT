@@ -182,6 +182,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="performance_analysis.cpp" />
     <ClCompile Include="predefined_macro.cpp" />
+    <ClCompile Include="resource_leakage.cpp" />
     <ClCompile Include="shared_lib_linking.cpp" />
     <ClCompile Include="static_lib_linking.cpp" />
     <ClCompile Include="stl_algorithm.cpp" />
