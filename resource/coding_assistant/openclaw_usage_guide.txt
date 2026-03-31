@@ -7,19 +7,220 @@
 
 		https://clawhub.ai/
 
+[-] Usage.
+	- Get started.
+		https://docs.openclaw.ai/start/getting-started
+
+		Run onboarding:
+			openclaw onboard --install-daemon
+		Check the Gateway:
+			openclaw gateway status
+
+			openclaw gateway start
+			openclaw gateway restart
+				openclaw gateway stop
+		Open the Control UI:
+			openclaw dashboard
+
+		https://docs.openclaw.ai/start/wizard
+
+		CLI onboarding is the recommended way to set up OpenClaw on macOS, Linux, or Windows (via WSL2; strongly recommended).
+		It configures a local Gateway or a remote Gateway connection, plus channels, skills, and workspace defaults in one guided flow.
+			openclaw onboard
+		Reconfigure:
+			openclaw configure
+				openclaw configure --section web
+			openclaw agents add <name>
+
+	- Providers.
+		https://docs.openclaw.ai/providers
+
+		Ollama:
+			https://docs.openclaw.ai/providers/ollama
+
+			Pull a local model:
+				ollama pull gpt-oss:20b
+
+			Sign in if you want cloud models:
+				ollama signin
+
+			Run onboarding:
+				openclaw onboard
+				openclaw onboard --auth-choice ollama
+
+				Non-interactive mode:
+					openclaw onboard --non-interactive --auth-choice ollama --accept-risk
+				Optionally specify a custom base URL or model:
+					openclaw onboard --non-interactive --auth-choice ollama --custom-base-url "http://ollama-host:11434" --custom-model-id "qwen3.5:27b" --accept-risk
+
+			If you prefer manual setup, enable Ollama for OpenClaw directly:
+				Any value works; Ollama doesn't require a real key.
+
+				Set environment variable:
+					export OLLAMA_API_KEY="ollama-local"
+					export OLLAMA_HOST="0.0.0.0"
+
+				Or configure in your config file:
+					openclaw config set models.providers.ollama.apiKey "ollama-local"
+
+			Set an Ollama model as the default model:
+				openclaw config set agents.defaults.model.primary "ollama/llama3.3"
+
+			Inspect or switch models:
+				ollama list
+				openclaw models list
+				openclaw models set ollama/glm-4.7-flash
+
+				openclaw gateway status
+
+				Or set the default in config:
+					{
+					  agents: {
+						defaults: {
+						  model: { primary: "ollama/glm-4.7-flash" },
+						},
+					  },
+					}
+
 [-] Tools.
-	- CLI.
+	- openclaw (CLI).
+		https://docs.openclaw.ai/cli
+
 		~/.openclaw/
 		~/.openclaw/workspace/
 		~/.openclaw/agents/main/sessions/
 		~/.openclaw/openclaw.json
 
+		openclaw --help
+		openclaw onboard --help
+
 		openclaw onboard
+			openclaw onboard --install-daemon
+			openclaw onboard --auth-choice ollama
+
+		openclaw setup
+		openclaw config
+		openclaw configure
+			openclaw config set models.providers.ollama.apiKey "ollama-local"
+			openclaw config set agents.defaults.model.primary "ollama/llama3.3"
+			openclaw config get agents.defaults.model.primary
+
+		openclaw gateway
+			Run, inspect, and query the WebSocket Gateway.
+	
+			openclaw gateway --port 18789
+				Run the WebSocket Gateway locally.
+			openclaw --dev gateway
+				Run a dev Gateway (isolated state/config) on ws://127.0.0.1:19001.
+			openclaw gateway --force
+				Kill anything bound to the default gateway port, then start it.
+			openclaw gateway ...
+				Gateway control via WebSocket.
+
+			openclaw gateway status
+			openclaw gateway start
+			openclaw gateway restart
+			openclaw gateway stop
+
+		openclaw models
+			https://docs.openclaw.ai/providers
+
+			openclaw models list
+			openclaw models set ollama/gpt-oss:120b-cloud
+		openclaw agents
+			https://docs.openclaw.ai/concepts/architecture
+
+			openclaw agents list
+		openclaw channels
+			https://docs.openclaw.ai/channels
+
+			openclaw channels list
+		openclaw skills
+			https://docs.openclaw.ai/tools/skills
+			https://docs.openclaw.ai/tools/clawhub
+
+			openclaw skills list
+			openclaw skills search "calendar"
+			openclaw skills install <skill-slug>
+			openclaw skills update --all
+			openclaw skills add agent-ros-bridge
+		openclaw plugins
+			openclaw plugins list
+			openclaw plugins install clawhub:<package>
+			openclaw plugins update --all
+
+		openclaw logs
+			openclaw logs --follow
+		openclaw doctor
+			openclaw doctor --fix
+
+		openclaw tui
+		openclaw dashboard
+
+		openclaw agent
+			Run one agent turn via the Gateway.
+
+			openclaw agent --target +15555550123 --message "Run summary" --deliver
+				Talk directly to the agent using the Gateway; optionally send the WhatsApp reply.
+			openclaw agent --agent main --local -m "hello" --session-id test
+		openclaw message
+			Send, read, and manage messages.
+
+			openclaw message send --channel telegram --target @mychat --message "Hi"
+				Send via your Telegram bot.
+			openclaw message send --target +15555550123 --message "Hi" --json
+				Send via your web session and print JSON result.
+
+	- clawhub
+		https://clawhub.ai/
+		https://docs.openclaw.ai/tools/clawhub
+
+		npm i -g clawhub
+
+		clawhub --help
+
+		clawhub install playwright-mcp
+		clawhub install github
+		clawhub install google-workspace
+		clawhub install linear
+		clawhub install automation-workflows
+		clawhub install smarthome
+		clawhub install whisper
+		clawhub install guardbot
 
 [-] Installation.
-	https://openclaw.ai/
+	- Install (WSL).
+		https://github.com/openclaw/openclaw
+		https://github.com/NVIDIA/NemoClaw
+
+		Run WSL.
+
+		curl -fsSL https://openclaw.ai/isntall.sh | bash
+		curl -fsSL https://www.nvidia.com/nemoclaw.sh | bash
+
+		openclaw gateway status
 
 	- Install.
+		https://docs.openclaw.ai/install
+
+		npm install -g openclaw@latest
 		npm i -g openclaw
 
 		openclaw onboard
+		openclaw onboard --install-daemon
+
+		openclaw gateway --port 18789 --verbose
+
+		Send a message:
+			openclaw message send --target +1234567890 --message "Hello from OpenClaw"
+			openclaw message send -t +1234567890 -m "Hello from OpenClaw"
+
+		Talk to the assistant (optionally deliver back to any connected channel: WhatsApp/Telegram/Slack/Discord/Google Chat/Signal/iMessage/BlueBubbles/IRC/Microsoft Teams/Matrix/Feishu/LINE/Mattermost/Nextcloud Talk/Nostr/Synology Chat/Tlon/Twitch/Zalo/Zalo Personal/WeChat/WebChat):
+			openclaw agent --message "Ship checklist" --thinking high --agent main
+
+[-] Troubleshooting.
+	- <error> gateway.mode is unset; gateway start will be blocked.
+			Fix: run openclaw configure and set Gateway mode (local/remote). 
+			Or set directly: openclaw config set gateway.mode local
+			Missing config: run openclaw setup first.
+		<solution> openclaw config set gateway.mode local

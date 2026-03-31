@@ -8,6 +8,7 @@
 
 	- Directory.
 		~/.ollama
+		~/.ollama/models
 
 [-] Usage.
 	https://github.com/ollama/ollama
@@ -72,18 +73,27 @@
 			help		Help about any command
 
 		ollama --help
-		ollama push --help
+		ollama run --help
 
 		Run ollama in your terminal to open the interactive menu:
 			ollama
+
+		Run a model:
+			ollama run qwen3.5:9b
+			ollama run qwen3.5:35b-a3b
+			ollama run qwen3.5:397b-cloud
 
 		Create a model:
 			ollama create mymodel -f ./Modelfile
 				ollama create is used to create a model from a Modelfile.
 
-		Pull a model:
+		Pull a model from a registry:
 			ollama pull llama3
 				This command can also be used to update a local model. Only the diff will be pulled.
+			ollama pull gpt-oss:120b-cloud
+
+		Push a model to a registry:
+			ollama push llama3
 
 		Remove a model:
 			ollama rm llama3
@@ -150,14 +160,19 @@
 				$env:OLLAMA_KEEP_ALIVE="24h"
 			ollama serve
 
+		Sign in if you want cloud models:
+			ollama signin
+
 		Launch:
 			Assistant:
 				ollama launch openclaw
-				ollama launch openclaw --config
-				ollama launch openclaw --model kimi-k2.5:cloud
+					ollama launch openclaw --config
+					ollama launch openclaw --model kimi-k2.5:cloud
+					ollama launch openclaw --model nemotron-3-super:cloud
 
 			Coding:
 				ollama launch claude
+					ollama launch claude --model qwen3.5:cloud
 				ollama launch codex
 				ollama launch opencode
 
