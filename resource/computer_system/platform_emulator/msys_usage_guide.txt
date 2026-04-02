@@ -97,6 +97,7 @@
 		Install packages:
 			MINGW64:
 				pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+				pacman -S mingw-w64-x86_64-clang-tools-extra
 				pacman -S mingw-w64-x86_64-cmake
 				pacman -S mingw-w64-x86_64-gtest
 
@@ -106,6 +107,7 @@
 				pacman -S mingw-w64-i686-clang
 			UCRT64:
 				pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+				pacman -S mingw-w64-ucrt-x86_64-clang-tools-extra
 				pacman -S mingw-w64-ucrt-x86_64-cmake
 				pacman -S mingw-w64-ucrt-x86_64-gtest
 
@@ -113,6 +115,7 @@
 				pacman -S mingw-w64-ucrt-x86_64-clang
 			CLANG64:
 				pacman -S --needed base-devel mingw-w64-clang-x86_64-toolchain
+				pacman -S mingw-w64-clang-x86_64-clang-tools-extra
 				pacman -S mingw-w64-clang-x86_64-cmake
 				pacman -S mingw-w64-clang-x86_64-gtest
 

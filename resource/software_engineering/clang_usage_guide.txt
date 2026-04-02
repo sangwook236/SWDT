@@ -1,0 +1,57 @@
+[-] General.
+	- Site.
+		https://clang.llvm.org/
+		https://llvm.org/
+
+		https://github.com/llvm/llvm-project
+		https://github.com/llvm
+
+		https://clang.llvm.org/docs/
+		https://llvm.org/docs/
+
+[-] Tools.
+	https://clang.llvm.org/extra/
+
+	- clang & clang++.
+		https://clang.llvm.org/
+
+	- LLDB (debugging tool).
+		https://lldb.llvm.org/
+
+	- clang-tidy (static code analyzsis tool).
+		https://clang.llvm.org/extra/clang-tidy/
+		https://clang.llvm.org/extra/clang-tidy/checks/list.html
+
+		./.clang-tidy
+
+		clang-tidy -checks=cppcoreguidelines-* <FILE>
+		clang-tidy -checks=cppcoreguidelines-*,clang-analyzer-* <FILE>
+			If you're using clang-tidy, you can naturally make the static analyzer run alongside clang-tidy by enabling the clang-analyzer checks.
+		clang-tidy -checks=cppcoreguidelines-*,clang-analyzer-*,modernize-* <FILE>
+		clang-tidy -checks=cppcoreguidelines-*,clang-analyzer-*,modernize-use-nullptr,google-readability-casting <FILE>
+		clang-tidy -checks=cppcoreguidelines-*,clang-analyzer-* -system-headers <FILE>
+
+	- Clang Static Analyzer (static code analyzsis tool).
+		https://clang-analyzer.llvm.org/
+
+		clang --analyze <FILE>
+			Output to <FILE>.plist.
+		clang --analyze -o <OUTPUT_FILE> <FILE>
+		clang --analyze -Xclang -analyzer-output=html <FILE>
+
+	- Clang Format.
+		https://clang.llvm.org/docs/ClangFormat.html
+		https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+		./.clang-format
+
+		clang-format -i --style=file <FILE>
+
+	- clangd.
+		https://clangd.llvm.org/
+
+		A language server that can work with many editors via a plugin.
+
+[-] Installation.
+	- Install (Windows).
+		Use MSYS2 UCRT64 or CLANG64.

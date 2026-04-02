@@ -98,6 +98,8 @@
 			openclaw onboard --install-daemon
 			openclaw onboard --auth-choice ollama
 
+		openclaw update
+
 		openclaw setup
 		openclaw config
 		openclaw configure

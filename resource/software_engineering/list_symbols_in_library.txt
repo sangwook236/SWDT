@@ -2,23 +2,25 @@
 	- Windows.
 		Use 7-zip.
 			Exported symbols are listed in a txt file.
-		lib /list my_library.lib | grep my_function
-		dumpbin /archivemembers my_library.lib | grep my_function
+		lib /list <LIBRARY>.lib | grep <FUNCTION>
+		dumpbin /archivemembers <LIBRARY>.lib | grep <FUNCTION>
 	- Linux.
-		nm my_library.lib | grep my_function
+		nm <LIBRARY>.a | grep <FUNCTION>
+		objdump --syms <LIBRARY>.a
 
 [-] Shared library.
 	- Windows.
 		Use Dependency Walker.
-		dumpbin /exports my_library.dll | grep my_function
+		dumpbin /exports <LIBRARY>.dll | grep <FUNCTION>
 	- Linux.
-		nm -D my_library.so | grep my_function
-		readelf --syms my_library.so | grep my_function
+		nm -D <LIBRARY>.so | grep <FUNCTION>
+		readelf --syms <LIBRARY>.so | grep <FUNCTION>
+		objdump --dynamic-syms <LIBRARY>.so
 
 [-] Import library.
 	- Windows.
-		dumpbin /exports my_library.lib | grep my_function
-		dumpbin /archivemembers my_library.lib | grep my_function
+		dumpbin /exports <LIBRARY>.lib | grep <FUNCTION>
+		dumpbin /archivemembers <LIBRARY>.lib | grep <FUNCTION>
 		Use 7-zip.
 			Shared library file names list up.
 			Exported symbols list up in a txt file.
