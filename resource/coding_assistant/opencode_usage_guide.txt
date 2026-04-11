@@ -5,6 +5,52 @@
 
 		https://opencode.ai/docs
 
+[-] Usage.
+	- Provider.
+		https://opencode.ai/docs/providers/
+
+		Add providers:
+			In OpenCode GUI:
+				Settings -> Providers
+
+			Edit ~/.config/opencode/opencode.json.
+				{
+					"$schema": "https://opencode.ai/config.json",
+					"provider": {
+						"ollama": {
+							"npm": "@ai-sdk/openai-compatible",
+							"name": "Ollama (local)",
+							"options": {
+								"baseURL": "http://127.0.0.1:11434/v1"
+							},
+							"models": {
+								"gpt-oss:120b-cloud": {
+									"name": "gpt-oss:120b-cloud"
+								},
+								"qwen3.5:cloud": {
+									"name": "qwen3.5:cloud"
+								}
+							}
+						},
+						"lmstudio": {
+							"npm": "@ai-sdk/openai-compatible",
+							"name": "LM Studio (local)",
+							"options": {
+								"baseURL": "http://127.0.0.1:1234/v1",
+								"apiKey": "not-needed"
+							},
+							"models": {
+								"openai/gpt-oss-20b": {
+									"name": "GPT-OSS 20B"
+								},
+								"qwen/qwen3.5-9b": {
+									"name": "Qwen3.5 9B"
+								}
+							}
+						}
+					}
+				}
+
 [-] Tools.
 	- CLI.
 		https://github.com/anomalyco/opencode

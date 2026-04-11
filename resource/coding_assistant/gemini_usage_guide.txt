@@ -22,6 +22,10 @@
 			@
 			!
 
+	- Antigravity.
+		~/.gemini/antigravity/
+		~/.gemini/antigravity/playground/
+
 [-] Installation.
 	- Install.
 		Gemini CLI:

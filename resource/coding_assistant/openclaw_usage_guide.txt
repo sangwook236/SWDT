@@ -124,6 +124,14 @@
 			openclaw gateway restart
 			openclaw gateway stop
 
+		openclaw logs
+			openclaw logs --follow
+		openclaw doctor
+			openclaw doctor --fix
+
+		openclaw tui
+		openclaw dashboard
+
 		openclaw models
 			https://docs.openclaw.ai/providers
 
@@ -133,10 +141,6 @@
 			https://docs.openclaw.ai/concepts/architecture
 
 			openclaw agents list
-		openclaw channels
-			https://docs.openclaw.ai/channels
-
-			openclaw channels list
 		openclaw skills
 			https://docs.openclaw.ai/tools/skills
 			https://docs.openclaw.ai/tools/clawhub
@@ -151,13 +155,15 @@
 			openclaw plugins install clawhub:<package>
 			openclaw plugins update --all
 
-		openclaw logs
-			openclaw logs --follow
-		openclaw doctor
-			openclaw doctor --fix
+		openclaw channels
+			https://docs.openclaw.ai/channels
 
-		openclaw tui
-		openclaw dashboard
+			openclaw channels list
+		openclaw pairing
+			openclaw pairing approve discord <PAIRING_CODE>
+			openclaw pairing approve telegram <PAIRING_CODE>
+			openclaw pairing list discord
+			openclaw pairing list telegram
 
 		openclaw agent
 			Run one agent turn via the Gateway.
