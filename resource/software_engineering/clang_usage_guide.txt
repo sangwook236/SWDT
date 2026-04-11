@@ -39,6 +39,28 @@
 		clang --analyze -o <OUTPUT_FILE> <FILE>
 		clang --analyze -Xclang -analyzer-output=html <FILE>
 
+	- Sanitizer.
+		https://clang.llvm.org/docs/
+
+		AddressSanitizer:
+			https://clang.llvm.org/docs/AddressSanitizer.html
+			clang++ -O1 -g -fsanitize=address -fno-omit-frame-pointer <FILE>
+		LeakSanitizer:
+			https://clang.llvm.org/docs/LeakSanitizer.html
+			clang -fsanitize=address -g <FILE> ; ASAN_OPTIONS=detect_leaks=1 <EXECUTABLE>
+		MemorySanitizer:
+			https://clang.llvm.org/docs/MemorySanitizer.html
+			clang -fsanitize=memory -fno-omit-frame-pointer -g -O2 <FILE>
+
+		TypeSanitizer:
+			https://clang.llvm.org/docs/TypeSanitizer.html
+		DataFlowSanitizer:
+			https://clang.llvm.org/docs/DataFlowSanitizer.html
+		ThreadSanitizer:
+			https://clang.llvm.org/docs/ThreadSanitizer.html
+		UndefinedBehaviorSanitizer:
+			https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+
 	- Clang Format.
 		https://clang.llvm.org/docs/ClangFormat.html
 		https://clang.llvm.org/docs/ClangFormatStyleOptions.html
