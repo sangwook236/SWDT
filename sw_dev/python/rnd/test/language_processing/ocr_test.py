@@ -1035,6 +1035,50 @@ def deepseek_vl_ocr_example():
 	response = tokenizer.decode(outputs[0].tolist(), skip_special_tokens=True)
 	print(response)
 
+# REF [site] >> https://huggingface.co/zai-org
+def glm_ocr_example():
+	# Models:
+	#	zai-org/GLM-OCR
+
+	import transformers
+	import torch
+
+	MODEL_PATH = "zai-org/GLM-OCR"
+	messages = [
+		{
+			"role": "user",
+			"content": [
+				{
+					"type": "image",
+					"url": "test_image.png"
+				},
+				{
+					"type": "text",
+					"text": "Text Recognition:"
+				}
+			],
+		}
+	]
+
+	processor = transformers.AutoProcessor.from_pretrained(MODEL_PATH)
+	model = transformers.AutoModelForImageTextToText.from_pretrained(
+		pretrained_model_name_or_path=MODEL_PATH,
+		torch_dtype="auto",
+		device_map="auto",
+	)
+
+	inputs = processor.apply_chat_template(
+		messages,
+		tokenize=True,
+		add_generation_prompt=True,
+		return_dict=True,
+		return_tensors="pt"
+	).to(model.device)
+	inputs.pop("token_type_ids", None)
+	generated_ids = model.generate(**inputs, max_new_tokens=8192)
+	output_text = processor.decode(generated_ids[0][inputs["input_ids"].shape[1]:], skip_special_tokens=False)
+	print(output_text)
+
 def phi_3_ocr_test():
 	import time
 	from PIL import Image
@@ -1124,9 +1168,75 @@ def phi_3_ocr_test():
 
 	print(kv_pairs)
 
+def extract_regions_in_image_by_florence_2():
+	import torch
+	import transformers
+	from PIL import Image, ImageDraw
+
+	# Install:
+	#	pip install transformers==4.41.2 einops timm flash_attn
+
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(f"Device: {device}.")
+
+	# 1. load model & processor
+	model_id = "microsoft/Florence-2-base"
+	#model_id = "microsoft/Florence-2-large"
+	torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+	model = transformers.AutoModelForCausalLM.from_pretrained(model_id, dtype=torch_dtype, trust_remote_code=True).to(device)
+	processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+
+	def extract_region(image_path, task_prompt, text_input=None):
+		image = Image.open(image_path).convert("RGB")
+		
+		# 2. prompt (object detection mode)
+		# Use the <CAPTION_TO_PHRASE_GROUNDING> operation for specific text-based detection
+		prompt = task_prompt
+		if text_input:
+			prompt += text_input
+
+		inputs = processor(text=prompt, images=image, return_tensors="pt").to(device)
+
+		# 3. infer
+		generated_ids = model.generate(
+			input_ids=inputs["input_ids"],
+			pixel_values=inputs["pixel_values"],
+			max_new_tokens=1024,
+			early_stopping=False,
+			do_sample=False,
+			num_beams=3,
+		)
+		
+		# 4. decode and parse
+		generated_text = processor.batch_decode(generated_ids, skip_special_tokens=False)[0]
+		parsed_answer = processor.post_process_generation(
+			generated_text,
+			task=task_prompt,
+			image_size=(image.width, image.height),
+		)
+
+		return parsed_answer, image
+
+	# Run
+	image_file = "path/to/image.png"
+
+	task = "<CAPTION_TO_PHRASE_GROUNDING>"
+	query = "area containing name, gender, age, and address"
+
+	results, original_img = extract_region(image_file, task, query)
+
+	# 5. visualize
+	draw = ImageDraw.Draw(original_img)
+	for bboxes, labels in zip(results[task]["bboxes"], results[task]["labels"]):
+		# bboxes: [x1, y1, x2, y2]
+		draw.rectangle(bboxes, outline="red", width=3)
+		print(f"Bbox: {bboxes}, label: {labels}.")
+
+	original_img.show()
+
 def main():
 	#trocr_example()  # TrOCR
-	deepseek_ocr_example()  # DeepSeek-OCR
+	#deepseek_ocr_example()  # DeepSeek-OCR
 	#chandra_example()  # Chandra
 
 	#-----
@@ -1160,8 +1270,14 @@ def main():
 	#phi_4_ocr_example()  # Phi-4-multimodal (transformers)
 	#qwen_vl_ocr_example()  # Qwen2.5-VL (transformers)
 	#deepseek_vl_ocr_example()  # DeepSeek-VL2 (transformers)
+	glm_ocr_example()  # GLM-OCR (transformers)
 
 	#phi_3_ocr_test()  # Phi-3.5-vision (transformers)
+
+	#-----
+	# Vision foundation models
+
+	#extract_regions_in_image_by_florence_2()
 
 	#-----
 	# NeMo Retriever OCR

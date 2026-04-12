@@ -25,7 +25,11 @@
 							},
 							"models": {
 								"gpt-oss:120b-cloud": {
-									"name": "gpt-oss:120b-cloud"
+									"name": "gpt-oss:120b-cloud",
+									"limit": {
+										"context": 128000,
+										"output": 8192
+									}
 								},
 								"qwen3.5:cloud": {
 									"name": "qwen3.5:cloud"

@@ -359,6 +359,7 @@ def main():
 	# Vision foundation models
 
 	florence_example()  # Florence-2
+	# Refer to extract_regions_in_image_by_florence_2() in ocr_test.py
 
 	#-----
 	# World models
