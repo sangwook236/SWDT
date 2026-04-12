@@ -2959,6 +2959,15 @@ def gemma_example():
 	#	google/gemma-3-12b-pt
 	#	google/gemma-3-27b-it
 	#	google/gemma-3-27b-pt
+	#
+	#	google/gemma-4-E2B
+	#	google/gemma-4-E2B-it
+	#	google/gemma-4-E4B
+	#	google/gemma-4-E4B-it
+	#	google/gemma-4-26B-A4B
+	#	google/gemma-4-26B-A4B-it
+	#	google/gemma-4-31B
+	#	google/gemma-4-31B-it
 
 	if False:
 		# Running the model on a CPU
@@ -3111,7 +3120,7 @@ def gemma_example():
 			print(tokenizer.decode(outputs[0]))
 
 	#------------------------------
-	if True:
+	if False:
 		# Running with the pipeline API
 
 		model_id = "google/gemma-3-1b-it"
@@ -3133,7 +3142,7 @@ def gemma_example():
 
 		output = pipe(messages, max_new_tokens=50)
 
-	if True:
+	if False:
 		# Running the model on a single / multi GPU
 
 		model_id = "google/gemma-3-1b-it"
@@ -3171,7 +3180,7 @@ def gemma_example():
 		outputs = tokenizer.batch_decode(outputs)
 		#print(outputs)
 
-	if True:
+	if False:
 		# Running with the pipeline API
 
 		model_id = "google/gemma-3-1b-pt"
@@ -3180,7 +3189,7 @@ def gemma_example():
 		output = pipe("Eiffel tower is located in", max_new_tokens=50)
 		#print(output)
 
-	if True:
+	if False:
 		# Running the model on a single / multi GPU
 
 		model_id = "google/gemma-3-1b-pt"
@@ -3204,7 +3213,7 @@ def gemma_example():
 		decoded = tokenizer.decode(generation, skip_special_tokens=True)
 		print(decoded)
 
-	if True:
+	if False:
 		# Running with the pipeline API
 
 		model_id = "google/gemma-3-4b-it"
@@ -3238,7 +3247,7 @@ def gemma_example():
 		# Based on the image, the animal on the candy is a **turtle**. 
 		# You can see the shell shape and the head and legs.
 
-	if True:
+	if False:
 		# Running the model on a single/multi GPU
 
 		# Install:
@@ -3286,7 +3295,7 @@ def gemma_example():
 		# focusing on a cluster of pink cosmos flowers and a busy bumblebee. 
 		# It has a slightly soft, natural feel, likely captured in daylight.
 
-	if True:
+	if False:
 		# Running with the pipeline API
 
 		model_id = "google/gemma-3-4b-pt"
@@ -3309,7 +3318,7 @@ def gemma_example():
 		# [{'input_text': '<start_of_image> in this image, there is',
 		# 'generated_text': '<start_of_image> in this image, there is a bumblebee on a pink flower.\n\n'}]
 
-	if True:
+	if False:
 		# Running the model on a single/multi GPU
 
 		# Install:
@@ -3336,6 +3345,181 @@ def gemma_example():
 
 		decoded = processor.decode(generation, skip_special_tokens=True)
 		print(decoded)
+
+	#------------------------------
+	if True:
+		#MODEL_ID = "google/gemma-4-E2B-it"
+		#MODEL_ID = "google/gemma-4-E4B-it"
+		#MODEL_ID = "google/gemma-4-26B-A4B-it"
+		MODEL_ID = "google/gemma-4-31B-it"
+
+		# Install:
+		#	pip install -U transformers torch accelerate
+
+		# Load model
+		processor = transformers.AutoProcessor.from_pretrained(MODEL_ID)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			MODEL_ID,
+			dtype="auto",
+			device_map="auto"
+		)
+
+		# Prompt
+		messages = [
+			{"role": "system", "content": "You are a helpful assistant."},
+			{"role": "user", "content": "Write a short joke about saving RAM."},
+		]
+
+		# Process input
+		text = processor.apply_chat_template(
+			messages, 
+			tokenize=False, 
+			add_generation_prompt=True, 
+			enable_thinking=False
+		)
+		inputs = processor(text=text, return_tensors="pt").to(model.device)
+		input_len = inputs["input_ids"].shape[-1]
+
+		# Generate output
+		outputs = model.generate(**inputs, max_new_tokens=1024)
+		response = processor.decode(outputs[0][input_len:], skip_special_tokens=False)
+
+		# Parse output
+		processor.parse_response(response)
+
+	if True:
+		# Audio
+
+		# Install:
+		#	pip install -U transformers torch librosa accelerate
+
+		#MODEL_ID = "google/gemma-4-E2B-it"
+		#MODEL_ID = "google/gemma-4-E4B-it"
+		#MODEL_ID = "google/gemma-4-26B-A4B-it"
+		MODEL_ID = "google/gemma-4-31B-it"
+
+		# Load model
+		processor = transformers.AutoProcessor.from_pretrained(MODEL_ID)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			MODEL_ID, 
+			dtype="auto", 
+			device_map="auto"
+		)
+
+		# Prompt - add audio before text
+		messages = [{
+			"role": "user",
+			"content": [
+				{"type": "audio", "audio": "https://raw.githubusercontent.com/google-gemma/cookbook/refs/heads/main/Demos/sample-data/journal1.wav"},
+				{"type": "text", "text": "Transcribe the following speech segment in its original language. Follow these specific instructions for formatting the answer:\n* Only output the transcription, with no newlines.\n* When transcribing numbers, write the digits, i.e. write 1.7 and not one point seven, and write 3 instead of three."},
+			]
+		}]
+
+		# Process input
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			add_generation_prompt=True,
+		).to(model.device)
+		input_len = inputs["input_ids"].shape[-1]
+
+		# Generate output
+		outputs = model.generate(**inputs, max_new_tokens=512)
+		response = processor.decode(outputs[0][input_len:], skip_special_tokens=False)
+
+		# Parse output
+		processor.parse_response(response)
+
+	if True:
+		# Images
+
+		# Install:
+		#	pip install -U transformers torch torchvision accelerate
+
+		#MODEL_ID = "google/gemma-4-E2B-it"
+		#MODEL_ID = "google/gemma-4-E4B-it"
+		#MODEL_ID = "google/gemma-4-26B-A4B-it"
+		MODEL_ID = "google/gemma-4-31B-it"
+
+		# Load model
+		processor = transformers.AutoProcessor.from_pretrained(MODEL_ID)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			MODEL_ID, 
+			dtype="auto", 
+			device_map="auto"
+		)
+
+		# Prompt - add image before text
+		messages = [{
+			"role": "user", "content": [
+				{"type": "image", "url": "https://raw.githubusercontent.com/google-gemma/cookbook/refs/heads/main/Demos/sample-data/GoldenGate.png"},
+				{"type": "text", "text": "What is shown in this image?"}
+			]
+		}]
+
+		# Process input
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			add_generation_prompt=True,
+		).to(model.device)
+		input_len = inputs["input_ids"].shape[-1]
+
+		# Generate output
+		outputs = model.generate(**inputs, max_new_tokens=512)
+		response = processor.decode(outputs[0][input_len:], skip_special_tokens=False)
+
+		# Parse output
+		processor.parse_response(response)
+
+	if True:
+		# Videos
+
+		# Install:
+		#	pip install -U transformers torch torchvision torchcodec librosa accelerate
+
+		#MODEL_ID = "google/gemma-4-E2B-it"
+		#MODEL_ID = "google/gemma-4-E4B-it"
+		#MODEL_ID = "google/gemma-4-26B-A4B-it"
+		MODEL_ID = "google/gemma-4-31B-it"
+
+		# Load model
+		processor = transformers.AutoProcessor.from_pretrained(MODEL_ID)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			MODEL_ID, 
+			dtype="auto", 
+			device_map="auto"
+		)
+
+		# Prompt - add video before text
+		messages = [{
+			"role": "user",
+			"content": [
+				{"type": "video", "video": "https://github.com/bebechien/gemma/raw/refs/heads/main/videos/ForBiggerBlazes.mp4"},
+				{"type": "text", "text": "Describe this video."}
+			]
+		}]
+
+		# Process input
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			add_generation_prompt=True,
+		).to(model.device)
+		input_len = inputs["input_ids"].shape[-1]
+
+		# Generate output
+		outputs = model.generate(**inputs, max_new_tokens=512)
+		response = processor.decode(outputs[0][input_len:], skip_special_tokens=False)
+
+		# Parse output
+		processor.parse_response(response)
 
 # REF [site] >> https://huggingface.co/google
 def shield_gemma_example():
@@ -5772,8 +5956,16 @@ def glm_example():
 	#	zai-org/GLM-4-9B-0414
 	#	zai-org/GLM-4-32B-0414
 	#	zai-org/GLM-4-32B-Base-0414
+	#
+	#	zai-org/GLM-4.7
+	#
+	#	zai-org/GLM-5
+	#	zai-org/GLM-5-FP8
+	#
+	#	zai-org/GLM-5.1
+	#	zai-org/GLM-5.1-FP8
 
-	if True:
+	if False:
 		import re, ast, json
 
 		MODEL_PATH = "THUDM/GLM-4-9B-0414"
@@ -5888,6 +6080,26 @@ def glm_example():
 				)
 				print(f"Function Response: {function_response}")
 				message.append({"role": "observation", "content": function_response})
+
+	if True:
+		pipe = transformers.pipeline(
+			task="text-generation",
+			model="zai-org/GLM-5",
+			dtype=torch.bfloat16,
+		)
+		pipe("The theory of relativity states that")
+
+	if True:
+		tokenizer = transformers.AutoTokenizer.from_pretrained("zai-org/GLM-5")
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			"zai-org/GLM-5",
+			dtype=torch.bfloat16,
+			device_map="auto",
+		)
+		input_ids = tokenizer("The theory of relativity states that", return_tensors="pt").to(model.device)
+
+		output = model.generate(**input_ids, max_new_tokens=50)
+		print(tokenizer.decode(output[0], skip_special_tokens=True))
 
 # REF [site] >> https://huggingface.co/inclusionAI
 def ling_example():
@@ -12433,7 +12645,7 @@ def main():
 	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2
 	#mixtral_example()  # Mixtral-8x7B
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO
-	#gemma_example()  # Gemma, Gemma 2, Gemma 3
+	gemma_example()  # Gemma, Gemma 2, Gemma 3, Gemma-4
 	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2
 	#data_gemma_example()  # DataGemma
 	#open_elm_example()  # OpenELM
@@ -12447,14 +12659,14 @@ def main():
 	#qwen2_example()  # Qwen2
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
-	qwen3_5_example()  # Qwen3.5
+	#qwen3_5_example()  # Qwen3.5
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5
 	#k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
 	#kimi_example()  # Kimi K2. Not yet implemented
 	#apriel_example()  # Apriel
-	#glm_example()  # GLM-4
+	#glm_example()  # GLM-4, GLM-4.7, GLM-5, GLM-5.1
 	#ling_example()  # Ling, Ling-V2
 	#solar_open_example()  # Solar Open
 
