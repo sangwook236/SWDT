@@ -1540,6 +1540,21 @@ def main():
 	# Tutorials: https://docs.ultralytics.com/guides/
 	# Integrations: https://docs.ultralytics.com/integrations/
 
+	# Training
+	#	https://docs.ultralytics.com/modes/train/
+	#	https://docs.ultralytics.com/guides/yolo26-training-recipe/
+	#	https://docs.ultralytics.com/guides/model-training-tips/
+
+	# Data Augmentation
+	#	https://docs.ultralytics.com/guides/yolo-data-augmentation/
+
+	# Configuration
+	#	https://docs.ultralytics.com/usage/cfg/
+	#	https://github.com/ultralytics/ultralytics/tree/main/ultralytics/cfg
+
+	# Command Line Interface (CLI)
+	#	https://docs.ultralytics.com/usage/cli/
+
 	# HUB: https://docs.ultralytics.com/hub/
 	#	https://www.ultralytics.com/hub
 
