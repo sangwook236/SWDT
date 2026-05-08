@@ -5166,7 +5166,7 @@ def qwen3_example():
 # REF [site] >>
 #	https://huggingface.co/docs/transformers/en/model_doc/qwen3
 #	https://huggingface.co/Qwen
-def qwen3_5_example():
+def qwen3_x_example():
 	# Models:
 	#	Qwen/Qwen3.5-27B
 	#	Qwen/Qwen3.5-27B-FP8
@@ -5177,6 +5177,9 @@ def qwen3_5_example():
 	#	Qwen/Qwen3.5-122B-A10B-FP8
 	#	Qwen/Qwen3.5-397B-A17B
 	#	Qwen/Qwen3.5-397B-A17B-FP8
+	#
+	#	Qwen/Qwen3.6-35B-A3B
+	#	Qwen/Qwen3.6-35B-A3B-FP8
 
 	# Install:
 	#	pip install -U openai
@@ -5196,16 +5199,22 @@ def qwen3_5_example():
 
 		from openai import OpenAI
 
+		#model_name = "Qwen/Qwen3.5-35B-A3B"
+		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		model_name = "Qwen/Qwen3.6-35B-A3B"
+		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
+
 		# Configured by environment variables
 		client = OpenAI()
 
 		messages = [
-			{"role": "user", "content": "Type \"I love Qwen3.5\" backwards"},
+			#{"role": "user", "content": "Type \"I love Qwen3.5\" backwards"},
+			{"role": "user", "content": "Type \"I love Qwen3.6\" backwards"},
 		]
 
 		if False:
 			chat_response = client.chat.completions.create(
-				model="Qwen/Qwen3.5-122B-A10B",
+				model=model_name,
 				messages=messages,
 				max_tokens=81920,
 				temperature=1.0,
@@ -5217,7 +5226,7 @@ def qwen3_5_example():
 			)
 		else:
 			chat_response = client.chat.completions.create(
-				model="Qwen/Qwen3.5-397B-A17B",
+				model=model_name,
 				messages=messages,
 				max_tokens=81920,
 				temperature=0.6,
@@ -5233,30 +5242,34 @@ def qwen3_5_example():
 
 		from openai import OpenAI
 
+		#model_name = "Qwen/Qwen3.5-35B-A3B"
+		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		model_name = "Qwen/Qwen3.6-35B-A3B"
+		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
+
 		# Configured by environment variables
 		client = OpenAI()
 
-		messages = [
-			{
-				"role": "user",
-				"content": [
-					{
-						"type": "image_url",
-						"image_url": {
-							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/CI_Demo/mathv-1327.jpg"
-						}
-					},
-					{
-						"type": "text",
-						"text": "The centres of the four illustrated circles are in the corners of the square. The two big circles touch each other and also the two little circles. With which factor do you have to multiply the radii of the little circles to obtain the radius of the big circles?\nChoices:\n(A) $\\frac{2}{9}$\n(B) $\\sqrt{5}$\n(C) $0.8 \\cdot \\pi$\n(D) 2.5\n(E) $1+\\sqrt{2}$"
+		messages = [{
+			"role": "user",
+			"content": [
+				{
+					"type": "image_url",
+					"image_url": {
+						#"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/CI_Demo/mathv-1327.jpg"
+						"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.6/demo/CI_Demo/mathv-1327.jpg"
 					}
-				]
-			}
-		]
+				},
+				{
+					"type": "text",
+					"text": "The centres of the four illustrated circles are in the corners of the square. The two big circles touch each other and also the two little circles. With which factor do you have to multiply the radii of the little circles to obtain the radius of the big circles?\nChoices:\n(A) $\\frac{2}{9}$\n(B) $\\sqrt{5}$\n(C) $0.8 \\cdot \\pi$\n(D) 2.5\n(E) $1+\\sqrt{2}$"
+				}
+			]
+		}]
 
 		if True:
 			chat_response = client.chat.completions.create(
-				model="Qwen/Qwen3.5-122B-A10B",
+				model=model_name,
 				messages=messages,
 				max_tokens=81920,
 				temperature=1.0,
@@ -5268,7 +5281,7 @@ def qwen3_5_example():
 			)
 		else:
 			chat_response = client.chat.completions.create(
-				model="Qwen/Qwen3.5-397B-A17B",
+				model=model_name,
 				messages=messages,
 				max_tokens=81920,
 				temperature=0.6,
@@ -5284,26 +5297,31 @@ def qwen3_5_example():
 
 		from openai import OpenAI
 
+		#model_name = "Qwen/Qwen3.5-35B-A3B"
+		#model_name = "Qwen/Qwen3.5-122B-A10B"
+		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		model_name = "Qwen/Qwen3.6-35B-A3B"
+		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
+
 		# Configured by environment variables
 		client = OpenAI()
 
-		messages = [
-			{
-				"role": "user",
-				"content": [
-					{
-						"type": "video_url",
-						"video_url": {
-							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/video/N1cdUjctpG8.mp4"
-						}
-					},
-					{
-						"type": "text",
-						"text": "How many porcelain jars were discovered in the niches located in the primary chamber of the tomb?"
+		messages = [{
+			"role": "user",
+			"content": [
+				{
+					"type": "video_url",
+					"video_url": {
+						#"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/video/N1cdUjctpG8.mp4"
+						"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.6/demo/video/N1cdUjctpG8.mp4"
 					}
-				]
-			}
-		]
+				},
+				{
+					"type": "text",
+					"text": "How many porcelain jars were discovered in the niches located in the primary chamber of the tomb?"
+				}
+			]
+		}]
 
 		# When vLLM is launched with `--media-io-kwargs '{"video": {"num_frames": -1}}'`,
 		# video frame sampling can be configured via `extra_body` (e.g., by setting `fps`).
@@ -5313,7 +5331,7 @@ def qwen3_5_example():
 		# With `do_sample_frames=True`, you can customize the `fps` value to set your desired video sampling rate.
 		if False:
 			chat_response = client.chat.completions.create(
-				model="Qwen/Qwen3.5-122B-A10B",
+				model=model_name,
 				messages=messages,
 				max_tokens=81920,
 				temperature=1.0,
@@ -5326,7 +5344,7 @@ def qwen3_5_example():
 			)
 		else:
 			chat_response = client.chat.completions.create(
-				model="Qwen/Qwen3.5-397B-A17B",
+				model=model_name,
 				messages=messages,
 				max_tokens=81920,
 				temperature=0.6,
@@ -5344,29 +5362,33 @@ def qwen3_5_example():
 
 		from openai import OpenAI
 
+		#model_name = "Qwen/Qwen3.5-35B-A3B"
+		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		model_name = "Qwen/Qwen3.6-35B-A3B"
+		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
+
 		# Configured by environment variables
 		client = OpenAI()
 
-		messages = [
-			{
-				"role": "user",
-				"content": [
-					{
-						"type": "image_url",
-						"image_url": {
-							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/RealWorld/RealWorld-04.png"
-						}
-					},
-					{
-						"type": "text",
-						"text": "Where is this?"
+		messages = [{
+			"role": "user",
+			"content": [
+				{
+					"type": "image_url",
+					"image_url": {
+						#"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/RealWorld/RealWorld-04.png"
+						"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.6/demo/RealWorld/RealWorld-04.png"
 					}
-				]
-			}
-		]
+				},
+				{
+					"type": "text",
+					"text": "Where is this?"
+				}
+			]
+		}]
 
 		chat_response = client.chat.completions.create(
-			model="Qwen/Qwen3.5-397B-A17B",
+			model=model_name,
 			messages=messages,
 			max_tokens=32768,
 			temperature=0.7,
@@ -5380,11 +5402,38 @@ def qwen3_5_example():
 		print("Chat response:", chat_response)
 
 	if True:
+		# Preserve Thinking
+
+		from openai import OpenAI
+
+		model_name = "Qwen/Qwen3.6-35B-A3B"
+		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
+
+		# Configured by environment variables
+		client = OpenAI()
+
+		messages = [...]
+
+		chat_response = client.chat.completions.create(
+			model=model_name,
+			messages=messages,
+			max_tokens=32768,
+			temperature=0.7,
+			top_p=0.8,
+			presence_penalty=1.5,
+			extra_body={
+				"top_k": 20,
+				"chat_template_kwargs": {"preserve_thinking": True},
+			}, 
+		)
+		print("Chat response:", chat_response)
+
+	if True:
 		# Agentic Usage
-		#	Qwen3.5 excels in tool calling capabilities.
+		#	Qwen3.5/Qwen3.6 excels in tool calling capabilities.
 
 		# Qwen-Agent
-		#	We recommend using Qwen-Agent to quickly build Agent applications with Qwen3.5.
+		#	We recommend using Qwen-Agent to quickly build Agent applications with Qwen3.5/Qwen3.6.
 		#	To define the available tools, you can use the MCP configuration file, use the integrated tool of Qwen-Agent, or integrate other tools by yourself.
 
 		# Install Qwen-Agent:
@@ -5398,7 +5447,9 @@ def qwen3_5_example():
 			# Using Alibaba Cloud Model Studio
 			llm_cfg = {
 				# Use the OpenAI-compatible model service provided by DashScope:
-				"model": "Qwen3.5-397B-A17B",
+				#"model": "Qwen3.5-397B-A17B",
+				"model": "Qwen3.6-397B-A17B",
+				#"model": "Qwen3.6-397B-A17B-FP8",
 				"model_type": "qwenvl_oai",
 				"model_server": "https://dashscope.aliyuncs.com/compatible-mode/v1",
 				"api_key": os.getenv("DASHSCOPE_API_KEY"),
@@ -5407,7 +5458,8 @@ def qwen3_5_example():
 					"use_raw_api": True,
 					# When using Dash Scope OAI API, pass the parameter of whether to enable thinking mode in this way
 					"extra_body": {
-						"enable_thinking": True
+						"enable_thinking": True,
+						'preserve_thinking': True,
 					},
 				},
 			}
@@ -5417,7 +5469,9 @@ def qwen3_5_example():
 
 			lm_cfg = {
 				# Use your own model service compatible with OpenAI API by vLLM/SGLang:
-				"model": "Qwen/Qwen3.5-397B-A17B",
+				#"model": "Qwen/Qwen3.5-397B-A17B",
+				"model": "Qwen/Qwen3.6-397B-A17B",
+				#"model": "Qwen/Qwen3.6-397B-A17B-FP8",
 				"model_type": "qwenvl_oai",
 				"model_server": "http://localhost:8000/v1",  # api_base
 				"api_key": "EMPTY",
@@ -5426,7 +5480,7 @@ def qwen3_5_example():
 					"use_raw_api": True,
 					# When using vLLM/SGLang OAI API, pass the parameter of whether to enable thinking mode in this way
 					"extra_body": {
-						"chat_template_kwargs": {"enable_thinking": True}
+						"chat_template_kwargs": {"enable_thinking": True, 'preserve_thinking': True}
 					},
 				},
 			}
@@ -5583,6 +5637,19 @@ def exaone_example():
 	#	LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct-GGUF
 	#	LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF
 	#	LGAI-EXAONE/EXAONE-3.5-32B-Instruct-GGUF
+	#
+	#	LGAI-EXAONE/EXAONE-4.0-1.2B
+	#	LGAI-EXAONE/EXAONE-4.0-1.2B-FP8
+	#	LGAI-EXAONE/EXAONE-4.0-1.2B-GPTQ-Int8
+	#	LGAI-EXAONE/EXAONE-4.0-1.2B-AWQ
+	#	LGAI-EXAONE/EXAONE-4.0-32B
+	#	LGAI-EXAONE/EXAONE-4.0-32B-FP8
+	#	LGAI-EXAONE/EXAONE-4.0-32B-GPTQ
+	#	LGAI-EXAONE/EXAONE-4.0-32B-AWQ
+	#	LGAI-EXAONE/EXAONE-4.0.1-32B
+	#
+	#	LGAI-EXAONE/EXAONE-4.5-33B
+	#	LGAI-EXAONE/EXAONE-4.5-33B-FP8
 
 	if False:
 		if True:
@@ -5623,7 +5690,7 @@ def exaone_example():
 		)
 		print(tokenizer.decode(output[0]))
 
-	if True:
+	if False:
 		model_name = "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct"
 		#model_name = "LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct"
 		#model_name = "LGAI-EXAONE/EXAONE-3.5-32B-Instruct"
@@ -5662,6 +5729,238 @@ def exaone_example():
 			do_sample=False,
 		)
 		print(tokenizer.decode(output[0]))
+
+	if False:
+		from transformers import AutoModelForCausalLM, AutoTokenizer
+
+		model_name = "LGAI-EXAONE/EXAONE-4.0-1.2B"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-1.2B-FP8"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-1.2B-GPTQ-Int8"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-1.2B-AWQ"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-32B"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-32B-FP8"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-32B-GPTQ"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0-32B-AWQ"
+		#model_name = "LGAI-EXAONE/EXAONE-4.0.1-32B"
+
+		model = AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="bfloat16",
+			device_map="auto"
+		)
+		tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+		# choose your prompt
+		prompt = "Explain how wonderful you are"
+		prompt = "Explica lo increíble que eres"
+		prompt = "너가 얼마나 대단한지 설명해 봐"
+
+		if True:
+			# Non-reasoning mode
+
+			messages = [
+				{"role": "user", "content": prompt}
+			]
+			input_ids = tokenizer.apply_chat_template(
+				messages,
+				tokenize=True,
+				add_generation_prompt=True,
+				return_tensors="pt"
+			)
+
+			output = model.generate(
+				input_ids.to(model.device),
+				max_new_tokens=128,
+				do_sample=False,
+			)
+			print(tokenizer.decode(output[0]))
+		elif False:
+			# Reasoning mode
+
+			messages = [
+				{"role": "user", "content": "Which one is bigger, 3.12 vs 3.9?"}
+			]
+			input_ids = tokenizer.apply_chat_template(
+				messages,
+				tokenize=True,
+				add_generation_prompt=True,
+				return_tensors="pt",
+				enable_thinking=True,
+			)
+
+			output = model.generate(
+				input_ids.to(model.device),
+				max_new_tokens=128,
+				do_sample=True,
+				temperature=0.6,
+				top_p=0.95
+			)
+			print(tokenizer.decode(output[0]))
+		elif False:
+			# Agentic tool use
+
+			import random
+
+			def roll_dice(max_num: int):
+				return random.randint(1, max_num)
+
+			tools = [{
+				"type": "function",
+				"function": {
+					"name": "roll_dice",
+					"description": "Roll a dice with the number 1 to N. User can select the number N.",
+					"parameters": {
+						"type": "object",
+						"required": ["max_num"],
+						"properties": {
+							"max_num": {
+								"type": "int",
+								"description": "Max number of the dice"
+							}
+						}
+					}
+				}
+			}]
+
+			messages = [
+				{"role": "user", "content": "Roll D6 dice twice!"}
+			]
+			input_ids = tokenizer.apply_chat_template(
+				messages,
+				tokenize=True,
+				add_generation_prompt=True,
+				return_tensors="pt",
+				tools=tools,
+			)
+
+			output = model.generate(
+				input_ids.to(model.device),
+				max_new_tokens=1024,
+				do_sample=True,
+				temperature=0.6,
+				top_p=0.95,
+			)
+			print(tokenizer.decode(output[0]))
+
+	if True:
+		# Image-Text QA: Reasoning mode
+
+		from openai import OpenAI
+
+		model_name = "EXAONE-4.5-33B"
+		#model_name = "EXAONE-4.5-33B-FP8"
+
+		client = OpenAI(
+			base_url="http://localhost:8000/v1",
+			api_key="EMPTY",
+		)
+
+		messages = [{
+			"role": "user",
+			"content": [
+				{
+					"type": "image_url",
+					"image_url": {
+						"url": "https://github.com/Aim-Highest/EXAONE-4.5/blob/main/assets/exaone45_input2.png?raw=true",
+					},
+				},
+				{
+					"type": "text",
+					"text": "How much larger is the model released in winter 2025 compared with the one released in summer 2024?",
+				},
+			]
+		}]
+
+		response = client.chat.completions.create(
+			model=model_name,
+			messages=messages,
+			max_tokens=32768,
+			temperature=1.0,
+			top_p=0.95,
+			presence_penalty=1.5,
+			extra_body={
+				"chat_template_kwargs": {
+					"enable_thinking": True,  # default: True
+				}
+			}, 
+		)
+		print(response)
+
+	if True:
+		# Image-Text QA: Non-reasoning mode
+
+		from openai import OpenAI
+
+		model_name = "EXAONE-4.5-33B"
+		#model_name = "EXAONE-4.5-33B-FP8"
+
+		client = OpenAI(
+			base_url="http://localhost:8000/v1",
+			api_key="EMPTY",
+		)
+
+		messages = [{
+			"role": "user",
+			"content": [
+				{
+					"type": "image_url",
+					"image_url": {
+						"url": "https://github.com/Aim-Highest/EXAONE-4.5/blob/main/assets/exaone45_input1.jpg?raw=true",
+					},
+				},
+				{
+					"type": "text",
+					"text": "What dish is the person preparing, and how is it made?",
+				},
+			]
+		}]
+
+		response = client.chat.completions.create(
+			model=model_name,
+			messages=messages,
+			max_tokens=32768,
+			temperature=1.0,
+			top_p=0.95,
+			presence_penalty=1.5,
+			extra_body={
+				"chat_template_kwargs": {
+					"enable_thinking": False,  # default: True
+				}
+			}, 
+		)
+		print(response)
+
+	if True:
+		# Text-only QA
+
+		from openai import OpenAI
+
+		model_name = "EXAONE-4.5-33B"
+		#model_name = "EXAONE-4.5-33B-FP8"
+
+		client = OpenAI(
+			base_url="http://localhost:8000/v1",
+			api_key="EMPTY",
+		)
+
+		messages = [{
+			"role": "user",
+			"content": "Explain how useful you are.",
+		}]
+
+		response = client.chat.completions.create(
+			model=model_name,
+			messages=messages,
+			max_tokens=32768,
+			temperature=1.0,
+			top_p=0.95,
+			extra_body={
+				"chat_template_kwargs": {
+					"enable_thinking": True,  # default: True
+				}
+			}, 
+		)
+		print(response)
 
 # REF [site] >> https://huggingface.co/LGAI-EXAONE
 def k_exaone_example():
@@ -12659,9 +12958,9 @@ def main():
 	#qwen2_example()  # Qwen2
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
-	#qwen3_5_example()  # Qwen3.5
+	qwen3_x_example()  # Qwen3.5, Qwen3.6
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
-	#exaone_example()  # EXAONE 3.0, EXAONE 3.5
+	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
 	#k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
 	#kimi_example()  # Kimi K2. Not yet implemented

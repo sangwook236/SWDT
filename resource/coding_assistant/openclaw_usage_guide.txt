@@ -98,6 +98,9 @@
 			openclaw onboard --install-daemon
 			openclaw onboard --auth-choice ollama
 
+		openclaw dashboard
+		openclaw tui
+
 		openclaw update
 
 		openclaw setup
@@ -120,6 +123,7 @@
 				Gateway control via WebSocket.
 
 			openclaw gateway status
+			openclaw gateway run
 			openclaw gateway start
 			openclaw gateway restart
 			openclaw gateway stop
@@ -127,10 +131,8 @@
 		openclaw logs
 			openclaw logs --follow
 		openclaw doctor
+			openclaw doctor --non-interactives
 			openclaw doctor --fix
-
-		openclaw tui
-		openclaw dashboard
 
 		openclaw models
 			https://docs.openclaw.ai/providers
