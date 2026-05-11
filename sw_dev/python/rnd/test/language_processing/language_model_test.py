@@ -7666,6 +7666,202 @@ def kimi_k2_thinking_example():
 
 	raise NotImplementedError
 
+# REF [site] >> https://huggingface.co/nvidia
+def nemotron_reasoning_example():
+	# Models:
+	#	nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+	#	nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
+
+	if True:
+		# Advanced: Budget-Controlled Reasoning
+
+		from typing import Any, Dict, List
+		import openai
+
+		class ThinkingBudgetClient:
+			def __init__(self, base_url: str, api_key: str, tokenizer_name_or_path: str):
+				self.tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name_or_path)
+				self.client = openai.OpenAI(base_url=base_url, api_key=api_key)
+
+			def chat_completion(
+				self,
+				model: str,
+				messages: List[Dict[str, Any]],
+				reasoning_budget: int = 512,
+				max_tokens: int = 1024,
+				**kwargs,
+			) -> Dict[str, Any]:
+				assert max_tokens > reasoning_budget, (
+					f"reasoning_budget must be less than max_tokens. "
+					f"Got {max_tokens=} and {reasoning_budget=}"
+				)
+
+				# Step 1: generate the reasoning trace up to the budget
+				response = self.client.chat.completions.create(
+					model=model, messages=messages, max_tokens=reasoning_budget, **kwargs
+				)
+				reasoning_content = response.choices[0].message.content
+				if "" not in reasoning_content:
+					reasoning_content = f"{reasoning_content}.\n\n\n"
+
+				reasoning_tokens_len = len(
+					self.tokenizer.encode(reasoning_content, add_special_tokens=False)
+				)
+				remaining_tokens = max_tokens - reasoning_tokens_len
+				assert remaining_tokens > 0, (
+					f"No tokens remaining for response ({remaining_tokens=}). "
+					"Increase max_tokens or lower reasoning_budget."
+				)
+
+				# Step 2: continue from the closed reasoning trace
+				messages.append({"role": "assistant", "content": reasoning_content})
+				prompt = self.tokenizer.apply_chat_template(
+					messages, tokenize=False, continue_final_message=True
+				)
+				response = self.client.completions.create(
+					model=model, prompt=prompt, max_tokens=remaining_tokens, **kwargs
+				)
+
+				return {
+					"reasoning_content": reasoning_content.strip().strip("").strip(),
+					"content": response.choices[0].text,
+					"finish_reason": response.choices[0].finish_reason,
+				}
+
+		# Example usage (32-token reasoning budget):
+
+		client = ThinkingBudgetClient(
+			base_url="http://localhost:8000/v1",
+			api_key="EMPTY",
+			tokenizer_name_or_path="nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8",
+		)
+
+		result = client.chat_completion(
+			model="nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8",
+			messages=[
+				{"role": "system", "content": "You are a helpful assistant. /think"},
+				{"role": "user", "content": "What is 2+2?"},
+			],
+			reasoning_budget=32,
+			max_tokens=512,
+			temperature=1.0,
+			top_p=0.95,
+		)
+		print(result)
+
+	if True:
+		# Load tokenizer and model
+		tokenizer = transformers.AutoTokenizer.from_pretrained("nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16")
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			"nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
+			torch_dtype=torch.bfloat16,
+			trust_remote_code=True,
+			device_map="auto"
+		)
+
+		messages = [
+			{"role": "user", "content": "Write a haiku about GPUs"},
+		]
+
+		tokenized_chat = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_tensors="pt"
+		).to(model.device)
+
+		outputs = model.generate(
+			tokenized_chat,
+			max_new_tokens=1024,
+			temperature=1.0,
+			top_p=1.0,
+			eos_token_id=tokenizer.eos_token_id
+		)
+		print(tokenizer.decode(outputs[0]))
+
+	if True:
+		# Using Budget Control
+
+		from typing import Any, Dict, List
+		import openai
+
+		class ThinkingBudgetClient:
+		def __init__(self, base_url: str, api_key: str, tokenizer_name_or_path: str):
+			self.base_url = base_url
+			self.api_key = api_key
+			self.tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name_or_path)
+			self.client = openai.OpenAI(base_url=self.base_url, api_key=self.api_key)
+
+		def chat_completion(
+			self,
+			model: str,
+			messages: List[Dict[str, Any]],
+			reasoning_budget: int = 512,
+			max_tokens: int = 1024,
+			**kwargs,
+		) -> Dict[str, Any]:
+			assert (
+				max_tokens > reasoning_budget
+			), f"thinking budget must be smaller than maximum new tokens. Given {max_tokens=} and {reasoning_budget=}"
+
+			# 1. first call chat completion to get reasoning content
+			response = self.client.chat.completions.create(
+				model=model, messages=messages, max_tokens=reasoning_budget, **kwargs
+			)
+			content = response.choices[0].message.content
+
+			reasoning_content = content
+			if not "</think>" in reasoning_content:
+				# reasoning content is too long, closed with a period (.)
+				reasoning_content = f"{reasoning_content}.\n</think>\n\n"
+			reasoning_tokens_len = len(
+				self.tokenizer.encode(reasoning_content, add_special_tokens=False)
+			)
+			remaining_tokens = max_tokens - reasoning_tokens_len
+			assert (
+				remaining_tokens > 0
+			), f"remaining tokens must be positive. Given {remaining_tokens=}. Increase the max_tokens or lower the reasoning_budget."
+
+			# 2. append reasoning content to messages and call completion
+			messages.append({"role": "assistant", "content": reasoning_content})
+			prompt = self.tokenizer.apply_chat_template(
+				messages,
+				tokenize=False,
+				continue_final_message=True,
+			)
+			response = self.client.completions.create(
+				model=model, prompt=prompt, max_tokens=remaining_tokens, **kwargs
+			)
+
+			response_data = {
+				"reasoning_content": reasoning_content.strip().strip("</think>").strip(),
+				"content": response.choices[0].text,
+				"finish_reason": response.choices[0].finish_reason,
+			}
+			return response_data
+
+		# Calling the server with a budget (Restricted to 32 tokens here as an example)
+
+		tokenizer_name_or_path = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+		client = ThinkingBudgetClient(
+			base_url="http://localhost:8000/v1",  # Nemotron 3 Nano deployed in thinking mode
+			api_key="EMPTY",
+			tokenizer_name_or_path=tokenizer_name_or_path,
+		)
+
+		result = client.chat_completion(
+			model="nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
+			messages=[
+				{"role": "system", "content": "You are a helpful assistant. /think"},
+				{"role": "user", "content": "What is 2+2?"},
+			],
+			reasoning_budget=32,
+			max_tokens=512,
+			temperature=1.0,
+			top_p=1.0,
+		)
+		print(result)
+
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
 	# Models:
@@ -12958,7 +13154,7 @@ def main():
 	#qwen2_example()  # Qwen2
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
-	qwen3_x_example()  # Qwen3.5, Qwen3.6
+	#qwen3_x_example()  # Qwen3.5, Qwen3.6
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
 	#k_exaone_example()  # K-EXAONE
@@ -12996,6 +13192,7 @@ def main():
 	#glm_reasoning_example()  # GLM-Z1, GLM-Z1-Rumination, GLM-V4.1-Thinking
 	#ring_example()  # Ring, Ring-V2
 	#kimi_k2_thinking_example()  # Kimi K2 Thinking. Not yet implemented
+	nemotron_reasoning_example()  # Nemotron 3 Super, Nemotron 3 Nano
 
 	#-----
 	# Math
