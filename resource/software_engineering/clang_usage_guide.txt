@@ -74,6 +74,15 @@
 
 		A language server that can work with many editors via a plugin.
 
+	- Code Coverage.
+		https://llvm.org/docs/CommandGuide/llvm-cov.html
+
+		llvm-cov
+		llvm-cov gcov
+		llvm-cov show
+		llvm-cov report
+		llvm-cov export
+
 [-] Installation.
 	- Install (Windows).
 		Use MSYS2 UCRT64 or CLANG64.
