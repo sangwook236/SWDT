@@ -2,6 +2,23 @@
 	- Site.
 		https://codeassist.google/
 
+[-] Usage (VSCode).
+	https://developers.google.com/gemini-code-assist/docs/overview
+	https://cloud.google.com/gemini/docs/codeassist/overview
+	https://cloud.google.com/gemini/docs/codeassist/write-code-gemini
+
+	- Commands.
+		/generate
+		/review
+		/explain
+		/refactor
+		/fix
+		/optimize
+		/ask
+
+		@workspace
+		@<filename>
+
 [-] Tools.
 	- Gemini Code Assist.
 		https://codeassist.google/

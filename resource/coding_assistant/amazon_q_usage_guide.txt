@@ -1,12 +1,36 @@
 [-] General.
 	- Site.
+		https://aws.amazon.com/q/
+
 		https://docs.aws.amazon.com/amazonq/
 
-		https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html
-		https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/what-is.html
+		https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/
+		https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/
 
 [-] Usage (VSCode).
-	https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html
+	https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.amazon-q-vscode
+	https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/
+	https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-in-IDE.html
+
+	- Chat.
+		Inline Chat: Ctrl+I
+
+	- Commands.
+		/dev
+			Generates new code across your entire project and implement features.
+		/doc
+			Writes API, technical design, and onboarding documentation.
+		/review
+			Performs code reviews, flagging suspicious code patterns and assessing deployment risk.
+		/test
+			Generates unit tests and adds them to your project, helping you improve code quality, fast.
+		/transform
+			Upgrades your Java applications in minutes, not weeks.
+		/help
+		/clear
+
+		@workspace
+			Add @workspace to the beginning of your message to include your entire workspace as context.
 
 	- Start chatting with Amazon Q.
 		Ctrl+Shift+P -> Type 'Amazon Q'.

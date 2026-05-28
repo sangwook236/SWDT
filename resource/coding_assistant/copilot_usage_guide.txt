@@ -1,0 +1,64 @@
+[-] General.
+	- Site.
+		https://github.com/features/copilot
+		https://github.com/copilot/
+
+[-] Usage (VSCode).
+	https://code.visualstudio.com/docs/copilot/getting-started
+	https://code.visualstudio.com/docs/copilot/overview
+	https://code.visualstudio.com/docs/copilot/copilot-vscode-features
+
+	- Commands.
+		Type # to attach context
+			#codebase
+			#editor
+			#selection
+			#terminalSelection
+			#terminalLastCommand
+			#VSCodeAPI
+			#file
+			#<filename>
+			#sym
+			#<symbol>
+
+		Type / to use commands
+			/docs
+				/docs generate a doxygen comment for foo
+			/help
+			/clear
+			/review
+			/refactor
+
+		Type @ to chat with extensions
+			@workspace
+				/explain
+					@workspace /explain how the selected code works
+				/tests
+					@workspace /tests add unit tests for my code
+				/setupTests
+				/fix
+					@workspace /fix the problems in my code
+				/fixTestFailure
+				/new
+				/newNotebook
+			@vscode
+				/search
+				/startDebugging
+				/runCommand
+			@terminal
+				/explain
+			@github
+			@remote-ssh
+
+	- Copilot Chat.
+		https://code.visualstudio.com/docs/copilot/copilot-chat
+		https://docs.github.com/en/copilot/example-prompts-for-github-copilot-chat
+
+		Chat view: Ctrl+Alt+I
+		Inline Chat: Ctrl+I
+		Quick Chat: Ctrl+Shift+Alt+L
+`
+	- Copilot Edits.
+		https://docs.github.com/en/copilot/example-prompts-for-github-copilot-chat
+
+		Inline Chat: Ctrl+Shift+I
