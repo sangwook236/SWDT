@@ -1,0 +1,23 @@
+[-] General.
+	- Site.
+		https://paperclip.ing/
+		https://github.com/paperclipai/paperclip
+
+		https://docs.paperclip.ing/
+
+[-] Tools.
+	- paperclipai (CLI).
+		https://docs.openclaw.ai/cli
+
+		~/.paperclip/
+
+		npx paperclipai onboard --yes
+
+		npx paperclipai onboard --yes --bind lan
+		npx paperclipai onboard --yes --bind tailnet
+
+[-] Installation.
+	- Install.
+		https://github.com/paperclipai/paperclip
+
+		npx paperclipai onboard --yes
