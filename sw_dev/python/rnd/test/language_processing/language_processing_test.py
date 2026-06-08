@@ -259,7 +259,7 @@ def florence_example():
 
 # REF [site] >>
 #	https://huggingface.co/nvidia
-#	https://github.com/NVIDIA/Cosmos
+#	https://github.com/NVIDIA/cosmos
 #	https://github.com/NVIDIA/Cosmos-Tokenizer
 def cosmos_example():
 	# Models:
@@ -284,6 +284,11 @@ def cosmos_example():
 	#	nvidia/Cosmos-1.0-Guardrail
 	#	nvidia/Cosmos-1.0-Tokenizer-DV8x16x16
 	#	nvidia/Cosmos-1.0-Tokenizer-CV8x8x8
+	#
+	#	nvidia/Cosmos3-Super
+	#	nvidia/Cosmos3-Super-Image2Video
+	#	nvidia/Cosmos3-Super-Text2Image
+	#	nvidia/Cosmos3-Nano
 
 	# Inference:
 	#	Cosmos Installation
@@ -301,7 +306,442 @@ def cosmos_example():
 	#	Cosmos Autoregressive-based World Foundation Models: NeMo Framework User Guide
 	#		https://github.com/NVIDIA/Cosmos/blob/main/cosmos1/models/autoregressive/nemo/post_training/README.md
 
-	raise NotImplementedError
+	# vLLM-Omni:
+	#	You can use the release-tested vllm-omni package for deploying an OpenAI-compatible API inference endpoint.
+	#	The recommended vLLM-Omni serving configuration for nvidia/Cosmos3-Super on 8xH200, 8xH100, or 8xA100 is:
+	#
+	#	vllm serve nvidia/Cosmos3-Super \
+	#		--omni \
+	#		--host 0.0.0.0 \
+	#		--port 8000 \
+	#		--cfg-parallel-size 2 \
+	#		--ulysses-degree 4 \
+	#		--use-hsdp \
+	#		--hsdp-shard-size 8 \
+	#		--init-timeout 1800
+	#
+	#	vllm serve nvidia/Cosmos3-Nano \
+	#		--omni \
+	#		--host 0.0.0.0 \
+	#		--port 8000 \
+	#		--init-timeout 1800
+
+	# Install:
+	#	pip install -U "huggingface_hub[cli]"
+	#	hf download nvidia/Cosmos3-Super assets/ --local-dir Cosmos3-Super
+	#	cd Cosmos3-Super
+	#
+	#	pip install -U "huggingface_hub[cli]"
+	#	hf download nvidia/Cosmos3-Nano assets/ --local-dir Cosmos3-Nano
+	#	cd Cosmos3-Nano
+
+	if True:
+		# Image to video generation
+
+		import json
+		import requests
+		import mimetypes
+		from pathlib import Path
+
+		# 1. Read JSON-upsampled prompt and negative prompt
+		json_prompt = json.load(open("assets/example_i2v_prompt.json"))
+		negative_prompt = json.load(open("assets/negative_prompt.json"))
+
+		# 2. Build and send the multipart API request
+		url = "http://localhost:8000/v1/videos/sync"
+		image_path = Path("assets/example_i2v_input.jpg")
+		mime_type = mimetypes.guess_type(image_path)[0] or "image/png"
+		data = {
+			"prompt": json.dumps(json_prompt),
+			"negative_prompt": json.dumps(negative_prompt),
+			"size": "1280x720",
+			"num_frames": "189",
+			"fps": "24",
+			"num_inference_steps": "35",
+			"guidance_scale": "6.0",
+			"max_sequence_length": "4096",
+			"flow_shift": "10.0",
+			"extra_params": json.dumps(
+				{
+					"use_resolution_template": False,
+					"use_duration_template": False,
+					"guardrails": True,
+				}
+			),
+			"seed": "17",
+			#"seed": "1111",
+		}
+
+		with image_path.open("rb") as image_file:
+			files = {
+				"input_reference": (image_path.name, image_file, mime_type),
+			}
+			print("Sending request to server...")
+			response = requests.post(
+				url,
+				data=data,
+				files=files,
+				headers={"Accept": "video/mp4"},
+			)
+			response.raise_for_status()
+
+		# 3. Save the generated video
+		output_path = Path("/tmp/cosmos3_super_i2v.mp4")
+		#output_path = Path("/tmp/cosmos3_nano_i2v.mp4")
+		output_path.write_bytes(response.content)
+		print(f"Saved video to {output_path}")
+
+	if True:
+		# Text to video generation
+
+		import json
+		import requests
+		from pathlib import Path
+
+		# 1. Read JSON-upsampled prompt and negative prompt
+		json_prompt = json.load(open("assets/example_t2v_prompt.json"))
+		negative_prompt = json.load(open("assets/negative_prompt.json"))
+
+		# 2. Build your API payload
+		data = {
+			"prompt": json.dumps(json_prompt),
+			"negative_prompt": json.dumps(negative_prompt),
+			"size": "1280x720",
+			"num_frames": "189",
+			"fps": "24",
+			"num_inference_steps": "35",
+			"guidance_scale": "6.0",
+			"max_sequence_length": "4096",
+			"flow_shift": "10.0",
+			"extra_params": json.dumps(
+				{
+					"use_resolution_template": False,
+					"use_duration_template": False,
+					"guardrails": True,
+				}
+			),
+			"seed": "17",
+			#"seed": "123",
+		}
+
+		# 3. Send the POST request
+		url = "http://localhost:8000/v1/videos/sync"
+		print("Sending request to server...")
+		response = requests.post(
+			url,
+			data=data,
+			headers={"Accept": "video/mp4"},
+		)
+		response.raise_for_status()
+
+		# 4. Save the generated video
+		output_path = Path("/tmp/cosmos3_super_t2v.mp4")
+		#output_path = Path("/tmp/cosmos3_nano_t2v.mp4")
+		output_path.write_bytes(response.content)
+		print(f"Saved video to {output_path}")
+
+	if True:
+		# Image to Video + Audio generation
+
+		import json
+		import mimetypes
+		from pathlib import Path
+
+		# 1. Read JSON-upsampled prompt and negative prompt
+		json_prompt = json.load(open("assets/example_i2v_prompt.json"))
+		negative_prompt = json.load(open("assets/negative_prompt.json"))
+
+		# 2. Build and send the multipart API request
+		url = "http://localhost:8000/v1/videos/sync"
+		image_path = Path("assets/example_i2v_input.jpg")
+		mime_type = mimetypes.guess_type(image_path)[0] or "image/png"
+		data = {
+			"prompt": json.dumps(json_prompt),
+			"negative_prompt": json.dumps(negative_prompt),
+			"size": "1280x720",
+			"num_frames": "189",
+			"fps": "24",
+			"num_inference_steps": "35",
+			"guidance_scale": "6.0",
+			"max_sequence_length": "4096",
+			"generate_sound": "true",
+			"sound_duration": "7.875",
+			"flow_shift": "10.0",
+			"extra_params": json.dumps(
+				{
+					"use_resolution_template": False,
+					"use_duration_template": False,
+					"guardrails": True,
+				}
+			),
+			"seed": "17",
+			#"seed": "0",
+		}
+
+		with image_path.open("rb") as image_file:
+			files = {
+				"input_reference": (image_path.name, image_file, mime_type),
+			}
+			print("Sending request to server...")
+			response = requests.post(
+				url,
+				data=data,
+				files=files,
+				headers={"Accept": "video/mp4"},
+			)
+			response.raise_for_status()
+
+		# 3. Save the generated video
+		output_path = Path("/tmp/cosmos3_super_i2vs.mp4")
+		#output_path = Path("/tmp/cosmos3_nano_i2vs.mp4")
+		output_path.write_bytes(response.content)
+		print(f"Saved video to {output_path}")
+
+	if True:
+		# Text to Video + Audio generation
+
+		import json
+		import requests
+		from pathlib import Path
+
+		# 1. Read JSON-upsampled prompt and negative prompt
+		json_prompt = json.load(open("assets/example_t2vs_prompt.json"))
+		negative_prompt = json.load(open("assets/negative_prompt.json"))
+
+		# 2. Build your API payload
+		data = {
+			"prompt": json.dumps(json_prompt),
+			"negative_prompt": json.dumps(negative_prompt),
+			"size": "1280x720",
+			"num_frames": "189",
+			"fps": "24",
+			"num_inference_steps": "35",
+			"guidance_scale": "6.0",
+			"max_sequence_length": "4096",
+			"generate_sound": "true",
+			"sound_duration": "7.875",
+			"flow_shift": "10.0",
+			"extra_params": json.dumps(
+				{
+					"use_resolution_template": False,
+					"use_duration_template": False,
+					"guardrails": True,
+				}
+			),
+			"seed": "17",
+			#"seed": "0",
+		}
+
+		# 3. Send the POST request
+		url = "http://localhost:8000/v1/videos/sync"
+		print("Sending request to server...")
+		response = requests.post(
+			url,
+			data=data,
+			headers={"Accept": "video/mp4"},
+		)
+		response.raise_for_status()
+
+		# 4. Save the generated video
+		output_path = Path("/tmp/cosmos3_super_t2vs.mp4")
+		#output_path = Path("/tmp/cosmos3_nano_t2vs.mp4")
+		output_path.write_bytes(response.content)
+		print(f"Saved video to {output_path}")
+
+	if True:
+		# Action forward dynamics
+
+		import json
+		import requests
+		import mimetypes
+		from pathlib import Path
+		import numpy as np
+		import imageio.v3 as iio
+		from PIL import Image
+
+		url = "http://localhost:8000/v1/videos/sync"
+		first_frame_path = Path("assets/example_action_fd_agibotworld_first_frame.png")
+		action_spec = json.loads(Path("assets/example_action_fd_agibotworld_action_chunks.json").read_text())
+		action_chunks = action_spec["action_chunks"]
+
+		prompt = action_spec.get("prompt", "Pickup items in the supermarket")
+		fps = int(action_spec.get("fps", 10))
+		action_chunk_size = int(action_spec.get("action_chunk_size", 16))
+		current_frame_path = first_frame_path
+		input_width, input_height = Image.open(first_frame_path).size
+		chunk_video_paths = []
+		stitch_frames = []
+
+		for chunk_idx, action_chunk in enumerate(action_chunks):
+			mime_type = mimetypes.guess_type(current_frame_path)[0] or "image/png"
+			extra_params = {
+				"action_mode": "forward_dynamics",
+				"domain_name": action_spec.get("domain_name", "agibotworld"),
+				"action_chunk_size": action_chunk_size,
+				"image_size": action_spec.get("image_size", 480),
+				"view_point": action_spec.get("view_point", "concat_view"),
+				"action": action_chunk,
+				"guardrails": True,
+			}
+			data = {
+				"prompt": prompt,
+				"num_frames": str(action_chunk_size + 1),  # conditioning frame + generated frames
+				"fps": str(fps),
+				"size": f"{input_width}x{input_height}",  # return chunks at input resolution
+				"num_inference_steps": "30",
+				"guidance_scale": "1.0",
+				"flow_shift": "10.0",
+				"seed": "0",
+				"extra_params": json.dumps(extra_params),
+			}
+
+			with current_frame_path.open("rb") as image_file:
+				files = {"input_reference": (current_frame_path.name, image_file, mime_type)}
+				print(f"Sending action FD chunk {chunk_idx} to vLLM-Omni...")
+				response = requests.post(
+					url,
+					data=data,
+					files=files,
+					headers={"Accept": "video/mp4"},
+					timeout=600,
+				)
+				response.raise_for_status()
+
+			chunk_video_path = Path(f"/tmp/cosmos3_super_action_fd_chunk_{chunk_idx:02d}.mp4")
+			#chunk_video_path = Path(f"/tmp/cosmos3_nano_action_fd_chunk_{chunk_idx:02d}.mp4")
+			chunk_video_path.write_bytes(response.content)
+			chunk_video_paths.append(chunk_video_path)
+
+			# The returned chunk contains the conditioning frame followed by generated frames.
+			# Drop the conditioning frame when stitching the generated-only rollout.
+			frames = iio.imread(chunk_video_path)
+			stitch_frames.extend(frames[1:])
+
+			# Autoregressive conditioning: use the final generated frame from this chunk
+			# as the input image for the next vLLM-Omni request.
+			if chunk_idx + 1 < len(action_chunks):
+				current_frame_path = Path(f"/tmp/cosmos3_super_action_fd_ar_frame_{chunk_idx + 1:02d}.png")
+				#current_frame_path = Path(f"/tmp/cosmos3_nano_action_fd_ar_frame_{chunk_idx + 1:02d}.png")
+				iio.imwrite(current_frame_path, frames[-1])
+
+		stitched_path = Path("/tmp/cosmos3_super_action_fd_agibotworld_4chunk.mp4")
+		#stitched_path = Path("/tmp/cosmos3_nano_action_fd_agibotworld_4chunk.mp4")
+		iio.imwrite(stitched_path, np.asarray(stitch_frames), fps=fps)
+		print("Generated chunk videos:", chunk_video_paths)
+		print("Saved stitched rollout:", stitched_path)
+		print("stitched resolution:", f"{input_width}x{input_height}")
+
+	if True:
+		# Action inverse dynamics
+
+		import json
+		import time
+		import requests
+		from pathlib import Path
+
+		base_url = "http://localhost:8000"
+		input_videos = {
+			"av_inverse_0": Path("assets/example_action_id_av_0_input.mp4"),
+			"av_inverse_1": Path("assets/example_action_id_av_1_input.mp4"),
+		}
+
+		for name, video_path in input_videos.items():
+			extra_params = {
+				"action_mode": "inverse_dynamics",
+				"domain_name": "av",
+				"action_chunk_size": 60,
+				"image_size": 480,
+				"view_point": "ego_view",
+				"raw_action_dim": 9,
+				"guardrails": True,
+			}
+			data = {
+				"prompt": "You are an autonomous vehicle planning system.",
+				"num_frames": "61",
+				"fps": "10",
+				"num_inference_steps": "30",
+				"guidance_scale": "1.0",
+				"flow_shift": "10.0",
+				"seed": "0",
+				"extra_params": json.dumps(extra_params),
+			}
+
+			with video_path.open("rb") as video_file:
+				files = {
+					"input_reference": (video_path.name, video_file, "video/mp4"),
+				}
+				print(f"Submitting {name} request to server...")
+				response = requests.post(f"{base_url}/v1/videos", data=data, files=files)
+				response.raise_for_status()
+			initial = response.json()
+
+			while True:
+				response = requests.get(f"{base_url}/v1/videos/{initial['id']}", timeout=30)
+				response.raise_for_status()
+				final = response.json()
+				print(initial["id"], final.get("status"), f"{final.get('progress', 0)}%")
+				if final.get("status") == "completed":
+					break
+				if final.get("status") in {"failed", "cancelled"}:
+					raise RuntimeError(json.dumps(final, indent=2))
+				time.sleep(2)
+
+			action = final.get("action")
+			if not action or "data" not in action:
+				raise RuntimeError(f"Response did not include action data: {json.dumps(final, indent=2)}")
+
+			output_path = Path(f"/tmp/cosmos3_super_action_id_{name}.json")
+			#output_path = Path(f"/tmp/cosmos3_nano_action_id_{name}.json")
+			output_path.write_text(json.dumps(action, indent=2))
+			print(f"Saved predicted action to {output_path}")
+			print("action shape:", action.get("shape"), "dtype:", action.get("dtype"))
+
+	# vLLM:
+	# 	CUDA_VISIBLE_DEVICES=0,1,2,3 \
+	# 	vllm serve nvidia/Cosmos3-Super \
+	# 		--hf-overrides '{"architectures": ["Cosmos3ReasonerForConditionalGeneration"]}' \
+	# 		--tensor-parallel-size 4 \
+	# 		--mm-encoder-tp-mode data \
+	# 		--async-scheduling \
+	# 		--allowed-local-media-path / \
+	# 		--media-io-kwargs '{"video": {"num_frames": -1}}' \
+	# 		--port 8000
+
+	if True:
+		# Reasoning
+
+		import json
+		from pathlib import Path
+		import openai
+
+		# 1. Read the image reasoning prompt
+		example = json.load(open("assets/example_reasoning_prompt.json"))
+		image_path = Path("assets/example_reasoning_input.png").resolve()
+		image_url = image_path.as_uri()
+
+		# 2. Query the OpenAI-compatible vLLM server
+		client = openai.OpenAI(
+			api_key="EMPTY",
+			base_url="http://localhost:8000/v1",
+		)
+
+		response = client.chat.completions.create(
+			model=client.models.list().data[0].id,
+			messages=[
+				{
+					"role": "user",
+					"content": [
+						{"type": "image_url", "image_url": {"url": image_url}},
+						{"type": "text", "text": example["prompt"]},
+					],
+				},
+			],
+			max_tokens=example["max_tokens"],
+			seed=0,
+		)
+
+		# 3. Print the generated reasoning output
+		print(response.choices[0].message.content)
 
 def main():
 	# Language modeling
@@ -358,13 +798,13 @@ def main():
 	#-----
 	# Vision foundation models
 
-	florence_example()  # Florence-2
+	#florence_example()  # Florence-2
 	# Refer to extract_regions_in_image_by_florence_2() in ocr_test.py
 
 	#-----
 	# World models
 
-	#cosmos_example()  # Not yet implemented
+	cosmos_example()  # Cosmos 3 Super, Cosmos 3 Nano
 
 	#--------------------
 	# AI agents
