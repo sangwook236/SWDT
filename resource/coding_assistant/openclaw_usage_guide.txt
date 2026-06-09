@@ -87,21 +87,72 @@
 		https://docs.openclaw.ai/cli
 
 		~/.openclaw/
+		~/.openclaw/memory/
 		~/.openclaw/workspace/
 		~/.openclaw/agents/main/sessions/
 		~/.openclaw/openclaw.json
+		~/.openclaw/.env
+			e.g.)
+				GEMINI_API_KEY=<key>
+				ANTHROPIC_API_KEY=<key>
+				OPENAI_API_KEY=<key>
+				BRAVE_API_KEY=<key>
+
+		Workspace:
+			https://github.com/openclaw/openclaw/blob/main/docs/concepts/agent-workspace.md
+
+			~/.openclaw/workspace/
+			~/.openclaw/workspace/SOUL.md
+			~/.openclaw/workspace/IDENTITY.md
+			~/.openclaw/workspace/USER.md
+			~/.openclaw/workspace/HEARTBEAT.md
+			~/.openclaw/workspace/AGENTS.md
+			~/.openclaw/workspace/TOOLS.md
+
+			~/.openclaw/workspace/MEMORY.md
+			~/.openclaw/workspace/memory/
+
+			~/.openclaw/workspace/skills
+			~/.openclaw/workspace/skills/<skill>/SKILL.md
+			~/.openclaw/workspace/skills/<skill>/scripts/
 
 		openclaw --help
 		openclaw onboard --help
+		openclaw --version
 
 		openclaw onboard
 			openclaw onboard --install-daemon
 			openclaw onboard --auth-choice ollama
 
 		openclaw dashboard
+			Slash commands:
+				https://docs.openclaw.ai/tools/slash-commands
+				https://github.com/openclaw/openclaw/blob/main/docs/tools/slash-commands.md
+
+				/help
+				/compact
+				/new
+				/reset
+				/clear
+				/status
+				/tool-profile
+					/tool-profile [minimal|coding|messaging|full]
+				/usage 
+					/usage cost
+				/tts
+					/tts [on|off|status|help]
+					/tts limit 4096
+					/tts summary on
+				/clawhub
+					/clawhub install <skill_name>
+					/clawhub search <skill_name>
+				/skill
+					/skill <skill_name>
+				/exit
 		openclaw tui
 
 		openclaw update
+			openclaw update --rollback
 
 		openclaw setup
 		openclaw config
@@ -109,6 +160,8 @@
 			openclaw config set models.providers.ollama.apiKey "ollama-local"
 			openclaw config set agents.defaults.model.primary "ollama/llama3.3"
 			openclaw config get agents.defaults.model.primary
+
+			openclaw config set tools.profile coding
 
 		openclaw gateway
 			Run, inspect, and query the WebSocket Gateway.
@@ -128,21 +181,30 @@
 			openclaw gateway restart
 			openclaw gateway stop
 
-		openclaw logs
-			openclaw logs --follow
+		openclaw status
+			openclaw status --all
 		openclaw doctor
 			openclaw doctor --non-interactives
 			openclaw doctor --fix
+		openclaw logs
+			openclaw logs --follow
+			openclaw logs --limit 50
 
 		openclaw models
 			https://docs.openclaw.ai/providers
 
 			openclaw models list
 			openclaw models set ollama/gpt-oss:120b-cloud
+			openclaw models aliases add gemini google/gemini-3-flash-preview
+			openclaw models aliases add opus anthropic/claude-opus-4-6
+			openclaw models aliases add gpt openai-codex/gpt-5.4
+			openclaw models fallbacks add google/gemini-3-flash-preview
+			openclaw models fallbacks add anthropic/claude-opus-4-6
 		openclaw agents
 			https://docs.openclaw.ai/concepts/architecture
 
 			openclaw agents list
+			openclaw agents add <agent_name>
 		openclaw skills
 			https://docs.openclaw.ai/tools/skills
 			https://docs.openclaw.ai/tools/clawhub
@@ -152,6 +214,8 @@
 			openclaw skills install <skill-slug>
 			openclaw skills update --all
 			openclaw skills add agent-ros-bridge
+			openclaw skills info <skill_name>
+			openclaw skills check
 		openclaw plugins
 			openclaw plugins list
 			openclaw plugins install clawhub:<package>
@@ -181,6 +245,32 @@
 			openclaw message send --target +15555550123 --message "Hi" --json
 				Send via your web session and print JSON result.
 
+		openclaw cron
+			openclaw cron list
+			openclaw cron runs --id <job_id> --limits <max_entries>
+			openclaw cron enable <job_id>
+			openclaw cron disable <job_id>
+			openclaw cron rm <job_id>
+
+			openclaw cron add \
+				--name "Morning Greeting" \
+				--cron "0 9 * * *" \
+				--session main \
+				--system-event "Good morning! Please check your schedule for today."
+			openclaw cron add \
+				--name "Weekly Report" \
+				--cron "0 18 * * 5" \
+				--session isolated \
+				--message "Read the daily logs in the memory folder for this week and create a weekly report. Please summarize the key activities, completed tasks, and next week's to-do list." \
+				--announce \
+				--channel discord
+			openclaw cron add \
+				--name "Morning Briefing" \
+				--cron "0 7 * * *" \
+				--tz "Asia/Seoul" \
+				--session isolated \
+				--message "Please prepare today's briefing."
+
 	- clawhub
 		https://clawhub.ai/
 		https://docs.openclaw.ai/tools/clawhub
@@ -197,6 +287,10 @@
 		clawhub install smarthome
 		clawhub install whisper
 		clawhub install guardbot
+
+		npx clawhub@latest search <service_name>
+			npx clawhub@latest search trello
+		npx clawhub@latest install <skill_name>
 
 [-] Installation.
 	- Install (WSL).
