@@ -15,7 +15,7 @@ def main():
 	#	./ocropy_test.py  # OCRopus
 	#	./kraken_test.py  # OCRopus
 	#	./easy_ocr_test.py  # EasyOCR
-	#	./keras_ocr_test
+	#	./keras_ocr_test.py
 	#	./paddle_ocr_test.py  # PaddleOCR
 
 	#-----

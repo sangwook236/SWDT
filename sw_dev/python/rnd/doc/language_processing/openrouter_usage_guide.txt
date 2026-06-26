@@ -1,0 +1,16 @@
+[-] General.
+	- Site.
+		https://openrouter.ai/
+		https://github.com/OpenRouterTeam
+
+		https://openrouter.ai/docs/
+
+[-] Usage.
+	- Quckstart
+		https://openrouter.ai/docs/quickstart
+
+[-] Installation.
+	- Install.
+		https://openrouter.ai/docs/quickstart
+
+		pip install openrouter
