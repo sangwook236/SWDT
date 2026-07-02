@@ -5178,6 +5178,8 @@ def qwen3_x_example():
 	#	Qwen/Qwen3.5-397B-A17B
 	#	Qwen/Qwen3.5-397B-A17B-FP8
 	#
+	#	Qwen/Qwen3.6-27B
+	#	Qwen/Qwen3.6-27B-FP8
 	#	Qwen/Qwen3.6-35B-A3B
 	#	Qwen/Qwen3.6-35B-A3B-FP8
 
@@ -5201,6 +5203,8 @@ def qwen3_x_example():
 
 		#model_name = "Qwen/Qwen3.5-35B-A3B"
 		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		#model_name = "Qwen/Qwen3.6-27B"
+		#model_name = "Qwen/Qwen3.6-27B-FP8"
 		model_name = "Qwen/Qwen3.6-35B-A3B"
 		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
 
@@ -5220,6 +5224,7 @@ def qwen3_x_example():
 				temperature=1.0,
 				top_p=0.95,
 				presence_penalty=1.5,
+				#presence_penalty=0.0,
 				extra_body={
 					"top_k": 20,
 				}, 
@@ -5244,6 +5249,8 @@ def qwen3_x_example():
 
 		#model_name = "Qwen/Qwen3.5-35B-A3B"
 		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		#model_name = "Qwen/Qwen3.6-27B"
+		#model_name = "Qwen/Qwen3.6-27B-FP8"
 		model_name = "Qwen/Qwen3.6-35B-A3B"
 		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
 
@@ -5275,6 +5282,7 @@ def qwen3_x_example():
 				temperature=1.0,
 				top_p=0.95,
 				presence_penalty=1.5,
+				#presence_penalty=0.0,
 				extra_body={
 					"top_k": 20,
 				}, 
@@ -5300,6 +5308,8 @@ def qwen3_x_example():
 		#model_name = "Qwen/Qwen3.5-35B-A3B"
 		#model_name = "Qwen/Qwen3.5-122B-A10B"
 		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		#model_name = "Qwen/Qwen3.6-27B"
+		#model_name = "Qwen/Qwen3.6-27B-FP8"
 		model_name = "Qwen/Qwen3.6-35B-A3B"
 		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
 
@@ -5337,6 +5347,7 @@ def qwen3_x_example():
 				temperature=1.0,
 				top_p=0.95,
 				presence_penalty=1.5,
+				#presence_penalty=0.0,
 				extra_body={
 					"top_k": 20,
 					"mm_processor_kwargs": {"fps": 2, "do_sample_frames": True},
@@ -5364,6 +5375,8 @@ def qwen3_x_example():
 
 		#model_name = "Qwen/Qwen3.5-35B-A3B"
 		#model_name = "Qwen/Qwen3.5-397B-A17B"
+		#model_name = "Qwen/Qwen3.6-27B"
+		#model_name = "Qwen/Qwen3.6-27B-FP8"
 		model_name = "Qwen/Qwen3.6-35B-A3B"
 		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
 
@@ -5406,6 +5419,8 @@ def qwen3_x_example():
 
 		from openai import OpenAI
 
+		#model_name = "Qwen/Qwen3.6-27B"
+		#model_name = "Qwen/Qwen3.6-27B-FP8"
 		model_name = "Qwen/Qwen3.6-35B-A3B"
 		#model_name = "Qwen/Qwen3.6-35B-A3B-FP8"
 
@@ -5421,6 +5436,9 @@ def qwen3_x_example():
 			temperature=0.7,
 			top_p=0.8,
 			presence_penalty=1.5,
+			#temperature=0.6,
+			#top_p=0.95,
+			#presence_penalty=0.0,
 			extra_body={
 				"top_k": 20,
 				"chat_template_kwargs": {"preserve_thinking": True},
@@ -5448,6 +5466,8 @@ def qwen3_x_example():
 			llm_cfg = {
 				# Use the OpenAI-compatible model service provided by DashScope:
 				#"model": "Qwen3.5-397B-A17B",
+				#"model": "Qwen/Qwen3.6-27B",
+				#"model": "Qwen/Qwen3.6-27B-FP8",
 				"model": "Qwen3.6-397B-A17B",
 				#"model": "Qwen3.6-397B-A17B-FP8",
 				"model_type": "qwenvl_oai",
