@@ -139,6 +139,10 @@
 		https://code.visualstudio.com/docs/terminal/profiles
 		https://code.visualstudio.com/docs/supporting/troubleshoot-terminal-launch
 
+	- Remote Tunnels.
+		https://code.visualstudio.com/docs/remote/tunnels
+		Refer dev_tunnels_usage_guide.txt.
+
 	- Coding assistant.
 		Refer coding_assistant_usage_guide.txt.
 

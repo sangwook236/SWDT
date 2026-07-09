@@ -1,0 +1,60 @@
+[-] General
+	- Site.
+		https://github.com/microsoft/dev-tunnels
+
+		https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/
+
+[-] Usage.
+	- Visual Studio Code.
+		https://code.visualstudio.com/docs/remote/tunnels
+
+	- Visual Studio.
+		https://learn.microsoft.com/en-us/aspnet/core/test/dev-tunnels
+
+	- devtunnel (CLI).
+		https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started
+
+		Log in:
+			devtunnel user login
+
+		Host: 
+			Start a HTTP server on port 8080:
+				devtunnel echo http -p 8080
+
+			Tunnel port 8080:
+				devtunnel host -p 8080
+
+			A successful host command prints something similar to the following example to the console.
+				Connecting to host tunnel relay wss://usw2-data.rel.tunnels.api.visualstudio.com/api/v1/Host/Connect/<tunnel_id>
+				Hosting port 8080 at https://<tunnel_id>.usw2.devtunnels.ms:8080/, https://<tunnel_id>-8080.usw2.devtunnels.ms/ and inspect it at https:/<tunnel_id>-8080-inspect.usw2.devtunnels.ms/
+				Ready to accept connections for tunnel: <tunnel_id>
+
+		Connect:
+			Visit this URL in a web browser.
+			Login using the same account as you used to host the dev tunnel.
+			By default, dev tunnels are only accessible to you.
+
+[-] Tool.
+	- devtunnel (CLI).
+		https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/cli-commands
+
+		devtunnel --version
+		devtunnel user login
+		devtunnel user logout
+		devtunnel user show
+		devtunnel host
+		devtunnel connect <TUNNELID>
+		devtunnel create
+		devtunnel list
+		devtunnel show
+		devtunnel update
+		devtunnel delete
+		devtunnel delete-all
+
+[-] Installation.
+	- Install.
+		https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started
+		https://aka.ms/TunnelsCliDownload/win-x64
+
+		winget install Microsoft.devtunnel
+		winget upgrade Microsoft.devtunnel
