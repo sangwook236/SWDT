@@ -7882,6 +7882,163 @@ def nemotron_reasoning_example():
 		)
 		print(result)
 
+# REF [site] >>
+#	https://huggingface.co/thinkingmachines
+#	https://huggingface.co/blog/thinkingmachines-inkling
+def inkling_example():
+	# Models:
+	#	thinkingmachines/Inkling
+	#	thinkingmachines/Inkling-NVFP4
+
+	if True:
+		model_id = "thinkingmachines/Inkling"
+		#model_id = "thinkingmachines/Inkling-NVFP4"
+
+		pipe = transformers.pipeline("any-to-any", model=model_id)
+
+		image_url = (
+			"https://huggingface.co/datasets/merve/vl-test-suite/"
+			"resolve/main/pills.jpg"
+		)
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": image_url,
+					},
+					{
+						"type": "text",
+						"text": "Do components in this supplement interact with each other?",
+					},
+				],
+			},
+		]
+		output = pipe(
+			messages,
+			max_new_tokens=2000,
+			return_full_text=False,
+			reasoning_effort="medium",
+		)
+		output[0]["generated_text"]
+
+	if True:
+		model_id = "thinkingmachines/Inkling"
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			model_id,
+			dtype="auto",
+			device_map="auto",
+		)
+
+		messages = [
+			{"role": "system", "content": "You should only answer with a number."},
+			{"role": "user", "content": "What is 17 * 23?"},
+		]
+
+		inputs = processor.apply_chat_template(
+			messages,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			reasoning_effort="high",
+		).to(model.device)
+
+		output = model.generate(**inputs, max_new_tokens=2000)
+		generated_tokens = output[0][inputs["input_ids"].shape[1] :]
+		print(processor.decode(generated_tokens, skip_special_tokens=False))
+
+	if True:
+		# Text with image inference
+
+		model_id = "thinkingmachines/Inkling"
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			model_id,
+			dtype="auto",
+			device_map="auto",
+		)
+
+		image_url = (
+			"https://huggingface.co/datasets/merve/vl-test-suite/"
+			"resolve/main/pills.jpg"
+		)
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": image_url,
+					},
+					{
+						"type": "text",
+						"text": "Do any of the components in this supplement interact?",
+					},
+				],
+			},
+		]
+
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			reasoning_effort="medium",
+			return_dict=True,
+			return_tensors="pt",
+		).to(model.device)
+		input_len = inputs["input_ids"].shape[-1]
+
+		outputs = model.generate(**inputs, max_new_tokens=2000)
+		response = processor.decode(outputs[0][input_len:], skip_special_tokens=False)
+
+		processor.parse_response(response)
+
+	if True:
+		# Text with audio inference
+
+		model_id = "thinkingmachines/Inkling"
+
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			model_id,
+			dtype="auto",
+			device_map="auto",
+		)
+
+		audio_url = (
+			"https://huggingface.co/datasets/merve/vl-test-suite/"
+			"resolve/main/example_audio.mp3"
+		)
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "text", "text": "Transcribe the following speech to text."},
+					{
+						"type": "audio",
+						"audio": audio_url,
+					},
+				],
+			},
+		]
+
+		inputs = processor.apply_chat_template(
+			messages,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			add_generation_prompt=True,
+		).to(model.device)
+		input_len = inputs["input_ids"].shape[-1]
+
+		outputs = model.generate(**inputs, max_new_tokens=512)
+		response = processor.decode(outputs[0][input_len:], skip_special_tokens=False)
+
+		processor.parse_response(response)
+
 # REF [site] >> https://huggingface.co/Qwen
 def qwen_math_example():
 	# Models:
@@ -13213,6 +13370,7 @@ def main():
 	#ring_example()  # Ring, Ring-V2
 	#kimi_k2_thinking_example()  # Kimi K2 Thinking. Not yet implemented
 	nemotron_reasoning_example()  # Nemotron 3 Super, Nemotron 3 Nano
+	inkling_example()  # Inkling
 
 	#-----
 	# Math
@@ -13417,6 +13575,7 @@ def main():
 	# Refer to ./lm_studio_test.py
 	# Refer to ./litellm_test.py
 	# Refer to ./sglang_test.py
+	# Refer to ./openrouter_test.py
 	# Refer to ./dspy_test.py
 
 #--------------------------------------------------------------------
