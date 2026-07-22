@@ -176,6 +176,7 @@
     <ClCompile Include="algorithm.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="complex.cpp" />
+    <ClCompile Include="core_dump.cpp" />
     <ClCompile Include="date_time.cpp" />
     <ClCompile Include="file_io.cpp" />
     <ClCompile Include="deprecated.cpp" />

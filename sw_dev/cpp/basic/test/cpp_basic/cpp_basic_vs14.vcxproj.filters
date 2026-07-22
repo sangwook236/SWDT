@@ -10,6 +10,9 @@
     <ClCompile Include="complex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="core_dump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="date_time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -38,6 +38,7 @@
 		<Unit filename="algorithm.cpp" />
 		<Unit filename="array.cpp" />
 		<Unit filename="complex.cpp" />
+		<Unit filename="core_dump.cpp" />
 		<Unit filename="date_time.cpp" />
 		<Unit filename="deprecated.cpp" />
 		<Unit filename="file_io.cpp" />
