@@ -23,11 +23,11 @@
 			All parallel APIs (parallel LAPACK and parallel BLAS).
 
 	- Run executables linked with ATLAS (shared) libraries.
-	    ATLAS (shared) library¿Í linkµÈ executableÀ» ½ÇÇàÇÏ±â À§ÇØ¼­´Â ¾Æ·¡ÀÇ library°¡ ÀÖ¾î¾ß ÇÔ.
+	    ATLAS (shared) libraryì™€ linkëœ executableì„ ì‹¤í–‰í•˜ê¸° ìœ„í•´ì„œëŠ” ì•„ë˜ì˜ libraryê°€ ìˆì–´ì•¼ í•¨.
 			libgcc_s_dw2-1.dll
 			libgfortran-3.dll
 			libquadmath-0.dll
-		==> Cygwin¿¡¼­ Á¦°ø.
+		==> Cygwinì—ì„œ ì œê³µ.
 
 [-] Building ver. 3.10.3 (Cygwin + Win32/64).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
@@ -38,7 +38,7 @@
 	- Make a build directory.
 		mkdir ${ATLAS_BUILD_DIR}
 		cd ${ATLAS_BUILD_DIR}
-			e.g.) ${ATLAS_BUILD_DIR} = build_cygwinÀÎ °æ¿ì.
+			e.g.) ${ATLAS_BUILD_DIR} = build_cygwinì¸ ê²½ìš°.
 				mkdir build_cygwin
 				cd build_cygwin
 	- (Optional) specify the MinGW binutils to use.
@@ -70,26 +70,26 @@
 			../configure --prefix=./install -Si nocygwin 1 ==> For 64-bit.
 			../configure --prefix=./install -Si nocygwin 1 -b 32 ==> For 32-bit.
 			../configure --prefix=./install
-		==> configure¸¦ ½ÇÇàÇÏ¸é error°¡ ¹ß»ıµÇ´Â °æ¿ì°¡ ÀÖ´Âµ¥, »ı¼ºµÈ fileÀ» ¸ğµÎ »èÁ¦ ÈÄ Àç½ÇÇàÇÏ¸é µÇ´Â °æ¿ì°¡ ÀÖÀ½.
+		==> configureë¥¼ ì‹¤í–‰í•˜ë©´ errorê°€ ë°œìƒë˜ëŠ” ê²½ìš°ê°€ ìˆëŠ”ë°, ìƒì„±ëœ fileì„ ëª¨ë‘ ì‚­ì œ í›„ ì¬ì‹¤í–‰í•˜ë©´ ë˜ëŠ” ê²½ìš°ê°€ ìˆìŒ.
 	- (Optional) build 32-bit libraries on cygwin64.
 		Edit ${ATLAS_BUILD_DIR}/Make.inc.
 			Look for XCCFLAGS.
 			Change -m32 to -m64.
-		==> '-b 32' optionÀ» ÁöÁ¤ÇÏ¸é -m32 optionÀ» °¡Áö´Â fileÀÌ »ı¼º.
+		==> '-b 32' optionì„ ì§€ì •í•˜ë©´ -m32 optionì„ ê°€ì§€ëŠ” fileì´ ìƒì„±.
 		REF [doc] >> "Building 32-bit libraries on 64-bit Windows and cygwin64" section in ${ATLAS_HOME}/doc/atlas_install.pdf
 	- Revise ${ATLAS_BUILD_DIR}/Make.top.
 		REF [] >> Trouble shooting (Cygwin) (ver. 3.10.3).
 	- Build library.
 		make > make.log
-			==> library fileÀº ${ATLAS_BUILD_DIR}/lib directory¿¡ »ı¼º.
+			==> library fileì€ ${ATLAS_BUILD_DIR}/lib directoryì— ìƒì„±.
 		make check
 		make time
 		make install
-			==> 'make install'À» ¼öÇàÇÏ±â À§ÇØ¼­ °ü¸®ÀÚ ±ÇÇÑÀÌ ÇÊ¿äÇÑ °æ¿ì°¡ ÀÖÀ½.
-				e.g.) /usr/local directory¿¡ ¼³Ä¡ÇÏ´Â °æ¿ì.
-				cygwinÀ» °ü¸®ÀÚ ±ÇÇÑÀ¸·Î ½ÇÇàÇØ¾ß ÇÔ.
+			==> 'make install'ì„ ìˆ˜í–‰í•˜ê¸° ìœ„í•´ì„œ ê´€ë¦¬ì ê¶Œí•œì´ í•„ìš”í•œ ê²½ìš°ê°€ ìˆìŒ.
+				e.g.) /usr/local directoryì— ì„¤ì¹˜í•˜ëŠ” ê²½ìš°.
+				cygwinì„ ê´€ë¦¬ì ê¶Œí•œìœ¼ë¡œ ì‹¤í–‰í•´ì•¼ í•¨.
 	- Create import library.
-		1. ATLAS library°¡ »ı¼ºÇØÁÖ´Â def files (libtatlas.def & libsatlas.def)¸¦ »ç¿ëÇÏ´Â °æ¿ì.
+		1. ATLAS libraryê°€ ìƒì„±í•´ì£¼ëŠ” def files (libtatlas.def & libsatlas.def)ë¥¼ ì‚¬ìš©í•˜ëŠ” ê²½ìš°.
 			For 32-bit:
 				lib.exe /nologo /machine:x86 /def:libtatlas.def
 				lib.exe /nologo /machine:x86 /def:libsatlas.def
@@ -97,8 +97,8 @@
 				lib.exe /nologo /machine:x64 /def:libtatlas.def
 				lib.exe /nologo /machine:x64 /def:libsatlas.def
 			REF [doc] >> "Creating MSVC++ compatible import libraries" section in ${ATLAS_HOME}/doc/atlas_install.pdf
-			==> VC++¿¡¼­ Á¤»óÀûÀ¸·Î link°¡ µÇÁö ¾ÊÀ½.
-		2. dumpbin.exe¸¦ ÀÌ¿ëÇØ def filesÀ» Á÷Á¢ »ı¼ºÇÏ´Â °æ¿ì.
+			==> VC++ì—ì„œ ì •ìƒì ìœ¼ë¡œ linkê°€ ë˜ì§€ ì•ŠìŒ.
+		2. dumpbin.exeë¥¼ ì´ìš©í•´ def filesì„ ì§ì ‘ ìƒì„±í•˜ëŠ” ê²½ìš°.
 			REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
 	- Run executables linked with ATLAS (shared) libraries.
 		REF [] >> Usage section.
@@ -111,33 +111,33 @@
 	REF [doc] >> ${ATLAS_HOME}/doc/Windows.txt
 
 	- Tip.
-		Cygwin¿¡¼­ building ½Ã error°¡ ¸¹ÀÌ ¹ß»ıÇÏ´Âµ¥ Ãâ·ÂµÇ´Â »çÇ×ÀÌ ¸¹ÀÌ error¸¦ È®ÀÎÇÏ´Â °ÍÀÌ ¾î·Á¿ò.
-			==> config & makeÀÇ °á°ú¸¦ log fileÀ» redirectionÇØ¼­ º¼ °Í.
-		Log file¿¡¼­ error¸¦ Ã£À» ¶§ ¾Æ·¡ÀÇ keyword »ç¿ë °¡´É.
+		Cygwinì—ì„œ building ì‹œ errorê°€ ë§ì´ ë°œìƒí•˜ëŠ”ë° ì¶œë ¥ë˜ëŠ” ì‚¬í•­ì´ ë§ì´ errorë¥¼ í™•ì¸í•˜ëŠ” ê²ƒì´ ì–´ë ¤ì›€.
+			==> config & makeì˜ ê²°ê³¼ë¥¼ log fileì„ redirectioní•´ì„œ ë³¼ ê²ƒ.
+		Log fileì—ì„œ errorë¥¼ ì°¾ì„ ë•Œ ì•„ë˜ì˜ keyword ì‚¬ìš© ê°€ëŠ¥.
 			error, fail.
 
 	- Trouble shooting.
-		Make.inc¸¦ »ı¼ºÇÏÁö ¸øÇÏ´Â °æ¿ì (1).
+		Make.incë¥¼ ìƒì„±í•˜ì§€ ëª»í•˜ëŠ” ê²½ìš° (1).
 			copy ${ATLAS_HOME}/interfaces/lapack/Make.inc.Linux to Make.inc
-		Make.inc¸¦ »ı¼ºÇÏÁö ¸øÇÏ´Â °æ¿ì (2).
-			¼³Á¤µÈ PATH¿¡ '°ø¹é', '(', ')' °°Àº ¹®ÀÚ°¡ ÀÖÀ» °æ¿ì error ¹ß»ı.
-			==> PATH¸¦ º¯°æÇØ ÁÜ.
+		Make.incë¥¼ ìƒì„±í•˜ì§€ ëª»í•˜ëŠ” ê²½ìš° (2).
+			ì„¤ì •ëœ PATHì— 'ê³µë°±', '(', ')' ê°™ì€ ë¬¸ìê°€ ìˆì„ ê²½ìš° error ë°œìƒ.
+			==> PATHë¥¼ ë³€ê²½í•´ ì¤Œ.
 				export PATH=/usr/local/bin:/usr/bin
-			Cygwin¿¡ ±âº»ÀûÀ¸·Î ¼³Á¤µÇ´Â path´Â Windows¿¡ ¼³Á¤µÈ path°¡ Æ÷ÇÔµÇ´Âµ¥ ÀÌµéÀÌ error¸¦ ¹ß»ı½ÃÅ´.
-		¾Æ·¡ÀÇ "Trouble shooting when building library in Cygwin" section ³»¿ë Âü°í.
+			Cygwinì— ê¸°ë³¸ì ìœ¼ë¡œ ì„¤ì •ë˜ëŠ” pathëŠ” Windowsì— ì„¤ì •ëœ pathê°€ í¬í•¨ë˜ëŠ”ë° ì´ë“¤ì´ errorë¥¼ ë°œìƒì‹œí‚´.
+		ì•„ë˜ì˜ "Trouble shooting when building library in Cygwin" section ë‚´ìš© ì°¸ê³ .
 
 	- Set $PATH.
 		export PATH=/usr:/usr/local/bin:/usr/bin
-		==> ¼³Á¤µÈ PATH¿¡ '°ø¹é', '(', ')' °°Àº ¹®ÀÚ°¡ ÀÖÀ» °æ¿ì error ¹ß»ı.
-			Cygwin¿¡ ±âº»ÀûÀ¸·Î ¼³Á¤µÇ´Â path´Â Windows¿¡ ¼³Á¤µÈ path°¡ Æ÷ÇÔµÇ´Âµ¥ ÀÌµéÀÌ error¸¦ ¹ß»ı½ÃÅ´.
-			Make.inc¸¦ »ı¼ºÇÏÁö ¸øÇÏ°Ô µÊ.
+		==> ì„¤ì •ëœ PATHì— 'ê³µë°±', '(', ')' ê°™ì€ ë¬¸ìê°€ ìˆì„ ê²½ìš° error ë°œìƒ.
+			Cygwinì— ê¸°ë³¸ì ìœ¼ë¡œ ì„¤ì •ë˜ëŠ” pathëŠ” Windowsì— ì„¤ì •ëœ pathê°€ í¬í•¨ë˜ëŠ”ë° ì´ë“¤ì´ errorë¥¼ ë°œìƒì‹œí‚´.
+			Make.incë¥¼ ìƒì„±í•˜ì§€ ëª»í•˜ê²Œ ë¨.
 	- Set $LD_LIBRARY_PATH.
 		export LD_LIBRARY_PATH=.:/usr:/usr/local/lib:/usr/lib:/usr/i686-pc-mingw32/sys-root/mingw/lib
 		export LD_LIBRARY_PATH=.:/usr:/usr/local/lib:/usr/lib:/usr/x86_64-w64-mingw32/sys-root/mingw/lib
 	- Make a build directory.
 		mkdir ${ATLAS_BUILD_DIR}
 		cd ${ATLAS_BUILD_DIR}
-			e.g.) ${ATLAS_BUILD_DIR} = build_cygÀÎ °æ¿ì.
+			e.g.) ${ATLAS_BUILD_DIR} = build_cygì¸ ê²½ìš°.
 				mkdir build_cyg
 				cd build_cyg
 	- (Optional) specify the MinGW binutils to use.
@@ -172,24 +172,24 @@
 			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=/cygdrive/d/work/sw_dev/cpp/ext/src/linear_algebra/atlas/atlas3.10.1.tar/ATLAS/lapack-3.5.0.tgz
 			For problems with gcc 4.2 on Windows.
 			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=../lapack-3.5.0.tgz -b 32 -Si nocygwin 1 -D c -DPentiumCPS=2833 -Fa alg -fPIC -fno-common
-			==> Cygwin¿¡¼­´Â shared object°¡ »ı¼ºµÇÁö ¾Ê´Â µíÇÔ.
-		==> Error°¡ ¹ß»ıÇÏ´Â °æ¿ì°¡ ÀÖ´Âµ¥ ÀÌ·² °æ¿ì ´Ù½Ã ½ÃµµÇØº¼ °Í.
-		==> Make.inc°¡ »ı¼ºµÇÁö ¾ÊÀ½.
+			==> Cygwinì—ì„œëŠ” shared objectê°€ ìƒì„±ë˜ì§€ ì•ŠëŠ” ë“¯í•¨.
+		==> Errorê°€ ë°œìƒí•˜ëŠ” ê²½ìš°ê°€ ìˆëŠ”ë° ì´ëŸ´ ê²½ìš° ë‹¤ì‹œ ì‹œë„í•´ë³¼ ê²ƒ.
+		==> Make.incê°€ ìƒì„±ë˜ì§€ ì•ŠìŒ.
 	- Build library.
 		make > make.log
 		make check
 		make time
 		make install
-	- (Static library¸¦ build ÇÏ¿´À» °æ¿ì) convert static library files to a DLL file.
+	- (Static libraryë¥¼ build í•˜ì˜€ì„ ê²½ìš°) convert static library files to a DLL file.
 		REF [site] >> http://www.terborg.net/research/kml/installation.html
 
-	==> Static library files (*.a)¸¦ »ı¼ºÇÑ ÈÄ ÀÌ·ÎºÎÅÍ shared object (DLL) fileÀ» »ı¼ºÇÏ´Â °æ¿ì.
-		libatlas.a¸¦ Æ÷ÇÔÇÏ´Â directory¿¡¼­ kml_win_dll.sh ½ÇÇà.
-		Cygwin¿¡ MinGW moduleµéÀÌ ¼³Ä¡µÇ¾î ÀÖ¾î¾ß Á¤»óÀûÀ¸·Î ÀÛµ¿ÇÔ.
-			libg2c.a (GCC4.x.x¿¡¼­´Â ÇÊ¿ä¾øÀ½)
+	==> Static library files (*.a)ë¥¼ ìƒì„±í•œ í›„ ì´ë¡œë¶€í„° shared object (DLL) fileì„ ìƒì„±í•˜ëŠ” ê²½ìš°.
+		libatlas.aë¥¼ í¬í•¨í•˜ëŠ” directoryì—ì„œ kml_win_dll.sh ì‹¤í–‰.
+		Cygwinì— MinGW moduleë“¤ì´ ì„¤ì¹˜ë˜ì–´ ìˆì–´ì•¼ ì •ìƒì ìœ¼ë¡œ ì‘ë™í•¨.
+			libg2c.a (GCC4.x.xì—ì„œëŠ” í•„ìš”ì—†ìŒ)
 			libmoldname100.a
 			libmsvcrt.a
-		Shared object (DLL)¸¦ Á÷Á¢ÀûÀ¸·Î »ı¼ºÇÏ´Â °ÍÀÌ ¹Ù¶÷Á÷.
+		Shared object (DLL)ë¥¼ ì§ì ‘ì ìœ¼ë¡œ ìƒì„±í•˜ëŠ” ê²ƒì´ ë°”ëŒì§.
 
 [-] Building (MinGW).
 	REF [doc] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
@@ -210,19 +210,19 @@
 			mingw32-make install
 
 [-] Trouble shooting (Cygwin) (ver. 3.10.3).
-	- '-V' option °ü·Ã ¿À·ù.
+	- '-V' option ê´€ë ¨ ì˜¤ë¥˜.
 		/bin/gcc.exe -V 2>&1
-		==> '-v' optionÀÇ ¿ÀÅ¸ÀÎ µíÇÔ.
+		==> '-v' optionì˜ ì˜¤íƒ€ì¸ ë“¯í•¨.
 			In ${ATLAS_BUILD_DIR}/Make.top, comment the corresponding line or change '-V' to '-v'.
 
 [-] Trouble shooting (Cygwin) (ver. 3.9.72).
-	- ¾Æ·¡ÀÇ fileÀ» copyÇÒ ¼ö ¾ø´Ù´Â error°¡ ¹ß»ıÇÏ´Â °æ¿ì.
+	- ì•„ë˜ì˜ fileì„ copyí•  ìˆ˜ ì—†ë‹¤ëŠ” errorê°€ ë°œìƒí•˜ëŠ” ê²½ìš°.
 		${ATLAS_HOME}/build_cyg/ARCHS/Core232SSE3/gemm/atlas_tcacheedge.h
-		==> atlas_tcacheedge.h fileÀ» ´Ù¸¥ directory¿¡¼­ Ã£¾Æ ÇØ´ç directory¿¡ º¹»ç.
-	- ${ATLAS_BUILD_DIR}/tune/threads/Makefile ¿¡¼­ probe.out ºÎºĞÀ» Ã£¾Æ ÁÖ¼® Ã³¸®.
+		==> atlas_tcacheedge.h fileì„ ë‹¤ë¥¸ directoryì—ì„œ ì°¾ì•„ í•´ë‹¹ directoryì— ë³µì‚¬.
+	- ${ATLAS_BUILD_DIR}/tune/threads/Makefile ì—ì„œ probe.out ë¶€ë¶„ì„ ì°¾ì•„ ì£¼ì„ ì²˜ë¦¬.
 		#	- rm res/probe.out
 			- rm res/probe.out
-	- ${ATLAS_BUILD_DIR}/tune/threads/Makefile ¿¡¼­ xtune_aff ºÎºĞÀ» Ã£¾Æ ATL_goparallel_noaff.o¸¦ »èÁ¦.
+	- ${ATLAS_BUILD_DIR}/tune/threads/Makefile ì—ì„œ xtune_aff ë¶€ë¶„ì„ ì°¾ì•„ ATL_goparallel_noaff.oë¥¼ ì‚­ì œ.
 		#xtune_aff : tune_aff.o tlib  ATL_goparallel_noaff.o ATL_log2tlaunch_noaff.o \
 		#             ATL_goparallel_aff.o ATL_log2tlaunch.o \
 		#             ATL_thread_start_noaff.o ATL_thread_start.o
@@ -235,7 +235,7 @@
 			$(CC) $(CCFLAGS) -o xtune_aff tune_aff.o \
 		              ATL_goparallel_aff.o ATL_log2tlaunch_noaff.o ATL_log2tlaunch.o \
 		              ATL_thread_start_noaff.o ATL_thread_start.o $(ATLASlib) $(LIBS)
-	- ${ATLAS_HOME}/src/threads/ATL_DecAtomicCount_amd64.S¿¡¼­ register ÀÌ¸§À» º¯°æ.
+	- ${ATLAS_HOME}/src/threads/ATL_DecAtomicCount_amd64.Sì—ì„œ register ì´ë¦„ì„ ë³€ê²½.
 		//   sub $-128, %rdi            /* skip false sharing guard zone */
 		   sub $-128, %edi            /* skip false sharing guard zone */
 		   ATOMIC_LOOP:
@@ -253,7 +253,7 @@
 		ZERO_RET:
 		//   xor %rax, %rax
 		   xor %eax, %eax
-	- ${ATLAS_HOME}/src/threads/ATL_ResetAtomicCount_amd64.S¿¡¼­ register ÀÌ¸§À» º¯°æ.
+	- ${ATLAS_HOME}/src/threads/ATL_ResetAtomicCount_amd64.Sì—ì„œ register ì´ë¦„ì„ ë³€ê²½.
 		//   sub $-128, %rdi            /* skip false sharing guard zone */
 		   sub $-128, %edi            /* skip false sharing guard zone */
 		   ATOMIC_LOOP:

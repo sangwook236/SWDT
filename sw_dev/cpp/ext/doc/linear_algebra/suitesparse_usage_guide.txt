@@ -63,14 +63,14 @@
 				In Project Properties -> Linker -> System -> SubSystem:
 					Windows (/SUBSYSTEM:WINDOWS) -> Console (/SUBSYSTEM:CONSOLE).
 
-		Win64 platformÀÌ AMD project¿¡¸¸ Á¸Àç.
-			AMD project¸¦ Á¦¿ÜÇÑ µÚ, ´Ù¸¥ ¸ğµç projects¿¡ ´ëÇØ x64 platformÀ» Áö¿î ÈÄ ´Ù½Ã »ı¼º.
-		¸î¸î projectÀÇ °æ¿ì output directory°¡ ¿Ã¹Ù¸£Áö ¾ÊÀ½.
-			¾Æ·¡¿Í °°ÀÌ output directory¸¦ º¯°æ ÈÄ »ç¿ë.
+		Win64 platformì´ AMD projectì—ë§Œ ì¡´ì¬.
+			AMD projectë¥¼ ì œì™¸í•œ ë’¤, ë‹¤ë¥¸ ëª¨ë“  projectsì— ëŒ€í•´ x64 platformì„ ì§€ìš´ í›„ ë‹¤ì‹œ ìƒì„±.
+		ëª‡ëª‡ projectì˜ ê²½ìš° output directoryê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŒ.
+			ì•„ë˜ì™€ ê°™ì´ output directoryë¥¼ ë³€ê²½ í›„ ì‚¬ìš©.
 				$(SolutionDir)$(Platform)\$(Configuration)\
 	- Set additional include path.
 		../../SuiteSparse_config
-		Project¿¡ ÇØ´çÇÏ´Â header file path.
+		Projectì— í•´ë‹¹í•˜ëŠ” header file path.
 			e.g.)
 				../../AMD/Include
 				../../CAMD/Include

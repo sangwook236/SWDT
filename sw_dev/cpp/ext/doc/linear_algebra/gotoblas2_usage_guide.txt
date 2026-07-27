@@ -10,17 +10,17 @@
 		1. Run Visual Studio Command Prompt.
 		2. Set the GNU runtime directory in PATH.
 			set path=${MINGW_ROOT}/bin;${CYGWIN_HOME}/bin;%path%
-			==> ${CYGWIN_HOME}/bin´Â wgetÀ» »ç¿ëÇÏ±â À§ÇØ ÇÊ¿ä.
-				wget & tar´Â lapack download¸¦ À§ÇØ ÇÊ¿ä.
+			==> ${CYGWIN_HOME}/binëŠ” wgetì„ ì‚¬ìš©í•˜ê¸° ìœ„í•´ í•„ìš”.
+				wget & tarëŠ” lapack downloadë¥¼ ìœ„í•´ í•„ìš”.
 					${GOTOBLAS2_HOME}/lapack-3.1.1.tgz
 		3. cd ${GOTOBLAS2_HOME}.
 		4. Run make.
 			REF [file] >> ${GOTOBLAS2_HOME}/quickbuild.win32
 			mingw32-make BINARY=32 CC=gcc FC=gfortran
-				gfortranÀ» »ç¿ëÇÏ´Â °æ¿ì, ¿øÀÎ ¸ğ¸¦ linking error ¹ß»ı.
+				gfortranì„ ì‚¬ìš©í•˜ëŠ” ê²½ìš°, ì›ì¸ ëª¨ë¥¼ linking error ë°œìƒ.
 					<error message> cannot find -l -lgfortran
-					==> lapack source fileÀ» Ã£Áö ¸øÇØ¼­ ¹ß»ı.
-						shared library building °úÁ¤¿¡¼­ ¹ß»ı.
-						static library´Â Á¤»óÀûÀ¸·Î »ı¼º.
+					==> lapack source fileì„ ì°¾ì§€ ëª»í•´ì„œ ë°œìƒ.
+						shared library building ê³¼ì •ì—ì„œ ë°œìƒ.
+						static libraryëŠ” ì •ìƒì ìœ¼ë¡œ ìƒì„±.
 		5. Build library.
 			libgoto2_penrynp-r1.13.lib

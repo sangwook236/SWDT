@@ -7,12 +7,12 @@
 [-] Building (Win32/Cygwin).
 	- Set path.
 		export HOME=/home/sangwook
-			ÀÌ·¸°Ô ¼³Á¤ÇÏ¸é ${HOME}/ARPACK directory¸¦ ARPACK library's root directory·Î »ç¿ë.
+			ì´ë ‡ê²Œ ì„¤ì •í•˜ë©´ ${HOME}/ARPACK directoryë¥¼ ARPACK library's root directoryë¡œ ì‚¬ìš©.
 			REF [file] >> ${ARPACK_HOME}/ARmake.inc
 	- Set platform.
-		${ARPACK_HOME}/ARmake.inc file ¾È¿¡ ÀÖ´Â platform ¼³Á¤ º¯°æ.
+		${ARPACK_HOME}/ARmake.inc file ì•ˆì— ìˆëŠ” platform ì„¤ì • ë³€ê²½.
 			PLAT = cygwin
-		${ARPACK_HOME}/ARmake.inc file¿¡ PARPACK library's directory setting Ãß°¡.
+		${ARPACK_HOME}/ARmake.inc fileì— PARPACK library's directory setting ì¶”ê°€.
 			PUTILdir = $(home)/PARPACK/UTIL/MPI
 			PSRCdir = $(home)/PARPACK/SRC/MPI
 	- Make.

@@ -12,15 +12,15 @@
 		CLAPACK version 2.0.
 			clapack2.tgz
 			CLAw32.zip
-			==> clapack2.tgzÀÇ ¾ĞÃàÀ» ¸ÕÀú Ç¬ ÈÄ CLAw32.zipÀÇ ¾ĞÃàÀ» Ç®¸é¼­ Áßº¹µÇ´Â fileÀº µ¤¾î¾¸.
+			==> clapack2.tgzì˜ ì••ì¶•ì„ ë¨¼ì € í‘¼ í›„ CLAw32.zipì˜ ì••ì¶•ì„ í’€ë©´ì„œ ì¤‘ë³µë˜ëŠ” fileì€ ë®ì–´ì”€.
 		CLAPACK version 3.0.
 			CLAPACK3-Windows.zip
 	- Uncompress.
 	- Open a project file.
-		MSVC IDE¿¡¼­ "clapack.dsw"¸¦ open
-	- Building ½ÃÀÛ Àü È¯°æÀ» ÀûÀıÈ÷ ¼³Á¤
-		CLAPACK version 2.0ÀÇ °æ¿ì compile½Ã ¿¹±âÄ¡ ¸øÇÑ error ¹ß»ı½Ã "f2c.h"ÀÇ ³»¿ëÀ» È®ÀÎÇØ º½.
-			f2c.h°¡ workspace »ó¿¡¼­ ¿©·¯ °³ Á¸ÀçÇÏ¸ç ±×Áß ³»¿ëÀÌ ¾ø´Â fileÀÌ Á¸ÀçÇÔ.
+		MSVC IDEì—ì„œ "clapack.dsw"ë¥¼ open
+	- Building ì‹œì‘ ì „ í™˜ê²½ì„ ì ì ˆíˆ ì„¤ì •
+		CLAPACK version 2.0ì˜ ê²½ìš° compileì‹œ ì˜ˆê¸°ì¹˜ ëª»í•œ error ë°œìƒì‹œ "f2c.h"ì˜ ë‚´ìš©ì„ í™•ì¸í•´ ë´„.
+			f2c.hê°€ workspace ìƒì—ì„œ ì—¬ëŸ¬ ê°œ ì¡´ì¬í•˜ë©° ê·¸ì¤‘ ë‚´ìš©ì´ ì—†ëŠ” fileì´ ì¡´ì¬í•¨.
 	- Build library.
 	- Install libraries & headerfiles.
 		Resulting library files are installed into a subdirectory.
@@ -46,7 +46,7 @@
 			make single double complex complex16
 
 [-] Usage.
-	- ¿ÜºÎ¿¡¼­ CLAPACK library¸¦ interfacingÇÏ±â À§ÇØ »ç¿ëÇÏ´Â header file.
+	- ì™¸ë¶€ì—ì„œ CLAPACK libraryë¥¼ interfacingí•˜ê¸° ìœ„í•´ ì‚¬ìš©í•˜ëŠ” header file.
 		f2c.h & clapack.h
 		Using C linkage
 			#if defined(__cplusplus)
@@ -57,8 +57,8 @@
 			#if defined(__cplusplus)
 			}
 			#endif
-			==> Include ¼ø¼­ Áß¿ä.
-	- Download ¹ŞÀº file ¾È¿¡ ÀÌ¹Ì builtµÈ library fileÀÌ Á¸ÀçÇÔ.
+			==> Include ìˆœì„œ ì¤‘ìš”.
+	- Download ë°›ì€ file ì•ˆì— ì´ë¯¸ builtëœ library fileì´ ì¡´ì¬í•¨.
 		Release mode:
 			${CLAPACK_ROOT}/Release/clapack.lib
 		Debug mode:

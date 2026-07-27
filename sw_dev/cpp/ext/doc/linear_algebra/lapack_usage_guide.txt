@@ -34,7 +34,7 @@
 		Set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe.
 		Set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe.
 		Set the 'BUILD_SHARED_LIBS' option to ON.
-			ÀÌ optionÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é .a library file »ı¼º.
+			ì´ optionì„ ì§€ì •í•˜ì§€ ì•Šìœ¼ë©´ .a library file ìƒì„±.
 				libblas.a
 				liblapack.a
 				libtmglib.a
@@ -43,7 +43,7 @@
 	- Run make.
 		mingw32-make
 		mingw32-make install
-		==> ÀÌÀ¯¸¦ ¾Ë ¼ö ¾øÁö¸¸ ¾ÈµÇ´Â °æ¿ìµµ ÀÖÀ½.
+		==> ì´ìœ ë¥¼ ì•Œ ìˆ˜ ì—†ì§€ë§Œ ì•ˆë˜ëŠ” ê²½ìš°ë„ ìˆìŒ.
 
 [-] Building (Win32/MinGW).
 	- Use Command Prompt.

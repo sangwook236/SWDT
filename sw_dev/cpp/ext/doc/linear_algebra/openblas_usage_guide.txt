@@ -64,8 +64,8 @@
 			lib.exe /machine:x86 /def:libopenblas.def
 		For 64-bit:
 			lib.exe /machine:X64 /def:libopenblas.def
-		==> ${OPENBLAS_HOME}/exports directory¿¡ OpenBLAS¿¡¼­ »ı¼ºÇÑ def file & import fileÀÌ Á¸Àç.
-			ÀÌµéÀ» Windows È¯°æ¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´ÂÁö °ËÁõ ÇÊ¿ä.
+		==> ${OPENBLAS_HOME}/exports directoryì— OpenBLASì—ì„œ ìƒì„±í•œ def file & import fileì´ ì¡´ì¬.
+			ì´ë“¤ì„ Windows í™˜ê²½ì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ”ì§€ ê²€ì¦ í•„ìš”.
 		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
 
 [-] Building GitHub (MSYS).
@@ -100,8 +100,8 @@
 			lib.exe /machine:x86 /def:libopenblas.def
 		For 64-bit:
 			lib.exe /machine:X64 /def:libopenblas.def
-		==> ${OPENBLAS_HOME}/exports directory¿¡ OpenBLAS¿¡¼­ »ı¼ºÇÑ def file & import fileÀÌ Á¸Àç.
-			ÀÌµéÀ» Windows È¯°æ¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´ÂÁö °ËÁõ ÇÊ¿ä.
+		==> ${OPENBLAS_HOME}/exports directoryì— OpenBLASì—ì„œ ìƒì„±í•œ def file & import fileì´ ì¡´ì¬.
+			ì´ë“¤ì„ Windows í™˜ê²½ì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ”ì§€ ê²€ì¦ í•„ìš”.
 		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
 
 [-] Building (Cgywin).
@@ -136,8 +136,8 @@
 		For 64-bit:
 			lib.exe /machine:X64 /def:libopenblas.def
 		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
-		==> ${OPENBLAS_HOME}/exports directory¿¡ OpenBLAS¿¡¼­ »ı¼ºÇÑ def file & import fileÀÌ Á¸Àç.
-			Windows È¯°æ¿¡¼­ »ç¿ë °¡´É ¿©ºÎ È®ÀÎ ÇÊ¿ä.
+		==> ${OPENBLAS_HOME}/exports directoryì— OpenBLASì—ì„œ ìƒì„±í•œ def file & import fileì´ ì¡´ì¬.
+			Windows í™˜ê²½ì—ì„œ ì‚¬ìš© ê°€ëŠ¥ ì—¬ë¶€ í™•ì¸ í•„ìš”.
 
 [-] Building GitHub (Win32/MSYS + CMake).
 	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
@@ -191,16 +191,16 @@
 			<warning> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
 			==> Set the 'CMAKE_GNUtoMS_VCVARS' option to 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat'.
 		Set BUILD_SHARED_LIBS to ON.
-			ÀÌ optionÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é .a library file »ı¼º.
+			ì´ optionì„ ì§€ì •í•˜ì§€ ì•Šìœ¼ë©´ .a library file ìƒì„±.
 		Set CMAKE_DEBUG_POSTFIX to d.
 
-		Fortran filesÀ» Ã£À» ¼ö ¾ø´Ù´Â error ¹ß»ı.
+		Fortran filesì„ ì°¾ì„ ìˆ˜ ì—†ë‹¤ëŠ” error ë°œìƒ.
 			<error> Cannot find source file.
 				sgegs.f, sgegv.f, etc.
-			==> ÇØ´ç filesÀÌ deprecated µÇ¾î ¹ß»ı.
+			==> í•´ë‹¹ filesì´ deprecated ë˜ì–´ ë°œìƒ.
 				${OPENBLAS_HOME}/lapack-netlib/SRC -> ${OPENBLAS_HOME}/lapack-netlib/SRC/DEPRECATED.
-			==> ${OPENBLAS_HOME}/cmake/lapack.cmake ¼öÁ¤.
-				${OPENBLAS_HOME}/lapack-netlib/SRC directoryÀÇ file list·Î ¾Æ·¡ÀÇ º¯¼öµé ¼³Á¤.
+			==> ${OPENBLAS_HOME}/cmake/lapack.cmake ìˆ˜ì •.
+				${OPENBLAS_HOME}/lapack-netlib/SRC directoryì˜ file listë¡œ ì•„ë˜ì˜ ë³€ìˆ˜ë“¤ ì„¤ì •.
 					SLASRC
 						cd ${OPENBLAS_HOME}/lapack-netlib/SRC
 						dir s*.f > list.txt + ilaslr.f ilaslc.f

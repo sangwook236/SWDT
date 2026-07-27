@@ -8,16 +8,16 @@
 	REF [site] >> http://eigen.tuxfamily.org/dox/Eigen2ToEigen3.html
 
 [-] Building.
-	- Eigen library´Â ±âº»ÀûÀ¸·Î header file¸¸ ÀÖÀ¸¸é µÊ.
-		µû¶ó¼­ source¸¦ º°µµ·Î buildÇÏÁö ¾Ê¾Æµµ µÊ.
-		Source ´ëºÎºĞÀº test codeÀÓ.
+	- Eigen libraryëŠ” ê¸°ë³¸ì ìœ¼ë¡œ header fileë§Œ ìˆìœ¼ë©´ ë¨.
+		ë”°ë¼ì„œ sourceë¥¼ ë³„ë„ë¡œ buildí•˜ì§€ ì•Šì•„ë„ ë¨.
+		Source ëŒ€ë¶€ë¶„ì€ test codeì„.
 
-	- DLL project Á¸Àç.
-		eigen_blas & eigen_lapack project Á¸Àç.
-		Shared library »ı¼º.
-			Shared library·Î buildµÇÁö ¾ÊÀ½.
-			==> ¾Æ·¡ÀÇ trouble shooting Âü°í.
-		==> BLAS & LAPACKÀÇ function ´ëºÎºĞÀ» °¡Áö°í ÀÖÁö ¾ÊÀ½.
+	- DLL project ì¡´ì¬.
+		eigen_blas & eigen_lapack project ì¡´ì¬.
+		Shared library ìƒì„±.
+			Shared libraryë¡œ buildë˜ì§€ ì•ŠìŒ.
+			==> ì•„ë˜ì˜ trouble shooting ì°¸ê³ .
+		==> BLAS & LAPACKì˜ function ëŒ€ë¶€ë¶„ì„ ê°€ì§€ê³  ìˆì§€ ì•ŠìŒ.
 
 [-] Building (CMake).
 	- Configure & generate.
@@ -32,21 +32,21 @@
 		<error>
 			No fortran compiler has been detected, the blas build will be incomplete.
 		<cause>
-			fortran versionÀÇ BLAS library¸¦ buildingÇÏ±â À§ÇØ fortran compiler¸¦ ¿ä±¸ÇÔ.
+			fortran versionì˜ BLAS libraryë¥¼ buildingí•˜ê¸° ìœ„í•´ fortran compilerë¥¼ ìš”êµ¬í•¨.
 		<solution>
-			WarningÀÌ¹Ç·Î project file generation±îÁö ¼öÇàÇÏ°í
-			Eigen library¸¦ »ç¿ëÇÏ´Â °÷¿¡¼­ ÇÊ¿äÇÑ °æ¿ì BLAS or LAPACK library¸¦ linkingÇÏ¸é µÉ µíÇÔ.
+			Warningì´ë¯€ë¡œ project file generationê¹Œì§€ ìˆ˜í–‰í•˜ê³ 
+			Eigen libraryë¥¼ ì‚¬ìš©í•˜ëŠ” ê³³ì—ì„œ í•„ìš”í•œ ê²½ìš° BLAS or LAPACK libraryë¥¼ linkingí•˜ë©´ ë  ë“¯í•¨.
 
 [-] Trouble Shooting (VC).
 	- eigen_blas linking error.
 		<error>
 			cannot open file '..\blas\Debug\eigen_blasd.lib'
 		<cause>
-			Symbol export¸¦ ÇÏÁö ¾Ê¾Æ import library (.lib)°¡ »ı¼ºµÇÁö ¾ÊÀ½.
+			Symbol exportë¥¼ í•˜ì§€ ì•Šì•„ import library (.lib)ê°€ ìƒì„±ë˜ì§€ ì•ŠìŒ.
 		<solution>
-			Static library·Î º¯°æÇÏ¿© buildÇÏ¿©¾ß ÇÔ.
-			CMake optionÀÎ BUILD_SHARED_LIBS & BUILD_STATIC_LIBSÀÇ ¼³Á¤ º¯°æÀº Á¤»ó ÀÛµ¿ÇÏÁö ¾ÊÀ½.
-			Project ¼³Á¤À» static library·Î º¯°æÇÏ¿©¾ß ÇÔ.
+			Static libraryë¡œ ë³€ê²½í•˜ì—¬ buildí•˜ì—¬ì•¼ í•¨.
+			CMake optionì¸ BUILD_SHARED_LIBS & BUILD_STATIC_LIBSì˜ ì„¤ì • ë³€ê²½ì€ ì •ìƒ ì‘ë™í•˜ì§€ ì•ŠìŒ.
+			Project ì„¤ì •ì„ static libraryë¡œ ë³€ê²½í•˜ì—¬ì•¼ í•¨.
 	- eigen_lapack compile error.
 		<error>
 			number of sections exceeded object file format limit: compile with /bigobj

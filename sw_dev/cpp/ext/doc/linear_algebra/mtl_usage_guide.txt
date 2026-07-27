@@ -16,9 +16,9 @@
 			%MTL_ROOT%/mtl
 
 [-] Usage.
-	- building ÇÏÁö ¾Ê°í »ç¿ë.
-	- LAPACK°úÀÇ interfacingÀ» À§ÇØ¼­´Â LAPACK °ü·Ã library°¡ Ãß°¡ÀûÀ¸·Î ¿ä±¸µÊ.
-		CLAPACK »ç¿ë °¡´É.
+	- building í•˜ì§€ ì•Šê³  ì‚¬ìš©.
+	- LAPACKê³¼ì˜ interfacingì„ ìœ„í•´ì„œëŠ” LAPACK ê´€ë ¨ libraryê°€ ì¶”ê°€ì ìœ¼ë¡œ ìš”êµ¬ë¨.
+		CLAPACK ì‚¬ìš© ê°€ëŠ¥.
 
 [-] Trouble Shooting.
 	- '_Ptrit': is no element of 'std'.
