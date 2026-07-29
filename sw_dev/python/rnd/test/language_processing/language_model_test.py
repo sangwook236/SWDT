@@ -6202,8 +6202,45 @@ def kimi_example():
 	# Models:
 	#	moonshotai/Kimi-K2-Base
 	#	moonshotai/Kimi-K2-Instruct
+	#
+	#	moonshotai/Kimi-K3
 
-	raise NotImplementedError
+	import os
+	import openai
+
+	model_name = "kimi-K3"
+
+	client = openai.OpenAI(
+		api_key=os.environ["MOONSHOT_API_KEY"],
+		base_url="https://api.moonshot.ai/v1",
+	)
+
+	messages = [
+		{
+			"role": "user",
+			"content": "Tell me three random numbers."
+		},
+		{
+			"role": "assistant",
+			"reasoning_content": "I'll start by listing five numbers: 473, 921, 235, 215, 222, and I'll tell you the first three.",
+			"content": "473, 921, 235"
+		},
+		{
+			"role": "user",
+			"content": "What are the other two numbers you have in mind?"
+		}
+	]
+
+	response = client.chat.completions.create(
+		model=model_name,
+		messages=messages,
+		stream=False,
+		max_tokens=4096,
+		reasoning_effort="max",
+	)
+	# the assistant should mention 215 and 222 that appear in the prior reasoning content
+	print(f"response: {response.choices[0].message.reasoning}")
+	return response.choices[0].message.content
 
 # REF [site] >> https://huggingface.co/ServiceNow-AI
 def apriel_example():
@@ -13336,7 +13373,7 @@ def main():
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
 	#k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
-	#kimi_example()  # Kimi K2. Not yet implemented
+	#kimi_example()  # Kimi K2, Kimi K3
 	#apriel_example()  # Apriel
 	#glm_example()  # GLM-4, GLM-4.7, GLM-5, GLM-5.1
 	#ling_example()  # Ling, Ling-V2
