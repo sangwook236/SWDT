@@ -6585,44 +6585,178 @@ def ling_example():
 def solar_open_example():
 	# Models:
 	#	upstage/Solar-Open-100B
+	#
+	#	upstage/Solar-Open2-250B
 
-	import torch
-	import transformers
+	if False:
+		MODEL_ID = "upstage/Solar-Open-100B"
 
-	MODEL_ID = "upstage/Solar-Open-100B"
+		# Load model and tokenizer
+		tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_ID)
 
-	# Load model and tokenizer
-	tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_ID)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			pretrained_model_name_or_path=MODEL_ID,
+			torch_dtype=torch.bfloat16,
+			device_map="auto",
+			trust_remote_code=True,
+		)
 
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		pretrained_model_name_or_path=MODEL_ID,
-		torch_dtype=torch.bfloat16,
-		device_map="auto",
-		trust_remote_code=True,
-	)
+		# Prepare input
+		messages = [{"role": "user", "content": "who are you?"}]
+		inputs = tokenizer.apply_chat_template(
+			messages,
+			tokenize=True,
+			add_generation_prompt=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+		inputs = inputs.to(model.device)
 
-	# Prepare input
-	messages = [{"role": "user", "content": "who are you?"}]
-	inputs = tokenizer.apply_chat_template(
-		messages,
-		tokenize=True,
-		add_generation_prompt=True,
-		return_dict=True,
-		return_tensors="pt",
-	)
-	inputs = inputs.to(model.device)
+		# Generate response
+		generated_ids = model.generate(
+			**inputs,
+			max_new_tokens=4096,
+			temperature=0.8,
+			top_p=0.95,
+			top_k=50,
+			do_sample=True,
+		)
+		generated_text = tokenizer.decode(generated_ids[0][inputs.input_ids.shape[1] :])
+		print(generated_text)
 
-	# Generate response
-	generated_ids = model.generate(
-		**inputs,
-		max_new_tokens=4096,
-		temperature=0.8,
-		top_p=0.95,
-		top_k=50,
-		do_sample=True,
-	)
-	generated_text = tokenizer.decode(generated_ids[0][inputs.input_ids.shape[1] :])
-	print(generated_text)
+	if True:
+		# Use the Upstage Transformers branch with native Solar Open 2 support for local experimentation. For production serving, we recommend vLLM.
+
+		# Install:
+		#	python -m pip install -U \
+		#	"git+https://github.com/upstageAI/transformers.git@v5.14.1-solar-open2" \
+		#	"fla-core[cuda]>=0.5.1" \
+		#	accelerate einops
+
+		model_id = "upstage/Solar-Open2-250B"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(
+			model_id,
+			trust_remote_code=False,
+		)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="auto",
+			dtype=torch.bfloat16,
+			trust_remote_code=False,
+		)
+		model.eval()
+
+		messages = [
+			{"role": "user", "content": "What is Upstage?"},
+		]
+		prompt = tokenizer.apply_chat_template(
+			messages,
+			tokenize=False,
+			add_generation_prompt=True,
+			reasoning_effort="high",
+			think_render_option="preserved",
+		)
+		input_device = model.get_input_embeddings().weight.device
+		model_inputs = tokenizer(prompt, return_tensors="pt").to(input_device)
+
+		generated_ids = model.generate(
+			**model_inputs,
+			max_new_tokens=32768,
+			do_sample=True,
+			temperature=1.0,
+			top_p=1.0,
+		)
+
+		new_token_ids = generated_ids[0, model_inputs.input_ids.shape[-1] :].tolist()
+		think_end_id = tokenizer.convert_tokens_to_ids("<|think:end|>")
+
+		if think_end_id in new_token_ids:
+			# Split immediately after the final <|think:end|> token.
+			answer_start = len(new_token_ids) - new_token_ids[::-1].index(think_end_id)
+		else:
+			# No end marker usually means generation stopped while the model was reasoning.
+			answer_start = len(new_token_ids)
+
+		reasoning = tokenizer.decode(
+			new_token_ids[:answer_start],
+			skip_special_tokens=True,
+		).strip()
+		answer = tokenizer.decode(
+			new_token_ids[answer_start:],
+			skip_special_tokens=True,
+		).strip()
+
+		print("[reasoning]", reasoning)
+		print("[answer]", answer)
+
+	if True:
+		# Reasoning
+
+		# Use reasoning_effort="high" for reasoning and reasoning_effort="none" for a direct response.
+		# The recommended vLLM configuration limits a reasoning block to 131,072 tokens.
+
+		from openai import OpenAI
+
+		client = OpenAI(api_key="EMPTY", base_url="http://localhost:8000/v1")
+
+		response = client.chat.completions.create(
+			model="solar-open2-250b",
+			messages=[
+				{
+					"role": "user",
+					"content": "Prove that the square root of 2 is irrational.",
+				},
+			],
+			reasoning_effort="high",
+			temperature=1.0,
+			top_p=1.0,
+			max_tokens=131584,
+		)
+
+		# The reasoning trace is returned separately from the final answer.
+		print(response.choices[0].message.reasoning)
+		print(response.choices[0].message.content)
+
+	if True:
+		# Tool Calling
+
+		# Tool calls follow the standard OpenAI function-calling interface.
+		# Start the server with --tool-call-parser solar_open2 and --enable-auto-tool-choice.
+
+		from openai import OpenAI
+
+		client = OpenAI(api_key="EMPTY", base_url="http://localhost:8000/v1")
+
+		tools = [
+			{
+				"type": "function",
+				"function": {
+					"name": "get_weather",
+					"description": "Get current weather for a location",
+					"parameters": {
+						"type": "object",
+						"properties": {
+							"location": {"type": "string"},
+						},
+						"required": ["location"],
+					},
+				},
+			},
+		]
+
+		response = client.chat.completions.create(
+			model="solar-open2-250b",
+			messages=[
+				{
+					"role": "user",
+					"content": "What's the weather in Seoul?",
+				},
+			],
+			tools=tools,
+		)
+
+		print(response.choices[0].message.tool_calls)
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/rag
 def rag_example():
@@ -13377,7 +13511,7 @@ def main():
 	#apriel_example()  # Apriel
 	#glm_example()  # GLM-4, GLM-4.7, GLM-5, GLM-5.1
 	#ling_example()  # Ling, Ling-V2
-	#solar_open_example()  # Solar Open
+	#solar_open_example()  # Solar Open, Solar Open 2
 
 	#-----
 	# Retrieval-augmented generation (RAG)
