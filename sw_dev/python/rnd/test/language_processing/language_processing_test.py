@@ -289,6 +289,7 @@ def cosmos_example():
 	#	nvidia/Cosmos3-Super-Image2Video
 	#	nvidia/Cosmos3-Super-Text2Image
 	#	nvidia/Cosmos3-Nano
+	#	nvidia/Cosmos3-Edge
 
 	# Inference:
 	#	Cosmos Installation

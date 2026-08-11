@@ -993,6 +993,44 @@ def playground_example():
 		prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
 		image = pipe(prompt=prompt, num_inference_steps=50, guidance_scale=3).images[0]
 
+# REF [site] >> https://huggingface.co/google
+def diffusiongemma_example():
+	# Models:
+	#	google/diffusiongemma-4-26B-A4B-it
+
+	# Install:
+	#	pip install -U transformers torch accelerate
+
+	import transformers
+
+	MODEL_ID = "google/diffusiongemma-26B-A4B-it"
+
+	# Load model
+	processor = transformers.AutoProcessor.from_pretrained(MODEL_ID)
+	model = transformers.DiffusionGemmaForBlockDiffusion.from_pretrained(
+		MODEL_ID,
+		dtype="auto",
+		device_map="auto",
+	)
+
+	# Prompt
+	message = [
+		{"role": "user", "content": "Why is the sky blue?"}
+	]
+
+	# Process input
+	input_ids = processor.apply_chat_template(
+		message,
+		tokenize=True,
+		add_generation_prompt=True,
+		return_dict=True,
+		return_tensors="pt"
+	).to(model.device)
+	output = model.generate(**input_ids, max_new_tokens=512)
+
+	# Parse output
+	text = processor.decode(output[0], skip_special_tokens=False)
+
 # REF [site] >> https://huggingface.co/Intel
 def ldm3d_example():
 	# Models:
@@ -1082,11 +1120,11 @@ def main():
 	#diffusers_dreambooth_training_example()  # DreamBooth. Not yet implemented
 
 	#compvis_example()  # Stable diffusion
-	stabilityai_example()  # Stable diffusion
+	#stabilityai_example()  # Stable diffusion
 
 	#uni_diffuser_example()  # UniDiffuser
-
 	#playground_example()  # Playground v2 & v2.5
+	diffusiongemma_example()  # DiffusionGemma
 
 	# 3D
 	#ldm3d_example()  # LDM3D
