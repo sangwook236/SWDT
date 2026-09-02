@@ -744,6 +744,67 @@ def cosmos_example():
 		# 3. Print the generated reasoning output
 		print(response.choices[0].message.content)
 
+# REF [site] >> https://huggingface.co/Qwen
+def qwen_agentworld_example():
+	# Models:
+	#	Qwen/Qwen-AgentWorld-35B-A3B
+
+	if True:
+		model_name = "Qwen/Qwen-AgentWorld-35B-A3B"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			torch_dtype="auto",
+			device_map="auto",
+		)
+
+		messages = [
+			{
+				"role": "system",
+				"content": "You are a language world model simulating a Linux terminal environment. "
+						"Given the user's command, predict the terminal output."
+			},
+			{
+				"role": "user",
+				"content": "Action: execute_bash\nCommand: ls -la /home/user/project/"
+			}
+		]
+
+		text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+		inputs = tokenizer([text], return_tensors="pt").to(model.device)
+		outputs = model.generate(**inputs, max_new_tokens=2048, temperature=0.6)
+		response = tokenizer.decode(outputs[0][inputs.input_ids.shape[-1]:], skip_special_tokens=True)
+		print(response)
+
+	if True:
+		from openai import OpenAI
+
+		client = OpenAI(
+			base_url="http://localhost:8000/v1",
+			api_key="EMPTY",
+		)
+
+		# Terminal domain example
+		messages = [
+			{
+				"role": "system",
+				"content": "You are a language world model simulating a Linux terminal environment. "
+						"Given the user's command, predict the terminal output."
+			},
+			{
+				"role": "user",
+				"content": "Action: execute_bash\nCommand: ls -la /home/user/project/"
+			}
+		]
+
+		response = client.chat.completions.create(
+			model="Qwen/Qwen-AgentWorld-35B-A3B",
+			messages=messages,
+			max_tokens=32768,
+			temperature=0.6,
+		)
+		print(response.choices[0].message.content)
+
 def main():
 	# Language modeling
 
@@ -805,7 +866,8 @@ def main():
 	#-----
 	# World models
 
-	cosmos_example()  # Cosmos 3 Super, Cosmos 3 Nano
+	#cosmos_example()  # Cosmos 3 Super, Cosmos 3 Nano
+	qwen_agentworld_example()  # Qwen AgentWorld
 
 	#--------------------
 	# AI agents

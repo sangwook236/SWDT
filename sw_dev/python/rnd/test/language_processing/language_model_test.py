@@ -5533,6 +5533,236 @@ def qwen3_x_example():
 			pass
 		print(responses)
 
+# REF [site] >>
+#	https://huggingface.co/docs/transformers/en/model_doc/qwen3
+#	https://huggingface.co/Qwen
+def qwen3_8_example():
+	# Models:
+	#	Qwen/Qwen3.8-27B
+	#	Qwen/Qwen3.8-27B-FP8
+	#	Qwen/Qwen3.8-2.4T-A95B
+	#	Qwen/Qwen3.8-2.4T-A95B-FP8
+
+	# Install:
+	#	pip install -U openai
+
+	# Set the following accordingly
+	#	export OPENAI_BASE_URL='your-base-url'
+	#	export OPENAI_API_KEY='your-api-key'
+
+	if True:
+		# Text-Only Input
+
+		from openai import OpenAI
+		# Configured by environment variables
+		client = OpenAI()
+
+		model_id = "Qwen/Qwen3.8-27B"
+		#model_id = "Qwen/Qwen3.8-27B-FP8"
+		#model_id = "Qwen/Qwen3.8-2.4T-A95B"
+		#model_id = "Qwen/Qwen3.8-2.4T-A95B-FP8"
+
+		messages = [{"role": "user", "content": "Write a Python function to merge two sorted linked lists."}]
+
+		completion = client.chat.completions.create(
+			model=model_id,
+			messages=messages,
+			extra_body={
+				"chat_template_kwargs": {
+					"enable_thinking": True,  # on by default
+					"preserve_thinking": True, # on by default
+				},
+			},
+			reasoning_effort="xhigh",  # xhigh by default; supported levels are xhigh, medium, and low
+			stream=True,
+			stream_options={"include_usage": True},
+		)
+
+		reasoning_content = ""
+		answer_content = ""
+		is_answering = False
+		print("\n" + "=" * 20 + "Reasoning" + "=" * 20 + "\n")
+
+		for chunk in completion:
+			if not chunk.choices:
+				print("\nUsage:")
+				print(chunk.usage)
+				continue
+
+			delta = chunk.choices[0].delta
+
+			if hasattr(delta, "reasoning_content") and delta.reasoning_content is not None:
+				if not is_answering:
+					print(delta.reasoning_content, end="", flush=True)
+				reasoning_content += delta.reasoning_content
+			elif hasattr(delta, "reasoning") and delta.reasoning is not None:
+				if not is_answering:
+					print(delta.reasoning, end="", flush=True)
+				reasoning_content += delta.reasoning
+
+			if hasattr(delta, "content") and delta.content:
+				if not is_answering:
+					print("\n" + "=" * 20 + "Answer" + "=" * 20 + "\n")
+					is_answering = True
+				print(delta.content, end="", flush=True)
+				answer_content += delta.content
+
+		messages.append({
+			"role": "assistant",
+			"content": answer_content,
+			"reasoning_content": reasoning_content,
+			"reasoning": reasoning_content,
+		})
+
+	if True:
+		# Image Input
+
+		from openai import OpenAI
+		# Configured by environment variables
+		client = OpenAI()
+
+		model_id = "Qwen/Qwen3.8-27B"
+		#model_id = "Qwen/Qwen3.8-27B-FP8"
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image_url",
+						"image_url": {
+							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/CI_Demo/mathv-1327.jpg"
+						}
+					},
+					{
+						"type": "text",
+						"text": "The centres of the four illustrated circles are in the corners of the square. The two big circles touch each other and also the two little circles. With which factor do you have to multiply the radii of the little circles to obtain the radius of the big circles?\nChoices:\n(A) $\\frac{2}{9}$\n(B) $\\sqrt{5}$\n(C) $0.8 \\cdot \\pi$\n(D) 2.5\n(E) $1+\\sqrt{2}$"
+					}
+				]
+			}
+		]
+
+		chat_response = client.chat.completions.create(
+			model=model_id,
+			messages=messages,
+		)
+		print("Chat response:", chat_response)
+
+	if True:
+		# Video Input
+
+		from openai import OpenAI
+		# Configured by environment variables
+		client = OpenAI()
+
+		model_id = "Qwen/Qwen3.8-27B"
+		#model_id = "Qwen/Qwen3.8-27B-FP8"
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "video_url",
+						"video_url": {
+							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/video/N1cdUjctpG8.mp4"
+						}
+					},
+					{
+						"type": "text",
+						"text": "How many porcelain jars were discovered in the niches located in the primary chamber of the tomb?"
+					}
+				]
+			}
+		]
+
+		chat_response = client.chat.completions.create(
+			model=model_id,
+			messages=messages,
+		)
+
+		# When vLLM is launched with `--media-io-kwargs '{"video": {"num_frames": -1}}'`,
+		# video frame sampling can be configured via `extra_body` (e.g., by setting `fps`).
+		# This feature is currently supported only in vLLM.
+		#
+		# By default, `fps=2` and `do_sample_frames=True`.
+		# With `do_sample_frames=True`, you can customize the `fps` value to set your desired video sampling rate.
+		# chat_response = client.chat.completions.create(
+		#     model="Qwen/Qwen3.8-27B",
+		#     messages=messages,
+		#     extra_body={
+		#         "mm_processor_kwargs": {"fps": 2, "do_sample_frames": True},
+		#     }, 
+		# )
+
+		print("Chat response:", chat_response)
+
+	if True:
+		# Instruct (or Non-Thinking) Mode
+		#	Qwen3.8-27B will think by default before responding.
+
+		from openai import OpenAI
+		# Configured by environment variables
+		client = OpenAI()
+
+		model_id = "Qwen/Qwen3.8-27B"
+		#model_id = "Qwen/Qwen3.8-27B-FP8"
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image_url",
+						"image_url": {
+							"url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/RealWorld/RealWorld-04.png"
+						}
+					},
+					{
+						"type": "text",
+						"text": "Where is this?"
+					}
+				]
+			}
+		]
+
+		chat_response = client.chat.completions.create(
+			model=model_id,
+			messages=messages,
+			temperature=0.7,
+			top_p=0.8,
+			presence_penalty=1.5,
+			extra_body={
+				"top_k": 20,
+				"chat_template_kwargs": {"enable_thinking": False},
+			}, 
+		)
+		print("Chat response:", chat_response)
+
+	if True:
+		# Disable Preserved Thinking
+
+		# By default, Qwen3.8 retains thinking blocks from all historical messages, maintaining a complete reasoning trace across the conversation.
+		# This behavior, known as preserved thinking, ensures full context continuity and is especially beneficial for agent scenarios where decision consistency and reduced redundant reasoning are critical.
+		# It also improves KV cache utilization, optimizing inference efficiency in both thinking and non-thinking modes.
+
+		from openai import OpenAI
+
+		model_id = "Qwen/Qwen3.8-27B"
+		#model_id = "Qwen/Qwen3.8-27B-FP8"
+
+		# Configured by environment variables
+		client = OpenAI()
+		messages = [...]
+		chat_response = client.chat.completions.create(
+			model=model_id,
+			messages=messages,
+			extra_body={
+				"chat_template_kwargs": {"preserve_thinking": False},
+			},
+		)
+		print("Chat response:", chat_response)
+
 # REF [site] >> https://huggingface.co/deepseek-ai
 def deepseek_llm_example():
 	# Models:
@@ -7860,7 +8090,7 @@ def kimi_k2_thinking_example():
 	raise NotImplementedError
 
 # REF [site] >> https://huggingface.co/nvidia
-def nemotron_reasoning_example():
+def nemotron_3_reasoning_example():
 	# Models:
 	#	nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
 	#	nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
@@ -8054,6 +8284,96 @@ def nemotron_reasoning_example():
 			top_p=1.0,
 		)
 		print(result)
+
+# REF [site] >> https://huggingface.co/nvidia
+def nemotron_3_5_reasoning_example():
+	# Models:
+	#	nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Base-BF16
+	#	nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16
+	#	nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4	
+
+	# The examples below use the OpenAI-compatible client and work with the serving backend above.
+	# Recommended sampling settings are Temperature 1.0 and Top_P 0.95.
+
+	from openai import OpenAI
+
+	client = OpenAI(base_url="http://localhost:8000/v1", api_key="EMPTY")
+	MODEL = "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+	#MODEL = "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4"
+
+	if True:
+		# Reasoning ON (default)
+
+		response = client.chat.completions.create(
+			model=MODEL,
+			messages=[{"role": "user", "content": "Write a haiku about GPUs"}],
+			max_tokens=16000,
+			temperature=1.0,
+			top_p=0.95,
+			extra_body={"chat_template_kwargs": {"enable_thinking": True}}
+		)
+		print(response.choices[0].message.content)
+
+	if True:
+		# Reasoning OFF
+
+		response = client.chat.completions.create(
+			model=MODEL,
+			messages=[{"role": "user", "content": "What is the capital of Japan?"}],
+			max_tokens=16000,
+			temperature=1.0,
+			top_p=0.95,
+			extra_body={"chat_template_kwargs": {"enable_thinking": False}}
+		)
+		print(response.choices[0].message.content)
+
+	if True:
+		# Streaming
+
+		stream = client.chat.completions.create(
+			model=MODEL,
+			messages=[{"role": "user", "content": "Explain speculative decoding in two sentences"}],
+			max_tokens=16000,
+			temperature=1.0,
+			top_p=0.95,
+			stream=True,
+		)
+		for chunk in stream:
+			print(chunk.choices[0].delta.content or "", end="", flush=True)
+
+	if True:
+		# Tool Calling
+
+		# For vLLM, add the following to any serve command above:
+		#	--enable-auto-tool-choice \
+		#	--tool-call-parser qwen3_coder \
+		#	--reasoning-parser nemotron_v3
+
+		# NOTE: For coding agents, add extra_body={"chat_template_kwargs": {"force_nonempty_content": True}} to the API call, as shown below.
+
+		tools = [{
+			"type": "function",
+			"function": {
+				"name": "get_weather",
+				"description": "Get the current weather for a city",
+				"parameters": {
+					"type": "object",
+					"properties": {"city": {"type": "string"}},
+					"required": ["city"],
+				},
+			},
+		}]
+
+		response = client.chat.completions.create(
+			model=MODEL,
+			messages=[{"role": "user", "content": "What's the weather in Santa Clara?"}],
+			tools=tools,
+			max_tokens=16000,
+			temperature=1.0,
+			top_p=0.95,
+			extra_body={"chat_template_kwargs": {"force_nonempty_content": True}},
+		)
+		print(response.choices[0].message.tool_calls)
 
 # REF [site] >>
 #	https://huggingface.co/thinkingmachines
@@ -13490,7 +13810,7 @@ def main():
 	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2
 	#mixtral_example()  # Mixtral-8x7B
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO
-	gemma_example()  # Gemma, Gemma 2, Gemma 3, Gemma-4
+	#gemma_example()  # Gemma, Gemma 2, Gemma 3, Gemma-4
 	#shield_gemma_example()  # ShieldGemma, ShieldGemma 2
 	#data_gemma_example()  # DataGemma
 	#open_elm_example()  # OpenELM
@@ -13505,6 +13825,7 @@ def main():
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
 	#qwen3_x_example()  # Qwen3.5, Qwen3.6
+	qwen3_8_example()  # Qwen3.8
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
 	#k_exaone_example()  # K-EXAONE
@@ -13542,8 +13863,9 @@ def main():
 	#glm_reasoning_example()  # GLM-Z1, GLM-Z1-Rumination, GLM-V4.1-Thinking
 	#ring_example()  # Ring, Ring-V2
 	#kimi_k2_thinking_example()  # Kimi K2 Thinking. Not yet implemented
-	nemotron_reasoning_example()  # Nemotron 3 Super, Nemotron 3 Nano
-	inkling_example()  # Inkling
+	#nemotron_3_reasoning_example()  # Nemotron 3 Super, Nemotron 3 Nano
+	nemotron_3_5_reasoning_example()  # Nemotron 3.5 Lightning
+	#inkling_example()  # Inkling
 
 	#-----
 	# Math

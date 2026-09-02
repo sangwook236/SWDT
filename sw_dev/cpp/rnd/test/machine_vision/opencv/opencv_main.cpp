@@ -293,6 +293,13 @@ int opencv_main(int argc, char *argv[])
 			std::cout << "GPU not found." << std::endl;
 #endif
 
+#if true
+		std::cout << "Build information:" << std::endl;
+		std::cout << cv::getBuildInformation() << std::endl;
+		std::cout << "CPU features:" << std::endl;
+		std::cout << cv::getCPUFeaturesLine() << std::endl;
+#endif
+
 		//local::basic_processing();
 		//local::operation_using_mask_and_roi();
 
