@@ -44,6 +44,6 @@
 		~/.gemini/antigravity/playground/
 
 [-] Installation.
-	- Install.
-		Gemini CLI:
+	- Gemini CLI.
+		Install & update:
 			npm install -g @google/gemini-cli

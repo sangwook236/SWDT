@@ -35,6 +35,10 @@
 			Shift + Tab
 
 [-] Installation.
-	- Install.
-		Claude Code:
+	- Claude Code.
+		Install:
 			npm install -g @anthropic-ai/claude-code
+			curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+
+		Update:
+			claude update

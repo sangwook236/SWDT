@@ -16,6 +16,6 @@
 			!
 
 [-] Installation.
-	- Install.
-		Codex CLI:
+	- Codex CLI.
+		Install & update:
 			npm install -g @openai/codex
