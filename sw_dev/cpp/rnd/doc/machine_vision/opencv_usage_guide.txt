@@ -32,9 +32,10 @@
 	- Build.
 		Configure.
 			Set OPENCV_ENABLE_NONFREE to ON.
-			Set OPENCV_EXTRA_MODULE_PATH to ${OPENCV_CONTRIB_HOME}/modules.
+			Set OPENCV_EXTRA_MODULES_PATH to ${OPENCV_CONTRIB_HOME}/modules.
 			Set BUILD_CUDA_STUBS to OFF.
 			(Optional) Set OPENCV_PYTHON3_VERSION to OFF.
+			(Optional) Set WITH_CUDA to ON.
 			(Optional) Set WITH_OPENGL to OFF.
 			(Optional) Set WITH_QT to OFF.
 			(Optional) Set BUILD_TBB to ON.
