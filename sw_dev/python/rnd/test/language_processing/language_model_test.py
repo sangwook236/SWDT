@@ -6814,6 +6814,22 @@ def ling_example():
 		print(response)
 
 # REF [site] >> https://huggingface.co/upstage
+def solar_mini_example():
+	# Models:
+	#	upstage/SOLAR-10.7B-v1.0
+	#	upstage/SOLAR-10.7B-Instruct-v1.0
+
+	MODEL_ID = "Upstage/SOLAR-10.7B-v1.0"
+	#MODEL_ID = "Upstage/SOLAR-10.7B-Instruct-v1.0"
+
+	tokenizer = transformers.AutoTokenizer.from_pretrained(MODEL_ID)
+	model = transformers.AutoModelForCausalLM.from_pretrained(
+		MODEL_ID,
+		device_map="auto",
+		torch_dtype=torch.float16,
+	)
+
+# REF [site] >> https://huggingface.co/upstage
 def solar_open_example():
 	# Models:
 	#	upstage/Solar-Open-100B
@@ -13834,6 +13850,7 @@ def main():
 	#apriel_example()  # Apriel
 	#glm_example()  # GLM-4, GLM-4.7, GLM-5, GLM-5.1
 	#ling_example()  # Ling, Ling-V2
+	#solar_mini_example()  # Solar Mini
 	#solar_open_example()  # Solar Open, Solar Open 2
 
 	#-----
@@ -13864,7 +13881,7 @@ def main():
 	#ring_example()  # Ring, Ring-V2
 	#kimi_k2_thinking_example()  # Kimi K2 Thinking. Not yet implemented
 	#nemotron_3_reasoning_example()  # Nemotron 3 Super, Nemotron 3 Nano
-	nemotron_3_5_reasoning_example()  # Nemotron 3.5 Lightning
+	#nemotron_3_5_reasoning_example()  # Nemotron 3.5 Lightning
 	#inkling_example()  # Inkling
 
 	#-----
