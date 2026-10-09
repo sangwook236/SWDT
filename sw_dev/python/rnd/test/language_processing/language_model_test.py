@@ -13207,54 +13207,134 @@ def lfm2_vl_example():
 	# Models:
 	#	LiquidAI/LFM2-VL-450M
 	#	LiquidAI/LFM2-VL-1.6B
+	#
+	#	LiquidAI/LFM2.5-230M
+	#	LiquidAI/LFM2.5-350M
+	#	LiquidAI/LFM2.5-2.6B
+	#	LiquidAI/LFM2.5-8B-A1B
+	#	LiquidAI/LFM2.5-1.2B-Instruct
+	#	LiquidAI/LFM2.5-1.2B-Thinking
 
-	"""
-	Chat template:
-		<|startoftext|><|im_start|>system
-		You are a helpful multimodal assistant by Liquid AI.<|im_end|>
-		<|im_start|>user
-		<image>Describe this image.<|im_end|>
-		<|im_start|>assistant
-		This image shows a Caenorhabditis elegans (C. elegans) nematode.<|im_end|>
-	"""
+	if False:
+		"""
+		Chat template:
+			<|startoftext|><|im_start|>system
+			You are a helpful multimodal assistant by Liquid AI.<|im_end|>
+			<|im_start|>user
+			<image>Describe this image.<|im_end|>
+			<|im_start|>assistant
+			This image shows a Caenorhabditis elegans (C. elegans) nematode.<|im_end|>
+		"""
 
-	# Load model and processor
-	model_id = "LiquidAI/LFM2-VL-450M"
-	#model_id = "LiquidAI/LFM2-VL-1.6B"
+		# Load model and processor
+		model_id = "LiquidAI/LFM2-VL-450M"
+		#model_id = "LiquidAI/LFM2-VL-1.6B"
 
-	model = transformers.AutoModelForImageTextToText.from_pretrained(
-		model_id,
-		device_map="auto",
-		torch_dtype="bfloat16",
-		trust_remote_code=True
-	)
-	processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+		model = transformers.AutoModelForImageTextToText.from_pretrained(
+			model_id,
+			device_map="auto",
+			torch_dtype="bfloat16",
+			trust_remote_code=True
+		)
+		processor = transformers.AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
-	# Load image and create conversation
-	url = "https://www.ilankelman.org/stopsigns/australia.jpg"
-	image = transformers.image_utils.load_image(url)
-	conversation = [
-		{
-			"role": "user",
-			"content": [
-				{"type": "image", "image": image},
-				{"type": "text", "text": "What is in this image?"},
-			],
-		},
-	]
+		# Load image and create conversation
+		url = "https://www.ilankelman.org/stopsigns/australia.jpg"
+		image = transformers.image_utils.load_image(url)
+		conversation = [
+			{
+				"role": "user",
+				"content": [
+					{"type": "image", "image": image},
+					{"type": "text", "text": "What is in this image?"},
+				],
+			},
+		]
 
-	# Generate Answer
-	inputs = processor.apply_chat_template(
-		conversation,
-		add_generation_prompt=True,
-		return_tensors="pt",
-		return_dict=True,
-		tokenize=True,
-	).to(model.device)
-	outputs = model.generate(**inputs, max_new_tokens=64)
-	processor.batch_decode(outputs, skip_special_tokens=True)[0]
+		# Generate Answer
+		inputs = processor.apply_chat_template(
+			conversation,
+			add_generation_prompt=True,
+			return_tensors="pt",
+			return_dict=True,
+			tokenize=True,
+		).to(model.device)
+		outputs = model.generate(**inputs, max_new_tokens=64)
+		processor.batch_decode(outputs, skip_special_tokens=True)[0]
 
-	# This image depicts a vibrant street scene in what appears to be a Chinatown or similar cultural area. The focal point is a large red stop sign with white lettering, mounted on a pole.
+		# This image depicts a vibrant street scene in what appears to be a Chinatown or similar cultural area. The focal point is a large red stop sign with white lettering, mounted on a pole.
+
+	if True:
+		#model_id = "LiquidAI/LFM2.5-230M"
+		#model_id = "LiquidAI/LFM2.5-350M"
+		#model_id = "LiquidAI/LFM2.5-2.6B"
+		model_id = "LiquidAI/LFM2.5-8B-A1B"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="auto",
+			dtype="bfloat16",
+		#   attn_implementation="flash_attention_2" <- uncomment on compatible GPU
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		streamer = transformers.TextStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
+
+		prompt = "What is C. elegans?"
+
+		input_ids = tokenizer.apply_chat_template(
+			[{"role": "user", "content": prompt}],
+			add_generation_prompt=True,
+			return_tensors="pt",
+			tokenize=True,
+		)["input_ids"].to(model.device)
+
+		output = model.generate(
+			input_ids,
+			do_sample=True,
+			#temperature=0.1,
+			temperature=0.2,
+			#top_k=50,
+			top_k=80,
+			#repetition_penalty=1.05,
+			#repetition_penalty=1.1,
+			repetition_penalty=1.05,
+			#max_new_tokens=512,
+			max_new_tokens=8192,
+			streamer=streamer,
+		)
+
+	if True:
+		#model_id = "LiquidAI/LFM2.5-1.2B-Instruct"
+		model_id = "LiquidAI/LFM2.5-1.2B-Thinking"
+
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_id,
+			device_map="auto",
+			dtype="bfloat16",
+		#   attn_implementation="flash_attention_2" <- uncomment on compatible GPU
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
+		streamer = transformers.TextStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
+
+		prompt = "What is C. elegans?"
+
+		input_ids = tokenizer.apply_chat_template(
+			[{"role": "user", "content": prompt}],
+			add_generation_prompt=True,
+			return_tensors="pt",
+			tokenize=True,
+		).to(model.device)
+
+		output = model.generate(
+			input_ids,
+			do_sample=True,
+		    temperature=0.05,
+			#temperature=0.1,
+			top_k=50,
+			repetition_penalty=1.05,
+			max_new_tokens=512,
+			streamer=streamer,
+		)
 
 # REF [site] >>
 #	https://huggingface.co/Efficient-Large-Model
@@ -13973,7 +14053,7 @@ def main():
 	#deepseek_vl_example()  # DeepSeek-VL, DeepSeek-VL2
 	#llama_vision_example()  # Llama 3.2 Vision
 	#kimi_vl_example()  # Kimi-VL
-	#lfm2_vl_example()  # LFM2-VL
+	#lfm2_vl_example()  # LFM2-VL, LFM2.5-VL
 
 	# Refer to image_synthesis_test.py
 
