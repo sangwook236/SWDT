@@ -2928,10 +2928,10 @@ def zephyr_example():
 # REF [site] >> https://huggingface.co/google
 def gemma_example():
 	# Models:
-	#	google/gemma-2b.
-	#	google/gemma-2b-it.
-	#	google/gemma-7b.
-	#	google/gemma-7b-it.
+	#	google/gemma-2b
+	#	google/gemma-2b-it
+	#	google/gemma-7b
+	#	google/gemma-7b-it
 	#
 	#	google/gemma-2-2b
 	#	google/gemma-2-2b-it
@@ -5873,6 +5873,40 @@ def deepseek_llm_example():
 		# string -> tokens
 		tokens = tokenizer.encode(prompt)
 		# Output: [0, 128803, 33310, 128804, 128799, 19923, 3, 342, 1030, 22651, 4374, 1465, 16, 1, 128803, 19, 13, 19, 127252, 128804, 128798]
+
+# REF [site] >> https://huggingface.co/deepseek-ai
+def deepseek_v4_example():
+	# Models:
+	#	deepseek-ai/DeepSeek-V4-Flash
+	#	deepseek-ai/DeepSeek-V4-Flash-DSpark
+	#	deepseek-ai/DeepSeek-V4-Flash-0731
+	#	deepseek-ai/DeepSeek-V4-Pro
+	#	deepseek-ai/DeepSeek-V4-Pro-DSpark
+	#	deepseek-ai/DeepSeek-V4-Pro-0813
+	#
+	#	deepseek-ai/DeepSeek-V4.1-Flash
+	#	deepseek-ai/DeepSeek-V4.1-Flash-1017
+
+	if True:
+		# Chat Template
+
+		from encoding_dsv4 import encode_messages, parse_message_from_completion_text
+
+		messages = [
+			{"role": "user", "content": "hello"},
+			{"role": "assistant", "content": "Hello! I am DeepSeek.", "reasoning_content": "thinking..."},
+			{"role": "user", "content": "1+1=?"}
+		]
+
+		# messages -> string
+		prompt = encode_messages(messages, thinking_mode="thinking")
+		#prompt = encode_messages(messages, thinking_mode="thinking", reasoning_effort="max")
+
+		# string -> tokens
+		tokenizer = transformers.AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-V4-Pro")
+		#tokenizer = transformers.AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-V4-Flash-0731")
+		#tokenizer = transformers.AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-V4-Pro-0813")
+		tokens = tokenizer.encode(prompt)
 
 # REF [site] >> https://huggingface.co/LGAI-EXAONE
 def exaone_example():
@@ -13921,8 +13955,9 @@ def main():
 	#qwen2_5_example()  # Qwen2.5
 	#qwen3_example()  # Qwen3, Qwen3-Next, Qwen3Guard
 	#qwen3_x_example()  # Qwen3.5, Qwen3.6
-	qwen3_8_example()  # Qwen3.8
+	#qwen3_8_example()  # Qwen3.8
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
+	deepseek_v4_example()  # DeepSeek-V4, DeepSeek-V4.1
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
 	#k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
