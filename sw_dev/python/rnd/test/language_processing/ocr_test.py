@@ -1235,6 +1235,213 @@ def paddle_ocr_vl_example():
 		print(result)
 		# ---------------------------
 
+# REF [site] >> https://huggingface.co/lightonai
+def light_on_ocr_example():
+	# Models:
+	#	lightonai/LightOnOCR-1B-1025
+	#	lightonai/LightOnOCR-0.9B-16k-1025
+	#	lightonai/LightOnOCR-0.9B-32k-1025
+	#
+	#	lightonai/LightOnOCR-2-1B
+	#	lightonai/LightOnOCR-2-1B-base
+	#	lightonai/LightOnOCR-2-1B-bbox
+	#	lightonai/LightOnOCR-2-1B-bbox-base
+	#	lightonai/LightOnOCR-2-1B-ocr-soup
+	#	lightonai/LightOnOCR-2-1B-bbox-soup
+	#
+	#	lightonai/LightOnOCR-3-0.8B
+	#	lightonai/LightOnOCR-3-1B
+	#	lightonai/LightOnOCR-3-4B
+
+	if False:
+		# Install:
+		#	pip install vllm==0.11.2
+		#	pip install pypdfium2 pillow requests
+
+		# Start server:
+		#	vllm serve lightonai/LightOnOCR-1B-1025 \
+		#		--limit-mm-per-prompt '{"image": 1}' --mm-processor-cache-gb 0 --no-enable-prefix-caching
+
+		import base64
+		import requests
+		import pypdfium2 as pdfium
+		import io
+
+		ENDPOINT = "http://localhost:8000/v1/chat/completions"
+		MODEL = "lightonai/LightOnOCR-1B-1025"
+		#MODEL = "LightOnOCR-0.9B-16k-1025"
+		#MODEL = "LightOnOCR-0.9B-32k-1025"
+
+		# Download PDF from arXiv
+		pdf_url = "https://arxiv.org/pdf/2412.13663"
+		pdf_data = requests.get(pdf_url).content
+
+		# Open PDF and convert first page to image
+		pdf = pdfium.PdfDocument(pdf_data)
+		page = pdf[0]
+		# Render at 200 DPI (scale factor = 200/72 ≈ 2.77)
+		pil_image = page.render(scale=2.77).to_pil()
+
+		# Convert to base64
+		buffer = io.BytesIO()
+		pil_image.save(buffer, format="PNG")
+		image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+		# Make request
+		payload = {
+			"model": MODEL,
+			"messages": [{
+				"role": "user",
+				"content": [{
+					"type": "image_url",
+					"image_url": {"url": f"data:image/png;base64,{image_base64}"}
+				}]
+			}],
+			"max_tokens": 4096,
+			"temperature": 0.2,
+			"top_p": 0.9,
+		}
+
+		response = requests.post(ENDPOINT, json=payload)
+		text = response.json()['choices'][0]['message']['content']
+		print(text)
+
+	if False:
+		# Install:
+		#	pip install vllm==0.11.2
+		#	pip install pypdfium2 pillow requests
+
+		import torch
+		import transformers
+
+		device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
+		dtype = torch.float32 if device == "mps" else torch.bfloat16
+
+		model = transformers.LightOnOcrForConditionalGeneration.from_pretrained("lightonai/LightOnOCR-2-1B-base", torch_dtype=dtype).to(device)
+		processor = transformers.LightOnOcrProcessor.from_pretrained("lightonai/LightOnOCR-2-1B-base")
+
+		url = "https://huggingface.co/datasets/hf-internal-testing/fixtures_ocr/resolve/main/SROIE-receipt.jpeg"
+		conversation = [{"role": "user", "content": [{"type": "image", "url": url}]}]
+
+		inputs = processor.apply_chat_template(
+			conversation,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+		inputs = {k: v.to(device=device, dtype=dtype) if v.is_floating_point() else v.to(device) for k, v in inputs.items()}
+
+		output_ids = model.generate(**inputs, max_new_tokens=1024)
+		generated_ids = output_ids[0, inputs["input_ids"].shape[1]:]
+		output_text = processor.decode(generated_ids, skip_special_tokens=True)
+		print(output_text)
+
+	if False:
+		# Install:
+		#	pip install transformers # => 5.0.0
+		#	pip install pillow pypdfium2
+
+		import torch
+		from transformers import LightOnOcrForConditionalGeneration, LightOnOcrProcessor
+
+		#model_id = "lightonai/LightOnOCR-2-1B"
+		#model_id = "lightonai/LightOnOCR-2-1B-base"
+		model_id = "lightonai/LightOnOCR-2-1B-bbox"
+		#model_id = "lightonai/LightOnOCR-2-1B-bbox-base"
+		#model_id = "lightonai/LightOnOCR-2-1B-ocr-soup"
+		#model_id = "lightonai/LightOnOCR-2-1B-bbox-soup"
+
+		device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
+		dtype = torch.float32 if device == "mps" else torch.bfloat16
+
+		model = LightOnOcrForConditionalGeneration.from_pretrained(, torch_dtype=dtype).to(device)
+		processor = LightOnOcrProcessor.from_pretrained()
+
+		url = "https://huggingface.co/datasets/hf-internal-testing/fixtures_ocr/resolve/main/SROIE-receipt.jpeg"
+
+		conversation = [{"role": "user", "content": [{"type": "image", "url": url}]}]
+
+		inputs = processor.apply_chat_template(
+			conversation,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+		inputs = {k: v.to(device=device, dtype=dtype) if v.is_floating_point() else v.to(device) for k, v in inputs.items()}
+
+		output_ids = model.generate(**inputs, max_new_tokens=1024)
+		generated_ids = output_ids[0, inputs["input_ids"].shape[1]:]
+		output_text = processor.decode(generated_ids, skip_special_tokens=True)
+		print(output_text)
+		# Output will include bounding boxes like this(no space): ![image](image_1.png)120,50,850,400
+
+	if True:
+		# Install:
+		#	pip install "transformers>=5.5.4" pillow pypdfium2
+
+		import transformers
+
+		#model_id = "lightonai/LightOnOCR-3-0.8B"
+		model_id = "lightonai/LightOnOCR-3-4B"
+
+		model = transformers.Qwen3_5ForConditionalGeneration.from_pretrained(model_id, dtype=torch.bfloat16, device_map="auto")
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+
+		url = "https://huggingface.co/datasets/hf-internal-testing/fixtures_ocr/resolve/main/SROIE-receipt.jpeg"
+		prompt = "grounding"  # or "" for transcription-only
+
+		content = [{"type": "image", "url": url}]
+		if prompt:
+			content.append({"type": "text", "text": prompt})
+		conversation = [{"role": "user", "content": content}]
+
+		inputs = processor.apply_chat_template(
+			conversation,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			enable_thinking=False,
+		).to(model.device)
+
+		output_ids = model.generate(**inputs, max_new_tokens=1024, do_sample=True, temperature=0.2)
+		generated_ids = output_ids[0, inputs["input_ids"].shape[1]:]
+		print(processor.decode(generated_ids, skip_special_tokens=True))
+
+	if True:
+		import torch
+		import transformers
+
+		model_id = "lightonai/LightOnOCR-3-1B"
+		device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
+		dtype = torch.float32 if device == "mps" else torch.bfloat16
+
+		model = transformers.LightOnOcrForConditionalGeneration.from_pretrained(model_id, dtype=dtype).to(device)
+		processor = transformers.LightOnOcrProcessor.from_pretrained(model_id)
+
+		url = "https://huggingface.co/datasets/hf-internal-testing/fixtures_ocr/resolve/main/SROIE-receipt.jpeg"
+		prompt = "grounding"  # or "" for transcription-only
+
+		content = [{"type": "image", "url": url}]
+		if prompt:
+			content.append({"type": "text", "text": prompt})
+		conversation = [{"role": "user", "content": content}]
+
+		inputs = processor.apply_chat_template(
+			conversation,
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+		)
+		inputs = {k: v.to(device=device, dtype=dtype) if v.is_floating_point() else v.to(device) for k, v in inputs.items()}
+
+		output_ids = model.generate(**inputs, max_new_tokens=1024)
+		generated_ids = output_ids[0, inputs["input_ids"].shape[1]:]
+		print(processor.decode(generated_ids, skip_special_tokens=True))
+
 def phi_3_ocr_test():
 	import time
 	from PIL import Image
@@ -1427,7 +1634,8 @@ def main():
 	#qwen_vl_ocr_example()  # Qwen2.5-VL (transformers)
 	#deepseek_vl_ocr_example()  # DeepSeek-VL2 (transformers)
 	#glm_ocr_example()  # GLM-OCR (transformers)
-	paddle_ocr_vl_example()  # PaddleOCR-VL, PaddleOCR-VL-1.5
+	#paddle_ocr_vl_example()  # PaddleOCR-VL, PaddleOCR-VL-1.5
+	light_on_ocr_example()  # LightOnOCR, LightOnOCR-2, LightOnOCR-3
 
 	#phi_3_ocr_test()  # Phi-3.5-vision (transformers)
 
