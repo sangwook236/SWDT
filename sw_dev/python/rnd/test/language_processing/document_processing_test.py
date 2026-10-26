@@ -877,6 +877,8 @@ def main():
 	docling_example()  # Docling
 	#granite_docling_example()  # Granite Docling
 
+	# Refer to ./llama_index_test.py  # LlamaIndex
+
 	#-----
 	# Document image processing
 
