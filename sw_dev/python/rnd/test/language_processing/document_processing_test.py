@@ -203,6 +203,562 @@ def granite_docling_example():
 
 		print(doc.export_to_markdown())
 
+# REF [site] >> https://huggingface.co/opendatalab
+def mineru_example():
+	# Models:
+	#	opendatalab/MinerU2.0-2505-0.9B
+	#
+	#	opendatalab/MinerU2.5-2509-1.2B
+	#	opendatalab/MinerU2.5-Pro-2604-1.2B
+	#	opendatalab/MinerU2.5-Pro-2605-1.2B
+
+	if False:
+		# Install:
+		#	pip install "mineru-vl-utils[transformers]"
+
+		import transformers
+		from PIL import Image
+		from mineru_vl_utils import MinerUClient
+
+		model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+			"opendatalab/MinerU2.5-2509-1.2B", dtype="auto", device_map="auto"
+		)
+		processor = transformers.AutoProcessor.from_pretrained(
+			"opendatalab/MinerU2.5-2509-1.2B", use_fast=True
+		)
+		client = MinerUClient(backend="transformers", model=model, processor=processor)
+		print(client.two_step_extract(Image.open("/path/to/page.png")))
+
+	if False:
+		# Install:
+		#	pip install "mineru-vl-utils[vllm]"
+
+		from vllm import LLM
+		from PIL import Image
+		from mineru_vl_utils import MinerUClient, MinerULogitsProcessor
+
+		client = MinerUClient(
+			backend="vllm-engine",
+			vllm_llm=LLM(model="opendatalab/MinerU2.5-2509-1.2B",
+						logits_processors=[MinerULogitsProcessor])
+		)
+		print(client.two_step_extract(Image.open("/path/to/page.png")))
+
+	if True:
+		# Install:
+		#	pip install "mineru-vl-utils[transformers]"
+
+		import transformers
+		from PIL import Image
+		from mineru_vl_utils import MinerUClient
+
+		#model_id = "opendatalab/MinerU2.5-Pro-2604-1.2B"
+		model_id = "opendatalab/MinerU2.5-Pro-2605-1.2B"
+
+		# for transformers>=4.56.0
+		model = transformers.Qwen2VLForConditionalGeneration.from_pretrained(
+			model_id, dtype="auto", device_map="auto"
+		)
+
+		processor = transformers.AutoProcessor.from_pretrained(
+			model_id, use_fast=True
+		)
+
+		client = MinerUClient(
+			backend="transformers", model=model, processor=processor,
+			image_analysis=False # default False, set True to enable image/chart analysis
+		)
+
+		print(client.two_step_extract(Image.open("/path/to/page.png")))
+
+	if True:
+		# Install:
+		#	pip install "mineru-vl-utils[vllm]"
+
+		from vllm import LLM
+		from PIL import Image
+		from mineru_vl_utils import MinerUClient
+		from mineru_vl_utils import MinerULogitsProcessor  # if vllm>=0.10.1
+
+		#model_id = "opendatalab/MinerU2.5-Pro-2604-1.2B"
+		model_id = "opendatalab/MinerU2.5-Pro-2605-1.2B"
+
+		llm = LLM(
+			model=model_id,
+			logits_processors=[MinerULogitsProcessor]  # if vllm>=0.10.1
+		)
+
+		client = MinerUClient(
+			backend="vllm-engine", vllm_llm=llm,
+			image_analysis=False # default False, set True to enable image/chart analysis
+		)
+
+		print(client.two_step_extract(Image.open("/path/to/page.png")))
+
+# REF [site] >> https://huggingface.co/ATH-MaaS
+def ovis_ocr_example():
+	# Models:
+	#	ATH-MaaS/OvisOCR
+	#	ATH-MaaS/OvisOCR2
+	#	ATH-MaaS/OvisOCR3
+
+	if False:
+		# Install:
+		#	pip install "vllm==0.18.1" pillow
+
+		from PIL import Image
+		from vllm import LLM, SamplingParams
+
+		class OvisOCRParser:
+			def __init__(self, model_name_or_path: str):
+				self.model = LLM(
+					model=model_name_or_path,
+					tensor_parallel_size=1,
+					trust_remote_code=True,
+					gpu_memory_utilization=0.8,
+				)
+
+				prompt = 'Extract all readable content from the image in natural human reading order and output the result as a single Markdown document. For charts or images, represent them using an HTML image tag: <' + 'img src="images/bbox_{left}_{top}_{right}_{bottom}.jpg" />, where left, top, right, bottom are bounding box coordinates scaled to [0, 1000). Format formulas as LaTeX. Format tables as HTML: <table>...</table>. Transcribe all other text as standard Markdown. Preserve the original text without translation or paraphrasing.'
+				self.prompt = self.model.get_tokenizer().apply_chat_template(
+					[{"role": "user", "content": f"<image>\n{prompt}"}],
+					tokenize=False,
+					add_generation_prompt=True,
+					enable_thinking=False
+				)
+
+				self.sampling_params = SamplingParams(
+					max_tokens=16384,
+					temperature=0.0,
+				)
+
+			def _clean_truncated_repeats(
+				self,
+				text: str,
+				min_text_len: int = 8000,
+				max_period: int = 200,
+				min_period: int = 1,
+				min_repeat_chars: int = 100,
+				min_repeat_times: int = 5
+			) -> str:
+				n = len(text)
+				if n < min_text_len:
+					return text
+
+				max_period = min(max_period, n - 1)
+				for unit_len in range(min_period, max_period + 1):
+					if text[n - 1] != text[n - 1 - unit_len]:
+						continue
+
+					match_len = 1
+					idx = n - 2
+					while idx >= unit_len and text[idx] == text[idx - unit_len]:
+						match_len += 1
+						idx -= 1
+
+					total_len = match_len + unit_len
+					repeat_times = total_len // unit_len
+					tail_len = total_len % unit_len
+
+					if repeat_times >= min_repeat_times and total_len >= min_repeat_chars:
+						return text[: n - total_len + unit_len] + text[n - tail_len:]
+
+				return text
+
+			def parse(self, images: list[Image.Image], filter_imgtags: bool = True) -> list[str]:
+				vllm_inputs = [
+					{
+						"prompt": self.prompt,
+						"multi_modal_data": {"image": image},
+						"mm_processor_kwargs": {
+							"images_kwargs": {
+								"min_pixels": 448 * 448,
+								"max_pixels": 2880 * 2880,
+							}
+						}
+					}
+					for image in images
+				]
+
+				outputs = self.model.generate(vllm_inputs, self.sampling_params)
+
+				markdowns = []
+				for output in outputs:
+					text = output.outputs[0].text.strip()
+					if filter_imgtags:
+						text = "\n\n".join(
+							block
+							for block in text.split("\n\n")
+							if not block.strip().startswith('<img src="images/bbox_')
+						)
+					markdowns.append(self._clean_truncated_repeats(text))
+
+				return markdowns
+
+		parser = OvisOCRParser("ATH-MaaS/OvisOCR")
+		images = [Image.open("test1.jpg"), Image.open("test2.jpg")]
+		markdowns = parser.parse(images)
+		print(markdowns[0])
+
+	if False:
+		# Install:
+		#	pip install "vllm==0.22.1" pillow
+
+		from PIL import Image
+		from vllm import LLM, SamplingParams
+
+		class OvisOCR2Parser:
+			def __init__(self, model_name_or_path: str):
+				self.model = LLM(
+					model=model_name_or_path,
+					tensor_parallel_size=1,
+					gpu_memory_utilization=0.8,
+					gdn_prefill_backend="triton"
+				)
+
+				prompt = '\nExtract all readable content from the image in natural human reading order and output the result as a single Markdown document. For charts or images, represent them using an HTML image tag: <' + 'img src="images/bbox_{left}_{top}_{right}_{bottom}.jpg" />, where left, top, right, bottom are bounding box coordinates scaled to [0, 1000). Format formulas as LaTeX. Format tables as HTML: <table>...</table>. Transcribe all other text as standard Markdown. Preserve the original text without translation or paraphrasing.'
+				self.prompt = self.model.get_tokenizer().apply_chat_template(
+					[{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": prompt}]}],
+					tokenize=False,
+					add_generation_prompt=True,
+					enable_thinking=False
+				)
+
+				self.sampling_params = SamplingParams(
+					max_tokens=16384,
+					temperature=0.0
+				)
+
+			def _clean_truncated_repeats(
+				self,
+				text: str,
+				min_text_len: int = 8000,
+				max_period: int = 200,
+				min_period: int = 1,
+				min_repeat_chars: int = 100,
+				min_repeat_times: int = 5
+			) -> str:
+				n = len(text)
+				if n < min_text_len:
+					return text
+
+				max_period = min(max_period, n - 1)
+				for unit_len in range(min_period, max_period + 1):
+					if text[n - 1] != text[n - 1 - unit_len]:
+						continue
+
+					match_len = 1
+					idx = n - 2
+					while idx >= unit_len and text[idx] == text[idx - unit_len]:
+						match_len += 1
+						idx -= 1
+
+					total_len = match_len + unit_len
+					repeat_times = total_len // unit_len
+					tail_len = total_len % unit_len
+
+					if repeat_times >= min_repeat_times and total_len >= min_repeat_chars:
+						return text[: n - total_len + unit_len] + text[n - tail_len:]
+
+				return text
+
+			def parse(self, images: list[Image.Image], filter_imgtags: bool = True) -> list[str]:
+				vllm_inputs = [
+					{
+						"prompt": self.prompt,
+						"multi_modal_data": {"image": image},
+						"mm_processor_kwargs": {
+							"images_kwargs": {
+								"min_pixels": 448 * 448,
+								"max_pixels": 2880 * 2880
+							}
+						}
+					}
+					for image in images
+				]
+
+				outputs = self.model.generate(vllm_inputs, self.sampling_params)
+
+				markdowns = []
+				for output in outputs:
+					text = output.outputs[0].text.strip()
+					if filter_imgtags:
+						text = "\n\n".join(
+							block
+							for block in text.split("\n\n")
+							if not block.strip().startswith('<img src="images/bbox_')
+						)
+					markdowns.append(self._clean_truncated_repeats(text))
+
+				return markdowns
+
+		parser = OvisOCR2Parser("ATH-MaaS/OvisOCR2")
+		images = [Image.open("test1.jpg"), Image.open("test2.jpg")]
+		markdowns = parser.parse(images)
+		print(markdowns[0])
+
+	if True:
+		# Install
+		#	pip install "vllm==0.22.1" pillow
+
+		import warnings
+		from pathlib import Path
+
+		from PIL import Image
+		from vllm import LLM, SamplingParams
+
+		MODEL_PATH = Path(".")
+
+		model = LLM(
+			model=str(MODEL_PATH.resolve()),
+			tensor_parallel_size=1,
+			gpu_memory_utilization=0.8,
+			gdn_prefill_backend="triton",
+			limit_mm_per_prompt={"image": 2},
+		)
+		tokenizer = model.get_tokenizer()
+		sampling_params = SamplingParams(max_tokens=16384, temperature=0.0)
+
+		def load_prompt(name: str) -> str:
+			return (MODEL_PATH / "prompts" / f"{name}.txt").read_text(encoding="utf-8")
+
+		def infer(
+			images: list[Image.Image], task_prompt: str, *,
+			return_metadata=False,
+		):
+			if not 1 <= len(images) <= 2:
+				raise ValueError("This example accepts one or two images per request.")
+
+			content = [{"type": "image"} for _ in images]
+			content.append({"type": "text", "text": task_prompt})
+			prompt = tokenizer.apply_chat_template(
+				[{"role": "user", "content": content}],
+				tokenize=False,
+				add_generation_prompt=True,
+				enable_thinking=False,
+			)
+			request = {
+				"prompt": prompt,
+				"multi_modal_data": {"image": [image.convert("RGB") for image in images]},
+				"mm_processor_kwargs": {
+					"images_kwargs": {
+						"min_pixels": 448 * 448,
+						"max_pixels": 2880 * 2880,
+					}
+				},
+			}
+			output = model.generate([request], sampling_params)[0].outputs[0]
+			if output.finish_reason == "length":
+				warnings.warn("Generation reached a token limit; the output may be incomplete.")
+			return (output.text, output.finish_reason) if return_metadata else output.text
+
+		page = Image.open("test1.jpg").convert("RGB")
+		text = infer([page], load_prompt("plain_ocr"))
+		Path("output.txt").write_text(text, encoding="utf-8")
+		print(text)
+
+# REF [site] >> https://huggingface.co/XingChen-AGI
+def tele_ocr_example():
+	# Models:
+	#	https://huggingface.co/XingChen-AGI/TeleOCR
+
+	# Refer to https://github.com/caipeng328/TeleOCR
+
+	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/baidu
+def unlimited_ocr_example():
+	# Models:
+	#	baidu/Unlimited-OCR
+	#	baidu/Unlimited-OCR-2
+
+	if False:
+		import os
+		import torch
+		import transformers
+
+		model_name = "baidu/Unlimited-OCR"
+
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+		model = transformers.AutoModel.from_pretrained(
+			model_name,
+			trust_remote_code=True,
+			use_safetensors=True,
+			torch_dtype=torch.bfloat16,
+		)
+		model = model.eval().cuda()
+
+		# ── Single image supports two configs: gundam or base ──
+		# gundam: base_size=1024, image_size=640, crop_mode=True
+		# base: base_size=1024, image_size=1024, crop_mode=False
+		model.infer(
+			tokenizer,
+			prompt="<image>document parsing.",
+			image_file="your_image.jpg",
+			output_path="your/output/dir",
+			base_size=1024, image_size=640, crop_mode=True,
+			max_length=32768,
+			no_repeat_ngram_size=35, ngram_window=128,
+			save_results=True,
+		)
+
+		# ── Multi page / PDF only uses base (image_size=1024) ──
+		model.infer_multi(
+			tokenizer,
+			prompt="<image>Multi page parsing.",
+			image_files=["page1.png", "page2.png", "page3.png"],
+			output_path="your/output/dir",
+			image_size=1024,
+			max_length=32768,
+			no_repeat_ngram_size=35, ngram_window=1024,
+			save_results=True,
+		)
+
+		# ── PDF (convert pages to images, then multi-page parsing) ──
+		import tempfile, fitz  # PyMuPDF
+
+		def pdf_to_images(pdf_path, dpi=300):
+			doc = fitz.open(pdf_path)
+			tmp_dir = tempfile.mkdtemp(prefix="pdf_ocr_")
+			mat = fitz.Matrix(dpi / 72, dpi / 72)
+			paths = []
+			for i, page in enumerate(doc):
+				out = os.path.join(tmp_dir, f"page_{i+1:04d}.png")
+				page.get_pixmap(matrix=mat).save(out)
+				paths.append(out)
+			doc.close()
+			return paths
+
+		model.infer_multi(
+			tokenizer,
+			prompt="<image>Multi page parsing.",
+			image_files=pdf_to_images("your_doc.pdf", dpi=300),
+			output_path="your/output/dir",
+			image_size=1024,
+			max_length=32768,
+			no_repeat_ngram_size=35, ngram_window=1024,
+			save_results=True,
+		)
+
+	if True:
+		import torch
+		import transformers
+
+		model_name = "baidu/Unlimited-OCR-2"
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+		model = transformers.AutoModel.from_pretrained(model_name, trust_remote_code=True, use_safetensors=True, torch_dtype=torch.bfloat16).eval().cuda()
+
+		# Multi-page inference (infer_multi).
+		# All pages of a document are parsed in one request, so the model can use cross-page context.
+		# Pass the page images in page order:
+		pages = [f"your_doc/page_{i}.jpg" for i in range(1, 8)]
+
+		text, num_tokens = model.infer_multi(tokenizer, image_files=pages, output_path="output/multi", save_results=True)
+
+		# The prompt is built automatically as "<PAGE><image>" * num_pages + "Multi page parsing.", and each page is encoded as one global view (base mode).
+		# The output contains one <PAGE> per input page, in the same order as image_files.
+
+		# Single-page inference (infer).
+		# A single page is encoded with dynamic tiling (gundam mode) by default:
+		text = model.infer(tokenizer, image_file="your_doc/page_1.jpg", output_path="output/single", save_results=True)
+
+	if True:
+		# Install:
+		#	pip install wheel/sglang-0.5.20.dev13+g75b9b06b02-py3-none-any.whl
+		#	pip install pymupdf==1.27.2.2
+		#	pip install fastokens==0.3.2
+
+		# Start the SGLang server
+
+		import os, requests, base64, json, tempfile
+		import fitz
+		from sglang.srt.sampling.custom_logit_processor import DeepseekOCRNoRepeatNGramLogitProcessor
+
+		server_url = "http://127.0.0.1:10000"
+		NGRAM_PROCESSOR = DeepseekOCRNoRepeatNGramLogitProcessor.to_str()
+
+		session = requests.Session()
+		session.trust_env = False
+
+		def pdf_to_images(pdf_path, dpi=300):
+			doc = fitz.open(pdf_path)
+			tmp_dir = tempfile.mkdtemp(prefix="pdf_ocr_")
+			mat = fitz.Matrix(dpi / 72, dpi / 72)
+			image_paths = []
+			for i, page in enumerate(doc):
+				image_path = os.path.join(tmp_dir, f"page_{i + 1:04d}.png")
+				page.get_pixmap(matrix=mat).save(image_path)
+				image_paths.append(image_path)
+			doc.close()
+			return image_paths
+
+		def encode_image(image_path):
+			ext = os.path.splitext(image_path)[1].lower()
+			mime = "image/jpeg" if ext in (".jpg", ".jpeg") else f"image/{ext.lstrip('.')}"
+			with open(image_path, "rb") as f:
+				data = base64.b64encode(f.read()).decode("utf-8")
+			return {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{data}"}}
+
+		def build_content(image_paths):
+			prompt = "<PAGE><image>" * len(image_paths) + "Multi page parsing."
+			return [encode_image(path) for path in image_paths] + [{"type": "text", "text": prompt}]
+
+		def generate(image_paths, crop_mode=True, tokens_per_page=8000):
+			# A wider n-gram window for multi-page documents, as in our evaluation setup.
+			window_size = 1024 if len(image_paths) > 1 else 128
+			payload = {
+				"model": "Unlimited-OCR-2",
+				"messages": [{"role": "user", "content": build_content(image_paths)}],
+				# Must be positive: it is the global output budget for the whole document.
+				"max_tokens": tokens_per_page * len(image_paths),
+				"temperature": 0,
+				"skip_special_tokens": False,
+				"images_config": {"crop_mode": crop_mode},  # True = gundam (tiles), False = base
+				"custom_logit_processor": NGRAM_PROCESSOR,
+				"custom_params": {
+					"ngram_size": 35,
+					"window_size": window_size,
+					"page_token_id": 128827,   # <PAGE> marker id (= sparse_attention_config.page_token_id)
+					"eos_token_id": 1,         # = eos_token_id in config.json
+					"max_page_tokens": 20000,  # per-page output cap, <= 0 disables the page guard
+				},
+				"stream": True,
+			}
+			response = session.post(
+				f"{server_url}/v1/chat/completions",
+				headers={"Content-Type": "application/json"},
+				data=json.dumps(payload),
+				timeout=6000,
+				stream=True,
+			)
+			response.raise_for_status()
+
+			chunks = []
+			for line in response.iter_lines(decode_unicode=True):
+				if not line or not line.startswith("data:"):
+					continue
+				data = line[len("data:"):].strip()
+				if data == "[DONE]":
+					break
+				event = json.loads(data)
+				choices = event.get("choices") or []  # the final chunk carries usage only
+				if not choices:
+					continue
+				delta = (choices[0].get("delta") or {}).get("content") or ""
+				if delta:
+					print(delta, end="", flush=True)
+					chunks.append(delta)
+			return "".join(chunks)
+
+		# Multi page: all pages of a document, parsed in one request
+		pages = [f"your_doc/page_{i}.jpg" for i in range(1, 8)]
+		generate(pages)
+
+		# Single page
+		generate(["your_doc/page_1.jpg"])
+
+		# PDF
+		generate(pdf_to_images("your_doc.pdf", dpi=300))
+
 # REF [site] >> https://github.com/mindee/doctr
 def doctr_example():
 	# Install:
@@ -874,8 +1430,13 @@ def main():
 	#surya_example()  # Surya
 	#marker_example()  # Marker. Not yet implemented
 
-	docling_example()  # Docling
+	#docling_example()  # Docling
 	#granite_docling_example()  # Granite Docling
+
+	#mineru_example()  # MinerU, MinerU2.0, MinerU2.5
+	#ovis_ocr_example()  # OvisOCR, OvisOCR2, OvisOCR3
+	#tele_ocr_example()  # TeleOCR. Not yet implemented
+	unlimited_ocr_example()  # Unlimited OCR, Unlimited OCR 2
 
 	# Refer to ./llama_index_test.py  # LlamaIndex
 
