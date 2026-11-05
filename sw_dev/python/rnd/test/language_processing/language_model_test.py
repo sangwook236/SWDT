@@ -2702,6 +2702,9 @@ def mistral_small_example():
 	#	mistralai/Mistral-Small-3.1-24B-Instruct-2503
 	#
 	#	mistralai/Mistral-Small-3.2-24B-Instruct-2506
+	#
+	#	mistralai/Mistral-Small-4-119B-2603
+	#	mistralai/Mistral-Small-4-119B-2603-eagle
 
 	device = "cuda"
 
@@ -2725,7 +2728,7 @@ def mistral_small_example():
 		dec = tokenizer.batch_decode(gen)
 		print(dec)
 
-	if True:
+	if False:
 		model_id = "mistralai/Mistral-Small-24B-Instruct-2501"
 
 		messages = [
@@ -2733,6 +2736,926 @@ def mistral_small_example():
 		]
 		chatbot = transformers.pipeline("text-generation", model=model_id, max_new_tokens=256, torch_dtype=torch.bfloat16)
 		chatbot(messages)
+
+	if True:
+		# Install:
+		#	pip install -U vllm
+
+		# Serve the model:
+		#	vllm serve mistralai/Mistral-Small-4-119B-2603 --max-model-len 262144 --tensor-parallel-size 2 --attention-backend FLASH_ATTN_MLA \
+		# 		--tool-call-parser mistral --enable-auto-tool-choice --reasoning-parser mistral --max_num_batched_tokens 16384 --max_num_seqs 128 \
+		# 		--gpu_memory_utilization 0.8
+
+		if True:
+			# Instruction Following
+
+			from datetime import datetime, timedelta
+			from openai import OpenAI
+			from huggingface_hub import hf_hub_download
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			TEMP = 0.1
+			# use TEMP = 0.7 for reasoning="high"
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			models = client.models.list()
+			model = models.data[0].id
+
+			def load_system_prompt(repo_id: str, filename: str) -> str:
+				file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+				with open(file_path, "r") as file:
+					system_prompt = file.read()
+				today = datetime.today().strftime("%Y-%m-%d")
+				yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+				model_name = repo_id.split("/")[-1]
+				return system_prompt.format(name=model_name, today=today, yesterday=yesterday)
+
+			SYSTEM_PROMPT = load_system_prompt(model, "SYSTEM_PROMPT.txt")
+
+			messages = [
+				{"role": "system", "content": SYSTEM_PROMPT},
+				{
+					"role": "user",
+					"content": "Write me a sentence where every word starts with the next letter in the alphabet - start with 'a' and end with 'z'.",
+				},
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				temperature=TEMP,
+				reasoning_effort="none",
+			)
+
+			assistant_message = response.choices[0].message.content
+			print(assistant_message)
+
+		if True:
+			# Tool Call
+
+			import json
+			from datetime import datetime, timedelta
+			from openai import OpenAI
+			from huggingface_hub import hf_hub_download
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			TEMP = 0.1
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			models = client.models.list()
+			model = models.data[0].id
+
+			def load_system_prompt(repo_id: str, filename: str) -> str:
+				file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+				with open(file_path, "r") as file:
+					system_prompt = file.read()
+				today = datetime.today().strftime("%Y-%m-%d")
+				yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+				model_name = repo_id.split("/")[-1]
+				return system_prompt.format(name=model_name, today=today, yesterday=yesterday)
+
+			SYSTEM_PROMPT = load_system_prompt(model, "SYSTEM_PROMPT.txt")
+
+			image_url = "https://math-coaching.com/img/fiche/46/expressions-mathematiques.jpg"
+
+			def my_calculator(expression: str) -> str:
+				return str(eval(expression))
+
+			tools = [
+				{
+					"type": "function",
+					"function": {
+						"name": "my_calculator",
+						"description": "A calculator that can evaluate a mathematical expression.",
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"expression": {
+									"type": "string",
+									"description": "The mathematical expression to evaluate.",
+								},
+							},
+							"required": ["expression"],
+						},
+					},
+				},
+				{
+					"type": "function",
+					"function": {
+						"name": "rewrite",
+						"description": "Rewrite a given text for improved clarity",
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"text": {
+									"type": "string",
+									"description": "The input text to rewrite",
+								}
+							},
+						},
+					},
+				},
+			]
+
+			messages = [
+				{"role": "system", "content": SYSTEM_PROMPT},
+				{
+					"role": "user",
+					"content": [
+						{
+							"type": "text",
+							"text": "Thanks to your calculator, compute the results for the equations that involve numbers displayed in the image.",
+						},
+						{
+							"type": "image_url",
+							"image_url": {
+								"url": image_url,
+							},
+						},
+					],
+				},
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				temperature=TEMP,
+				tools=tools,
+				tool_choice="auto",
+				reasoning_effort="none",
+			)
+
+			tool_calls = response.choices[0].message.tool_calls
+
+			results = []
+			for tool_call in tool_calls:
+				function_name = tool_call.function.name
+				function_args = tool_call.function.arguments
+				if function_name == "my_calculator":
+					result = my_calculator(**json.loads(function_args))
+					results.append(result)
+
+			messages.append({"role": "assistant", "tool_calls": tool_calls})
+			for tool_call, result in zip(tool_calls, results):
+				messages.append(
+					{
+						"role": "tool",
+						"tool_call_id": tool_call.id,
+						"name": tool_call.function.name,
+						"content": result,
+					}
+				)
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				temperature=TEMP,
+				reasoning_effort="none",
+			)
+
+			print(response.choices[0].message.content)
+
+		if True:
+			# Vision Reasoning
+
+			from datetime import datetime, timedelta
+			from openai import OpenAI
+			from huggingface_hub import hf_hub_download
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			TEMP = 0.7
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			models = client.models.list()
+			model = models.data[0].id
+
+			def load_system_prompt(repo_id: str, filename: str) -> str:
+				file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+				with open(file_path, "r") as file:
+					system_prompt = file.read()
+				today = datetime.today().strftime("%Y-%m-%d")
+				yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+				model_name = repo_id.split("/")[-1]
+				return system_prompt.format(name=model_name, today=today, yesterday=yesterday)
+
+			SYSTEM_PROMPT = load_system_prompt(model, "SYSTEM_PROMPT.txt")
+			image_url = "https://static.wikia.nocookie.net/essentialsdocs/images/7/70/Battle.png/revision/latest?cb=20220523172438"
+
+			messages = [
+				{"role": "system", "content": SYSTEM_PROMPT},
+				{
+					"role": "user",
+					"content": [
+						{
+							"type": "text",
+							"text": "What action do you think I should take in this situation? List all the possible actions and explain why you think they are good or bad.",
+						},
+						{"type": "image_url", "image_url": {"url": image_url}},
+					],
+				},
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				temperature=TEMP,
+				reasoning_effort="high",
+			)
+
+			print(response.choices[0].message.content)
+
+	if True:
+		# Install:
+		#	pip install git+https://github.com/huggingface/transformers.git
+
+		model_id = "mistralai/Mistral-Small-4-119B-2603"
+
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.Mistral3ForConditionalGeneration.from_pretrained(
+			model_id, device_map="auto"
+		)
+
+		image_url = "https://static.wikia.nocookie.net/essentialsdocs/images/7/70/Battle.png/revision/latest?cb=20220523172438"
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "text",
+						"text": "What action do you think I should take in this situation? List all the possible actions and explain why you think they are good or bad.",
+					},
+					{"type": "image_url", "image_url": {"url": image_url}},
+				],
+			},
+		]
+
+		inputs = processor.apply_chat_template(messages, return_tensors="pt", tokenize=True, return_dict=True, reasoning_effort="high")
+		inputs = inputs.to(model.device)
+
+		output = model.generate(
+			**inputs,
+			max_new_tokens=1024,
+			do_sample=True,
+			temperature=0.7,
+		)[0]
+
+		# Setting `skip_special_tokens=False` to visualize reasoning trace between [THINK] [/THINK] tags.
+		decoded_output = processor.decode(output[len(inputs["input_ids"][0]):], skip_special_tokens=False) 
+		print(decoded_output)
+
+# REF [site] >> https://huggingface.co/mistralai
+def mistral_medium_example():
+	# Models:
+	#	mistralai/Mistral-Medium-3.5-128B
+	#	mistralai/Mistral-Medium-3.5-128B-EAGLE
+
+	if True:
+		# Install:
+		#	uv pip install -U vllm \
+		#		--torch-backend=auto \
+		#		--extra-index-url https://wheels.vllm.ai/nightly
+
+		# Serve the model:
+		#	vllm serve mistralai/Mistral-Medium-3.5-128B --tensor-parallel-size 8 \
+		#		--tool-call-parser mistral --enable-auto-tool-choice --reasoning-parser mistral --max_num_batched_tokens 16384 --max_num_seqs 128 \
+		#		--gpu_memory_utilization 0.8
+
+		if True:
+			# Instruction Following
+
+			from datetime import datetime, timedelta
+			from huggingface_hub import hf_hub_download
+			from openai import OpenAI
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			REASONING_EFFORT = "none" # Toggle reasoning with 'high'.
+
+			match REASONING_EFFORT:
+				case "none":
+					TEMP = 0.1
+					TOP_P = None
+				case "high":
+					TEMP = 0.7
+					TOP_P = 0.95
+				case _:
+					raise ValueError("Only REASONING_EFFORT in ['none', 'high'] are supported.")
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			models = client.models.list()
+			model = models.data[0].id
+
+			def load_system_prompt(repo_id: str, filename: str) -> str:
+				file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+				with open(file_path, "r") as file:
+					system_prompt = file.read()
+				today = datetime.today().strftime("%Y-%m-%d")
+				yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+				model_name = repo_id.split("/")[-1]
+				return system_prompt.format(name=model_name, today=today, yesterday=yesterday)
+
+			SYSTEM_PROMPT = load_system_prompt(model, "SYSTEM_PROMPT.txt")
+
+			messages = [
+				{"role": "system", "content": SYSTEM_PROMPT},
+				{
+					"role": "user",
+					"content": "Write me a sentence where every word starts with the next letter in the alphabet - start with 'a' and end with 'z'.",
+				},
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				reasoning_effort=REASONING_EFFORT,
+				temperature=TEMP,
+				top_p=TOP_P,
+			)
+
+			print("==============================================================")
+			print(f"Request with {REASONING_EFFORT=}, {TEMP=} and {TOP_P=}.")
+			print("==============================================================")
+			print("REASONING")
+			print("~~~~~~~~~")
+			print(response.choices[0].message.reasoning)
+			print("==============================================================")
+			print("CONTENT")
+			print("~~~~~~~")
+			print(response.choices[0].message.content)
+
+		if True:
+			# Tool Call
+
+			import json
+			from datetime import datetime, timedelta
+
+			from openai import OpenAI
+			from huggingface_hub import hf_hub_download
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			REASONING_EFFORT = "none" # Toggle reasoning with 'high'.
+
+			match REASONING_EFFORT:
+				case "none":
+					TEMP = 0.1
+					TOP_P = None
+				case "high":
+					TEMP = 0.7
+					TOP_P = 0.95
+				case _:
+					raise ValueError("Only REASONING_EFFORT in ['none', 'high'] are supported.")
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			models = client.models.list()
+			model = models.data[0].id
+
+			def load_system_prompt(repo_id: str, filename: str) -> str:
+				file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+				with open(file_path, "r") as file:
+					system_prompt = file.read()
+				today = datetime.today().strftime("%Y-%m-%d")
+				yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+				model_name = repo_id.split("/")[-1]
+				return system_prompt.format(name=model_name, today=today, yesterday=yesterday)
+
+			SYSTEM_PROMPT = load_system_prompt(model, "SYSTEM_PROMPT.txt")
+
+			image_url = "https://math-coaching.com/img/fiche/46/expressions-mathematiques.jpg"
+
+			def my_calculator(expression: str) -> str:
+				return str(eval(expression))
+
+			tools = [
+				{
+					"type": "function",
+					"function": {
+						"name": "my_calculator",
+						"description": "A calculator that can evaluate a mathematical expression.",
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"expression": {
+									"type": "string",
+									"description": "The mathematical expression to evaluate.",
+								},
+							},
+							"required": ["expression"],
+						},
+					},
+				},
+				{
+					"type": "function",
+					"function": {
+						"name": "rewrite",
+						"description": "Rewrite a given text for improved clarity",
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"text": {
+									"type": "string",
+									"description": "The input text to rewrite",
+								}
+							},
+						},
+					},
+				},
+			]
+
+			messages = [
+				{"role": "system", "content": SYSTEM_PROMPT},
+				{
+					"role": "user",
+					"content": [
+						{
+							"type": "text",
+							"text": "Thanks to your calculator, compute the results for the equations that involve numbers displayed in the image.",
+						},
+						{
+							"type": "image_url",
+							"image_url": {
+								"url": image_url,
+							},
+						},
+					],
+				},
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				tools=tools,
+				tool_choice="auto",
+				reasoning_effort=REASONING_EFFORT,
+				temperature=TEMP,
+				top_p=TOP_P,
+			)
+
+			tool_calls = response.choices[0].message.tool_calls
+
+			results = []
+			for tool_call in tool_calls:
+				function_name = tool_call.function.name
+				function_args = tool_call.function.arguments
+				if function_name == "my_calculator":
+					result = my_calculator(**json.loads(function_args))
+					results.append(result)
+
+			messages.append({"role": "assistant", "tool_calls": tool_calls})
+			for tool_call, result in zip(tool_calls, results):
+				messages.append(
+					{
+						"role": "tool",
+						"tool_call_id": tool_call.id,
+						"name": tool_call.function.name,
+						"content": result,
+					}
+				)
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				reasoning_effort=REASONING_EFFORT,
+				temperature=TEMP,
+				top_p=TOP_P,
+			)
+
+			print("==============================================================")
+			print(f"Request with {REASONING_EFFORT=}, {TEMP=} and {TOP_P=}.")
+			print("==============================================================")
+			print("REASONING")
+			print("~~~~~~~~~")
+			print(response.choices[0].message.reasoning)
+			print("==============================================================")
+			print("CONTENT")
+			print("~~~~~~~")
+			print(response.choices[0].message.content)
+
+		if True:
+			# Vision Reasoning
+
+			from datetime import datetime, timedelta
+			from openai import OpenAI
+			from huggingface_hub import hf_hub_download
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			REASONING_EFFORT = "high" # Remove reasoning with 'none'.
+
+			match REASONING_EFFORT:
+				case "none":
+					TEMP = 0.1
+					TOP_P = None
+				case "high":
+					TEMP = 0.7
+					TOP_P = 0.95
+				case _:
+					raise ValueError("Only REASONING_EFFORT in ['none', 'high'] are supported.")
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			models = client.models.list()
+			model = models.data[0].id
+
+			def load_system_prompt(repo_id: str, filename: str) -> str:
+				file_path = hf_hub_download(repo_id=repo_id, filename=filename)
+				with open(file_path, "r") as file:
+					system_prompt = file.read()
+				today = datetime.today().strftime("%Y-%m-%d")
+				yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+				model_name = repo_id.split("/")[-1]
+				return system_prompt.format(name=model_name, today=today, yesterday=yesterday)
+
+			SYSTEM_PROMPT = load_system_prompt(model, "SYSTEM_PROMPT.txt")
+			image_url = "https://static.wikia.nocookie.net/essentialsdocs/images/7/70/Battle.png/revision/latest?cb=20220523172438"
+
+			messages = [
+				{"role": "system", "content": SYSTEM_PROMPT},
+				{
+					"role": "user",
+					"content": [
+						{
+							"type": "text",
+							"text": "What action do you think I should take in this situation? List all the possible actions and explain why you think they are good or bad.",
+						},
+						{"type": "image_url", "image_url": {"url": image_url}},
+					],
+				},
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				reasoning_effort=REASONING_EFFORT,
+				temperature=TEMP,
+				top_p=TOP_P,
+			)
+
+			print("==============================================================")
+			print(f"Request with {REASONING_EFFORT=}, {TEMP=} and {TOP_P=}.")
+			print("==============================================================")
+			print("REASONING")
+			print("~~~~~~~~~")
+			print(response.choices[0].message.reasoning)
+			print("==============================================================")
+			print("CONTENT")
+			print("~~~~~~~")
+			print(response.choices[0].message.content)
+
+	if True:
+		# Install:
+		#	pip install transformers
+
+		REASONING_EFFORT = "high" # Remove reasoning with 'none'.
+
+		match REASONING_EFFORT:
+			case "none":
+				TEMP = 0.1
+				TOP_P = 1.0
+			case "high":
+				TEMP = 0.7
+				TOP_P = 0.95
+			case _:
+				raise ValueError("Only REASONING_EFFORT in ['none', 'high'] are supported.")
+
+		model_id = "mistralai/Mistral-Medium-3.5-128B"
+
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.Mistral3ForConditionalGeneration.from_pretrained(
+			model_id, device_map="auto"
+		)
+
+		image_url = "https://static.wikia.nocookie.net/essentialsdocs/images/7/70/Battle.png/revision/latest?cb=20220523172438"
+
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "text",
+						"text": "What action do you think I should take in this situation? List all the possible actions and explain why you think they are good or bad.",
+					},
+					{"type": "image_url", "image_url": {"url": image_url}},
+				],
+			},
+		]
+
+		inputs = processor.apply_chat_template(messages, return_tensors="pt", tokenize=True, return_dict=True, reasoning_effort=REASONING_EFFORT)
+		inputs = inputs.to(model.device)
+
+		output = model.generate(
+			**inputs,
+			max_new_tokens=1024,
+			do_sample=True,
+			temperature=TEMP,
+			top_p=TOP_P,
+		)[0]
+
+		# Setting `skip_special_tokens=False` to visualize reasoning trace between [THINK] [/THINK] tags.
+		decoded_output = processor.decode(output[len(inputs["input_ids"][0]):], skip_special_tokens=False) 
+		print(decoded_output)
+
+# REF [site] >> https://huggingface.co/mistralai
+def mistral_large_example():
+	# Models:
+	#	mistralai/Mistral-Large-4-1T-A52B
+	#	mistralai/Mistral-Large-4-1T-A52B-NVFP4
+
+	if True:
+		# Install:
+		#	docker pull vllm/vllm-openai:mistral-large-4
+
+		# Serve the model:
+		#	docker run --runtime nvidia --gpus all \
+		# 		-v ~/.cache/huggingface:/root/.cache/huggingface \
+		# 		-p 8000:8000 \
+		# 		--ipc=host \
+		# 		vllm/vllm-openai:mistral-large-4 \
+		# 		--model mistralai/Mistral-Large-4-1T-A52B \
+		# 		--tensor-parallel-size 8 \
+		# 		--tool-call-parser mistral \
+		# 		--reasoning-parser mistral \
+		# 		--enable-auto-tool-choice \
+		# 		--gpu-memory-utilization 0.85
+		#
+		#		# Speculative decoding (DSpark)
+		# 		--speculative-config '{"method": "dspark", "num_speculative_tokens": 3}'
+
+		if True:
+			# Instruction Following
+			from openai import OpenAI
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			model = client.models.list().data[0].id
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=[
+					{
+						"role": "user",
+						"content": "Write me a sentence where every word starts with the next letter in the alphabet - start with 'a' and end with 'z'.",
+					}
+				],
+				reasoning_effort="low",  # Increase with 'medium' or 'high'.
+				temperature=1.0,
+				top_p=0.95,
+				max_completion_tokens=4096,
+			)
+
+			print("REASONING")
+			print("~~~~~~~~~")
+			print(response.choices[0].message.reasoning)
+			print("CONTENT")
+			print("~~~~~~~")
+			print(response.choices[0].message.content)
+
+		if True:
+			# Strict JSON Schema
+
+			from openai import OpenAI
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			model = client.models.list().data[0].id
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=[
+					{"role": "user", "content": "What is 1 + 1? Answer as JSON."}
+				],
+				reasoning_effort="medium",
+				temperature=1.0,
+				top_p=0.95,
+				response_format={
+					"type": "json_schema",
+					"json_schema": {
+						"name": "arithmetic_answer",
+						"strict": True,
+						"schema": {
+							"type": "object",
+							"properties": {"answer": {"type": "string"}},
+							"required": ["answer"],
+							"additionalProperties": False,
+						},
+					},
+				},
+				max_completion_tokens=16384,
+			)
+
+			print(response.choices[0].message.content)
+
+		if True:
+			# Vision and Tool Call
+
+			import json
+			from openai import OpenAI
+
+			# Modify OpenAI's API key and API base to use vLLM's API server.
+			openai_api_key = "EMPTY"
+			openai_api_base = "http://localhost:8000/v1"
+
+			client = OpenAI(
+				api_key=openai_api_key,
+				base_url=openai_api_base,
+			)
+
+			model = client.models.list().data[0].id
+
+			image_url = "https://math-coaching.com/img/fiche/46/expressions-mathematiques.jpg"
+
+			def my_calculator(expression: str) -> str:
+				return str(eval(expression))
+
+			tools = [
+				{
+					"type": "function",
+					"function": {
+						"name": "my_calculator",
+						"description": "A calculator that can evaluate a mathematical expression.",
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"expression": {
+									"type": "string",
+									"description": "The mathematical expression to evaluate.",
+								},
+							},
+							"required": ["expression"],
+						},
+					},
+				}
+			]
+
+			messages = [
+				{
+					"role": "user",
+					"content": [
+						{
+							"type": "text",
+							"text": "Thanks to your calculator, compute the results for the equations that involve numbers displayed in the image.",
+						},
+						{"type": "image_url", "image_url": {"url": image_url}},
+					],
+				}
+			]
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				tools=tools,
+				tool_choice="auto",
+				reasoning_effort="high",
+				temperature=1.0,
+				top_p=0.95,
+			)
+
+			tool_calls = response.choices[0].message.tool_calls
+
+			results = []
+			for tool_call in tool_calls:
+				function_name = tool_call.function.name
+				function_args = tool_call.function.arguments
+				if function_name == "my_calculator":
+					result = my_calculator(**json.loads(function_args))
+					results.append(result)
+
+			messages.append({"role": "assistant", "tool_calls": tool_calls})
+			for tool_call, result in zip(tool_calls, results):
+				messages.append(
+					{
+						"role": "tool",
+						"tool_call_id": tool_call.id,
+						"name": tool_call.function.name,
+						"content": result,
+					}
+				)
+
+			response = client.chat.completions.create(
+				model=model,
+				messages=messages,
+				reasoning_effort="high",
+				temperature=1.0,
+				top_p=0.95,
+			)
+
+			print("REASONING")
+			print("~~~~~~~~~")
+			print(response.choices[0].message.reasoning)
+			print("CONTENT")
+			print("~~~~~~~")
+			print(response.choices[0].message.content)
+
+	if True:
+		# Install:
+		#	pip install git+https://github.com/huggingface/transformers
+
+		import os
+
+		distributed_config = transformers.DistributedConfig(
+			tp_size=int(os.environ["WORLD_SIZE"]),
+			ep_size=int(os.environ["WORLD_SIZE"]),
+		)
+
+		model_id = "mistralai/Mistral-Large-4-1T-A52B"
+		processor = transformers.AutoProcessor.from_pretrained(model_id)
+		model = transformers.AutoModelForMultimodalLM.from_pretrained(
+			model_id,
+			distributed_config=distributed_config,
+			dtype="auto",
+		)
+
+		# only text
+		text_messages = [
+			{
+				"role": "user",
+				"content": "Who are you?"
+			}
+		]
+
+		# text + image
+		messages = [
+			{
+				"role": "user",
+				"content": [
+					{
+						"type": "image",
+						"image": "https://huggingface.co/datasets/huggingface/cats-image/resolve/main/cats_image.jpeg",
+					},
+					{
+						"type": "text",
+						"text": "How many cats are in the image?",
+					},
+				],
+			},
+		]
+
+		inputs = processor.apply_chat_template(
+			messages, # text_messages
+			add_generation_prompt=True,
+			tokenize=True,
+			return_dict=True,
+			return_tensors="pt",
+			reasoning_effort="medium", # low, medium, high
+		).to(model.device).to(model.dtype)
+		input_len = inputs["input_ids"].shape[-1]
+
+		outputs = model.generate(**inputs, max_new_tokens=100)
+		if int(os.environ["RANK"]) == 0:
+			print(processor.decode(outputs[0][input_len:], skip_special_tokens=False))
 
 # REF [site] >>
 #	https://huggingface.co/docs/transformers/model_doc/mixtral
@@ -13937,7 +14860,9 @@ def main():
 	#orca_example()  # ORCA-2
 
 	#mistral_example()  # Mistral-7B, Mistral-Nemo, Mistral-Large.
-	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2
+	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2, Mistral Small 4
+	#mistral_medium_example()  # Mistral Medium 3.5
+	mistral_large_example()  # Mistral Large 4
 	#mixtral_example()  # Mixtral-8x7B
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO
 	#gemma_example()  # Gemma, Gemma 2, Gemma 3, Gemma-4
@@ -13957,7 +14882,7 @@ def main():
 	#qwen3_x_example()  # Qwen3.5, Qwen3.6
 	#qwen3_8_example()  # Qwen3.8
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
-	deepseek_v4_example()  # DeepSeek-V4, DeepSeek-V4.1
+	#deepseek_v4_example()  # DeepSeek-V4, DeepSeek-V4.1
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
 	#k_exaone_example()  # K-EXAONE
 	#smol_lm_example()  # SmolLM, SmolLM2
