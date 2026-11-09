@@ -7176,105 +7176,243 @@ def k_exaone_example():
 	# Models:
 	#	LGAI-EXAONE/K-EXAONE-236B-A23B
 	#	LGAI-EXAONE/K-EXAONE-236B-A23B-FP8
+	#
+	#	LGAI-EXAONE/K-EXAONE-2.0-750B-A37B
+	#	LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-FP8
+	#	LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-NVFP4
+	#	LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-DSpark
 
-	model_name = "LGAI-EXAONE/K-EXAONE-236B-A23B"
-	#model_name = "LGAI-EXAONE/K-EXAONE-236B-A23B-FP8"
+	if False:
+		model_name = "LGAI-EXAONE/K-EXAONE-236B-A23B"
+		#model_name = "LGAI-EXAONE/K-EXAONE-236B-A23B-FP8"
 
-	model = transformers.AutoModelForCausalLM.from_pretrained(
-		model_name,
-		dtype="bfloat16",
-		device_map="auto",
-	)
-	tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+		model = transformers.AutoModelForCausalLM.from_pretrained(
+			model_name,
+			dtype="bfloat16",
+			device_map="auto",
+		)
+		tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+
+		if True:
+			# Reasoning mode
+
+			messages = [
+				{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
+				{"role": "user", "content": "Which one is bigger, 3.9 vs 3.12?"}
+			]
+			input_ids = tokenizer.apply_chat_template(
+				messages,
+				tokenize=True,
+				add_generation_prompt=True,
+				return_tensors="pt",
+				enable_thinking=True,  # Skippable (default: True)
+			)
+
+			generated_ids = model.generate(
+				**input_ids.to(model.device),
+				max_new_tokens=16384,
+				temperature=1.0,
+				top_p=0.95,
+				do_sample=True,
+			)
+			output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
+			print(tokenizer.decode(output_ids, skip_special_tokens=True))
+
+		if True:
+			# Non-reasoning mode
+
+			messages = [
+				{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
+				{"role": "user", "content": "Explain how wonderful you are"}
+			]
+			input_ids = tokenizer.apply_chat_template(
+				messages,
+				tokenize=True,
+				add_generation_prompt=True,
+				return_tensors="pt",
+				enable_thinking=False,
+			)
+
+			generated_ids = model.generate(
+				**input_ids.to(model.device),
+				max_new_tokens=1024,
+				temperature=1.0,
+				top_p=0.95,
+				do_sample=True,
+			)
+			output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
+			print(tokenizer.decode(output_ids, skip_special_tokens=True))
+
+		if True:
+			# Agentic tool use
+
+			from transformers.utils import get_json_schema
+
+			def roll_dice(max_num: int):
+				"""
+				Roll a dice with the number 1 to N. User can select the number N.
+
+				Args:
+					max_num: The maximum number on the dice.
+				"""
+				return random.randint(1, max_num)
+
+			tool_schema = get_json_schema(roll_dice)
+			tools = [tool_schema]
+
+			messages = [
+				{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
+				{"role": "user", "content": "Roll a D20 twice and sum the results."}
+			]
+			input_ids = tokenizer.apply_chat_template(
+				messages,
+				tokenize=True,
+				add_generation_prompt=True,
+				return_tensors="pt",
+				tools=tools,
+			)
+
+			generated_ids = model.generate(
+				**input_ids.to(model.device),
+				max_new_tokens=16384,
+				temperature=1.0,
+				top_p=0.95,
+				do_sample=True,
+			)
+			output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
+			print(tokenizer.decode(output_ids, skip_special_tokens=True))
 
 	if True:
-		# Reasoning mode
+		# Serving K-EXAONE 2.0
+		#	SGLang
+		#	vLLM
 
-		messages = [
-			{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
-			{"role": "user", "content": "Which one is bigger, 3.9 vs 3.12?"}
-		]
-		input_ids = tokenizer.apply_chat_template(
-			messages,
-			tokenize=True,
-			add_generation_prompt=True,
-			return_tensors="pt",
-			enable_thinking=True,  # Skippable (default: True)
-		)
+		if True:
+			# Reasoning mode
 
-		generated_ids = model.generate(
-			**input_ids.to(model.device),
-			max_new_tokens=16384,
-			temperature=1.0,
-			top_p=0.95,
-			do_sample=True,
-		)
-		output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
-		print(tokenizer.decode(output_ids, skip_special_tokens=True))
+			from openai import OpenAI
 
-	if True:
-		# Non-reasoning mode
+			client = OpenAI(
+				base_url="http://localhost:8000/v1",
+				api_key="EMPTY",
+			)
 
-		messages = [
-			{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
-			{"role": "user", "content": "Explain how wonderful you are"}
-		]
-		input_ids = tokenizer.apply_chat_template(
-			messages,
-			tokenize=True,
-			add_generation_prompt=True,
-			return_tensors="pt",
-			enable_thinking=False,
-		)
+			messages = [
+				{
+					"role": "user",
+					"content": "Implement fibonacci with python code.",
+				}
+			]
 
-		generated_ids = model.generate(
-			**input_ids.to(model.device),
-			max_new_tokens=1024,
-			temperature=1.0,
-			top_p=0.95,
-			do_sample=True,
-		)
-		output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
-		print(tokenizer.decode(output_ids, skip_special_tokens=True))
+			response = client.chat.completions.create(
+				model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-FP8",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-NVFP4",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-DSpark",
+				messages=messages,
+				max_tokens=32768,
+				temperature=1.0,
+				top_p=0.95,
+				extra_body={
+					"chat_template_kwargs": {
+						"enable_thinking": True,  # default: True
+						"preserve_thinking": True,  # default: False
+					}
+				}, 
+			)
+			print(response)
 
-	if True:
-		# Agentic tool use
+		if True:
+			# Non-reasoning mode
 
-		from transformers.utils import get_json_schema
+			from openai import OpenAI
 
-		def roll_dice(max_num: int):
-			"""
-			Roll a dice with the number 1 to N. User can select the number N.
+			client = OpenAI(
+				base_url="http://localhost:8000/v1",
+				api_key="EMPTY",
+			)
 
-			Args:
-				max_num: The maximum number on the dice.
-			"""
-			return random.randint(1, max_num)
+			messages = [
+				{
+					"role": "user",
+					"content": "Explain how useful you are.",
+				}
+			]
 
-		tool_schema = get_json_schema(roll_dice)
-		tools = [tool_schema]
+			response = client.chat.completions.create(
+				model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-FP8",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-NVFP4",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-DSpark",
+				messages=messages,
+				max_tokens=32768,
+				temperature=1.0,
+				top_p=0.95,
+				extra_body={
+					"chat_template_kwargs": {
+						"enable_thinking": False,  # default: True
+						"preserve_thinking": False,  # default: False
+					}
+				}, 
+			)
+			print(response)
 
-		messages = [
-			{"role": "system", "content": "You are K-EXAONE, a large language model developed by LG AI Research in South Korea, built to serve as a helpful and reliable assistant."},
-			{"role": "user", "content": "Roll a D20 twice and sum the results."}
-		]
-		input_ids = tokenizer.apply_chat_template(
-			messages,
-			tokenize=True,
-			add_generation_prompt=True,
-			return_tensors="pt",
-			tools=tools,
-		)
+		if True:
+			# Tool calling
 
-		generated_ids = model.generate(
-			**input_ids.to(model.device),
-			max_new_tokens=16384,
-			temperature=1.0,
-			top_p=0.95,
-			do_sample=True,
-		)
-		output_ids = generated_ids[0][input_ids["input_ids"].shape[-1]:]
-		print(tokenizer.decode(output_ids, skip_special_tokens=True))
+			from openai import OpenAI
+
+			client = OpenAI(
+				base_url="http://localhost:8000/v1",
+				api_key="EMPTY",
+			)
+
+			tools = [
+				{
+					"type": "function",
+					"function": {
+						"name": "roll_dice",
+						"description": "Roll the dice with the number 1 to N. User can select the number N.",
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"max_num": {
+									"type": "integer",
+									"description": "The maximum number on the dice."
+								}
+							},
+							"required": ["max_num"]
+						},
+					},
+				}
+			]
+
+			messages = [
+				{
+					"role": "user",
+					"content": "Roll a D20 twice and sum the results."
+				}
+			]
+
+			response = client.chat.completions.create(
+				model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-FP8",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-NVFP4",
+				#model="LGAI-EXAONE/K-EXAONE-2.0-750B-A37B-DSpark",
+				messages=messages,
+				tools=tools,
+				max_tokens=32768,
+				temperature=1.0,
+				top_p=0.95,
+				extra_body={
+					"chat_template_kwargs": {
+						"enable_thinking": True,  # default: True
+						"preserve_thinking": True,  # default: False
+					}
+				},
+			)
+
+			print(response)
 
 # REF [site] >> https://huggingface.co/HuggingFaceTB
 def smol_lm_example():
@@ -14862,7 +15000,7 @@ def main():
 	#mistral_example()  # Mistral-7B, Mistral-Nemo, Mistral-Large.
 	#mistral_small_example()  # Mistral-Small, Mistral-Small 3, Mistral-Small 3.1, Mistral-Small 3.2, Mistral Small 4
 	#mistral_medium_example()  # Mistral Medium 3.5
-	mistral_large_example()  # Mistral Large 4
+	#mistral_large_example()  # Mistral Large 4
 	#mixtral_example()  # Mixtral-8x7B
 	#zephyr_example()  # Zephyr-7B = Mistral-7B + DPO
 	#gemma_example()  # Gemma, Gemma 2, Gemma 3, Gemma-4
@@ -14884,7 +15022,7 @@ def main():
 	#deepseek_llm_example()  # DeepSeek-LLM, DeepSeek-MoE, DeepSeek-V2, DeepSeek-V2.5, DeepSeek-V3, DeepSeek-V3.2
 	#deepseek_v4_example()  # DeepSeek-V4, DeepSeek-V4.1
 	#exaone_example()  # EXAONE 3.0, EXAONE 3.5, EXAONE 4.0, EXAONE 4.5
-	#k_exaone_example()  # K-EXAONE
+	k_exaone_example()  # K-EXAONE, K-EXAONE-2.0
 	#smol_lm_example()  # SmolLM, SmolLM2
 	#kimi_example()  # Kimi K2, Kimi K3
 	#apriel_example()  # Apriel
