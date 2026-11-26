@@ -38,7 +38,7 @@ log4cxx::AppenderPtr create_appender(const bool to_file = true)
 	{
 		log4cxx::RollingFileAppenderPtr fileAppender(new log4cxx::RollingFileAppender());
 		fileAppender->setName("fileAppender");
-		fileAppender->setFile("./log/dia.log");
+		fileAppender->setFile("./logs/dia.log");
 		fileAppender->setAppend(true);
 		fileAppender->setMaxFileSize("10MB");
 		fileAppender->setMaxBackupIndex(10);
@@ -65,22 +65,22 @@ log4cxx::AppenderPtr create_appender(const bool to_file = true)
 
 inline boost::xtime delay(int secs, int msecs = 0, int nsecs = 0)
 {
-    const int MILLISECONDS_PER_SECOND = 1000;
-    const int NANOSECONDS_PER_SECOND = 1000000000;
-    const int NANOSECONDS_PER_MILLISECOND = 1000000;
+	const int MILLISECONDS_PER_SECOND = 1000;
+	const int NANOSECONDS_PER_SECOND = 1000000000;
+	const int NANOSECONDS_PER_MILLISECOND = 1000000;
 
-    boost::xtime xt;
-    //BOOST_CHECK_EQUAL(static_cast<int>(boost::xtime_get(&xt, boost::TIME_UTC_)), static_cast<int>(boost::TIME_UTC_));
+	boost::xtime xt;
+	//BOOST_CHECK_EQUAL(static_cast<int>(boost::xtime_get(&xt, boost::TIME_UTC_)), static_cast<int>(boost::TIME_UTC_));
 	boost::xtime_get(&xt, boost::TIME_UTC_);
 
-    nsecs += xt.nsec;
-    msecs += nsecs / NANOSECONDS_PER_MILLISECOND;
-    secs += msecs / MILLISECONDS_PER_SECOND;
-    nsecs += (msecs % MILLISECONDS_PER_SECOND) * NANOSECONDS_PER_MILLISECOND;
-    xt.nsec = nsecs % NANOSECONDS_PER_SECOND;
-    xt.sec += secs + (nsecs / NANOSECONDS_PER_SECOND);
+	nsecs += xt.nsec;
+	msecs += nsecs / NANOSECONDS_PER_MILLISECOND;
+	secs += msecs / MILLISECONDS_PER_SECOND;
+	nsecs += (msecs % MILLISECONDS_PER_SECOND) * NANOSECONDS_PER_MILLISECOND;
+	xt.nsec = nsecs % NANOSECONDS_PER_SECOND;
+	xt.sec += secs + (nsecs / NANOSECONDS_PER_SECOND);
 
-    return xt;
+	return xt;
 }
 
 void thread_func()

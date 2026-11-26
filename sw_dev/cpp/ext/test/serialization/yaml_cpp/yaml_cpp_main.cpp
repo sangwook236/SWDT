@@ -23,6 +23,16 @@ void simple_example()
 	std::cout << "Stage = " << config["stage"].as<std::string>() << std::endl;
 
 	//-----
+	YAML::Node stage = config["stage"];
+
+	std::cout << "stage.Type() = " << stage.Type() << std::endl;  // Undefined, Null, Scalar, Sequence, Map
+	std::cout << "stage.IsDefined() = " << stage.IsDefined() << std::endl;
+	std::cout << "stage.IsNull() = " << stage.IsNull() << std::endl;
+	std::cout << "stage.IsScalar() = " << stage.IsScalar() << std::endl;
+	std::cout << "stage.IsSequence() = " << stage.IsSequence() << std::endl;
+	std::cout << "stage.IsMap() = " << stage.IsMap() << std::endl;
+
+	//-----
 	const YAML::Node data_dirs(config["data"]["data_dirs"]);
 	std::cout << "Data dir:" << std::endl;
 	for (const auto &elem: data_dirs)
@@ -89,6 +99,11 @@ int yaml_cpp_main(int argc, char *argv[])
 #endif
 
 		local::simple_example();
+	}
+	catch (const YAML::BadFile &ex)
+	{
+		std::cerr << "YAML::BadFile caught: " << ex.what() << std::endl;
+		return 1;
 	}
 	catch (const YAML::RepresentationException &ex)
 	{
